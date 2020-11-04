@@ -1,0 +1,19 @@
+rootProject.name = "Shuttle"
+
+include ':demo'
+include ':framework'
+
+// Integration Modules
+include ':framework-integrations-persistence'
+project(':framework-integrations-persistence').projectDir =
+        new File(settingsDir, 'framework-integrations/persistence')
+
+// Extension Modules
+include ':framework-extensions-room'
+project(':framework-extensions-room').projectDir =
+        new File(settingsDir, 'framework-extensions/room')
+
+// Add-On Modules
+include ':framework-addons-navigation-component'
+project(':framework-addons-navigation-component').projectDir =
+        new File(settingsDir, 'framework-addons/navigation-component')

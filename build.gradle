@@ -1,0 +1,31 @@
+buildscript {
+    apply from: 'ext.gradle'
+    ext {
+        versions.kotlin = '1.4.10'
+        versions.kotlin = '1.4.10'
+        versions.kotlin = '1.3.72'
+    }
+
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath classpathDeps.gradleBuildTools
+        classpath classpathDeps.kotlinGradlePlugin
+    }
+}
+
+def rootDir = projectDir.absolutePath
+
+allprojects {
+    apply from: "$rootDir/ext.gradle"
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

@@ -1,0 +1,54 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion versions.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion 26
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    // Kotlin
+    implementation jetbrainsKotlinDeps.stdlib
+    implementation jetbrainsKotlinDeps.coroutines
+
+    // AndroidX
+    implementation androidXDeps.coreKtx
+    implementation androidXDeps.appCompat
+
+    implementation project(':framework-integrations-persistence')
+
+    // Room
+    api roomDeps.runtime
+    kapt roomDeps.compiler
+    implementation roomDeps.ktx
+    testImplementation roomDeps.testHelpers
+
+    // Reactive
+    implementation rxDeps.kotlin
+
+    // Testing
+    testImplementation testingDeps.junit.jupiterApi
+    annotationProcessor 'androidx.room:room-compiler:2.2.5'
+    testRuntimeOnly testingDeps.junit.jupiterEngine
+    androidTestImplementation testingDeps.junit.ext
+    androidTestImplementation testingDeps.espresso.core
+}
