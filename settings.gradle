@@ -9,9 +9,9 @@ project(':framework-integrations-persistence').projectDir =
         new File(settingsDir, 'framework-integrations/persistence')
 
 // Extension Modules
-include ':framework-extensions-room'
-project(':framework-extensions-room').projectDir =
-        new File(settingsDir, 'framework-extensions/room')
+include ':framework-integrations-extensions-room'
+project(':framework-integrations-extensions-room').projectDir =
+        new File(settingsDir, 'framework-integrations-extensions/room')
 
 // Add-On Modules
 include ':framework-addons-navigation-component'

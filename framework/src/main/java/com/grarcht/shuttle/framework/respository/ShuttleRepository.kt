@@ -1,10 +1,11 @@
 package com.grarcht.shuttle.framework.respository
 
 import android.os.Parcelable
+import android.util.SparseArray
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.grarcht.persistence.BlobAdapter
+import com.grarcht.persistence.ShuttleDatabaseBlobAdapter
 import com.grarcht.persistence.ShuttleDataAccessObject
 import com.grarcht.persistence.ShuttleDataModel
 import com.grarcht.persistence.ShuttleDataModelFactory
@@ -15,7 +16,7 @@ import kotlinx.coroutines.channels.Channel
 open class ShuttleRepository(
     private val parcelDao: ShuttleDataAccessObject,
     private val parcelDataModelFactory: ShuttleDataModelFactory,
-    private val blobAdapter: BlobAdapter
+    private val shuttleDatabaseBlobAdapter: ShuttleDatabaseBlobAdapter
 ) : ShuttleWarehouse {
 
     override val id: String = "1"
@@ -47,7 +48,7 @@ open class ShuttleRepository(
             initStoredDataObserver(channel, lookupKey, parcelableCreator)
             observePersistedData(lookupKey, lifecycleOwner)
         } else {
-            val cachedData = blobAdapter.adaptToParcelable(shuttleDataModel.data, parcelableCreator)
+            val cachedData = shuttleDatabaseBlobAdapter.adaptToParcelable(shuttleDataModel.data, parcelableCreator)
             channel.send(ShuttleResult.Success(cachedData))
         }
 
@@ -65,7 +66,7 @@ open class ShuttleRepository(
                     val exception = IllegalStateException("Result unavailable for lookupKey: $lookupKey")
                     channel.send(ShuttleResult.Error(exception))
                 } else {
-                    val parcelable = blobAdapter.adaptToParcelable(model.data, parcelableCreator)
+                    val parcelable = shuttleDatabaseBlobAdapter.adaptToParcelable(model.data, parcelableCreator)
                     channel.send(ShuttleResult.Success(parcelable))
                 }
             }
@@ -114,6 +115,24 @@ open class ShuttleRepository(
      *
      */
     override suspend fun <D : Parcelable> save(lookupKey: String, data: ArrayList<D>?) {
+//        data?.let {
+//            val parcelDataModel = parcelDataModelFactory.createParcelDataModel(parcelId, it)
+//            cache[parcelDataModel.lookupKey] = parcelDataModel
+//
+//            try {
+//                val result = parcelDao.insertParcel(parcelDataModel)
+//                println("insert result $result")
+//            } catch (e: Exception) {
+//                println("Caught when inserting data info the db: $e")
+//            }
+//        }
+    }
+
+    /**
+     *
+     */
+    override suspend fun <D : Parcelable> save(lookupKey: String, data: SparseArray<D>?) {
+
 //        data?.let {
 //            val parcelDataModel = parcelDataModelFactory.createParcelDataModel(parcelId, it)
 //            cache[parcelDataModel.lookupKey] = parcelDataModel

@@ -1,6 +1,7 @@
 package com.grarcht.shuttle.framework.respository
 
 import android.os.Parcelable
+import android.util.SparseArray
 import androidx.lifecycle.LifecycleOwner
 import com.grarcht.shuttle.framework.content.ShuttleResult
 import kotlinx.coroutines.channels.Channel
@@ -20,4 +21,6 @@ interface ShuttleWarehouse {
     suspend fun <D : Parcelable> save(lookupKey: String, data: Array<D>?)
 
     suspend fun <D : Parcelable> save(lookupKey: String, data: ArrayList<D>?)
+
+    suspend fun <D : Parcelable> save(lookupKey: String, data: SparseArray<D>?)
 }

@@ -1,8 +1,8 @@
 ext {
     versions = [
             buildToolsVersion: '30.0.2',
-            gradleBuildTools : '4.0.1',
-            kotlin           : '1.4.0',
+            gradleBuildTools : '4.1.0',
+            kotlin           : '1.4.10',
             lifecycle        : '2.2.0',
             navigation       : '2.3.1',
             room             : '2.2.5',
@@ -11,7 +11,8 @@ ext {
 
     classpathDeps = [
             gradleBuildTools  : "com.android.tools.build:gradle:${versions.gradleBuildTools}",
-            kotlinGradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+            kotlinGradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
+            junit5Plugin      : "de.mannodermaus.gradle.plugins:android-junit5:1.6.2.0"
     ]
 
     androidXDeps = [
@@ -28,8 +29,8 @@ ext {
     ]
 
     jetbrainsKotlinDeps = [
-            coroutines: "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlin}",
-            stdlib    : "org.jetbrains.kotlin:kotlin-stdlib:1.4.0"
+            coroutines: "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.0",
+            stdlib    : "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
     ]
 
     obfuscationRulesDesp = [
@@ -50,13 +51,20 @@ ext {
     ]
 
     testingDeps = [
-            espresso = [
+            espresso: [
                     core: 'androidx.test.espresso:espresso-core:3.3.0'
             ],
-            junit = [
+            junit   : [
                     ext          : 'androidx.test.ext:junit:1.1.2',
+                    jupiter      : 'org.junit.jupiter:junit-jupiter:5.4.2',
                     jupiterApi   : 'org.junit.jupiter:junit-jupiter-api:5.6.0',
-                    jupiterEngine: 'org.junit.jupiter:junit-jupiter-engine:5.6.0'
+                    jupiterEngine: 'org.junit.jupiter:junit-jupiter-engine:5.6.0',
+                    jupiterParams: 'org.junit.jupiter:junit-jupiter-params:5.6.0',
+                    platformSuite: 'org.junit.platform:junit-platform-suite-api:1.7.0'
+            ],
+            mockito : [
+                    core  : 'org.mockito:mockito-core:3.6.0',
+                    kotlin: 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
             ]
     ]
 }

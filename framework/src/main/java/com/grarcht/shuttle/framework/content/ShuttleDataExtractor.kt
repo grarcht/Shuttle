@@ -1,21 +1,17 @@
 package com.grarcht.shuttle.framework.content
 
-import android.content.Intent
+import android.os.Bundle
 import android.os.Parcelable
 import androidx.lifecycle.LifecycleOwner
 import com.grarcht.shuttle.framework.model.ShuttleParcelPackage
 import com.grarcht.shuttle.framework.respository.ShuttleWarehouse
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
 
 private const val MESSAGE_SHUTTLE_INTENT_NOT_USED =
     "The required ShuttleIntent was not used to marshal the data."
 
-class ShuttleDataExtractor(
-    private val intent: Intent,
-    private val repository: ShuttleWarehouse
-) {
+open class ShuttleDataExtractor(private val repository: ShuttleWarehouse) {
     private var disposableHandle: DisposableHandle? = null
 
     /**
@@ -24,16 +20,17 @@ class ShuttleDataExtractor(
      *
      */
     suspend fun <D : Parcelable> extractParcelData(
+        bundle: Bundle?,
         key: String,
         parcelableCreator: Parcelable.Creator<D>,
         lifecycleOwner: LifecycleOwner
     ): Channel<ShuttleResult> {
-        val parcelPackage: ShuttleParcelPackage? = intent.extras?.getParcelable(key)
+        val parcelPackage: ShuttleParcelPackage? = bundle?.getParcelable(key)
 
         return if (null == parcelPackage) {
+            val exception = IllegalStateException(MESSAGE_SHUTTLE_INTENT_NOT_USED)
+            val result = ShuttleResult.Error<Exception>(exception)
             val channel = Channel<ShuttleResult>(5)
-            val result =
-                ShuttleResult.Error<Exception>(IllegalStateException(MESSAGE_SHUTTLE_INTENT_NOT_USED))
             channel.send(result)
             channel
         } else {

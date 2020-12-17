@@ -2,8 +2,6 @@ buildscript {
     apply from: 'ext.gradle'
     ext {
         versions.kotlin = '1.4.10'
-        versions.kotlin = '1.4.10'
-        versions.kotlin = '1.3.72'
     }
 
     repositories {
@@ -13,6 +11,8 @@ buildscript {
     dependencies {
         classpath classpathDeps.gradleBuildTools
         classpath classpathDeps.kotlinGradlePlugin
+        //https://github.com/mannodermaus/android-junit5
+        classpath classpathDeps.junit5Plugin
     }
 }
 
@@ -23,6 +23,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        mavenCentral()
     }
 }
 

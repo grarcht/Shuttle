@@ -49,8 +49,8 @@ dependencies {
 
     // Projects
     implementation project(':framework')
-    api project(':framework-integrations-persistence')
-    implementation project(':framework-extensions-room')
+    implementation project(':framework-integrations-persistence')
+    implementation project(':framework-integrations-extensions-room')
 
     // Testing
     testImplementation testingDeps.junit.jupiterApi
@@ -60,4 +60,5 @@ dependencies {
 //
 //    implementation(project(":plugins:parcelize:parcelize-compiler"))
 //    implementation(project(":plugins:parcelize:parcelize-runtime"))
+
 }
