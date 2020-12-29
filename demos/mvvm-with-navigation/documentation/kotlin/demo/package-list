@@ -1,0 +1,12 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+
+com.grarcht.shuttle.demo
+com.grarcht.shuttle.demo.core.commonviews
+com.grarcht.shuttle.demo.core.dependencyinjection
+com.grarcht.shuttle.demo.core.image
+com.grarcht.shuttle.demo.core.io
+com.grarcht.shuttle.demo.mvc.controller
+com.grarcht.shuttle.demo.mvvm.view
+com.grarcht.shuttle.demo.mvvm.viewmodel
+

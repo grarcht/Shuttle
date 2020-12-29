@@ -1,0 +1,7 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+
+com.grarcht.shuttle.demo.mvc
+com.grarcht.shuttle.demo.mvc.controller
+com.grarcht.shuttle.demo.mvc.dependencyinjection
+

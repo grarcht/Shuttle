@@ -1,0 +1,8 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+
+com.grarcht.shuttle.demo.mvvmwithnavigation
+com.grarcht.shuttle.demo.mvvmwithnavigation.dependencyinjection
+com.grarcht.shuttle.demo.mvvmwithnavigation.view
+com.grarcht.shuttle.demo.mvvmwithnavigation.viewmodel
+

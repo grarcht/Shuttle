@@ -1,8 +1,23 @@
 plugins {
-    id('com.android.library')
-    id('kotlin-android')
-    id('kotlin-android-extensions')
-    id('de.mannodermaus.android-junit5')
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'org.jetbrains.dokka'
+    id 'de.mannodermaus.android-junit5'
+    id 'maven-publish'
+}
+
+apply from: '../detekt/detekt.gradle'
+
+dokkaHtml.configure {
+    dokkaSourceSets {
+        named("main") {
+            noAndroidSdkLink.set(false)
+        }
+    }
+}
+
+tasks.dokkaHtml.configure {
+    outputDirectory.set(file("documentation/kotlin"))
 }
 
 android {
@@ -14,73 +29,78 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
         consumerProguardFiles "consumer-rules.pro"
     }
 
-    compileOptions {
-        setSourceCompatibility(JavaVersion.VERSION_1_8)
-        setTargetCompatibility(JavaVersion.VERSION_1_8)
-    }
+    buildTypes.release.minifyEnabled false
+    testOptions.unitTests.returnDefaultValues = true
+    kotlinOptions.jvmTarget = versions.jvmTarget
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
+    compileOptions {
+        sourceCompatibility versions.sourceCompatibility
+        targetCompatibility versions.targetCompatibility
     }
 
     packagingOptions {
         exclude 'META-INF/LICENSE.md'
         exclude 'META-INF/LICENSE-notice.md'
     }
-
-    testOptions {
-        unitTests {
-            returnDefaultValues = true
-        }
-    }
 }
 
 dependencies {
-    // Kotlin
     implementation jetbrainsKotlinDeps.stdlib
     implementation jetbrainsKotlinDeps.coroutines
-
-    // AndroidX
     implementation androidXDeps.coreKtx
     implementation androidXDeps.appCompat
-
-    implementation project(':framework-integrations-persistence')
-
-    // Reactive
-    implementation rxDeps.android
-    implementation rxDeps.kotlin
-
-
-    // Testing
+    implementation androidXDeps.lifecycle.extensions
+    api project(':framework-integrations-persistence')
+    androidTestImplementation testingDeps.junit.junit5AndroidTestCore
+    androidTestRuntimeOnly testingDeps.junit.junit5AndroidTestRunner
     testImplementation testingDeps.mockito.core
     testImplementation testingDeps.mockito.kotlin
     testImplementation testingDeps.junit.jupiterApi
     testRuntimeOnly testingDeps.junit.jupiterEngine
-//    testImplementation testingDeps.junit.jupiterParam
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.1'
+    testImplementation testingDeps.kotlin.coroutines
+    testImplementation testingDeps.junit.androidCore
+}
 
-//    androidTestImplementation testingDeps.mockito.core
-//    androidTestImplementation testingDeps.mockito.kotlin
-//    androidTestImplementation testingDeps.junit.jupiterApi
-//    androidTestImplementation testingDeps.junit.jupiterEngine
-//    androidTestImplementation testingDeps.junit.jupiterParams
-//    androidTestImplementation testingDeps.junit.platformSuite
-//    androidTestImplementation testingDeps.junit.ext
-//    androidTestImplementation testingDeps.espresso.core
-//
-//    //androidTestImplementation("androidx.test:runner:1.2.0")
-//   // androidTestRuntimeOnly "org.junit.platform:junit-platform-runner:1.3.2"
-    androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.2.0")
-    androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.2.0")
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                groupId = 'com.grarcht.shuttle'
+                artifactId = 'framework'
+                version = '1.0.0-alpha01'
+                artifact('build/outputs/aar/framework-release.aar')
 
-    testImplementation "androidx.arch.core:core-testing:2.1.0"
+                pom.withXml {
+                    def dependencies = asNode().appendNode('dependencies')
+                    configurations.implementation.allDependencies.each {
+                        def dependency = dependencies.appendNode('dependency')
+                        dependency.appendNode('groupId', it.group)
+                        dependency.appendNode('artifactId', it.name)
+                        dependency.appendNode('version', it.version)
+                    }
+                }
+            }
+            debug(MavenPublication) {
+                groupId = 'com.grarcht.shuttle'
+                artifactId = 'framework-debug'
+                version = '1.0.0-alpha01'
+                artifact('build/outputs/aar/framework-debug.aar')
+
+                pom.withXml {
+                    def dependencies = asNode().appendNode('dependencies')
+                    configurations.implementation.allDependencies.each {
+                        def dependency = dependencies.appendNode('dependency')
+                        dependency.appendNode('groupId', it.group)
+                        dependency.appendNode('artifactId', it.name)
+                        dependency.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+    }
 }

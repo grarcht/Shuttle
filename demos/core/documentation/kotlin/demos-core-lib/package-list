@@ -1,0 +1,6 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+
+com.grarcht.shuttle.demo.core.image
+com.grarcht.shuttle.demo.core.io
+

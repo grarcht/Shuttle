@@ -1,24 +1,38 @@
 package com.grarcht.shuttle.framework.bundle
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import com.grarcht.shuttle.framework.content.ShuttleDataExtractor
-import com.grarcht.shuttle.framework.content.ShuttleResult
+import com.grarcht.shuttle.framework.CargoShuttle
+import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.content.bundle.ShuttleBundle
-import kotlinx.coroutines.*
+import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
+import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
+import com.grarcht.shuttle.framework.result.ShuttleStoreCargoResult
+import com.grarcht.shuttle.framework.screen.ShuttleFacade
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.DisposableHandle
+import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.Rule
-import org.junit.jupiter.api.*
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.fail
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.fail
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.spy
 import java.util.concurrent.CountDownLatch
@@ -29,14 +43,12 @@ class ShuttleBundleTest {
     @get:Rule
     val liveDataRule = InstantTaskExecutorRule()
 
-    private val intent = mock(Intent::class.java)
-
     @OptIn(ObsoleteCoroutinesApi::class)
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
     private val shuttleWarehouse = TestRepository()
     private var testScope: CoroutineScope? = null
     private var disposableHandle: DisposableHandle? = null
-    private lateinit var shuttleDataExtractor: ShuttleDataExtractor
+    private lateinit var shuttle: Shuttle
 
     @Volatile
     private var doesBundleMatch = false
@@ -48,8 +60,11 @@ class ShuttleBundleTest {
     fun runBeforeAllTests() {
         //https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-test/
         Dispatchers.setMain(mainThreadSurrogate)
-        //val intent: Intent = mock(Intent::class.java)
-        shuttleDataExtractor = spy(ShuttleDataExtractor(shuttleWarehouse))
+
+        val lifecycleOwner = mock(LifecycleOwner::class.java)
+        val shuttleScreenFacade = mock(ShuttleFacade::class.java)
+
+        shuttle = spy(CargoShuttle(shuttleScreenFacade, shuttleWarehouse, lifecycleOwner))
         doesBundleMatch = false
     }
 
@@ -65,16 +80,16 @@ class ShuttleBundleTest {
     @Test
     fun verifyPutAndGetBundle() {
         // ====== given ======
-        val lifecycleOwner = mock(LifecycleOwner::class.java)
         var countDownLatch = CountDownLatch(1)
         val nestedBundleKey = "nestedBundle"
         val paintColorKey = "paint color"
         val map = mutableMapOf<String?, Any?>(Pair(paintColorKey, "blue"))
         val bundleToCreateFrom = MockBundleFactory().create(map)
         val shuttleBundle = ShuttleBundle.with(bundleToCreateFrom, shuttleWarehouse)
+        val cargoId = "cargo id"
 
         // when
-        shuttleBundle.safelyPutBundle(nestedBundleKey, bundleToCreateFrom)
+        shuttleBundle.transport(nestedBundleKey, bundleToCreateFrom)
         val bundle = shuttleBundle.create()
         countDownLatch.await(1, TimeUnit.SECONDS)
         countDownLatch = CountDownLatch(1)
@@ -86,19 +101,17 @@ class ShuttleBundleTest {
 
             // Will be launched in the mainThreadSurrogate dispatcher
             disposableHandle = launch(Dispatchers.Main) {
-                val channel: Channel<ShuttleResult> = shuttleDataExtractor.extractParcelData(
-                    bundle = bundle,
-                    key = nestedBundleKey,
-                    parcelableCreator = MockBundleFactory.creator
-                ) { TestLifecycle() }
-
+                val channel: Channel<ShuttlePickupCargoResult> = shuttle.pickupCargo(
+                    cargoId = cargoId,
+                    creator = MockBundleFactory.creator
+                )
                 channel.consumeAsFlow()
                     .collect { shuttleResult ->
                         when (shuttleResult) {
-                            ShuttleResult.Loading -> {
+                            ShuttlePickupCargoResult.Loading -> {
                                 /* ignore */
                             }
-                            is ShuttleResult.Success<*> -> {
+                            is ShuttlePickupCargoResult.Success<*> -> {
                                 resultBundle = shuttleResult.data as Bundle
 
                                 if (resultBundle?.containsKey(paintColorKey) == true) {
@@ -110,7 +123,7 @@ class ShuttleBundleTest {
                                 }
                                 countDownLatch.countDown()
                             }
-                            is ShuttleResult.Error<*> -> {
+                            is ShuttlePickupCargoResult.Error<*> -> {
                                 countDownLatch.countDown()
                                 fail()
                             }
@@ -118,51 +131,48 @@ class ShuttleBundleTest {
                     }
             }.invokeOnCompletion {
                 it?.let {
-                    println(it?.message ?: "Error when getting bundle.")
+                    println(it.message ?: "Error when getting bundle.")
                 }
             }
         }
 
-        assertEquals(2, shuttleWarehouse.numberOfSaveInvocations)
+        assertEquals(1, shuttleWarehouse.numberOfSaveInvocations)
         countDownLatch.await(1, TimeUnit.SECONDS)
         assertTrue(doesBundleMatch)
     }
 
     class TestRepository : ShuttleDataWarehouse() {
-        private val getChannel = Channel<ShuttleResult>(5)
+        private val pickupCargoChannel = Channel<ShuttlePickupCargoResult>(3)
+        private val storeCargoChannel = Channel<ShuttleStoreCargoResult>(0)
+        private val removeCargoChannel = Channel<ShuttleRemoveCargoResult>(0)
 
-        override suspend fun <D : Parcelable> get(
-            lookupKey: String,
+        override suspend fun <D : Parcelable> pickup(
+            cargoId: String,
             parcelableCreator: Parcelable.Creator<D>,
             lifecycleOwner: LifecycleOwner
-        ): Channel<ShuttleResult> {
+        ): Channel<ShuttlePickupCargoResult> {
             val parcelable = parcelableToEmit
             println("parcelableToEmit $parcelable")
             try {
-                getChannel.send(ShuttleResult.Success(parcelable))
+                pickupCargoChannel.send(ShuttlePickupCargoResult.Success(parcelable))
             } catch (e: Exception) {
                 println("caught: $e")
             }
-            return getChannel
+            return pickupCargoChannel
         }
 
-        override suspend fun <D : Parcelable> save(lookupKey: String, data: D?) {
-            super.save(lookupKey, data)
+        override suspend fun <D : Parcelable> store(cargoId: String, data: D?): Channel<ShuttleStoreCargoResult> {
+            super.store(cargoId, data)
             parcelableToEmit = data as Parcelable
-        }
-    }
-
-    private class TestLifecycle : Lifecycle() {
-        override fun addObserver(observer: LifecycleObserver) {
-            // Ignore
+            return storeCargoChannel
         }
 
-        override fun removeObserver(observer: LifecycleObserver) {
-            // Ignore
+        override suspend fun removeCargoBy(cargoId: String): Channel<ShuttleRemoveCargoResult> {
+            return removeCargoChannel
         }
 
-        override fun getCurrentState(): State {
-            return State.STARTED
+        override suspend fun removeAllCargo(): Channel<ShuttleRemoveCargoResult> {
+            return removeCargoChannel
         }
     }
 }

@@ -1,0 +1,55 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        minSdkVersion 26
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    kotlinOptions.jvmTarget = versions.jvmTarget
+
+    compileOptions {
+        sourceCompatibility versions.sourceCompatibility
+        targetCompatibility versions.targetCompatibility
+    }
+}
+
+configurations {
+    // If other integration extensions are desired, they should have corresponding
+    // configurations defined here.
+    withRoom {
+        extendsFrom api
+    }
+}
+
+dependencies {
+    implementation jetbrainsKotlinDeps.stdlib
+
+    // If other integration extensions are desired, they should have corresponding
+    // dependency declarations here.
+    withRoom project(':framework')
+    withRoom project(':framework-integrations-persistence')
+    withRoom project(':framework-integrations-extensions-room')
+
+//    withRoom 'com.grarcht.shuttle:framework:1.0.0-alpha01'
+//    withRoom 'com.grarcht.shuttle:framework-integrations-persistence:1.0.0-alpha01'
+//    withRoom 'com.grarcht.shuttle:framework-integrations-extensions-room:1.0.0-alpha01'
+}

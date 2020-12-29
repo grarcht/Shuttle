@@ -1,0 +1,83 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions' // needed for parcelize
+    id 'dagger.hilt.android.plugin'
+    id 'org.jetbrains.dokka'
+    id 'kotlin-kapt'
+}
+
+apply from: '../../detekt/detekt.gradle'
+
+dokkaHtml.configure {
+    dokkaSourceSets {
+        named("main") {
+            noAndroidSdkLink.set(false)
+        }
+    }
+}
+
+tasks.dokkaHtml.configure {
+    outputDirectory.set(file("documentation/kotlin"))
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        applicationId "com.grarcht.shuttle.demo.mvc"
+        minSdkVersion 26
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation jetbrainsKotlinDeps.stdlib
+    implementation jetbrainsKotlinDeps.coroutines
+    implementation androidXDeps.appCompat
+    implementation androidXDeps.constraintLayout
+    implementation androidXDeps.material
+    implementation androidXDeps.lifecycle.extensions
+    implementation androidXDeps.lifecycle.viewModel
+    api dependencyInjectionDeps.hilt
+    api dependencyInjectionDeps.hiltViewModel
+    kapt dependencyInjectionDeps.hiltCompiler
+
+    implementation project(':demos-core-lib')
+
+    // To use a single aar file dependency, do something like the following.
+    // If another integration extension is desired, a corresponding configuration should be
+    // declared here for the "solution-builder" project.
+    //implementation project(path: ':solution-builder', configuration: 'withRoom')
+
+    // To use lighter weight, independent dependencies, comment out the above dependency and
+    // uncomment the following:
+    // implementation project(':framework')
+    // implementation project(':framework-integrations-persistence')
+    // implementation project(':framework-integrations-extensions-room')
+
+    // To use maven dependencies, use the following
+    implementation shuttle.framework
+    implementation shuttle.integrationsPersistence
+    implementation shuttle.integrationsExtensionsRoom
+}

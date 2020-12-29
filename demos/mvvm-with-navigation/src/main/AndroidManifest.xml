@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.grarcht.shuttle.demo.mvvmwithnavigation">
+
+    <!--
+    This is only defined to enable a flow for which Shuttle can be tested with restoring a
+    parcelable after the Android OS kills the app.  Once scenario flow occurs when the user
+    toggles an app permission in the Settings app.  Android OS kills the app and when the user
+    clicks on the app again, the OS will relaunch the app and restore the data.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:name=".DemoApplication"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:largeHeap="true"
+        android:hardwareAccelerated="false"
+        android:requestLegacyExternalStorage="false"
+        android:theme="@style/AppTheme">
+
+        <activity android:name=".view.MVVMNavEntryPointViewActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".view.MVVMNavSecondViewActivity" />
+    </application>
+
+</manifest>

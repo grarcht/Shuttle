@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/TitleText"
+        android:id="@+id/arch_choice_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/margin_buttons_small"
+        android:text="@string/architectures_choice_message" />
+
+    <Button
+        android:id="@+id/mvvm_usage_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/margin_buttons_small"
+        android:text="@string/mvvm_button_text" />
+
+    <Button
+        android:id="@+id/mvvm_usage_with_navigation_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/margin_buttons_small"
+        android:text="@string/mvvm_button_with_navigation_text" />
+
+    <Button
+        android:id="@+id/mvc_usage_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/margin_buttons_small"
+        android:text="@string/mvc_button_text" />
+</LinearLayout>

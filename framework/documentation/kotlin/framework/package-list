@@ -1,0 +1,12 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+
+com.grarcht.shuttle.framework
+com.grarcht.shuttle.framework.content
+com.grarcht.shuttle.framework.content.bundle
+com.grarcht.shuttle.framework.coroutines.channel
+com.grarcht.shuttle.framework.model
+com.grarcht.shuttle.framework.result
+com.grarcht.shuttle.framework.screen
+com.grarcht.shuttle.framework.warehouse
+

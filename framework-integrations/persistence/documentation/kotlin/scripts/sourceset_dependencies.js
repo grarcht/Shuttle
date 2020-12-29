@@ -1,0 +1,1 @@
+sourceset_dependencies = '{":framework-integrations-persistence:dokkaHtml/androidTestRelease": [], ":framework-integrations-persistence:dokkaHtml/debug": [], ":framework-integrations-persistence:dokkaHtml/main": [], ":framework-integrations-persistence:dokkaHtml/release": []}'

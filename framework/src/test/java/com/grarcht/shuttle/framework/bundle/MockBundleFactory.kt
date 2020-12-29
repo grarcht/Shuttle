@@ -33,7 +33,7 @@ class MockBundleFactory: BundleFactory {
         return create(mutableMapOf())
     }
 
-    fun create(map: MutableMap<String?, Any?> = mutableMapOf<String?, Any?>()): Bundle {
+    fun create(map: MutableMap<String?, Any?> = mutableMapOf()): Bundle {
         //https://github.com/konmik/nucleus/blob/master/nucleus-test-kit/src/main/java/mocks/BundleMock.java
         val unsupported: Answer<*> = Answer<Any?> { throw UnsupportedOperationException() }
         val put: Answer<*> = Answer<Any?> { invocation ->

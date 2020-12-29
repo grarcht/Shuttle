@@ -1,7 +1,22 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'org.jetbrains.dokka'
+    id 'maven-publish'
+}
+
+dokkaHtml.configure {
+    dokkaSourceSets {
+        named("main") {
+            noAndroidSdkLink.set(false)
+        }
+    }
+}
+
+tasks.dokkaHtml.configure {
+    outputDirectory.set(file("documentation/kotlin"))
+}
 
 android {
     compileSdkVersion 30
@@ -12,43 +27,65 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
+    buildTypes.release.minifyEnabled false
+    kotlinOptions.jvmTarget = versions.jvmTarget
+
+    compileOptions {
+        sourceCompatibility versions.sourceCompatibility
+        targetCompatibility versions.targetCompatibility
     }
 }
 
 dependencies {
-    // Kotlin
     implementation jetbrainsKotlinDeps.stdlib
-    implementation jetbrainsKotlinDeps.coroutines
-
-    // AndroidX
     implementation androidXDeps.coreKtx
     implementation androidXDeps.appCompat
-
-    implementation project(':framework-integrations-persistence')
-
-    // Room
     api roomDeps.runtime
     kapt roomDeps.compiler
-    implementation roomDeps.ktx
+    api roomDeps.ktx
+    api project(':framework-integrations-persistence')
     testImplementation roomDeps.testHelpers
+}
 
-    // Reactive
-    implementation rxDeps.kotlin
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                groupId = 'com.grarcht.shuttle'
+                artifactId = 'framework-integrations-extensions-room'
+                version = '1.0.0-alpha01'
+                artifact('build/outputs/aar/framework-integrations-extensions-room-release.aar')
 
-    // Testing
-    testImplementation testingDeps.junit.jupiterApi
-    annotationProcessor 'androidx.room:room-compiler:2.2.5'
-    testRuntimeOnly testingDeps.junit.jupiterEngine
-    androidTestImplementation testingDeps.junit.ext
-    androidTestImplementation testingDeps.espresso.core
+                pom.withXml {
+                    def dependencies = asNode().appendNode('dependencies')
+                    configurations.implementation.allDependencies.each {
+                        def dependency = dependencies.appendNode('dependency')
+                        dependency.appendNode('groupId', it.group)
+                        dependency.appendNode('artifactId', it.name)
+                        dependency.appendNode('version', it.version)
+                    }
+                }
+            }
+            debug(MavenPublication) {
+                groupId = 'com.grarcht.shuttle'
+                artifactId = 'framework-integrations-extensions-room-debug'
+                version = '1.0.0-alpha01'
+                artifact('build/outputs/aar/framework-integrations-extensions-room-debug.aar')
+
+                pom.withXml {
+                    def dependencies = asNode().appendNode('dependencies')
+                    configurations.implementation.allDependencies.each {
+                        def dependency = dependencies.appendNode('dependency')
+                        dependency.appendNode('groupId', it.group)
+                        dependency.appendNode('artifactId', it.name)
+                        dependency.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+    }
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/MVVMNavFirstViewFragment">
+
+    <fragment
+        android:id="@+id/MVVMNavFirstViewFragment"
+        android:name="com.grarcht.shuttle.demo.mvvmwithnavigation.view.MVVMNavFirstViewFragment"
+        android:label="MVVMFirstViewFragment">
+        <action
+            android:id="@+id/action_MVVMNavFirstViewFragment_to_MVVMNavSecondViewActivity"
+            app:destination="@id/MVVMNavSecondViewActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/MVVMNavSecondViewActivity"
+        android:name="com.grarcht.shuttle.demo.mvvmwithnavigation.view.MVVMNavSecondViewActivity"
+        android:label="MVVMNavSecondViewActivity" />
+</navigation>

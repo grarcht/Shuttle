@@ -1,70 +1,92 @@
 package com.grarcht.shuttle.framework.content.bundle
 
-import android.os.*
-import android.util.Size
-import android.util.SizeF
-import android.util.SparseArray
-import androidx.lifecycle.LifecycleOwner
-import com.grarcht.shuttle.framework.content.ShuttleDataExtractor
-import com.grarcht.shuttle.framework.content.ShuttleResult
-import com.grarcht.shuttle.framework.model.ShuttleParcelPackage
-import com.grarcht.shuttle.framework.respository.ShuttleWarehouse
-import kotlinx.coroutines.DisposableHandle
+import android.os.Bundle
+import android.util.Log
+import com.grarcht.shuttle.framework.content.ShuttleIntent
+import com.grarcht.shuttle.framework.model.ShuttleParcelCargo
+import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import org.jetbrains.annotations.TestOnly
 import java.io.Serializable
-import java.util.*
 
-private const val DEFAULT_BUNDLE_KEY = "key_default"
+private const val DEFAULT_LOG_TAG = "ShuttleBundle"
 
+/**
+ *  This class creates stores a [Bundle] cargo in the [ShuttleWarehouse] and creates a [Bundle] that can be
+ *  transported with avoiding the Transaction Too Large Exception.  This class uses the Fluent Interface
+ *  Design Pattern to achieve function chaining.  For more information on this design pattern, refer to:
+ *  <a href="https://en.wikipedia.org/wiki/Fluent_interface">Fluent Interface</a>
+ */
 open class ShuttleBundle(
-    private var repository: ShuttleWarehouse,
-    private var internalBundle: Bundle? = EMPTY
+    private val repository: ShuttleWarehouse,
+    private val internalBundle: Bundle?
 ) {
-    init {
-        safelyPutBundle(DEFAULT_BUNDLE_KEY, internalBundle)
+    private var logTag: String? = null
+
+    /**
+     * The specific tag to use if there is an issue with the [ShuttleIntent] functionality.
+     */
+    fun logTag(tag: String?): ShuttleBundle {
+        logTag = tag ?: DEFAULT_LOG_TAG
+        return this
     }
 
-    fun safelyPutBundle(key: String?, value: Bundle?): ShuttleBundle {
-        if (null != key && null != value) {
-            GlobalScope.launch {
-                val parcelPackage = ShuttleParcelPackage(repository.id, key)
-                (internalBundle as Bundle).putParcelable(key, parcelPackage)
-                repository.save(key, value)
+    /**
+     * Sets the [serializable] for transport.
+     * @param cargoId the key used for shuttle the cargo to and from the [ShuttleWarehouse]
+     * @param serializable the cargo to shuttle
+     * @return the [ShuttleBundle] reference use with function chaining
+     */
+    fun transport(cargoId: String, serializable: Serializable?): ShuttleBundle {
+        verifyWithFunctionWasCalled()
+
+        val parcelPackage = ShuttleParcelCargo(cargoId)
+        internalBundle?.putParcelable(cargoId, parcelPackage)
+
+        GlobalScope.launch {
+            repository.store(cargoId, serializable)
+        }.invokeOnCompletion {
+            it?.let { throwable ->
+                Log.e(
+                    logTag,
+                    "There was an issues when transporting the data with the Shuttle Intent.",
+                    throwable
+                )
             }
         }
         return this
     }
 
+    /**
+     * Creates the [Bundle].
+     * @return the reference to the newly created bundle object
+     */
     fun create(): Bundle {
+        verifyWithFunctionWasCalled()
         return internalBundle as Bundle
     }
 
-    companion object {
-        private var bundleFactory: BundleFactory = DefaultBundleFactory()
-
-        @JvmField
-        val EMPTY: Bundle = bundleFactory.create()
-
-        fun with(
-            repository: ShuttleWarehouse,
-            bundleFactory: BundleFactory = DefaultBundleFactory()
-        ): ShuttleBundle {
-            this.bundleFactory = bundleFactory
-            return ShuttleBundle(repository)
+    private fun verifyWithFunctionWasCalled() {
+        if (internalBundle == null) {
+            throw IllegalStateException("$logTag.  The with function must be called first.")
         }
+    }
 
+    companion object {
+        /**
+         * Creates a [ShuttleBundle] for use with transporting cargo and to avoid a Transaction Too Large Exception.
+         * @param bundle
+         * @param repository
+         * @param bundleFactory
+         */
         fun with(
-            bundle: Bundle,
+            bundle: Bundle?,
             repository: ShuttleWarehouse,
-            bundleFactory: BundleFactory = DefaultBundleFactory()
+            bundleFactory: BundleFactory? = DefaultBundleFactory()
         ): ShuttleBundle {
-            this.bundleFactory = bundleFactory
-            return ShuttleBundle(repository, bundle)
+            val newBundle = bundle ?: bundleFactory?.create() as Bundle
+            return ShuttleBundle(repository, newBundle)
         }
     }
 }
+

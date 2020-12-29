@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/second_nav_graph"
+    app:startDestination="@id/MVVMNavSecondViewFragment">
+
+    <argument
+        android:name="imageData"
+        app:argType="com.grarcht.shuttle.framework.model.ShuttleParcelCargo" />
+
+    <fragment
+        android:id="@+id/MVVMNavSecondViewFragment"
+        android:name="com.grarcht.shuttle.demo.mvvmwithnavigation.view.MVVMNavSecondViewFragment"
+        android:label="MVVMNavSecondViewFragment" />
+</navigation>

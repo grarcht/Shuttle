@@ -1,5 +1,3 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.grarcht.shuttle.framework">
+<manifest package="com.grarcht.shuttle.framework" >
 
-    /
 </manifest>

@@ -1,8 +1,5 @@
 buildscript {
     apply from: 'ext.gradle'
-    ext {
-        versions.kotlin = '1.4.10'
-    }
 
     repositories {
         google()
@@ -11,16 +8,42 @@ buildscript {
     dependencies {
         classpath classpathDeps.gradleBuildTools
         classpath classpathDeps.kotlinGradlePlugin
+        classpath classpathDeps.dokkaGradlePlugin
         //https://github.com/mannodermaus/android-junit5
         classpath classpathDeps.junit5Plugin
+        classpath dependencyInjectionDeps.hilt
+        classpath staticAnalysisDeps.detektPlugin
+        classpath dependencyInjectionDeps.hiltPlugin
     }
+}
+
+plugins {
+    id('io.gitlab.arturbosch.detekt').version('1.15.0')
+    id("org.jetbrains.dokka").version "1.4.20"
+}
+
+repositories {
+    jcenter()
+}
+
+detekt {
+    toolVersion = "1.15.0"
+    config = files("detekt/detekt.yml")
+    buildUponDefaultConfig = true
+}
+
+dependencies {
+    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.15.0"
 }
 
 def rootDir = projectDir.absolutePath
 
 allprojects {
     apply from: "$rootDir/ext.gradle"
+    apply from: "$rootDir/detekt/detekt.gradle"
+
     repositories {
+        mavenLocal()
         google()
         jcenter()
         mavenCentral()

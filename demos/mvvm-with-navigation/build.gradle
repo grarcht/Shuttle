@@ -1,0 +1,97 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'org.jetbrains.dokka'
+    id 'dagger.hilt.android.plugin'
+    id 'kotlin-kapt'
+    id 'de.mannodermaus.android-junit5'
+}
+
+apply from: '../../detekt/detekt.gradle'
+
+dokkaHtml.configure {
+    dokkaSourceSets {
+        named("main") {
+            noAndroidSdkLink.set(false)
+        }
+    }
+}
+
+tasks.dokkaHtml.configure {
+    outputDirectory.set(file("documentation/kotlin"))
+}
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion versions.buildToolsVersion
+
+    defaultConfig {
+        applicationId 'com.grarcht.shuttle'
+        minSdkVersion 26
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
+    }
+
+    kotlinOptions.jvmTarget = versions.jvmTarget
+
+    compileOptions {
+        sourceCompatibility versions.sourceCompatibility
+        targetCompatibility versions.targetCompatibility
+    }
+
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation jetbrainsKotlinDeps.stdlib
+    implementation jetbrainsKotlinDeps.coroutines
+    implementation androidXDeps.appCompat
+    implementation androidXDeps.constraintLayout
+    implementation androidXDeps.material
+
+    implementation androidXDeps.coreKtx
+    implementation androidXDeps.fragmentKtx
+    implementation androidXDeps.lifecycle.extensions
+    implementation androidXDeps.lifecycle.viewModel
+
+    implementation androidXDeps.navigationFragmentKtx
+
+    api dependencyInjectionDeps.hilt
+    api dependencyInjectionDeps.hiltViewModel
+    kapt dependencyInjectionDeps.hiltCompiler
+
+    implementation project(':demos-core-lib')
+    implementation project(':demos-databinding-lib')
+
+    implementation androidXDeps.navigationFragmentKtx
+    implementation project(':framework-addons-navigation-component')
+
+    // To use a single aar file dependency, do something like the following.
+    // If another integration extension is desired, a corresponding configuration should be
+    // declared here for the "solution-builder" project.
+    //implementation project(path: ':solution-builder', configuration: 'withRoom')
+
+    // To use lighter weight, independent dependencies, comment out the above dependency and
+    // uncomment the following:
+    // implementation project(':framework')
+    // implementation project(':framework-integrations-persistence')
+    // implementation project(':framework-integrations-extensions-room')
+
+    // To use maven dependencies, use the following
+    implementation shuttle.framework
+   // implementation shuttle.integrationsPersistence
+    implementation shuttle.integrationsExtensionsRoom
+    implementation shuttle.addOnsNavigationComponent
+
+    androidTestImplementation testingDeps.junit.ext
+    androidTestImplementation testingDeps.espresso.core
+    androidTestRuntimeOnly testingDeps.junit.junit5AndroidTestRunner
+    testImplementation testingDeps.junit.jupiterApi
+    testRuntimeOnly testingDeps.junit.jupiterEngine
+}

@@ -1,6 +1,20 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'org.jetbrains.dokka'
+    id 'maven-publish'
+}
+
+dokkaHtml.configure {
+    dokkaSourceSets {
+        named("main") {
+            noAndroidSdkLink.set(false)
+        }
+    }
+}
+
+tasks.dokkaHtml.configure {
+    outputDirectory.set(file("documentation/kotlin"))
 }
 
 android {
@@ -12,38 +26,64 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
+    buildTypes.release.minifyEnabled false
+    kotlinOptions.jvmTarget = versions.jvmTarget
+
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
+        sourceCompatibility versions.sourceCompatibility
+        targetCompatibility versions.targetCompatibility
     }
 }
 
 dependencies {
-    // Kotlin
     implementation jetbrainsKotlinDeps.stdlib
-
-    // AndroidX
     implementation androidXDeps.navigationFragmentKtx
-
     implementation project(':framework')
-
-    // Testing
     testImplementation testingDeps.junit.jupiterApi
     testRuntimeOnly testingDeps.junit.jupiterEngine
     androidTestImplementation testingDeps.junit.ext
     androidTestImplementation testingDeps.espresso.core
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                groupId = 'com.grarcht.shuttle'
+                artifactId = 'framework-addons-navigation-component'
+                version = '1.0.0-alpha01'
+                artifact('build/outputs/aar/framework-addons-navigation-component-release.aar')
+
+                pom.withXml {
+                    def dependencies = asNode().appendNode('dependencies')
+                    configurations.implementation.allDependencies.each {
+                        def dependency = dependencies.appendNode('dependency')
+                        dependency.appendNode('groupId', it.group)
+                        dependency.appendNode('artifactId', it.name)
+                        dependency.appendNode('version', it.version)
+                    }
+                }
+            }
+            debug(MavenPublication) {
+                groupId = 'com.grarcht.shuttle'
+                artifactId = 'framework-addons-navigation-component-debug'
+                version = '1.0.0-alpha01'
+                artifact('build/outputs/aar/framework-addons-navigation-component-debug.aar')
+
+                pom.withXml {
+                    def dependencies = asNode().appendNode('dependencies')
+                    configurations.implementation.allDependencies.each {
+                        def dependency = dependencies.appendNode('dependency')
+                        dependency.appendNode('groupId', it.group)
+                        dependency.appendNode('artifactId', it.name)
+                        dependency.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+    }
 }
