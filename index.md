@@ -1,5 +1,3 @@
-<img src="https://github.com/grarcht/Shuttle/blob/main/shuttle_header.png" alt="hi" class="inline"/>
-
 # Shuttle
 Shuttle provides a modern, guarded way to pass large Serializable objects with Intents or saving them in Bundle objects to avoid app crashes.
 
