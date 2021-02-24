@@ -62,9 +62,9 @@ The Shuttle Framework's design includes the avoidance of imposing technologies o
 If there is other data, like Parcelable objects included in on intent data, app crashes may still occur from Transaction Too Large exceptions.  Even though it is best practice to use Parcelable objects over Serializable objects, since objects are stored on disk and Google warns to not write Parcelable objects to disk, Serializable objects are used.
 
 ## The Demo App
-The demo app introduces the problem by showing one of the most common use cases is the transportation of image data in Serializables.
+The demo apps introduce the problem by showing one of the most common use cases is the transportation of image data in Serializables.
 
-The demo app includes usage of Shuttle with MVVM and MVC style architectures.
+The demo apps includes usage of Shuttle with MVVM and MVC style architectures.
 
 With MVVM, the activities and fragments are a part of the View component.   The ViewModel is the liaison between the View and the Model.   It maintains the state of the View. It may take actions from the View events and perform actions on the Model.  It may respond to events from the Model and manipulate the View.
 
