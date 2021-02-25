@@ -34,10 +34,12 @@ providing convenience functions to remove cargo (automatically or on-demand)
 ## Getting Started
 Refer to the documentation and demo app as a starting point.  The documentation is in the "documentation" directory of each module.  Also, modeling documents for the project are in the project's modeling directory.
 
+
 ### Recommended Usage
 For end users wishing to include the Shuttle Framework in a project, the best way to get started is by using the Shuttle interface with the CargoShuttle object as the implementation.  This interface provides a single source of truth.
 
-#### Example usage with Intents
+
+### Example usage with Intents
 To transport data with Shuttle and Intent objects, one can do the following:
 ```
     val cargoId = ImageMessageType.ImageData.value
@@ -144,7 +146,8 @@ The Destination ViewModel:
         }
 ```
 
-#### Shuttle Cargo States
+
+### Shuttle Cargo States
 When storing the cargo transported with Shuttle, the object returned is a Channel of type ShuttleStoreCargoResult. 
 
 When retrieving the cargo transported with Shuttle, the object returned is a Channel of type ShuttlePickupCargoResult.   
@@ -155,6 +158,7 @@ These returned types are sealed classes with multiple states.   Shuttle uses thi
 
 By providing these states, consuming apps can take actions for the UI, analytics, and other use cases.
 
+
 ### Cleaning up after use
 To remove persisted cargo data after it is not needed, convenience functions are available for use.
 
@@ -163,6 +167,7 @@ To remove persisted cargo data after it is not needed, convenience functions are
 ## Architecture
 This project architecture provides both the solution and Solution Building Block (SBB) framework.
 
+
 ### Modules
 The Solution Building Block (SBB) composes logical groupings in their respective modules.  These modules include the following:
 1. **Framework:** This module contains the core, essential solution components to get started.
@@ -170,12 +175,15 @@ The Solution Building Block (SBB) composes logical groupings in their respective
 3. **Framework Integration Extensions:** These modules contain the necessary code to complete solutions with the Framework module via Framework Integration modules.
 4. **Framework Addons:** These modules are useful solutions or Solution Building Blocks(SBBs) built on the Shuttle Framework.
 
+
 #### Framework Integrations and Extensions
 The design of the Shuttle Framework enables flexibility by not forcing particular technologies on consuming projects.  An example of this includes the persistence module that provides the interfaces needed for integrating extensions with the Shuttle Framework.   One such extension is the Room extension, enabling Room to be used to persist the cargo.
+
 
 #### Framework Addons
 The Shuttle Framework is a Solution Building Block (SBB).  The Addons intend to include solutions/SBBs built on top of the Shuttle Framework.
 One example of an addon is the navigation module that enables programmatic usage of the Shuttle Framework with the Navigator from Google's Navigation Architecture Component.
+
 
 ### Technologies in use by the Shuttle Framework
 The Shuttle Framework's design includes the avoidance of imposing technologies on consumers and packing large-sized transitive dependencies.  Often, Framework packaging includes reactive libraries, despite their large sizes. The Shuttle Framework uses Kotlin Coroutines to provide the asynchronous communication needed to meet the goals.
