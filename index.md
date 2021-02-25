@@ -38,7 +38,7 @@ Refer to the documentation and demo app as a starting point.  The documentation 
 For end users wishing to include the Shuttle Framework in a project, the best way to get started is by using the Shuttle interface with the CargoShuttle object as the implementation.  This interface provides a single source of truth.
 
 
-#### Example usage with Intents
+### Example usage with Intents
 To transport data with Shuttle and Intent objects, one can do the following:
 ```
     val cargoId = ImageMessageType.ImageData.value
