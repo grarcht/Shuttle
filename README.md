@@ -28,12 +28,21 @@ providing a single source of truth (Shuttle interface) to use for transporting c
 providing convenience functions to remove cargo (automatically or on-demand)
 
 ## Getting Started
-Refer to the documentation and demo app as a starting point.
+Refer to the documentation and demo app as a starting point.  The documentation is in the "documentation" directory of each module.  Also, modeling documents for the project are in the project's modeling directory.
 
 ### Recommended Usage
 For end users wishing to include the Shuttle Framework in a project, the best way to get started is by using the Shuttle interface with the CargoShuttle object as the implementation.  This interface provides a single source of truth.
 
-When retrieving the cargo transported with Shuttle, the object returned is a Channel of type ShuttleResult.   This type is a sealed class, with states named Loading, Success, and Error.   Shuttle uses this type to promote the usage of the Loading-Content-Error (LCE) pattern.
+#### Shuttle Cargo States
+When storing the cargo transported with Shuttle, the object returned is a Channel of type ShuttleStoreCargoResult. 
+
+When retrieving the cargo transported with Shuttle, the object returned is a Channel of type ShuttlePickupCargoResult.   
+
+When removing the cargo transported with Shuttle, the object returned is a Channel of type ShuttleRemoveCargoResult.
+
+These returned types are sealed classes with multiple states.   Shuttle uses this type to promote the usage of the Loading-Content-Error (LCE) pattern and similar patterns.
+
+By providing these states, consuming apps can take actions for the UI, analytics, and other use cases.
 
 ### Cleaning up after use
 To remove persisted cargo data after it is not needed, convenience functions are available for use.
