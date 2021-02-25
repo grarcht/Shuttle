@@ -15,6 +15,7 @@ When envisioning, designing, and creating the architecture, quality attributes, 
 
 
 
+
 ## Background
 The Shuttle framework takes its name from cargo transportation in the freight industry.  Moving and storage companies experience scenarios where large moving trucks cannot transport cargo the entire way to the destination (warehouses, houses, et cetera).  These scenarios might occur from road restrictions, trucks being overweight from large cargo, and more.   As a result, companies use small Shuttle vans to transport smaller cargo groups on multiple trips to deliver the entire shipment.
 
@@ -32,8 +33,10 @@ providing convenience functions to remove cargo (automatically or on-demand)
 ## Getting Started
 Refer to the documentation and demo app as a starting point.  The documentation is in the "documentation" directory of each module.  Also, modeling documents for the project are in the project's modeling directory.
 
+
 ### Recommended Usage
 For end users wishing to include the Shuttle Framework in a project, the best way to get started is by using the Shuttle interface with the CargoShuttle object as the implementation.  This interface provides a single source of truth.
+
 
 #### Example usage with Intents
 To transport data with Shuttle and Intent objects, one can do the following:
@@ -69,6 +72,8 @@ At the destination, one can load the data with Shuttle by doing the following:
             }
     }
 ```
+
+
 
 #### Example usage with the Navigation Component Addon and Databinding
 
@@ -142,6 +147,8 @@ The Destination ViewModel:
         }
 ```
 
+
+
 #### Shuttle Cargo States
 When storing the cargo transported with Shuttle, the object returned is a Channel of type ShuttleStoreCargoResult. 
 
@@ -153,13 +160,18 @@ These returned types are sealed classes with multiple states.   Shuttle uses thi
 
 By providing these states, consuming apps can take actions for the UI, analytics, and other use cases.
 
+
+
 ### Cleaning up after use
 To remove persisted cargo data after it is not needed, convenience functions are available for use.
 
 
 
+
 ## Architecture
 This project architecture provides both the solution and Solution Building Block (SBB) framework.
+
+
 
 ### Modules
 The Solution Building Block (SBB) composes logical groupings in their respective modules.  These modules include the following:
@@ -168,15 +180,19 @@ The Solution Building Block (SBB) composes logical groupings in their respective
 3. **Framework Integration Extensions:** These modules contain the necessary code to complete solutions with the Framework module via Framework Integration modules.
 4. **Framework Addons:** These modules are useful solutions or Solution Building Blocks(SBBs) built on the Shuttle Framework.
 
+
 #### Framework Integrations and Extensions
 The design of the Shuttle Framework enables flexibility by not forcing particular technologies on consuming projects.  An example of this includes the persistence module that provides the interfaces needed for integrating extensions with the Shuttle Framework.   One such extension is the Room extension, enabling Room to be used to persist the cargo.
+
 
 #### Framework Addons
 The Shuttle Framework is a Solution Building Block (SBB).  The Addons intend to include solutions/SBBs built on top of the Shuttle Framework.
 One example of an addon is the navigation module that enables programmatic usage of the Shuttle Framework with the Navigator from Google's Navigation Architecture Component.
 
+
 ### Technologies in use by the Shuttle Framework
 The Shuttle Framework's design includes the avoidance of imposing technologies on consumers and packing large-sized transitive dependencies.  Often, Framework packaging includes reactive libraries, despite their large sizes. The Shuttle Framework uses Kotlin Coroutines to provide the asynchronous communication needed to meet the goals.
+
 
 
 
@@ -184,6 +200,7 @@ The Shuttle Framework's design includes the avoidance of imposing technologies o
 If there is other data, like Parcelable objects included in on intent data, app crashes may still occur from Transaction Too Large exceptions. 
 
 In E.A./S.A. and Software Engineering, one often weighs the pros with the cons on topics.  In Android, different types of data can be passed with Bundle objects.   It is considered best practice to use Parcelable objects over Serializable objects to leverage faster load times.  Unfortunately, Parcelable objects are highly optimized for Inter-process Communication (IPC) and are not safe for storing on disk.   Thus, Google recommends using standard serialization or some other form of serialization.  To ensure proper storing and loading of objects, this project uses standard serializable objects to store data.   The drawback of this approach is that the load speeds are slower than with Parcelable objects.  This drawback can also impose some risk with implementations having to wait a little longer for objects to load.  To diminish this risk, the aforementioned cargo states have been provided and enable consumers to handle the UI with the loading progress indication of choice.
+
 
 
 
@@ -197,6 +214,7 @@ With MVVM, the activities and fragments are a part of the View component.   The 
 In the demo app, the ViewModel component is using Google's ViewModel Architecture Component.  The asynchronous notification mechanism used in MVVM is provided by using Kotlin Channels, much like Google's Databinding library's Observables.  Databinding has also been included with some demos to show basic integration.
 
 With MVC, the activities and fragments are a part of the Controller Component.  The controllers receive input and modify it for the models or views.
+
 
 
 
