@@ -149,7 +149,7 @@ The Destination ViewModel:
 
 
 
-#### Shuttle Cargo States
+### Shuttle Cargo States
 When storing the cargo transported with Shuttle, the object returned is a Channel of type ShuttleStoreCargoResult. 
 
 When retrieving the cargo transported with Shuttle, the object returned is a Channel of type ShuttlePickupCargoResult.   
