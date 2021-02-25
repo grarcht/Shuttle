@@ -8,8 +8,8 @@ Often, businesses experience the adverse side effects of risks introduced in dai
 Shuttle reduces the high-level of governance needed to catch Transaction Too Large Exception inducing code by:
 1. storing the Serializable and passes an identifier for the Serializable
 2. using a small-sized Bundle for binder transactions
-2. avoids app crashes from Transaction Too Large Exceptions
-3. enables retrieval of the stored Serializable at the destination.
+3. avoids app crashes from Transaction Too Large Exceptions
+4. enables retrieval of the stored Serializable at the destination.
 
 Why keep spending more time and money on governance through code reviews?  Why not embrace the problem by providing a solution for it?
 
@@ -18,7 +18,7 @@ When envisioning, designing, and creating the architecture, quality attributes, 
 ## Background
 The Shuttle framework takes its name from cargo transportation in the freight industry.  Moving and storage companies experience scenarios where large moving trucks cannot transport cargo the entire way to the destination (warehouses, houses, et cetera).  These scenarios might occur from road restrictions, trucks being overweight from large cargo, and more.   As a result, companies use small Shuttle vans to transport smaller cargo groups on multiple trips to deliver the entire shipment.
 
-After the delivery is complete, employees remove the cargo remnants from the shuttle vans and trucks.  This clean up task is one of the last steps for the job.
+After the delivery is complete, employees remove the cargo remnants from the shuttle vans and trucks.  This clean-up task is one of the last steps for the job.
 
 The Shuttle framework takes its roots in these scenarios by:
 creating a smaller cargo bundle object to use in successfully delivering the data to the destination
@@ -68,12 +68,12 @@ One example of an addon is the navigation module that enables programmatic usage
 The Shuttle Framework's design includes the avoidance of imposing technologies on consumers and packing large-sized transitive dependencies.  Often, Framework packaging includes reactive libraries, despite their large sizes. The Shuttle Framework uses Kotlin Coroutines to provide the asynchronous communication needed to meet the goals.
 
 ## Heads Up
-If there is other data, like Parcelable objects included in on intent data, app crashes may still occur from Transaction Too Large exceptions.  Even though it is best practice to use Parcelable objects over Serializable objects, since objects are stored on disk and Google warns to not write Parcelable objects to disk, Serializable objects are used.
+If there is other data, like Parcelable objects included in on intent data, app crashes may still occur from Transaction Too Large exceptions. 
 
-## The Demo App
-The demo apps introduce the problem by showing one of the most common use cases is the transportation of image data in Serializables.
+In E.A./S.A. and Software Engineering, one often weighs the pros with the cons on topics.  In Android, different types of data can be passed with Bundle objects.   It is considered best practice to use Parcelable objects over Serializable objects to leverage faster load times.  Unfortunately, Parcelable objects are highly optimized for Inter-process Communication (IPC) and are not safe for storing on disk.   Thus, Google recommends using standard serialization or some other form of serialization.  To ensure proper storing and loading of objects, this project uses standard serializable objects to store data.   The drawback of this approach is that the load speeds are slower than with Parcelable objects.  This drawback can also impose some risk with implementations having to wait a little longer for objects to load.  To diminish this risk, the aforementioned cargo states have been provided and enable consumers to handle the UI with the loading progress indication of choice.
 
-The demo apps includes usage of Shuttle with MVVM and MVC style architectures.
+## The Demo Apps
+The demo apps introduce the problem by showing one of the most common use cases is the transportation of image data in serializable objects.  They include usages of Shuttle with MVVM and MVC style architectures.
 
 With MVVM, the activities and fragments are a part of the View component.   The ViewModel is the liaison between the View and the Model.   It maintains the state of the View. It may take actions from the View events and perform actions on the Model.  It may respond to events from the Model and manipulate the View.
 
