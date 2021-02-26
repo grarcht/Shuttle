@@ -8,8 +8,8 @@ Often, businesses experience the adverse side effects of risks introduced in dai
 Shuttle reduces the high-level of governance needed to catch Transaction Too Large Exception inducing code by:
 1. storing the Serializable and passes an identifier for the Serializable
 2. using a small-sized Bundle for binder transactions
-3. avoids app crashes from Transaction Too Large Exceptions
-4. enables retrieval of the stored Serializable at the destination.
+3. avoiding app crashes from Transaction Too Large Exceptions
+4. enabling retrieval of the stored Serializable at the destination.
 
 Why keep spending more time and money on governance through code reviews?  Why not embrace the problem by providing a solution for it?
 
