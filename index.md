@@ -30,6 +30,10 @@ providing convenience functions to remove cargo (automatically or on-demand)
 
 
 
+## Coming Soon
+Uploading dependency artifacts to maven central.
+
+
 ## Getting Started
 Refer to the documentation and demo app as a starting point.  The documentation is in the "documentation" directory of each module.  Also, modeling documents for the project are in the project's modeling directory.
 
