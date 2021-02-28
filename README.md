@@ -29,7 +29,7 @@ linking the smaller cargo with the larger cargo by an identifier
 providing a single source of truth (Shuttle interface) to use for transporting cargo
 providing convenience functions to remove cargo (automatically or on-demand)
 
-#Coming Soon
+## Coming Soon
 Uploading dependency artifacts to maven central.
 
 ## Getting Started
