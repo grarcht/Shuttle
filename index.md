@@ -1,18 +1,19 @@
 # Shuttle
-Shuttle provides a modern, guarded way to pass large Serializable objects with Intents or saving them in Bundle objects to avoid app crashes.
+[![License: MIT](https://img.shields.io/github/license/grarcht/shuttle?color=white&style=plastic)](https://github.com/grarcht/Shuttle/blob/main/LICENSE.md)   ![Maven Central](https://img.shields.io/maven-central/v/com.grarcht.shuttle/framework?color=teal&style=plastic)
 
-Often, businesses experience the adverse side effects of risks introduced in daily software engineering.   These adverse side effects include time and money spent on app crash investigation, app crash fixes, quality assurance testing, releasing hotfixes, and extra governance through code reviews.
+Shuttle provides a modern, guarded way to pass large Serializable objects with Intent objects or saving them in Bundle objects to avoid app crashes.
+
+Often, businesses experience the adverse side effects of risks introduced in daily software engineering.   These adverse side effects include time and money spent on app crash investigation, app crash fixes, quality assurance testing, releasing hot-fixes, and extra governance through code reviews.
 
 Shuttle reduces the high-level of governance needed to catch Transaction Too Large Exception inducing code by:
 1. storing the Serializable and passes an identifier for the Serializable
 2. using a small-sized Bundle for binder transactions
-3. avoids app crashes from Transaction Too Large Exceptions
-4. enables retrieval of the stored Serializable at the destination.
+3. avoiding app crashes from Transaction Too Large Exceptions
+4. enabling retrieval of the stored Serializable at the destination.
 
 Why keep spending more time and money on governance through code reviews?  Why not embrace the problem by providing a solution for it?
 
 When envisioning, designing, and creating the architecture, quality attributes, and best practices were in mind. These attributes include but are not limited to usability, readability, recognizability, reusability, and maintainability.
-
 
 
 
@@ -31,15 +32,26 @@ providing convenience functions to remove cargo (automatically or on-demand)
 
 
 ## Coming Soon
-Uploading dependency artifacts to maven central.
+More tests.
+
 
 
 ## Getting Started
 Refer to the documentation and demo app as a starting point.  The documentation is in the "documentation" directory of each module.  Also, modeling documents for the project are in the project's modeling directory.
 
+To use the maven dependency artifacts with Gradle, add the following to the corresponding build.gradle file(s):
+```
+    implementation 'com.grarcht.shuttle:framework:1.0.0-alpha01' // Needed
+    implementation 'com.grarcht.shuttle:framework-integrations-extensions-room:1.0.0-alpha01' // Needed
+    implementation 'com.grarcht.shuttle:framework-integrations-persistence:1.0.0-alpha01'  // Needed depending on the set up
+    implementation 'com.grarcht.shuttle:framework-addons-navigation-component:1.0.0-alpha01'  // Optional for integration with the Navigation Component
+```
+
+
 
 ### Recommended Usage
 For end users wishing to include the Shuttle Framework in a project, the best way to get started is by using the Shuttle interface with the CargoShuttle object as the implementation.  This interface provides a single source of truth.
+
 
 
 ### Example usage with Intents
@@ -154,7 +166,7 @@ The Destination ViewModel:
 
 
 ### Shuttle Cargo States
-When storing the cargo transported with Shuttle, the object returned is a Channel of type ShuttleStoreCargoResult. 
+When storing the cargo transported with Shuttle, the object returned is a Channel of type ShuttleStoreCargoResult.
 
 When retrieving the cargo transported with Shuttle, the object returned is a Channel of type ShuttlePickupCargoResult.   
 
@@ -171,7 +183,6 @@ To remove persisted cargo data after it is not needed, convenience functions are
 
 
 
-
 ## Architecture
 This project architecture provides both the solution and Solution Building Block (SBB) framework.
 
@@ -185,8 +196,10 @@ The Solution Building Block (SBB) composes logical groupings in their respective
 4. **Framework Addons:** These modules are useful solutions or Solution Building Blocks(SBBs) built on the Shuttle Framework.
 
 
+
 #### Framework Integrations and Extensions
 The design of the Shuttle Framework enables flexibility by not forcing particular technologies on consuming projects.  An example of this includes the persistence module that provides the interfaces needed for integrating extensions with the Shuttle Framework.   One such extension is the Room extension, enabling Room to be used to persist the cargo.
+
 
 
 #### Framework Addons
@@ -194,17 +207,16 @@ The Shuttle Framework is a Solution Building Block (SBB).  The Addons intend to 
 One example of an addon is the navigation module that enables programmatic usage of the Shuttle Framework with the Navigator from Google's Navigation Architecture Component.
 
 
+
 ### Technologies in use by the Shuttle Framework
 The Shuttle Framework's design includes the avoidance of imposing technologies on consumers and packing large-sized transitive dependencies.  Often, Framework packaging includes reactive libraries, despite their large sizes. The Shuttle Framework uses Kotlin Coroutines to provide the asynchronous communication needed to meet the goals.
 
 
 
-
 ## Heads Up
-If there is other data, like Parcelable objects included in on intent data, app crashes may still occur from Transaction Too Large exceptions. 
+If there is other data, like Parcelable objects included in on intent data, app crashes may still occur from Transaction Too Large exceptions.
 
 In E.A./S.A. and Software Engineering, one often weighs the pros with the cons on topics.  In Android, different types of data can be passed with Bundle objects.   It is considered best practice to use Parcelable objects over Serializable objects to leverage faster load times.  Unfortunately, Parcelable objects are highly optimized for Inter-process Communication (IPC) and are not safe for storing on disk.   Thus, Google recommends using standard serialization or some other form of serialization.  To ensure proper storing and loading of objects, this project uses standard serializable objects to store data.   The drawback of this approach is that the load speeds are slower than with Parcelable objects.  This drawback can also impose some risk with implementations having to wait a little longer for objects to load.  To diminish this risk, the aforementioned cargo states have been provided and enable consumers to handle the UI with the loading progress indication of choice.
-
 
 
 
@@ -221,7 +233,6 @@ With MVC, the activities and fragments are a part of the Controller Component.  
 
 
 
-
 ## License
 The MIT License
 
@@ -232,5 +243,3 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
