@@ -69,14 +69,13 @@ dependencies {
     api dependencyInjectionDeps.hilt
     api dependencyInjectionDeps.hiltViewModel
     kapt dependencyInjectionDeps.hiltCompiler
-
     implementation project(':demos-core-lib')
     implementation project(':demos-databinding-lib')
 
     // To use a single aar file dependency, do something like the following.
     // If another integration extension is desired, a corresponding configuration should be
     // declared here for the "solution-builder" project.
-    //implementation project(path: ':solution-builder', configuration: 'withRoom')
+    // implementation project(path: ':solution-builder', configuration: 'withRoom')
 
     // To use lighter weight, independent dependencies, comment out the above dependency and
     // uncomment the following:

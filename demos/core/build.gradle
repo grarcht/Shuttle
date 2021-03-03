@@ -54,6 +54,13 @@ dependencies {
     implementation jetbrainsKotlinDeps.stdlib
     implementation androidXDeps.lifecycle.extensions
     implementation androidXDeps.lifecycle.viewModel
-    implementation project(':framework-integrations-persistence')
-    implementation project(':framework-integrations-extensions-room')
+
+    // To use typical module dependencies, comment out the above dependency and
+    // uncomment the following:
+    //implementation project(':framework-integrations-persistence')
+    //implementation project(':framework-integrations-extensions-room')
+
+    // To use maven dependencies, use the following
+    implementation shuttle.integrationsPersistence
+    implementation shuttle.integrationsExtensionsRoom
 }

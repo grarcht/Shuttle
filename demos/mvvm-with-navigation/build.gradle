@@ -54,38 +54,32 @@ dependencies {
     implementation androidXDeps.appCompat
     implementation androidXDeps.constraintLayout
     implementation androidXDeps.material
-
     implementation androidXDeps.coreKtx
     implementation androidXDeps.fragmentKtx
     implementation androidXDeps.lifecycle.extensions
     implementation androidXDeps.lifecycle.viewModel
-
     implementation androidXDeps.navigationFragmentKtx
-
     api dependencyInjectionDeps.hilt
     api dependencyInjectionDeps.hiltViewModel
     kapt dependencyInjectionDeps.hiltCompiler
-
     implementation project(':demos-core-lib')
     implementation project(':demos-databinding-lib')
 
-    implementation androidXDeps.navigationFragmentKtx
-    implementation project(':framework-addons-navigation-component')
 
     // To use a single aar file dependency, do something like the following.
     // If another integration extension is desired, a corresponding configuration should be
     // declared here for the "solution-builder" project.
-    //implementation project(path: ':solution-builder', configuration: 'withRoom')
+    // implementation project(path: ':solution-builder', configuration: 'withRoom')
 
     // To use lighter weight, independent dependencies, comment out the above dependency and
     // uncomment the following:
     // implementation project(':framework')
     // implementation project(':framework-integrations-persistence')
     // implementation project(':framework-integrations-extensions-room')
+    // implementation project(':framework-addons-navigation-component')
 
-    // To use maven dependencies, use the following
+    // To use maven dependencies, use the following:
     implementation shuttle.framework
-   // implementation shuttle.integrationsPersistence
     implementation shuttle.integrationsExtensionsRoom
     implementation shuttle.addOnsNavigationComponent
 

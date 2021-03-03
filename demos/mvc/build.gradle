@@ -62,7 +62,6 @@ dependencies {
     api dependencyInjectionDeps.hilt
     api dependencyInjectionDeps.hiltViewModel
     kapt dependencyInjectionDeps.hiltCompiler
-
     implementation project(':demos-core-lib')
 
     // To use a single aar file dependency, do something like the following.
@@ -76,7 +75,7 @@ dependencies {
     // implementation project(':framework-integrations-persistence')
     // implementation project(':framework-integrations-extensions-room')
 
-    // To use maven dependencies, use the following
+    // To use maven dependencies, use the following:
     implementation shuttle.framework
     implementation shuttle.integrationsPersistence
     implementation shuttle.integrationsExtensionsRoom

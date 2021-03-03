@@ -3,7 +3,7 @@ buildscript {
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath classpathDeps.gradleBuildTools
@@ -23,7 +23,8 @@ plugins {
 }
 
 repositories {
-    jcenter()
+    google()
+    mavenCentral()
 }
 
 detekt {
@@ -43,9 +44,10 @@ allprojects {
     apply from: "$rootDir/detekt/detekt.gradle"
 
     repositories {
+        // The Shuttle framework artifacts are hosted in Sonatype Nexus Maven Central.
+        maven { url 'https://repo1.maven.org/maven2/' }
         mavenLocal()
         google()
-        jcenter()
         mavenCentral()
     }
 }

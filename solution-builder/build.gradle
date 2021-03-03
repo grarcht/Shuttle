@@ -45,11 +45,12 @@ dependencies {
 
     // If other integration extensions are desired, they should have corresponding
     // dependency declarations here.
-    withRoom project(':framework')
-    withRoom project(':framework-integrations-persistence')
-    withRoom project(':framework-integrations-extensions-room')
+//    withRoom project(':framework')
+//    withRoom project(':framework-integrations-persistence')
+//    withRoom project(':framework-integrations-extensions-room')
 
-//    withRoom 'com.grarcht.shuttle:framework:1.0.0-alpha01'
-//    withRoom 'com.grarcht.shuttle:framework-integrations-persistence:1.0.0-alpha01'
-//    withRoom 'com.grarcht.shuttle:framework-integrations-extensions-room:1.0.0-alpha01'
+    // To use maven dependencies, use the following:
+    withRoom shuttle.framework
+    withRoom shuttle.integrationsPersistence
+    withRoom shuttle.integrationsExtensionsRoom
 }

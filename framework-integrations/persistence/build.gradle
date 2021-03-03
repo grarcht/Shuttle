@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'org.jetbrains.dokka'
+    id 'signing'
     id 'maven-publish'
 }
 
@@ -41,46 +42,225 @@ android {
 
 dependencies {
     implementation jetbrainsKotlinDeps.stdlib
-    implementation androidXDeps.coreKtx
-    implementation androidXDeps.material
-    implementation androidXDeps.appCompat
+}
+
+group 'com.grarcht.shuttle'
+archivesBaseName = 'framework-integrations-persistence'
+version = '1.0.0-alpha01'
+def testPublish = true
+def isReleaseVersion = true // the opposite is snapshot
+def releaseAARFilePath = isReleaseVersion ?
+        "${projectDir}/build/outputs/aar/${archivesBaseName}-release.aar" :
+        "${projectDir}/build/outputs/aar/${archivesBaseName}-release-SNAPSHOT.aar"
+def debugAARFilePath = isReleaseVersion ?
+        "${projectDir}/build/outputs/aar/${archivesBaseName}-debug.aar" :
+        "${projectDir}/build/outputs/aar/${archivesBaseName}-debug-SNAPSHOT.aar"
+def javadocJarFileName = "${archivesBaseName}-javadoc.jar"
+def sourcesJarFileName = "${archivesBaseName}-sources.jar"
+
+task javadocJar(type: Jar) {
+    archiveClassifier.set('javadoc')
+    archiveName(javadocJarFileName)
+    from dokkaJavadoc
+}
+
+task sourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    archiveName(sourcesJarFileName)
+    from android.sourceSets.main.java.srcDirs
+}
+
+// rename the aar files
+task renameArtifacts() {
+    android.libraryVariants.all { variant ->
+        variant.outputs.all { output ->
+            def debugSuffix = 'debug.aar'
+            def releaseSuffix = 'release.aar'
+            if (null != outputFileName) {
+                if (isReleaseVersion) {
+                    if (outputFileName.endsWith(debugSuffix))
+                        outputFileName = "$archivesBaseName-$debugSuffix"
+                    else if (outputFileName.endsWith(releaseSuffix))
+                        outputFileName = "$archivesBaseName-$releaseSuffix"
+                } else {
+                    if (outputFileName.endsWith(debugSuffix))
+                        outputFileName = "$archivesBaseName-debug-SNAPSHOT.aar"
+                    else if (outputFileName.endsWith(releaseSuffix))
+                        outputFileName = "$archivesBaseName-release-SNAPSHOT.aar"
+                }
+            }
+        }
+    }
+}
+
+def updatePomWithDependencies(pom) {
+    pom.withXml {
+        def dependencies = asNode().appendNode('dependencies')
+        configurations.implementation.allDependencies.each {
+            def dependency = dependencies.appendNode('dependency')
+            dependency.appendNode('groupId', it.group)
+            dependency.appendNode('artifactId', it.name)
+            dependency.appendNode('version', it.version)
+        }
+    }
+}
+
+def updatePomWithPlugins(pom) {
+    pom.withXml {
+        def build = asNode().appendNode('build')
+        def plugins = build.appendNode('plugins')
+
+        // maven-gpg-plugin
+        def plugin = plugins.appendNode('plugin')
+        plugin.appendNode('groupId', 'org.apache.maven.plugins')
+        plugin.appendNode('artifactId', 'maven-gpg-plugin')
+        plugin.appendNode('version', '1.5')
+        def executions = plugin.appendNode('executions')
+        def execution = executions.appendNode('execution')
+        execution.appendNode('id', 'sign-artifacts')
+        execution.appendNode('phase', 'verify')
+        def goals = execution.appendNode('goals')
+        goals.appendNode('goal', 'sign')
+
+        // nexus-staging-maven-plugin
+        def plugin2 = plugins.appendNode('plugin')
+        plugin2.appendNode('groupId', 'org.sonatype.plugins')
+        plugin2.appendNode('artifactId', 'nexus-staging-maven-plugin')
+        plugin2.appendNode('version', '1.6.7')
+        plugin2.appendNode('extensions', 'true')
+        def configuration = plugin2.appendNode('configuration')
+        configuration.appendNode('serverId', 'ossrh')
+        configuration.appendNode('nexusUrl', 'https://oss.sonatype.org/')
+        configuration.appendNode('autoReleaseAfterClose', 'false')
+    }
 }
 
 afterEvaluate {
+    assemble.dependsOn(javadocJar)
+    assemble.dependsOn(sourcesJar)
+    renameArtifacts.dependsOn(assemble)
+
     publishing {
         publications {
-            release(MavenPublication) {
-                groupId = 'com.grarcht.shuttle'
-                artifactId = 'framework-integrations-persistence'
-                version = '1.0.0-alpha01'
-                artifact('build/outputs/aar/framework-integrations-persistence-release.aar')
+            if (isReleaseVersion) {
+                release(MavenPublication) {
+                    artifactId = archivesBaseName
+                    artifact(sourcesJar) { classifier = 'sources' }
+                    artifact(javadocJar) { classifier = 'javadoc' }
+                    artifact(releaseAARFilePath)
 
-                pom.withXml {
-                    def dependencies = asNode().appendNode('dependencies')
-                    configurations.implementation.allDependencies.each {
-                        def dependency = dependencies.appendNode('dependency')
-                        dependency.appendNode('groupId', it.group)
-                        dependency.appendNode('artifactId', it.name)
-                        dependency.appendNode('version', it.version)
+                    pom {
+                        name = 'Shuttle'
+                        packaging = 'aar'
+                        description = 'Shuttle provides a modern, guarded way to pass large Serializable objects with Intents or saving them in Bundle objects to avoid app crashes from TransactionTooLargeExceptions.'
+                        url = 'https://github.com/grarcht/Shuttle'
+
+                        scm {
+                            connection = 'scm:git@github.com:grarcht/Shuttle.git'
+                            developerConnection = 'scm:git@github.com:grarcht/Shuttle.git'
+                            url = 'https://github.com/grarcht/Shuttle'
+                        }
+
+                        licenses {
+                            license {
+                                name = 'The MIT License'
+                                url = 'https://github.com/grarcht/Shuttle/blob/main/LICENSE.md'
+                            }
+                        }
+
+                        developers {
+                            developer {
+                                id = System.getenv('developerId')
+                                name = System.getenv('developerName')
+                                email = System.getenv('developerEmail')
+                            }
+                        }
                     }
+                    updatePomWithDependencies(pom)
+                    updatePomWithPlugins(pom)
+                }
+            } else {
+                debug(MavenPublication) {
+                    artifactId = "$archivesBaseName-debug"
+                    artifact(sourcesJar) { classifier = 'sources' }
+                    artifact(javadocJar) { classifier = 'javadoc' }
+                    artifact(debugAARFilePath)
+
+                    pom {
+                        name = 'Shuttle'
+                        packaging = 'aar'
+                        description = 'Shuttle provides a modern, guarded way to pass large Serializable objects with Intents or saving them in Bundle objects to avoid app crashes from TransactionTooLargeExceptions.'
+                        url = 'https://github.com/grarcht/Shuttle'
+
+                        scm {
+                            connection = 'scm:git@github.com:grarcht/Shuttle.git'
+                            developerConnection = 'scm:git@github.com:grarcht/Shuttle.git'
+                            url = 'https://github.com/grarcht/Shuttle'
+                        }
+
+                        licenses {
+                            license {
+                                name = 'The MIT License'
+                                url = 'https://github.com/grarcht/Shuttle/blob/main/LICENSE.md'
+                            }
+                        }
+
+                        developers {
+                            developer {
+                                id = System.getenv('developerId')
+                                name = System.getenv('developerName')
+                                email = System.getenv('developerEmail')
+                            }
+                        }
+                    }
+                    updatePomWithDependencies(pom)
+                    updatePomWithPlugins(pom)
                 }
             }
-            debug(MavenPublication) {
-                groupId = 'com.grarcht.shuttle'
-                artifactId = 'framework-integrations-persistence-debug'
-                version = '1.0.0-alpha01'
-                artifact('build/outputs/aar/framework-integrations-persistence-debug.aar')
+        }
+        repositories {
+            maven {
+                name = "mavencentral"
 
-                pom.withXml {
-                    def dependencies = asNode().appendNode('dependencies')
-                    configurations.implementation.allDependencies.each {
-                        def dependency = dependencies.appendNode('dependency')
-                        dependency.appendNode('groupId', it.group)
-                        dependency.appendNode('artifactId', it.name)
-                        dependency.appendNode('version', it.version)
+                if (testPublish) {
+                    def releasesRepoUrl = "$buildDir/repos/releases"
+                    def snapshotsRepoUrl = "$buildDir/repos/snapshots"
+                    url = isReleaseVersion ? releasesRepoUrl : snapshotsRepoUrl
+                } else {
+                    def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                    def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+                    url = isReleaseVersion ? releasesRepoUrl : snapshotsRepoUrl
+                }
+
+                if (!testPublish) {
+                    credentials {
+                        username = System.getenv('ossrhUsername')
+                        password = System.getenv('ossrhPassword')
                     }
                 }
             }
         }
+    }
+
+    artifacts {
+        archives new File("build/libs/$javadocJarFileName")
+        archives new File("build/libs/$sourcesJarFileName")
+
+        if (isReleaseVersion)
+            archives new File(releaseAARFilePath)
+        else
+            archives new File(debugAARFilePath)
+    }
+
+    signing {
+        required { !testPublish && isReleaseVersion && gradle.taskGraph.hasTask('publish') }
+
+        def signingKeyId = System.getenv('signingKeyId')
+        def signingKey = System.getenv('signingSecretKeyRingFile')
+        def signingPassword = System.getenv('signingPassword')
+
+        useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+
+        sign configuration.artifacts
     }
 }
