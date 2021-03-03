@@ -34,7 +34,7 @@ providing convenience functions to remove cargo (automatically or on-demand)
 
 
 ## Coming Soon
-Uploading dependency artifacts to maven central.
+More tests.
 
 
 
