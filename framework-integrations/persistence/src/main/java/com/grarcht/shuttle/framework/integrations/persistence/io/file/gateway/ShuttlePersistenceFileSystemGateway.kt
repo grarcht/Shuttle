@@ -110,7 +110,7 @@ class ShuttlePersistenceFileSystemGateway(
             result = if (file.exists().not()) {
                 ShuttlePersistenceRemoveCargoResult.DoesNotExist
             } else {
-                val deleted = file.delete()
+                val deleted = file.deleteRecursively()
                 if (deleted) {
                     ShuttlePersistenceRemoveCargoResult.Removed
                 } else {
@@ -136,7 +136,7 @@ class ShuttlePersistenceFileSystemGateway(
             result = if (file.exists().not()) {
                 ShuttlePersistenceRemoveCargoResult.DoesNotExist
             } else {
-                val deleted = file.deleteRecursively()
+                val deleted = file.delete()
                 if (deleted) {
                     ShuttlePersistenceRemoveCargoResult.Removed
                 } else {

@@ -65,6 +65,7 @@ dependencies {
     testRuntimeOnly testingDeps.junit.jupiterEngine
     testImplementation testingDeps.kotlin.coroutines
     testImplementation testingDeps.junit.androidCore
+    testRuntimeOnly testingDeps.junit.platformCommons // enables a package of tests to be run
 }
 
 group 'com.grarcht.shuttle'

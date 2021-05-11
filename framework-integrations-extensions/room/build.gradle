@@ -44,7 +44,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = versions.targetCompatibility
     }
 
     packagingOptions {
@@ -72,6 +72,7 @@ dependencies {
     testImplementation testingDeps.junit.jupiterApi
     testRuntimeOnly testingDeps.junit.jupiterEngine
     testImplementation testingDeps.junit.androidCore
+    testRuntimeOnly testingDeps.junit.platformCommons // enables a package of tests to be run
 }
 
 group 'com.grarcht.shuttle'

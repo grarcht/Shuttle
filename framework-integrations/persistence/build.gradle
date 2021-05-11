@@ -1,9 +1,11 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-kapt'
     id 'org.jetbrains.dokka'
     id 'signing'
     id 'maven-publish'
+    id 'de.mannodermaus.android-junit5'
 }
 
 dokkaHtml.configure {
@@ -27,21 +29,39 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
         consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes.release.minifyEnabled false
     kotlinOptions.jvmTarget = versions.jvmTarget
+    testOptions.unitTests.returnDefaultValues = true
 
     compileOptions {
         sourceCompatibility versions.sourceCompatibility
         targetCompatibility versions.targetCompatibility
     }
+
+    kotlinOptions {
+        jvmTarget = versions.targetCompatibility
+    }
 }
 
 dependencies {
     implementation jetbrainsKotlinDeps.stdlib
+    androidTestImplementation testingDeps.junit.androidTestRunner
+    androidTestImplementation testingDeps.junit.jupiterApi
+    androidTestImplementation testingDeps.junit.jupiterEngine
+    androidTestImplementation testingDeps.junit.jupiterParams
+    androidTestImplementation testingDeps.junit.junit5AndroidTestCore
+    androidTestRuntimeOnly testingDeps.junit.junit5AndroidTestRunner
+    testImplementation testingDeps.mockito.core
+    testImplementation testingDeps.mockito.kotlin
+    testImplementation testingDeps.junit.jupiterApi
+    testRuntimeOnly testingDeps.junit.jupiterEngine
+    testImplementation testingDeps.junit.androidCore
+    testRuntimeOnly testingDeps.junit.platformCommons // enables a package of tests to be run
 }
 
 group 'com.grarcht.shuttle'

@@ -1,9 +1,6 @@
 package com.grarcht.shuttle.framework.bundle
 
-import android.os.Bundle
-import android.os.Parcelable
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LifecycleOwner
 import com.grarcht.shuttle.framework.CargoShuttle
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.content.bundle.ShuttleBundle
@@ -24,17 +21,17 @@ import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
+import org.junit.Assert
 import org.junit.Rule
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Assertions.fail
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.fail
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.spy
+import java.io.Serializable
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
@@ -51,21 +48,20 @@ class ShuttleBundleTest {
     private lateinit var shuttle: Shuttle
 
     @Volatile
-    private var doesBundleMatch = false
+    private var doesResultMatch = false
 
     @Volatile
-    private var resultBundle: Bundle? = null
+    private var resultSerializable: Serializable? = null
 
     @BeforeAll
     fun runBeforeAllTests() {
         //https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-test/
         Dispatchers.setMain(mainThreadSurrogate)
 
-        val lifecycleOwner = mock(LifecycleOwner::class.java)
         val shuttleScreenFacade = mock(ShuttleFacade::class.java)
 
-        shuttle = spy(CargoShuttle(shuttleScreenFacade, shuttleWarehouse, lifecycleOwner))
-        doesBundleMatch = false
+        shuttle = spy(CargoShuttle(shuttleScreenFacade, shuttleWarehouse))
+        doesResultMatch = false
     }
 
     @AfterAll
@@ -78,22 +74,24 @@ class ShuttleBundleTest {
 
 
     @Test
-    fun verifyPutAndGetBundle() {
+    fun verifyPutAndGetSerializable() {
         // ====== given ======
         var countDownLatch = CountDownLatch(1)
-        val nestedBundleKey = "nestedBundle"
         val paintColorKey = "paint color"
-        val map = mutableMapOf<String?, Any?>(Pair(paintColorKey, "blue"))
-        val bundleToCreateFrom = MockBundleFactory().create(map)
-        val shuttleBundle = ShuttleBundle.with(bundleToCreateFrom, shuttleWarehouse)
+        val paintColorValue = "blue"
         val cargoId = "cargo id"
 
+        class PaintColor(val color: String?) : Serializable
+
+        val paintColor = PaintColor("blue")
+        val map = mutableMapOf<String?, Any?>(Pair(paintColorKey, paintColorValue))
+        val bundleToCreateFrom = MockBundleFactory().create(map)
+        val shuttleBundle = ShuttleBundle.with(bundleToCreateFrom, shuttleWarehouse)
+
         // when
-        shuttleBundle.transport(nestedBundleKey, bundleToCreateFrom)
-        val bundle = shuttleBundle.create()
+        shuttleBundle.transport(cargoId, paintColor)
         countDownLatch.await(1, TimeUnit.SECONDS)
         countDownLatch = CountDownLatch(1)
-
 
         // verify
         runBlocking {
@@ -101,10 +99,7 @@ class ShuttleBundleTest {
 
             // Will be launched in the mainThreadSurrogate dispatcher
             disposableHandle = launch(Dispatchers.Main) {
-                val channel: Channel<ShuttlePickupCargoResult> = shuttle.pickupCargo(
-                    cargoId = cargoId,
-                    creator = MockBundleFactory.creator
-                )
+                val channel: Channel<ShuttlePickupCargoResult> = shuttle.pickupCargo<PaintColor>(cargoId)
                 channel.consumeAsFlow()
                     .collect { shuttleResult ->
                         when (shuttleResult) {
@@ -112,15 +107,8 @@ class ShuttleBundleTest {
                                 /* ignore */
                             }
                             is ShuttlePickupCargoResult.Success<*> -> {
-                                resultBundle = shuttleResult.data as Bundle
-
-                                if (resultBundle?.containsKey(paintColorKey) == true) {
-                                    doesBundleMatch = true
-                                    println("The key $nestedBundleKey was saved")
-                                    channel.cancel()
-                                } else {
-                                    fail(IllegalStateException("The key wasn't saved"))
-                                }
+                                resultSerializable = shuttleResult.data as Serializable
+                                channel.cancel()
                                 countDownLatch.countDown()
                             }
                             is ShuttlePickupCargoResult.Error<*> -> {
@@ -131,14 +119,16 @@ class ShuttleBundleTest {
                     }
             }.invokeOnCompletion {
                 it?.let {
-                    println(it.message ?: "Error when getting bundle.")
+                    println(it.message ?: "Error when getting the serializable.")
                 }
             }
         }
 
         assertEquals(1, shuttleWarehouse.numberOfSaveInvocations)
         countDownLatch.await(1, TimeUnit.SECONDS)
-        assertTrue(doesBundleMatch)
+        Assert.assertTrue(resultSerializable is PaintColor)
+        val deserializedPainColor = resultSerializable as PaintColor
+        Assert.assertTrue(deserializedPainColor.color == "blue")
     }
 
     class TestRepository : ShuttleDataWarehouse() {
@@ -146,12 +136,8 @@ class ShuttleBundleTest {
         private val storeCargoChannel = Channel<ShuttleStoreCargoResult>(0)
         private val removeCargoChannel = Channel<ShuttleRemoveCargoResult>(0)
 
-        override suspend fun <D : Parcelable> pickup(
-            cargoId: String,
-            parcelableCreator: Parcelable.Creator<D>,
-            lifecycleOwner: LifecycleOwner
-        ): Channel<ShuttlePickupCargoResult> {
-            val parcelable = parcelableToEmit
+        override suspend fun <D : Serializable> pickup(cargoId: String): Channel<ShuttlePickupCargoResult> {
+            val parcelable = serializableToEmit
             println("parcelableToEmit $parcelable")
             try {
                 pickupCargoChannel.send(ShuttlePickupCargoResult.Success(parcelable))
@@ -161,9 +147,9 @@ class ShuttleBundleTest {
             return pickupCargoChannel
         }
 
-        override suspend fun <D : Parcelable> store(cargoId: String, data: D?): Channel<ShuttleStoreCargoResult> {
+        override suspend fun <D : Serializable> store(cargoId: String, data: D?): Channel<ShuttleStoreCargoResult> {
             super.store(cargoId, data)
-            parcelableToEmit = data as Parcelable
+            serializableToEmit = data as Serializable
             return storeCargoChannel
         }
 

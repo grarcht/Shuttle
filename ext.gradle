@@ -2,13 +2,13 @@ ext {
     versions = [
             buildToolsVersion  : '30.0.2',
             dokka              : '1.4.20',
-            gradleBuildTools   : '4.1.3',
+            gradleBuildTools   : '4.2.0',
             hilt               : '2.28-alpha',
             jvmTarget          : '1.8',
             kotlin             : '1.4.32',
             lifecycle          : '2.2.0',
-            navigation         : '2.3.2',
-            room               : '2.2.6',
+            navigation         : '2.3.5',
+            room               : '2.3.0',
             rx                 : '3.0.0',
             shuttle            : '1.0.0-alpha01',
             sourceCompatibility: 1.8,
@@ -19,19 +19,19 @@ ext {
             dokkaGradlePlugin : "org.jetbrains.dokka:dokka-gradle-plugin:${versions.dokka}",
             gradleBuildTools  : "com.android.tools.build:gradle:${versions.gradleBuildTools}",
             kotlinGradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
-            junit5Plugin      : "de.mannodermaus.gradle.plugins:android-junit5:1.6.2.0"
+            junit5Plugin      : 'de.mannodermaus.gradle.plugins:android-junit5:1.7.1.1'
     ]
 
     androidXDeps = [
             appCompat            : 'androidx.appcompat:appcompat:1.2.0',
-            constraintLayout     : 'androidx.constraintlayout:constraintlayout:2.0.1',
-            coreKtx              : 'androidx.core:core-ktx:1.3.1',
-            fragmentKtx          : "androidx.fragment:fragment-ktx:1.2.5",
+            constraintLayout     : 'androidx.constraintlayout:constraintlayout:2.0.4',
+            coreKtx              : 'androidx.core:core-ktx:1.3.2',
+            fragmentKtx          : 'androidx.fragment:fragment-ktx:1.3.3',
             lifecycle            : [
                     extensions: "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}",
                     viewModel : "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}",
             ],
-            material             : 'com.google.android.material:material:1.2.1',
+            material             : 'com.google.android.material:material:1.3.0',
             navigationFragmentKtx: "androidx.navigation:navigation-fragment-ktx:${versions.navigation}",
             testRunner           : 'androidx.test.runner.AndroidJUnitRunner'
     ]
@@ -44,7 +44,7 @@ ext {
     ]
 
     jetbrainsKotlinDeps = [
-            coroutines: "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.0",
+            coroutines: 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3',
             stdlib    : "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
     ]
 
@@ -78,21 +78,22 @@ ext {
             ],
             junit   : [
                     ext                    : 'androidx.test.ext:junit:1.1.2',
-                    jupiter                : 'org.junit.jupiter:junit-jupiter:5.4.2',
-                    jupiterApi             : 'org.junit.jupiter:junit-jupiter-api:5.6.0',
-                    jupiterEngine          : 'org.junit.jupiter:junit-jupiter-engine:5.6.0',
-                    jupiterParams          : 'org.junit.jupiter:junit-jupiter-params:5.6.0',
-                    platformSuite          : 'org.junit.platform:junit-platform-suite-api:1.7.0',
+                    jupiter                : 'org.junit.jupiter:junit-jupiter:5.7.1',
+                    jupiterApi             : 'org.junit.jupiter:junit-jupiter-api:5.7.1',
+                    jupiterEngine          : 'org.junit.jupiter:junit-jupiter-engine:5.7.1',
+                    jupiterParams          : 'org.junit.jupiter:junit-jupiter-params:5.7.1',
+                    platformCommons        : 'org.junit.platform:junit-platform-commons:1.7.1',
+                    platformSuite          : 'org.junit.platform:junit-platform-suite-api:1.7.1',
                     androidCore            : 'androidx.arch.core:core-testing:2.1.0',
                     androidTestRunner      : 'androidx.test:runner:1.3.0',
                     junit5AndroidTestCore  : 'de.mannodermaus.junit5:android-test-core:1.2.2',
                     junit5AndroidTestRunner: 'de.mannodermaus.junit5:android-test-runner:1.2.2'
             ],
             kotlin  : [
-                    coroutines: 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.1'
+                    coroutines: 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.3'
             ],
             mockito : [
-                    core  : 'org.mockito:mockito-core:3.6.0',
+                    core  : 'org.mockito:mockito-core:3.9.0',
                     kotlin: 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
             ]
     ]

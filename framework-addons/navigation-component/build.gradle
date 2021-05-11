@@ -48,6 +48,7 @@ dependencies {
     testRuntimeOnly testingDeps.junit.jupiterEngine
     androidTestImplementation testingDeps.junit.ext
     androidTestImplementation testingDeps.espresso.core
+    testRuntimeOnly testingDeps.junit.platformCommons // enables a package of tests to be run
 }
 
 group 'com.grarcht.shuttle'
