@@ -93,11 +93,8 @@ open class ShuttleIntent private constructor() {
      * @return The newly created object reference
      */
     fun intentChooser(target: Intent?, title: CharSequence?): ShuttleIntent {
-        val shuttleIntent = ShuttleIntent()
-        shuttleIntent.intent = Intent.createChooser(target, title)
-        shuttleIntent.warehouse = warehouse
-        shuttleIntent.shuttleScreenFacade = shuttleScreenFacade
-        return shuttleIntent
+        this.intent = Intent.createChooser(target, title)
+        return this
     }
 
     /**
@@ -108,11 +105,8 @@ open class ShuttleIntent private constructor() {
      * @return The newly created object reference
      */
     fun intentChooser(target: Intent?, title: CharSequence?, sender: IntentSender?): ShuttleIntent {
-        val shuttleIntent = ShuttleIntent()
-        shuttleIntent.intent = Intent.createChooser(target, title, sender)
-        shuttleIntent.warehouse = warehouse
-        shuttleIntent.shuttleScreenFacade = shuttleScreenFacade
-        return shuttleIntent
+        this.intent = Intent.createChooser(target, title, sender)
+        return this
     }
 
     /**
