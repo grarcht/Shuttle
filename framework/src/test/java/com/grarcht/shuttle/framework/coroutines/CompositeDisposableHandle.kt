@@ -1,4 +1,4 @@
-package com.grarcht.shuttle.framework.corouttines
+package com.grarcht.shuttle.framework.coroutines
 
 import kotlinx.coroutines.DisposableHandle
 

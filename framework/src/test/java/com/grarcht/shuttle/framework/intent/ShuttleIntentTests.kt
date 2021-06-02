@@ -7,7 +7,7 @@ import android.net.Uri
 import androidx.fragment.app.Fragment
 import com.grarcht.shuttle.framework.CargoShuttle
 import com.grarcht.shuttle.framework.Shuttle
-import com.grarcht.shuttle.framework.bundle.ShuttleDataWarehouse
+import com.grarcht.shuttle.framework.warehouse.ShuttleDataWarehouse
 import com.grarcht.shuttle.framework.content.ShuttleIntent
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import com.grarcht.shuttle.framework.screen.ShuttleFacade

@@ -1,7 +1,6 @@
-package com.grarcht.shuttle.framework.corouttines.channel
+package com.grarcht.shuttle.framework.coroutines.channel
 
-import com.grarcht.shuttle.framework.coroutines.channel.relayFlowIfAvailable
-import com.grarcht.shuttle.framework.corouttines.CompositeDisposableHandle
+import com.grarcht.shuttle.framework.coroutines.CompositeDisposableHandle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

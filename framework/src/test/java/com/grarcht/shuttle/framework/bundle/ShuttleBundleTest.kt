@@ -5,6 +5,7 @@ import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.content.bundle.ShuttleBundle
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import com.grarcht.shuttle.framework.screen.ShuttleFacade
+import com.grarcht.shuttle.framework.warehouse.ShuttleDataWarehouse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.DisposableHandle
