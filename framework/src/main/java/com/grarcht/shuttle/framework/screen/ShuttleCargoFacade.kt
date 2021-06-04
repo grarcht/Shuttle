@@ -26,9 +26,10 @@ private const val LOG_TAG = "ShuttleCargoFacade"
  */
 open class ShuttleCargoFacade(
     application: Application,
-    private val shuttleWarehouse: ShuttleWarehouse
+    private val shuttleWarehouse: ShuttleWarehouse,
+    private val handler: Handler? = Handler(Looper.getMainLooper())
 ) : ShuttleFacade {
-    private val screenCallback = ScreenCallback()
+    internal val screenCallback = ScreenCallback()
 
     init {
         application.registerActivityLifecycleCallbacks(screenCallback)
@@ -45,7 +46,7 @@ open class ShuttleCargoFacade(
         screenCallback.screens.add(Screen(activityTypeName, cargoId))
     }
 
-    private inner class ScreenCallback : ActivityLifecycleCallback() {
+    internal inner class ScreenCallback : ActivityLifecycleCallback() {
         val screens = mutableListOf<Screen>()
 
         override fun onActivityCreated(activity: Activity) {
@@ -62,6 +63,7 @@ open class ShuttleCargoFacade(
                             activity,
                             ON_PRESSED_CALLBACK_ENABLED
                         )
+
                         activity.onBackPressedDispatcher.addCallback(callback)
                     }
                 }
@@ -72,15 +74,11 @@ open class ShuttleCargoFacade(
     private inner class ActivityBackPressedCallback(
         private val screen: Screen,
         private val activity: Activity,
-        enabled: Boolean
+        enabled: Boolean,
     ) : OnBackPressedCallback(enabled) {
-
 
         override fun handleOnBackPressed() {
             isEnabled = false
-
-            val looper = Looper.getMainLooper() ?: return
-            val handler = Handler(looper)
 
             GlobalScope.launch {
                 shuttleWarehouse.removeCargoBy(screen.cargoId).consumeAsFlow().collect {
@@ -101,7 +99,7 @@ open class ShuttleCargoFacade(
                 }
 
                 // Call on back pressed so the user doesn't have to hit the back button twice.
-                handler.post {
+                handler?.post {
                     activity.onBackPressed()
                 }
 
@@ -111,5 +109,5 @@ open class ShuttleCargoFacade(
         }
     }
 
-    private class Screen(val typeName: String, val cargoId: String)
+    internal class Screen(val typeName: String, val cargoId: String)
 }

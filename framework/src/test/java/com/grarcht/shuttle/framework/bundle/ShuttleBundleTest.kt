@@ -72,7 +72,7 @@ class ShuttleBundleTest {
 
     @Test
     fun verifyPutAndGetSerializable() {
-        // ====== given ======
+        // given
         var countDownLatch = CountDownLatch(1)
         val paintColorKey = "paint color"
         val paintColorValue = "blue"
