@@ -76,6 +76,7 @@ open class ShuttleRepository(
             val errorMessage = "The cargo is null."
             val result = ShuttleStoreCargoResult.Error<Throwable>(cargoId, errorMessage)
             storeCargoChannel.send(result)
+            return storeCargoChannel
         }
 
         storeCargoChannel.apply {
@@ -84,7 +85,8 @@ open class ShuttleRepository(
 
             if (null == filePath) {
                 val errorMessage = "File path is null for cargoId: $cargoId."
-                ShuttleStoreCargoResult.Error<Throwable>(cargoId, errorMessage)
+                val storeResult = ShuttleStoreCargoResult.Error<Throwable>(cargoId, errorMessage)
+                storeCargoChannel.send(storeResult)
             } else {
                 val shuttleDataModel = shuttleDataModelFactory.createDataModel(cargoId, filePath)
 
