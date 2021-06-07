@@ -5,51 +5,59 @@ import com.grarcht.shuttle.framework.integrations.persistence.io.file.factory.Sh
 import com.grarcht.shuttle.framework.integrations.persistence.io.file.gateway.ShuttleFileSystemGateway
 import com.grarcht.shuttle.framework.integrations.persistence.io.file.gateway.ShuttlePersistenceFileSystemGateway
 import com.grarcht.shuttle.framework.integrations.persistence.result.ShuttlePersistenceRemoveCargoResult
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import java.io.File
 import java.io.Serializable
 
-
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ShuttlePersistenceFileSystemGatewayTests {
     private val directoryName = "cargo"
     private val fileName = "paintColor"
+    private var filePath = ""
+    private var gateway: ShuttleFileSystemGateway? = null
+    private val paintColor = PaintColor("Blue")
+
+    @BeforeAll
+    fun runBeforeAllTests() {
+        val fileFactory: ShuttleFileFactory = ShuttlePersistenceFileFactory()
+        gateway = ShuttlePersistenceFileSystemGateway(fileFactory)
+    }
+
+    @AfterAll
+    fun tearDown() {
+        gateway?.deleteFile(filePath)
+        File(directoryName).deleteRecursively()
+    }
 
     @Test
     fun verifyWriteToFile() {
-        val fileFactory: ShuttleFileFactory = ShuttlePersistenceFileFactory()
-        val gateway: ShuttleFileSystemGateway = ShuttlePersistenceFileSystemGateway(fileFactory)
-        val paintColor = PaintColor("Blue")
-        val filePath = gateway.writeToFile(directoryName, fileName, paintColor) ?: ""
+        filePath = gateway?.writeToFile(directoryName, fileName, paintColor) ?: ""
         Assertions.assertTrue(filePath.isNotEmpty())
     }
 
     @Test
     fun verifyReadFromFile() {
-        val fileFactory: ShuttleFileFactory = ShuttlePersistenceFileFactory()
-        val gateway: ShuttleFileSystemGateway = ShuttlePersistenceFileSystemGateway(fileFactory)
-        val paintColor = PaintColor("Blue")
-        val filePath = gateway.writeToFile(directoryName, fileName, paintColor) ?: ""
-        val deserializedPaintColor = gateway.readFromFile(filePath) as PaintColor
+        filePath = gateway?.writeToFile(directoryName, fileName, paintColor) ?: ""
+        val deserializedPaintColor = gateway?.readFromFile(filePath) as PaintColor
         Assertions.assertEquals("Blue", deserializedPaintColor.color)
     }
 
     @Test
     fun verifyDeleteFile() {
-        val fileFactory: ShuttleFileFactory = ShuttlePersistenceFileFactory()
-        val gateway: ShuttleFileSystemGateway = ShuttlePersistenceFileSystemGateway(fileFactory)
-        val paintColor = PaintColor("Blue")
-        val filePath = gateway.writeToFile(directoryName, fileName, paintColor) ?: ""
-        val result: ShuttlePersistenceRemoveCargoResult = gateway.deleteFile(filePath)
+        filePath = gateway?.writeToFile(directoryName, fileName, paintColor) ?: ""
+        val result: ShuttlePersistenceRemoveCargoResult = gateway?.deleteFile(filePath) ?: ShuttlePersistenceRemoveCargoResult.UnableToRemove
         Assertions.assertEquals(ShuttlePersistenceRemoveCargoResult.Removed, result)
     }
 
     @Test
     fun verifyDeleteAllFiles() {
-        val fileFactory: ShuttleFileFactory = ShuttlePersistenceFileFactory()
-        val gateway: ShuttleFileSystemGateway = ShuttlePersistenceFileSystemGateway(fileFactory)
-        val paintColor = PaintColor("Blue")
-        gateway.writeToFile(directoryName, fileName, paintColor)
-        val result: ShuttlePersistenceRemoveCargoResult = gateway.deleteAllFilesAt(directoryName)
+        filePath = gateway?.writeToFile(directoryName, fileName, paintColor) ?: ""
+        val result: ShuttlePersistenceRemoveCargoResult =
+            gateway?.deleteAllFilesAt(directoryName) ?: ShuttlePersistenceRemoveCargoResult.UnableToRemove
         Assertions.assertEquals(ShuttlePersistenceRemoveCargoResult.Removed, result)
     }
 
