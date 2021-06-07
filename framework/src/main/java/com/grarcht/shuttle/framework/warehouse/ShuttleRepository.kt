@@ -18,9 +18,9 @@ import java.io.Serializable
 import java.sql.SQLException
 
 private const val CARGO_DIRECTORY_SEGMENT = "/cargo/"
-private const val PICKUP_CARGO_CHANNEL_CAPACITY = 3
-private const val REMOVE_CARGO_CHANNEL_CAPACITY = 3
-private const val STORE_CARGO_CHANNEL_CAPACITY = 3
+private const val PICKUP_CARGO_CHANNEL_CAPACITY = 2
+private const val REMOVE_CARGO_CHANNEL_CAPACITY = 2
+private const val STORE_CARGO_CHANNEL_CAPACITY = 2
 
 /**
  * This class provides the solution for picking up and storing cargo within the warehouse by using the
@@ -122,10 +122,7 @@ open class ShuttleRepository(
             try {
                 when (shuttleFileSystemGateway.deleteFile(file)) {
                     is ShuttlePersistenceRemoveCargoResult.DoesNotExist -> {
-                        val result = ShuttleRemoveCargoResult.UnableToRemove<Throwable>(
-                            cargoId = cargoId,
-                            message = "Unable to delete the cargo: $cargoId"
-                        )
+                        val result = ShuttleRemoveCargoResult.DoesNotExist(cargoId = cargoId)
                         removeCargoChannel.send(result)
                     }
                     is ShuttlePersistenceRemoveCargoResult.UnableToRemove -> {
