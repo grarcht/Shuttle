@@ -98,7 +98,8 @@ open class CargoShuttle(
      * @return The newly created [ShuttleIntent]
      */
     override fun intentCargoWith(
-        action: String, uri: Uri,
+        action: String,
+        uri: Uri,
         packageContext: Context,
         cls: Class<*>
     ): ShuttleIntent {
