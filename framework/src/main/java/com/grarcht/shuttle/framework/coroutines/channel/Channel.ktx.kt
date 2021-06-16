@@ -25,7 +25,7 @@ suspend fun <E> Channel<E>?.relayFlowIfAvailable(receiver: Channel<E>? = null, l
             Log.w(tag, "Caught when relaying.", e)
         } catch (e: CancellationException) {
             Log.w(tag, "Caught when relaying.", e)
-        } catch (e: Exception) {
+        } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
             Log.w(tag, "Caught when relaying.", e)
         }
     }

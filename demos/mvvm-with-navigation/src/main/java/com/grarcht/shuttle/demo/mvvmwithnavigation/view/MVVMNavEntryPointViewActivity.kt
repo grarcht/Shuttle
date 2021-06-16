@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val CHANNEL_CAPACITY = 4
 private const val LOG_TAG = "MVVMNavEntryPointViewActivity"
 private const val NAV_HOST_TAG = "nav host"
 
@@ -59,7 +60,7 @@ class MVVMNavEntryPointViewActivity : AppCompatActivity() {
     }
 
     private fun cleanShuttleFromAllDeliveries() {
-        val channel = Channel<ShuttleRemoveCargoResult>(3)
+        val channel = Channel<ShuttleRemoveCargoResult>(CHANNEL_CAPACITY)
         shuttle.cleanShuttleFromAllDeliveries(channel)
 
         // The following could be useful for verification, analytics, et cetera.
