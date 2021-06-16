@@ -1,23 +1,24 @@
 package com.grarcht.shuttle.framework
 
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.net.Uri
+import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.grarcht.shuttle.framework.bundle.MockBundleFactory
 import com.grarcht.shuttle.framework.coroutines.CompositeDisposableHandle
 import com.grarcht.shuttle.framework.integrations.persistence.ShuttleDataAccessObject
 import com.grarcht.shuttle.framework.integrations.persistence.datamodel.ShuttleDataModel
-import com.grarcht.shuttle.framework.integrations.persistence.datamodel.ShuttleDataModelFactory
 import com.grarcht.shuttle.framework.integrations.persistence.io.file.gateway.ShuttleFileSystemGateway
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
-import com.grarcht.shuttle.framework.result.ShuttleStoreCargoResult
+import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
+import com.grarcht.shuttle.framework.screen.ShuttleCargoFacade
 import com.grarcht.shuttle.framework.screen.ShuttleFacade
 import com.grarcht.shuttle.framework.warehouse.ShuttleDataWarehouse
-import com.grarcht.shuttle.framework.warehouse.ShuttleRepository
-import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
-import com.nhaarman.mockitokotlin2.anyOrNull
+import com.nhaarman.mockitokotlin2.doAnswer
+import com.nhaarman.mockitokotlin2.spy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -39,7 +40,6 @@ import org.junit.jupiter.api.TestInstance
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
-import org.mockito.Mockito.spy
 import java.io.File
 import java.io.Serializable
 import java.util.concurrent.CountDownLatch
@@ -205,6 +205,265 @@ class CargoShuttleTests {
 
         countDownLatch.await(1, TimeUnit.SECONDS)
         Assertions.assertEquals(cargoId, storedId)
+    }
+
+    @Test
+    fun verifyCargoRemovalOnReturnToScreen() {
+        val cargoId = "cargoId1"
+        val cargo = Cargo(cargoId, 10)
+        val countDownLatch = CountDownLatch(3)
+        val firstScreenClass = TestActivity().javaClass
+        val nextScreen = TestActivity2()
+        val nextScreenClass = nextScreen.javaClass
+        val application = mock(Application::class.java)
+        val warehouse = ShuttleDataWarehouse()
+        val handler = mock(Handler::class.java)
+        val facade = spy(ShuttleCargoFacade(application, warehouse, handler))
+        val screenCallback = spy(facade.screenCallback)
+        val cargoShuttle = CargoShuttle(facade, warehouse)
+        val noCargo = "no cargo"
+        var storeId = ""
+        var channel: Channel<ShuttlePickupCargoResult>? = null
+
+        runBlocking {
+            testScope = this
+
+            doAnswer {
+                val runnable = it.getArgument(0, Runnable::class.java)
+                runnable?.run()
+                true
+            }.`when`(handler).post(Mockito.any())
+
+            cargoShuttle.cleanShuttleOnReturnTo(firstScreenClass, nextScreenClass, cargoId)
+
+            cargoShuttle
+                .intentCargoWith(Intent.ACTION_MEDIA_BUTTON)
+                .transport(cargoId, cargo)
+
+            countDownLatch.await(1, TimeUnit.SECONDS)
+            screenCallback.onActivityCreated(nextScreen)
+            nextScreen.onBackPressed()
+            countDownLatch.await(1, TimeUnit.SECONDS)
+
+            val disposableHandle = launch(Dispatchers.Main) {
+                channel = cargoShuttle.pickupCargo<Cargo>(cargoId)
+                channel
+                    ?.consumeAsFlow()
+                    ?.collect { shuttleResult ->
+                        when (shuttleResult) {
+                            is ShuttlePickupCargoResult.Loading -> {
+                                /* ignore */
+                            }
+                            is ShuttlePickupCargoResult.Success<*> -> {
+                                countDownLatch.countDown()
+                                cancel()
+                            }
+                            is ShuttlePickupCargoResult.Error<*> -> {
+                                storeId = noCargo
+                                countDownLatch.countDown()
+                                cancel()
+                            }
+                        }
+                    }
+            }.invokeOnCompletion {
+                it?.let {
+                    println(it.message ?: "Error when getting the serializable.")
+                }
+            }
+            compositeDisposableHandle?.add(disposableHandle)
+
+        }
+
+        countDownLatch.await(1, TimeUnit.SECONDS)
+        Assertions.assertEquals(noCargo, storeId)
+    }
+
+    @Test
+    fun verifyCargoRemovalOnCleanShuttleFromDeliveryFor() {
+        val cargoId = "cargoId1"
+        val cargo = Cargo(cargoId, 10)
+        val countDownLatch = CountDownLatch(3)
+        val application = mock(Application::class.java)
+        val warehouse = ShuttleDataWarehouse()
+        val handler = mock(Handler::class.java)
+        val facade = spy(ShuttleCargoFacade(application, warehouse, handler))
+        val cargoShuttle = CargoShuttle(facade, warehouse)
+        val noCargo = "no cargo"
+        var storeId = ""
+        var channel: Channel<ShuttlePickupCargoResult>? = null
+        var numberOfValidSteps = 0
+
+        cargoShuttle
+            .intentCargoWith(Intent.ACTION_MEDIA_BUTTON)
+            .transport(cargoId, cargo)
+
+        countDownLatch.await(1, TimeUnit.SECONDS)
+
+        runBlocking {
+            testScope = this
+
+            doAnswer {
+                val runnable = it.getArgument(0, Runnable::class.java)
+                runnable?.run()
+                true
+            }.`when`(handler).post(Mockito.any())
+
+            val receiverChannel = Channel<ShuttleRemoveCargoResult>()
+            val disposableHandle = launch(Dispatchers.Main) {
+                receiverChannel
+                    .consumeAsFlow()
+                    .collect { shuttleResult ->
+                        when (shuttleResult) {
+                            is ShuttleRemoveCargoResult.DoesNotExist -> {
+                                cancel()
+                            }
+                            is ShuttleRemoveCargoResult.Removed -> {
+                                numberOfValidSteps++
+                                cancel()
+                            }
+                            is ShuttleRemoveCargoResult.Removing -> {
+                                numberOfValidSteps++
+                            }
+                            is ShuttleRemoveCargoResult.UnableToRemove<*> -> {
+                                cancel()
+                            }
+                        }
+                    }
+            }.invokeOnCompletion {
+                it?.let {
+                    println(it.message ?: "Error when getting the serializable.")
+                }
+            }
+            compositeDisposableHandle?.add(disposableHandle)
+
+            cargoShuttle.cleanShuttleFromDeliveryFor(cargoId, receiverChannel)
+
+            val disposableHandle2 = launch(Dispatchers.Main) {
+                channel = cargoShuttle.pickupCargo<Cargo>(cargoId)
+                channel
+                    ?.consumeAsFlow()
+                    ?.collect { shuttleResult ->
+                        when (shuttleResult) {
+                            is ShuttlePickupCargoResult.Loading -> {
+                                /* ignore */
+                            }
+                            is ShuttlePickupCargoResult.Success<*> -> {
+                                countDownLatch.countDown()
+                                cancel()
+                            }
+                            is ShuttlePickupCargoResult.Error<*> -> {
+                                storeId = noCargo
+                                countDownLatch.countDown()
+                                cancel()
+                            }
+                        }
+                    }
+            }.invokeOnCompletion {
+                it?.let {
+                    println(it.message ?: "Error when getting the serializable.")
+                }
+            }
+            compositeDisposableHandle?.add(disposableHandle2)
+
+        }
+
+        countDownLatch.await(1, TimeUnit.SECONDS)
+        Assertions.assertEquals(noCargo, storeId)
+        Assertions.assertEquals(2, numberOfValidSteps)
+    }
+
+    @Test
+    fun verifyCargoRemovalOnCleanShuttleFromAllDeliveries() {
+        val cargoId = "cargoId1"
+        val cargo = Cargo(cargoId, 10)
+        val countDownLatch = CountDownLatch(3)
+        val application = mock(Application::class.java)
+        val warehouse = ShuttleDataWarehouse()
+        val handler = mock(Handler::class.java)
+        val facade = spy(ShuttleCargoFacade(application, warehouse, handler))
+        val cargoShuttle = CargoShuttle(facade, warehouse)
+        val noCargo = "no cargo"
+        var storeId = ""
+        var channel: Channel<ShuttlePickupCargoResult>? = null
+        var numberOfValidSteps = 0
+
+        cargoShuttle
+            .intentCargoWith(Intent.ACTION_MEDIA_BUTTON)
+            .transport(cargoId, cargo)
+
+        countDownLatch.await(1, TimeUnit.SECONDS)
+
+        runBlocking {
+            testScope = this
+
+            doAnswer {
+                val runnable = it.getArgument(0, Runnable::class.java)
+                runnable?.run()
+                true
+            }.`when`(handler).post(Mockito.any())
+
+            val receiverChannel = Channel<ShuttleRemoveCargoResult>()
+            val disposableHandle = launch(Dispatchers.Main) {
+                receiverChannel
+                    .consumeAsFlow()
+                    .collect { shuttleResult ->
+                        when (shuttleResult) {
+                            is ShuttleRemoveCargoResult.DoesNotExist -> {
+                                cancel()
+                            }
+                            is ShuttleRemoveCargoResult.Removed -> {
+                                numberOfValidSteps++
+                                cancel()
+                            }
+                            is ShuttleRemoveCargoResult.Removing -> {
+                                numberOfValidSteps++
+                            }
+                            is ShuttleRemoveCargoResult.UnableToRemove<*> -> {
+                                cancel()
+                            }
+                        }
+                    }
+            }.invokeOnCompletion {
+                it?.let {
+                    println(it.message ?: "Error when getting the serializable.")
+                }
+            }
+            compositeDisposableHandle?.add(disposableHandle)
+
+            cargoShuttle.cleanShuttleFromAllDeliveries(receiverChannel)
+
+            val disposableHandle2 = launch(Dispatchers.Main) {
+                channel = cargoShuttle.pickupCargo<Cargo>(cargoId)
+                channel
+                    ?.consumeAsFlow()
+                    ?.collect { shuttleResult ->
+                        when (shuttleResult) {
+                            is ShuttlePickupCargoResult.Loading -> {
+                                /* ignore */
+                            }
+                            is ShuttlePickupCargoResult.Success<*> -> {
+                                countDownLatch.countDown()
+                                cancel()
+                            }
+                            is ShuttlePickupCargoResult.Error<*> -> {
+                                storeId = noCargo
+                                countDownLatch.countDown()
+                                cancel()
+                            }
+                        }
+                    }
+            }.invokeOnCompletion {
+                it?.let {
+                    println(it.message ?: "Error when getting the serializable.")
+                }
+            }
+            compositeDisposableHandle?.add(disposableHandle2)
+
+        }
+
+        countDownLatch.await(1, TimeUnit.SECONDS)
+        Assertions.assertEquals(noCargo, storeId)
+        Assertions.assertEquals(2, numberOfValidSteps)
     }
 
     private data class CargoDataModel(override val cargoId: String, override val filePath: String) : ShuttleDataModel

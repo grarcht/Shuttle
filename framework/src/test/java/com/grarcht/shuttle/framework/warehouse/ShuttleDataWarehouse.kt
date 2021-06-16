@@ -13,11 +13,18 @@ open class ShuttleDataWarehouse : ShuttleWarehouse {
     private val cache: MutableMap<String, Serializable> = mutableMapOf()
     private val pickupCargoChannel = Channel<ShuttlePickupCargoResult>(3)
     private val storeCargoChannel = Channel<ShuttleStoreCargoResult>(3)
-    val removeCargoChannel = Channel<ShuttleRemoveCargoResult>(4)
+    private val removeCargoChannel = Channel<ShuttleRemoveCargoResult>(4)
 
     override suspend fun <D : Serializable> pickup(cargoId: String): Channel<ShuttlePickupCargoResult> {
         pickupCargoChannel.send(ShuttlePickupCargoResult.Loading)
-        pickupCargoChannel.send(ShuttlePickupCargoResult.Success(cache[cargoId] as D))
+
+        val cargo = cache[cargoId]
+        if(cargo == null){
+            pickupCargoChannel.send(ShuttlePickupCargoResult.Error<Throwable>(cargoId, "Cargo does not exist."))
+        } else {
+            pickupCargoChannel.send(ShuttlePickupCargoResult.Success(cargo as D))
+        }
+
         return pickupCargoChannel
     }
 
@@ -30,6 +37,7 @@ open class ShuttleDataWarehouse : ShuttleWarehouse {
     }
 
     override suspend fun removeCargoBy(cargoId: String): Channel<ShuttleRemoveCargoResult> {
+        removeCargoChannel.send(ShuttleRemoveCargoResult.Removing(cargoId))
         cache.remove(cargoId)
         removeCargoChannel.send(ShuttleRemoveCargoResult.Removed(cargoId))
         numberOfRemoveInvocations++
@@ -37,6 +45,7 @@ open class ShuttleDataWarehouse : ShuttleWarehouse {
     }
 
     override suspend fun removeAllCargo(): Channel<ShuttleRemoveCargoResult> {
+        removeCargoChannel.send(ShuttleRemoveCargoResult.Removing(ShuttleRemoveCargoResult.ALL_CARGO))
         cache.clear()
         removeCargoChannel.send(ShuttleRemoveCargoResult.Removed(ShuttleRemoveCargoResult.ALL_CARGO))
         numberOfRemoveInvocations++
