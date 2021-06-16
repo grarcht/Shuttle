@@ -77,7 +77,7 @@ dependencies {
 
 group 'com.grarcht.shuttle'
 archivesBaseName = 'framework-integrations-extensions-room'
-version = '1.0.0-alpha01'
+version = '1.0.0-beta01'
 def testPublish = true
 def isReleaseVersion = true // the opposite is snapshot
 def releaseAARFilePath = isReleaseVersion ?
