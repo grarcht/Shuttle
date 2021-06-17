@@ -31,8 +31,6 @@ providing convenience functions to remove cargo (automatically or on-demand)
 
 
 
-## Coming Soon
-More tests.
 
 
 
