@@ -46,7 +46,8 @@ allprojects {
     apply from: "$rootDir/detekt/detekt.gradle"
 
     repositories {
-        mavenLocal()
+        // mavenLocal() // Use this maven url if artifacts are published locally
+
         // The Shuttle framework artifacts are hosted in Sonatype Nexus Maven Central.
         maven { url 'https://repo1.maven.org/maven2/' }
         google()
