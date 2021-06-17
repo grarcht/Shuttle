@@ -2,7 +2,7 @@ ext {
     versions = [
             buildToolsVersion  : '30.0.2',
             dokka              : '1.4.20',
-            gradleBuildTools   : '4.2.0',
+            gradleBuildTools   : '4.2.1',
             hilt               : '2.28-alpha',
             jvmTarget          : '1.8',
             kotlin             : '1.4.32',
