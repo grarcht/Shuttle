@@ -88,3 +88,7 @@ dependencies {
     implementation shuttle.integrationsPersistence
     implementation shuttle.integrationsExtensionsRoom
 }
+
+kapt {
+    correctErrorTypes true
+}

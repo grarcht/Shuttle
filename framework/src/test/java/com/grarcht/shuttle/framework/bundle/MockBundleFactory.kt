@@ -33,6 +33,7 @@ class MockBundleFactory: BundleFactory {
         return create(mutableMapOf())
     }
 
+    @Suppress("LongMethod") // This function length is okay. It's just for tests.
     fun create(map: MutableMap<String?, Any?> = mutableMapOf()): Bundle {
         //https://github.com/konmik/nucleus/blob/master/nucleus-test-kit/src/main/java/mocks/BundleMock.java
         val unsupported: Answer<*> = Answer<Any?> { throw UnsupportedOperationException() }

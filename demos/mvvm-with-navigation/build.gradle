@@ -89,3 +89,7 @@ dependencies {
     testImplementation testingDeps.junit.jupiterApi
     testRuntimeOnly testingDeps.junit.jupiterEngine
 }
+
+kapt {
+    correctErrorTypes true
+}

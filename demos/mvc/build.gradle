@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-android-extensions' // needed for parcelize
     id 'dagger.hilt.android.plugin'
     id 'org.jetbrains.dokka'
     id 'kotlin-kapt'
@@ -79,4 +78,8 @@ dependencies {
 //    implementation shuttle.framework
 //    implementation shuttle.integrationsPersistence
 //    implementation shuttle.integrationsExtensionsRoom
+}
+
+kapt {
+    correctErrorTypes true
 }

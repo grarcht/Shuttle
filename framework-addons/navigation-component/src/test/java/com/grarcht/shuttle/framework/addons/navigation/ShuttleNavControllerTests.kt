@@ -200,7 +200,7 @@ class ShuttleNavControllerTests {
 
     private data class Cargo(val cargoId: String, val numberOfBoxes: Int) : Serializable
 
-    private class TestNavDirections() : NavDirections {
+    private class TestNavDirections : NavDirections {
         override fun getActionId(): Int = ACTION_ID
         override fun getArguments(): Bundle = ARGUMENTS
     }
