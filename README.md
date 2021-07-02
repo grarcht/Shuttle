@@ -13,6 +13,11 @@ Shuttle reduces the high-level of governance needed to catch Transaction Too Lar
 3. avoiding app crashes from Transaction Too Large Exceptions
 4. enabling retrieval of the stored Serializable at the destination.
 
+Shuttle also excels by:
+1. providing a solution with maven artifacts
+2. providing Solution Building Blocks (SBBs) for building on
+3. saving one time in avoiding DB and table setup, especially with creating many tables for the content of different types of objects.
+
 Why keep spending more time and money on governance through code reviews?  Why not embrace the problem by providing a solution for it?
 
 When envisioning, designing, and creating the architecture, quality attributes and best practices were in mind. These attributes include usability, readability, recognizability, reusability, maintainability, and more.
