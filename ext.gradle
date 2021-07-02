@@ -15,7 +15,7 @@ ext {
             mockito            : '3.11.2',
             navigation         : '2.3.5',
             room               : '2.3.0',
-            shuttle            : '1.0.0-beta01',
+            shuttle            : '1.0.0',
             sourceCompatibility: 1.8,
             targetCompatibility: 1.8
     ]
