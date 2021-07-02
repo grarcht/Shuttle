@@ -1,6 +1,18 @@
 # Changelog
 
 ## [Released]
+## [1.0.0] - 2021-07-01
+## Added
+- added unit tests for the navigation framework addon
+- added a new context modeling diagram
+
+### Changed
+- updated unit tests with corrections for detekt errors/warnings
+- updated the module relationships modeling diagram
+- updated dependency versions
+- made google repository maven url adjustments to enable Hilt version 2.37 to work with the project
+- updated the readme file
+
 ## [1.0.0-beta01] - 2021-06-16
 ### Added
 - added unit tests in the framework, framework-integrations-persistence, and framework-integrations-extensions-room modules
