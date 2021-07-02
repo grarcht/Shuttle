@@ -8,6 +8,8 @@ import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
 import com.grarcht.shuttle.framework.BuildConfig
+import com.grarcht.shuttle.framework.content.bundle.BundleFactory
+import com.grarcht.shuttle.framework.content.bundle.DefaultBundleFactory
 import com.grarcht.shuttle.framework.content.bundle.ShuttleBundle
 import com.grarcht.shuttle.framework.model.ShuttleParcelCargo
 import com.grarcht.shuttle.framework.screen.ShuttleFacade
@@ -27,9 +29,9 @@ class ShuttleNavController(
     private val navDirections: NavDirections? = null,
     @IdRes private val resId: Int? = null,
     private val navOptions: NavOptions? = null,
-    private val navigatorExtras: Navigator.Extras? = null
+    private val navigatorExtras: Navigator.Extras? = null,
+    private val internalBundle: Bundle?
 ) {
-    private val internalBundle = Bundle()
     private var logTag: String? = null
     private var storeCargoJob: Job? = null
 
@@ -51,7 +53,7 @@ class ShuttleNavController(
 
     fun transport(cargoId: String, serializable: Serializable?): ShuttleNavController {
         val parcelPackage = ShuttleParcelCargo(cargoId)
-        internalBundle.putParcelable(cargoId, parcelPackage)
+        internalBundle?.putParcelable(cargoId, parcelPackage)
 
         serializable?.let {
             storeCargoJob = GlobalScope.launch {
@@ -96,23 +98,26 @@ class ShuttleNavController(
     }
 
     private fun navigate() {
-        if (navDirections != null) {
-            val directions = ShuttleNavDirections(navDirections.actionId, internalBundle)
-            when {
-                navOptions != null -> navController.navigate(directions, navOptions)
-                navigatorExtras != null -> navController.navigate(directions, navigatorExtras)
-                else -> navController.navigate(directions)
+        internalBundle?.let {
+            if (navDirections != null) {
+                val directions = ShuttleNavDirections(navDirections.actionId, internalBundle)
+                when {
+                    navOptions != null -> navController.navigate(directions, navOptions)
+                    navigatorExtras != null -> navController.navigate(directions, navigatorExtras)
+                    else -> navController.navigate(directions)
+                }
+            } else if (resId != null) {
+                navController.navigate(resId, internalBundle, navOptions, navigatorExtras)
             }
-        } else if (resId != null) {
-            navController.navigate(resId, internalBundle, navOptions, navigatorExtras)
         }
     }
 
     private fun verifyWithFunctionWasCalled() {
-        if (BuildConfig.DEBUG && internalBundle.isEmpty) {
+        val isInternalBundleEmpty = internalBundle?.isEmpty ?: true
+        if (BuildConfig.DEBUG && isInternalBundleEmpty) {
             val message = "$logTag.  ShuttleNavigator was used; however, the transport function was not called."
             throw IllegalStateException(message)
-        } else if (internalBundle.isEmpty) {
+        } else if (isInternalBundleEmpty) {
             Log.w(logTag, "ShuttleNavigator was used; however, the transport function was not called.")
         }
     }
@@ -133,15 +138,18 @@ class ShuttleNavController(
             navController: NavController,
             navDirections: NavDirections,
             navOptions: NavOptions? = null,
-            navigatorExtras: Navigator.Extras? = null
+            navigatorExtras: Navigator.Extras? = null,
+            bundleFactory: BundleFactory? = DefaultBundleFactory()
         ): ShuttleNavController {
+            val newBundle = bundleFactory?.create() as Bundle
             return ShuttleNavController(
                 shuttleWarehouse,
                 shuttleScreenFacade,
                 navController,
                 navDirections,
                 navOptions = navOptions,
-                navigatorExtras = navigatorExtras
+                navigatorExtras = navigatorExtras,
+                internalBundle = newBundle
             )
         }
 
@@ -160,15 +168,18 @@ class ShuttleNavController(
             navController: NavController,
             @IdRes resId: Int,
             navOptions: NavOptions? = null,
-            navigatorExtras: Navigator.Extras? = null
+            navigatorExtras: Navigator.Extras? = null,
+            bundleFactory: BundleFactory? = DefaultBundleFactory()
         ): ShuttleNavController {
+            val newBundle = bundleFactory?.create() as Bundle
             return ShuttleNavController(
                 shuttleWarehouse,
                 shuttleScreenFacade,
                 navController,
                 resId = resId,
                 navOptions = navOptions,
-                navigatorExtras = navigatorExtras
+                navigatorExtras = navigatorExtras,
+                internalBundle = newBundle
             )
         }
     }

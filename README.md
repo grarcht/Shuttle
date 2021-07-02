@@ -5,7 +5,7 @@
 
 Shuttle provides a modern, guarded way to pass large Serializable objects with Intent objects or saving them in Bundle objects to avoid app crashes.
 
-Often, businesses experience the adverse side effects of risks introduced in daily software engineering.   These adverse side effects include time and money spent on app crash investigation, app crash fixes, quality assurance testing, releasing hot-fixes, and extra governance through code reviews.
+Often, businesses experience the adverse side effects of risks introduced in daily software engineering.   These adverse side effects include time and money spent on app crash investigation, app crash fixes, quality assurance testing, releasing hotfixes, and extra governance through code reviews.
 
 Shuttle reduces the high-level of governance needed to catch Transaction Too Large Exception inducing code by:
 1. storing the Serializable and passes an identifier for the Serializable
@@ -13,10 +13,14 @@ Shuttle reduces the high-level of governance needed to catch Transaction Too Lar
 3. avoiding app crashes from Transaction Too Large Exceptions
 4. enabling retrieval of the stored Serializable at the destination.
 
+Shuttle also excels by:
+1. providing a solution with maven artifacts
+2. providing Solution Building Blocks (SBBs) for building on
+3. saving one time in avoiding DB and table setup, especially with creating many tables for the content of different types of objects.
+
 Why keep spending more time and money on governance through code reviews?  Why not embrace the problem by providing a solution for it?
 
-When envisioning, designing, and creating the architecture, quality attributes, and best practices were in mind. These attributes include but are not limited to usability, readability, recognizability, reusability, and maintainability.
-
+When envisioning, designing, and creating the architecture, quality attributes and best practices were in mind. These attributes include usability, readability, recognizability, reusability, maintainability, and more.
 
 
 ## Background
@@ -191,7 +195,7 @@ The Solution Building Block (SBB) composes logical groupings in their respective
 1. **Framework:** This module contains the core, essential solution components to get started.
 2. **Framework Integrations:** These modules contain the necessary bridging/interfaces to integrate different technologies into the framework module.
 3. **Framework Integration Extensions:** These modules contain the necessary code to complete solutions with the Framework module via Framework Integration modules.
-4. **Framework Addons:** These modules are useful solutions or Solution Building Blocks(SBBs) built on the Shuttle Framework.
+4. **Framework Addons:** These modules are valuable solutions or Solution Building Blocks(SBBs) built on the Shuttle Framework.
 
 
 
@@ -212,9 +216,9 @@ The Shuttle Framework's design includes the avoidance of imposing technologies o
 
 
 ## Heads Up
-If there is other data, like Parcelable objects included in on intent data, app crashes may still occur from Transaction Too Large exceptions.
+If there is other data, like Parcelable objects included in intent data, app crashes may still occur from Transaction Too Large exceptions.
 
-In E.A./S.A. and Software Engineering, one often weighs the pros with the cons on topics.  In Android, different types of data can be passed with Bundle objects.   It is considered best practice to use Parcelable objects over Serializable objects to leverage faster load times.  Unfortunately, Parcelable objects are highly optimized for Inter-process Communication (IPC) and are not safe for storing on disk.   Thus, Google recommends using standard serialization or some other form of serialization.  To ensure proper storing and loading of objects, this project uses standard serializable objects to store data.   The drawback of this approach is that the load speeds are slower than with Parcelable objects.  This drawback can also impose some risk with implementations having to wait a little longer for objects to load.  To diminish this risk, the aforementioned cargo states have been provided and enable consumers to handle the UI with the loading progress indication of choice.
+In E.A./S.A. and Software Engineering, one often weighs the pros with the cons on topics.  In Android, different types of data can be passed with Bundle objects.   It is considered best practice to use Parcelable objects over Serializable objects to leverage faster load times.  Unfortunately, Parcelable objects are highly optimized for Inter-process Communication (IPC) and are not safe for storing on disk.   Thus, Google recommends using standard or other forms of serialization.  To properly store and load objects, this project uses serializable objects to store data.   The drawback of this approach is that the load speeds are slower than with Parcelable objects.  This drawback can also impose some risk with implementations having to wait a little longer for objects to load.  The cargo mentioned above has been provided to mitigate the risk and enable consumers to handle the UI with the loading progress indication of choice.
 
 
 
@@ -225,7 +229,7 @@ One should use Glide, Picasso, or some other equivalent library to work with ima
 
 With MVVM, the activities and fragments are a part of the View component.   The ViewModel is the liaison between the View and the Model.   It maintains the state of the View. It may take actions from the View events and perform actions on the Model.  It may respond to events from the Model and manipulate the View.
 
-In the demo app, the ViewModel component is using Google's ViewModel Architecture Component.  The asynchronous notification mechanism used in MVVM is provided by using Kotlin Channels, much like Google's Databinding library's Observables.  Databinding has also been included with some demos to show basic integration.
+In the demo app, the ViewModel component is using Google's ViewModel Architecture Component.  The asynchronous notification mechanism used in MVVM is provided using Kotlin Channels, much like Google's Databinding library's Observables.  Databinding has also been included with some demos to show essential integration.
 
 With MVC, the activities and fragments are a part of the Controller Component.  The controllers receive input and modify it for the models or views.
 

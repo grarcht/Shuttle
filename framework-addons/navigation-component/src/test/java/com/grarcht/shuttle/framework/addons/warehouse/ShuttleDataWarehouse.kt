@@ -1,8 +1,9 @@
-package com.grarcht.shuttle.framework.warehouse
+package com.grarcht.shuttle.framework.addons.warehouse
 
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
 import com.grarcht.shuttle.framework.result.ShuttleStoreCargoResult
+import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
 import kotlinx.coroutines.channels.Channel
 import java.io.Serializable
 

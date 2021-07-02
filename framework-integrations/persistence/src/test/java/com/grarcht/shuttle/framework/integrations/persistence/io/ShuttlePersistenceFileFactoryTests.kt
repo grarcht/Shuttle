@@ -2,10 +2,12 @@ package com.grarcht.shuttle.framework.integrations.persistence.io
 
 import com.grarcht.shuttle.framework.integrations.persistence.io.file.factory.ShuttlePersistenceFileFactory
 import org.junit.Assert
-import org.junit.Test
 import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import java.io.File
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ShuttlePersistenceFileFactoryTests {
     private var file: File? = null
 

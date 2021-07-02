@@ -43,6 +43,7 @@ private const val CARGO_FILE_PATH = "/cargo"
 private const val STORE_CARGO_FAILURE = -1L
 private const val STORE_CARGO_SUCCESS = 1L
 
+@Suppress("LargeClass") // It's okay for this class.  There are just different test cases.
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ShuttleWarehouseTests {
     private var compositeDisposableHandle: CompositeDisposableHandle? = null
@@ -547,8 +548,10 @@ class ShuttleWarehouseTests {
             `when`(
                 fileSystemGateway.writeToFile("$CARGO_FILE_PATH/cargo/", cargoId, cargo)
             ).thenReturn(filePath)
-            `when`(fileSystemGateway.deleteFile(invalidFilePath)).thenReturn(ShuttlePersistenceRemoveCargoResult.DoesNotExist)
-            `when`(dao.getCargoBy(anyOrNull())).thenReturn(TestShuttleDataModel(cargoId, filePath))
+            `when`(fileSystemGateway.deleteFile(invalidFilePath))
+                .thenReturn(ShuttlePersistenceRemoveCargoResult.DoesNotExist)
+            `when`(dao.getCargoBy(anyOrNull()))
+                .thenReturn(TestShuttleDataModel(cargoId, filePath))
             `when`(fileSystemGateway.readFromFile(filePath)).thenReturn(cargo)
 
             storeCargo(cargo, warehouse, countDownLatch)
@@ -1018,5 +1021,8 @@ class ShuttleWarehouseTests {
     }
 
     private data class Cargo(val cargoId: String, val numberOfBoxes: Int) : Serializable
-    private data class TestShuttleDataModel(override val cargoId: String, override val filePath: String) : ShuttleDataModel
+    private data class TestShuttleDataModel(
+        override val cargoId: String,
+        override val filePath: String
+    ) : ShuttleDataModel
 }

@@ -227,15 +227,8 @@ class CargoShuttleTests {
 
         runBlocking {
             testScope = this
-
-            doAnswer {
-                val runnable = it.getArgument(0, Runnable::class.java)
-                runnable?.run()
-                true
-            }.`when`(handler).post(Mockito.any())
-
+            runHandler(handler)
             cargoShuttle.cleanShuttleOnReturnTo(firstScreenClass, nextScreenClass, cargoId)
-
             cargoShuttle
                 .intentCargoWith(Intent.ACTION_MEDIA_BUTTON)
                 .transport(cargoId, cargo)
@@ -278,6 +271,8 @@ class CargoShuttleTests {
         Assertions.assertEquals(noCargo, storeId)
     }
 
+    // This suppression is okay.  This test requires more functionality.
+    @Suppress("LongMethod")
     @Test
     fun verifyCargoRemovalOnCleanShuttleFromDeliveryFor() {
         val cargoId = "cargoId1"
@@ -301,13 +296,7 @@ class CargoShuttleTests {
 
         runBlocking {
             testScope = this
-
-            doAnswer {
-                val runnable = it.getArgument(0, Runnable::class.java)
-                runnable?.run()
-                true
-            }.`when`(handler).post(Mockito.any())
-
+            runHandler(handler)
             val receiverChannel = Channel<ShuttleRemoveCargoResult>()
             val disposableHandle = launch(Dispatchers.Main) {
                 receiverChannel
@@ -372,6 +361,8 @@ class CargoShuttleTests {
         Assertions.assertEquals(2, numberOfValidSteps)
     }
 
+    // This suppression is okay.  This test requires more functionality.
+    @Suppress("LongMethod")
     @Test
     fun verifyCargoRemovalOnCleanShuttleFromAllDeliveries() {
         val cargoId = "cargoId1"
@@ -395,13 +386,7 @@ class CargoShuttleTests {
 
         runBlocking {
             testScope = this
-
-            doAnswer {
-                val runnable = it.getArgument(0, Runnable::class.java)
-                runnable?.run()
-                true
-            }.`when`(handler).post(Mockito.any())
-
+            runHandler(handler)
             val receiverChannel = Channel<ShuttleRemoveCargoResult>()
             val disposableHandle = launch(Dispatchers.Main) {
                 receiverChannel
@@ -464,6 +449,14 @@ class CargoShuttleTests {
         countDownLatch.await(1, TimeUnit.SECONDS)
         Assertions.assertEquals(noCargo, storeId)
         Assertions.assertEquals(2, numberOfValidSteps)
+    }
+
+    private fun runHandler(handler: Handler){
+        doAnswer {
+            val runnable = it.getArgument(0, Runnable::class.java)
+            runnable?.run()
+            true
+        }.`when`(handler).post(Mockito.any())
     }
 
     private data class CargoDataModel(override val cargoId: String, override val filePath: String) : ShuttleDataModel

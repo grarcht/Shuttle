@@ -1,4 +1,4 @@
-package com.grarcht.shuttle.framework.bundle
+package com.grarcht.shuttle.framework.addons.bundle
 
 import android.os.Bundle
 import android.os.Parcel

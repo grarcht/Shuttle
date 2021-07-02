@@ -28,10 +28,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
         consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes.release.minifyEnabled false
+    testOptions.unitTests.returnDefaultValues = true
     kotlinOptions.jvmTarget = versions.jvmTarget
 
     compileOptions {
@@ -44,16 +46,26 @@ dependencies {
     implementation jetbrainsKotlinDeps.stdlib
     implementation androidXDeps.navigationFragmentKtx
     implementation project(':framework')
-    testImplementation testingDeps.junit.jupiterApi
-    testRuntimeOnly testingDeps.junit.jupiterEngine
+
     androidTestImplementation testingDeps.junit.ext
     androidTestImplementation testingDeps.espresso.core
+    androidTestImplementation testingDeps.mockito.core
+    androidTestImplementation testingDeps.mockito.kotlin
+
+    testImplementation testingDeps.mockito.core
+    testImplementation testingDeps.mockito.kotlin
+    testImplementation testingDeps.mockito.inline
+    testImplementation testingDeps.androidTest.monitor
+    testImplementation testingDeps.junit.jupiterApi
+    testImplementation testingDeps.kotlin.coroutines
+    testImplementation testingDeps.junit.androidCore
+    testRuntimeOnly testingDeps.junit.jupiterEngine
     testRuntimeOnly testingDeps.junit.platformCommons // enables a package of tests to be run
 }
 
 group 'com.grarcht.shuttle'
 archivesBaseName = 'framework-addons-navigation-component'
-version = '1.0.0-beta01'
+version = '1.0.0'
 def testPublish = true
 def isReleaseVersion = true // the opposite is snapshot
 def releaseAARFilePath = isReleaseVersion ?

@@ -16,8 +16,8 @@ import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 /**
@@ -27,7 +27,7 @@ import javax.inject.Singleton
  * function.  To keep a high level of readability and recognizability with this demo,
  * they are created within the provideShuttle function.
  */
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module
 object AppModule {
     @Provides

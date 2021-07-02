@@ -49,7 +49,8 @@ class ShuttlePersistenceFileSystemGatewayTests {
     @Test
     fun verifyDeleteFile() {
         filePath = gateway?.writeToFile(directoryName, fileName, paintColor) ?: ""
-        val result: ShuttlePersistenceRemoveCargoResult = gateway?.deleteFile(filePath) ?: ShuttlePersistenceRemoveCargoResult.UnableToRemove
+        val result: ShuttlePersistenceRemoveCargoResult =
+            gateway?.deleteFile(filePath) ?: ShuttlePersistenceRemoveCargoResult.UnableToRemove
         Assertions.assertEquals(ShuttlePersistenceRemoveCargoResult.Removed, result)
     }
 
