@@ -15,8 +15,7 @@ Shuttle reduces the high-level of governance needed to catch Transaction Too Lar
 
 Why keep spending more time and money on governance through code reviews?  Why not embrace the problem by providing a solution for it?
 
-When envisioning, designing, and creating the architecture, quality attributes and best practices were in mind. These attributes include but are not limited to usability, readability, recognizability, reusability, and maintainability.
-
+When envisioning, designing, and creating the architecture, quality attributes and best practices were in mind. These attributes include usability, readability, recognizability, reusability, maintainability, and more.
 
 
 ## Background
@@ -214,7 +213,7 @@ The Shuttle Framework's design includes the avoidance of imposing technologies o
 ## Heads Up
 If there is other data, like Parcelable objects included in intent data, app crashes may still occur from Transaction Too Large exceptions.
 
-In E.A./S.A. and Software Engineering, one often weighs the pros with the cons on topics.  In Android, different types of data can be passed with Bundle objects.   It is considered best practice to use Parcelable objects over Serializable objects to leverage faster load times.  Unfortunately, Parcelable objects are highly optimized for Inter-process Communication (IPC) and are not safe for storing on disk.   Thus, Google recommends using standard serialization or some other form of serialization.  To properly store and load objects, this project uses serializable objects to store data.   The drawback of this approach is that the load speeds are slower than with Parcelable objects.  This drawback can also impose some risk with implementations having to wait a little longer for objects to load.  The cargo mentioned above has been provided to mitigate the risk and enable consumers to handle the UI with the loading progress indication of choice.
+In E.A./S.A. and Software Engineering, one often weighs the pros with the cons on topics.  In Android, different types of data can be passed with Bundle objects.   It is considered best practice to use Parcelable objects over Serializable objects to leverage faster load times.  Unfortunately, Parcelable objects are highly optimized for Inter-process Communication (IPC) and are not safe for storing on disk.   Thus, Google recommends using standard or other forms of serialization.  To properly store and load objects, this project uses serializable objects to store data.   The drawback of this approach is that the load speeds are slower than with Parcelable objects.  This drawback can also impose some risk with implementations having to wait a little longer for objects to load.  The cargo mentioned above has been provided to mitigate the risk and enable consumers to handle the UI with the loading progress indication of choice.
 
 
 

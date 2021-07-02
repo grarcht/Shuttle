@@ -68,7 +68,7 @@ allprojects {
     apply from: "$rootDir/detekt/detekt.gradle"
 
     repositories {
-        // mavenLocal()
+        mavenLocal()
 
         // Instead of using the gogole() repo function, specify the maven url instead.  There is
         // an issue with the hilt dependencies where there are extra dependencies that are pulled
