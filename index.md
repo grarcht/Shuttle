@@ -1,5 +1,3 @@
-![Shuttle](shuttle_header.png)
-
 # Shuttle
 [![License: MIT](https://img.shields.io/github/license/grarcht/shuttle?color=white&style=plastic)](https://github.com/grarcht/Shuttle/blob/main/LICENSE.md)   ![Maven Central](https://img.shields.io/maven-central/v/com.grarcht.shuttle/framework?color=teal&style=plastic)
 
