@@ -1,5 +1,8 @@
 buildscript {
     apply from: 'ext.gradle'
+    ext {
+        versions.kotlin = '1.5.31'
+    }
 
     repositories {
         // Instead of using the gogole() repo function, specify the maven url instead.  There is
