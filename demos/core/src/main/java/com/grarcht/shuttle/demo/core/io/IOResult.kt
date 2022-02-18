@@ -5,6 +5,11 @@ package com.grarcht.shuttle.demo.core.io
  */
 sealed class IOResult {
     /**
+     * State for other than [Loading], [Success], and [Error].
+     */
+    object Unknown: IOResult()
+
+    /**
      * State for loading data.
      */
     object Loading : IOResult()

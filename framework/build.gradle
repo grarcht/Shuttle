@@ -23,15 +23,13 @@ tasks.dokkaHtml.configure {
 
 android {
     compileSdkVersion 30
-    buildToolsVersion versions.buildToolsVersion
 
     defaultConfig {
+        testInstrumentationRunnerArguments runnerBuilder: 'de.mannodermaus.junit5.AndroidJUnit5Builder'
+        testInstrumentationRunnerArguments
         minSdkVersion 26
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
         consumerProguardFiles "consumer-rules.pro"
     }
 
@@ -43,17 +41,12 @@ android {
         sourceCompatibility versions.sourceCompatibility
         targetCompatibility versions.targetCompatibility
     }
-
     packagingOptions {
-        exclude 'META-INF/LICENSE.md'
-        exclude 'META-INF/LICENSE-notice.md'
-        // the following exclusions are for Android tests
-        exclude 'META-INF/AL2.0'
-        exclude 'win32-x86/attach_hotspot_windows.dll'
-        exclude 'win32-x86-64/attach_hotspot_windows.dll'
-        exclude 'META-INF/LGPL2.1'
-        exclude 'META-INF/licenses/ASM'
+        resources {
+            excludes += ['META-INF/LICENSE.md', 'META-INF/LICENSE-notice.md', 'META-INF/AL2.0', 'win32-x86/attach_hotspot_windows.dll', 'win32-x86-64/attach_hotspot_windows.dll', 'META-INF/LGPL2.1', 'META-INF/licenses/ASM']
+        }
     }
+
 }
 
 dependencies {
