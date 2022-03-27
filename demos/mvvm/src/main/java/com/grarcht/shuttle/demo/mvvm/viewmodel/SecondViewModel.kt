@@ -8,7 +8,6 @@ import com.grarcht.shuttle.demo.mvvm.BR
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import java.io.Serializable

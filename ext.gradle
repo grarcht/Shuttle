@@ -1,55 +1,56 @@
 ext {
     versions = [
-            buildToolsVersion  : '30.0.2',
-            detekt             : '1.17.1',
-            dokka              : '1.4.32',
-            gradleBuildTools   : '7.0.4',
-            hilt               : '2.37',
+            buildToolsVersion  : '30.0.3',
+            detekt             : '1.19.0',
+            dokka              : '1.6.10',
+            gradleBuildTools   : '7.1.2',
+            hilt               : '2.38.1',
             junitAndroidTest   : '1.2.2',
-            junitJupiter       : '5.7.2',
-            junitPlatform      : '1.7.2',
-            jvmTarget          : '1.8',
-            kotlin             : '1.5.31',
-            kotlinCoroutines   : '1.5.0',
-            kotlinCompilerExt  : '1.0.5',
-            lifecycle          : '2.3.1',
-            mockito            : '3.11.2',
-            navigation         : '2.3.5',
-            room               : '2.3.0',
+            junitJupiter       : '5.8.2',
+            junitPlatform      : '1.8.2',
+            jvmTarget          : '11',
+            kotlin             : '1.6.0',
+            kotlinCoroutines   : '1.6.0', // Requires Kotlin v1.6.0
+            kotlinCompilerExt  : '1.1.0-rc01', // For Kotlin v1.6.0
+            lifecycle          : '2.4.1',
+            mockito            : '4.0.0',
+            navigation         : '2.4.1',
+            room               : '2.4.2',
             shuttle            : '1.0.0',
-            sourceCompatibility: JavaVersion.VERSION_1_8,
-            targetCompatibility: JavaVersion.VERSION_1_8
+            sourceCompatibility: JavaVersion.VERSION_11,
+            targetCompatibility: JavaVersion.VERSION_11
     ]
 
     classpathDeps = [
             dokkaGradlePlugin : "org.jetbrains.dokka:dokka-gradle-plugin:${versions.dokka}",
             gradleBuildTools  : "com.android.tools.build:gradle:${versions.gradleBuildTools}",
             kotlinGradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
-            junit5Plugin      : 'de.mannodermaus.gradle.plugins:android-junit5:1.7.1.1'
+            junit5Plugin      : 'de.mannodermaus.gradle.plugins:android-junit5:1.8.2.0'
     ]
 
     androidXDeps = [
             activityKtx          : 'androidx.activity:activity-ktx:1.4.0',
-            appCompat            : 'androidx.appcompat:appcompat:1.4.0-alpha03',
+            appCompat            : 'androidx.appcompat:appcompat:1.4.1',
             compose              : [
                     activity        : 'androidx.activity:activity-compose:1.4.0',
-                    foundation      : 'androidx.compose.foundation:foundation:1.1.0-rc01',
-                    foundationLayout: 'androidx.compose.foundation:foundation-layout:1.1.0-rc01',
-                    material        : 'androidx.compose.material:material:1.1.0-rc01',
-                    materialIcons   : 'androidx.compose.material:material-icons-core:1.1.0-rc01',
-                    runtime         : 'androidx.compose.runtime:runtime:1.1.0-rc01',
-                    ui              : 'androidx.compose.ui:ui:1.1.0-rc01',
-                    uiTooling       : 'androidx.compose.ui:ui-tooling:1.0.5'
+                    foundation      : 'androidx.compose.foundation:foundation:1.1.1',
+                    foundationLayout: 'androidx.compose.foundation:foundation-layout:1.1.1',
+                    material        : 'androidx.compose.material:material:1.1.1',
+                    materialIcons   : 'androidx.compose.material:material-icons-core:1.1.1',
+                    runtime         : 'androidx.compose.runtime:runtime:1.1.1',
+                    ui              : 'androidx.compose.ui:ui:1.1.1',
+                    uiTooling       : 'androidx.compose.ui:ui-tooling:1.1.1'
             ],
-            constraintLayout     : 'androidx.constraintlayout:constraintlayout:2.0.4',
-            coreKtx              : 'androidx.core:core-ktx:1.3.2',
-            fragmentKtx          : 'androidx.fragment:fragment-ktx:1.3.5',
+            constraintLayout     : 'androidx.constraintlayout:constraintlayout:2.1.3',
+            coreKtx              : 'androidx.core:core-ktx:1.7.0',
+            fragmentKtx          : 'androidx.fragment:fragment-ktx:1.4.1',
             lifecycle            : [
                     extensions         : "androidx.lifecycle:lifecycle-runtime-ktx:${versions.lifecycle}",
                     viewModel          : "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}",
-                    viewModelForCompose: "androidx.lifecycle:lifecycle-viewmodel-compose:${versions.lifecycle}"
+                    viewModelForCompose: "androidx.lifecycle:lifecycle-viewmodel-compose:${versions.lifecycle}",
+                    common             : "androidx.lifecycle:lifecycle-common-java8:${versions.lifecycle}"
             ],
-            material             : 'com.google.android.material:material:1.4.0',
+            material             : 'com.google.android.material:material:1.5.0',
             navigationFragmentKtx: "androidx.navigation:navigation-fragment-ktx:${versions.navigation}",
             testRunner           : 'androidx.test.runner.AndroidJUnitRunner'
     ]
@@ -91,10 +92,10 @@ ext {
 
     testingDeps = [
             androidTest: [
-                    monitor: 'androidx.test:monitor:1.3.0'
+                    monitor: 'androidx.test:monitor:1.5.0'
             ],
             espresso   : [
-                    core: 'androidx.test.espresso:espresso-core:3.3.0'
+                    core: 'androidx.test.espresso:espresso-core:3.4.0'
             ],
             junit      : [
                     ext                    : 'androidx.test.ext:junit:1.1.2',
@@ -116,7 +117,7 @@ ext {
                     core        : "org.mockito:mockito-core:${versions.mockito}",
                     inline      : "org.mockito:mockito-inline:${versions.mockito}",
                     junitJupiter: "org.mockito:mockito-junit-jupiter:${versions.mockito}",
-                    kotlin      : 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
+                    kotlin      : "org.mockito.kotlin:mockito-kotlin:${versions.mockito}"
             ]
     ]
 }

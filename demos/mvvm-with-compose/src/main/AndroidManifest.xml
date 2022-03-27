@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.grarcht.shuttle.demo.mvvmwithcompose">
 
     <!--
@@ -23,14 +24,18 @@
 
         <activity
             android:name=".view.MVVMFirstViewActivity"
-            android:exported="true">
+            android:exported="true"
+            tools:node="merge" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.MVVMSecondViewActivity" />
+        <activity
+            android:name=".view.MVVMSecondViewActivity"
+            android:exported="false"
+            tools:node="merge" />
     </application>
 
 </manifest>

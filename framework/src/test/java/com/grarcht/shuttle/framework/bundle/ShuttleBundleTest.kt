@@ -3,28 +3,32 @@ package com.grarcht.shuttle.framework.bundle
 import com.grarcht.shuttle.framework.CargoShuttle
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.content.bundle.ShuttleBundle
+import com.grarcht.shuttle.framework.coroutines.CompositeDisposableHandle
+import com.grarcht.shuttle.framework.coroutines.addForDisposal
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import com.grarcht.shuttle.framework.screen.ShuttleFacade
 import com.grarcht.shuttle.framework.warehouse.ShuttleDataWarehouse
-import kotlinx.coroutines.CoroutineScope
+import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.DisposableHandle
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.TestCoroutineScheduler
+import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Assertions.fail
-import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.mockito.Mockito.mock
@@ -33,14 +37,15 @@ import java.io.Serializable
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
+@ExperimentalCoroutinesApi
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ShuttleBundleTest {
-    @OptIn(ObsoleteCoroutinesApi::class)
-    private val mainThreadSurrogate = newSingleThreadContext("UI thread")
-    private val shuttleWarehouse = ShuttleDataWarehouse()
-    private var testScope: CoroutineScope? = null
-    private var disposableHandle: DisposableHandle? = null
-    private lateinit var shuttle: Shuttle
+    private var compositeDisposableHandle: CompositeDisposableHandle? = null
+    private var shuttle: Shuttle? = null
+    private val shuttleScreenFacade = mock(ShuttleFacade::class.java)
+    private var shuttleWarehouse: ShuttleDataWarehouse? = null
+    private lateinit var testDispatcher: TestDispatcher
+    private lateinit var testScope: TestScope
 
     @Volatile
     private var doesResultMatch = false
@@ -48,32 +53,30 @@ class ShuttleBundleTest {
     @Volatile
     private var resultSerializable: Serializable? = null
 
-    @ExperimentalCoroutinesApi // This is only for the call to Dispatchers.setMain
-    @BeforeAll
-    fun runBeforeAllTests() {
-        //https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-test/
-        Dispatchers.setMain(mainThreadSurrogate)
-
-        val shuttleScreenFacade = mock(ShuttleFacade::class.java)
-
-        shuttle = spy(CargoShuttle(shuttleScreenFacade, shuttleWarehouse))
+    @BeforeEach
+    fun `run before each test`() {
+        testDispatcher = UnconfinedTestDispatcher(TestCoroutineScheduler())
+        testScope = TestScope()
+        Dispatchers.setMain(testDispatcher)
+        shuttleWarehouse = ShuttleDataWarehouse()
+        shuttle = spy(CargoShuttle(shuttleScreenFacade, shuttleWarehouse as ShuttleDataWarehouse))
+        compositeDisposableHandle = CompositeDisposableHandle()
         doesResultMatch = false
     }
 
-    @ExperimentalCoroutinesApi // This is only for the call to Dispatchers.resetMain
-    @AfterAll
-    fun tearDown() {
-        disposableHandle?.dispose()
-        Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
-        mainThreadSurrogate.close()
-        testScope?.cancel()
+    @AfterEach
+    fun `run after each test`() {
+        runBlocking { shuttleWarehouse?.removeAllCargo() }
+        compositeDisposableHandle?.dispose()
+        Dispatchers.resetMain()
+        testDispatcher.cancel()
+        testScope.cancel()
     }
 
-
     @Test
-    fun verifyPutAndGetSerializable() {
+    fun verifyPutAndGetSerializable() = testScope.runTest {
         // given
-        var countDownLatch = CountDownLatch(1)
+        val countDownLatch = CountDownLatch(1)
         val paintColorKey = "paint color"
         val paintColorValue = "blue"
         val cargoId = "cargo id"
@@ -83,20 +86,14 @@ class ShuttleBundleTest {
         val paintColor = PaintColor("blue")
         val map = mutableMapOf<String?, Any?>(Pair(paintColorKey, paintColorValue))
         val bundleToCreateFrom = MockBundleFactory().create(map)
-        val shuttleBundle = ShuttleBundle.with(bundleToCreateFrom, shuttleWarehouse)
+        val shuttleBundle = ShuttleBundle.with(bundleToCreateFrom, shuttleWarehouse as ShuttleWarehouse)
 
-        // when
         shuttleBundle.transport(cargoId, paintColor)
-        countDownLatch.await(1, TimeUnit.SECONDS)
-        countDownLatch = CountDownLatch(1)
+        delay(1000L)
 
-        // verify
-        runBlocking {
-            testScope = this
-
-            // Will be launched in the mainThreadSurrogate dispatcher
-            disposableHandle = launch(Dispatchers.Main) {
-                val channel: Channel<ShuttlePickupCargoResult> = shuttle.pickupCargo<PaintColor>(cargoId)
+        shuttle?.let {
+            launch(Dispatchers.Main) {
+                val channel: Channel<ShuttlePickupCargoResult> = it.pickupCargo<PaintColor>(cargoId)
                 channel.consumeAsFlow()
                     .collect { shuttleResult ->
                         when (shuttleResult) {
@@ -118,13 +115,20 @@ class ShuttleBundleTest {
                 it?.let {
                     println(it.message ?: "Error when getting the serializable.")
                 }
-            }
+            }.addForDisposal(compositeDisposableHandle)
         }
 
-        assertEquals(1, shuttleWarehouse.numberOfStoreInvocations)
-        countDownLatch.await(1, TimeUnit.SECONDS)
-        Assertions.assertTrue(resultSerializable is PaintColor)
+        awaitOnLatch(countDownLatch, 1L, TimeUnit.SECONDS)
+
+        assertEquals(1, shuttleWarehouse?.numberOfStoreInvocations)
+        assertTrue(resultSerializable is PaintColor)
         val deserializedPainColor = resultSerializable as PaintColor
-        Assertions.assertTrue(deserializedPainColor.color == "blue")
+        assertTrue(deserializedPainColor.color == "blue")
+    }
+
+    @Suppress("SameParameterValue")
+    private fun awaitOnLatch(countDownLatch: CountDownLatch, timeout: Long, timeUnit: TimeUnit) {
+        @Suppress("BlockingMethodInNonBlockingContext", "SameParameterValue")
+        countDownLatch.await(timeout, timeUnit)
     }
 }

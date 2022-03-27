@@ -24,7 +24,6 @@ import kotlinx.coroutines.DisposableHandle
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 private const val LOG_TAG = "MVVMFirstViewFragment"
@@ -41,8 +40,8 @@ class MVVMFirstViewFragment : Fragment() {
     lateinit var shuttle: Shuttle
     var imageModel: ImageModel? = null
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         getImageData()
     }
 
@@ -79,6 +78,7 @@ class MVVMFirstViewFragment : Fragment() {
             viewModel.getImage(resources, R.raw.tower)
                 .collect {
                     when (it) {
+                        is IOResult.Unknown,
                         is IOResult.Loading -> {
                             enableButtons(false)
                         }

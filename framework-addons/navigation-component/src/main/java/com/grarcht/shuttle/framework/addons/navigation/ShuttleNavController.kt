@@ -14,7 +14,9 @@ import com.grarcht.shuttle.framework.content.bundle.ShuttleBundle
 import com.grarcht.shuttle.framework.model.ShuttleParcelCargo
 import com.grarcht.shuttle.framework.screen.ShuttleFacade
 import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.io.Serializable
@@ -30,8 +32,10 @@ class ShuttleNavController(
     @IdRes private val resId: Int? = null,
     private val navOptions: NavOptions? = null,
     private val navigatorExtras: Navigator.Extras? = null,
-    private val internalBundle: Bundle?
+    private val internalBundle: Bundle?,
+    backgroundThreadDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
+    private val coroutineScope = CoroutineScope(backgroundThreadDispatcher)
     private var logTag: String? = null
     private var storeCargoJob: Job? = null
 
@@ -56,7 +60,7 @@ class ShuttleNavController(
         internalBundle?.putParcelable(cargoId, parcelPackage)
 
         serializable?.let {
-            storeCargoJob = GlobalScope.launch {
+            storeCargoJob = coroutineScope.launch {
                 shuttleWarehouse.store(cargoId, it)
             }
         }

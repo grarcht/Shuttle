@@ -13,7 +13,9 @@ class ActivityLifecycleCallbackTests {
     fun verifyTheOnActivityCreatedFunctionWithTwoParametersIsCalled() {
         val callback = TestActivityLifecycleCallback()
         val activity = mock(Activity::class.java)
+
         callback.onActivityCreated(activity, savedInstanceState = null)
+
         Assertions.assertEquals(2, callback.numberOfInvocations)
     }
 
@@ -21,7 +23,9 @@ class ActivityLifecycleCallbackTests {
     fun verifyTheLawOfDemeterIsFollowedWhenCallingTheOnActivityCreatedFunction() {
         val callback = TestActivityLifecycleCallback()
         val activity = mock(Activity::class.java)
+
         callback.onActivityCreated(activity)
+
         Assertions.assertEquals(1, callback.numberOfInvocations)
     }
 
@@ -29,7 +33,9 @@ class ActivityLifecycleCallbackTests {
     fun verifyTheOnActivityStartedFunctionIsANoOperationFunction() {
         val callback = TestActivityLifecycleCallback()
         val activity = mock(Activity::class.java)
+
         callback.onActivityStarted(activity)
+
         Assertions.assertEquals(0, callback.numberOfInvocations)
     }
 
@@ -37,7 +43,9 @@ class ActivityLifecycleCallbackTests {
     fun verifyTheOnActivityResumedFunctionIsANoOperationFunction() {
         val callback = TestActivityLifecycleCallback()
         val activity = mock(Activity::class.java)
+
         callback.onActivityResumed(activity)
+
         Assertions.assertEquals(0, callback.numberOfInvocations)
     }
 
@@ -45,7 +53,9 @@ class ActivityLifecycleCallbackTests {
     fun verifyTheOnActivityPausedFunctionIsANoOperationFunction() {
         val callback = TestActivityLifecycleCallback()
         val activity = mock(Activity::class.java)
+
         callback.onActivityPaused(activity)
+
         Assertions.assertEquals(0, callback.numberOfInvocations)
     }
 
@@ -53,7 +63,9 @@ class ActivityLifecycleCallbackTests {
     fun verifyTheOnActivityStoppedFunctionIsANoOperationFunction() {
         val callback = TestActivityLifecycleCallback()
         val activity = mock(Activity::class.java)
+
         callback.onActivityStopped(activity)
+
         Assertions.assertEquals(0, callback.numberOfInvocations)
     }
 
@@ -62,14 +74,18 @@ class ActivityLifecycleCallbackTests {
         val callback = TestActivityLifecycleCallback()
         val activity = mock(Activity::class.java)
         val savedInstanceState = MockBundleFactory().create()
+
         callback.onActivitySaveInstanceState(activity, savedInstanceState)
+
         Assertions.assertEquals(0, callback.numberOfInvocations)
     }
     @Test
     fun verifyTheOnActivityDestroyedFunctionIsANoOperationFunction() {
         val callback = TestActivityLifecycleCallback()
         val activity = mock(Activity::class.java)
+
         callback.onActivityDestroyed(activity)
+
         Assertions.assertEquals(0, callback.numberOfInvocations)
     }
 

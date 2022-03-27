@@ -6,11 +6,8 @@ import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.AfterClass
 import org.junit.Before
-import org.junit.BeforeClass
 import org.junit.Test
 import org.junit.jupiter.api.Assertions
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
 
 private val context = InstrumentationRegistry.getInstrumentation().context
 private val db = ShuttleRoomDataDb.getInstance(ShuttleRoomDbConfig(context))

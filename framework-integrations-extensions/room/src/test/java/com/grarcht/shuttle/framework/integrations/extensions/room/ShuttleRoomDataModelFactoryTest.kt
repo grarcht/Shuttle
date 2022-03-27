@@ -1,7 +1,7 @@
 package com.grarcht.shuttle.framework.integrations.extensions.room
 
-import org.junit.Test
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
 /**
  * Verifies the [ShuttleRoomDataModelFactory] functionality.

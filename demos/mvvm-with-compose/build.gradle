@@ -35,6 +35,15 @@ android {
         testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
     }
 
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            def module = details.requested.module.toString()
+            if (module.contains("lifecycle-common") || module.contains("lifecycle-common-java8")) {
+                details.useVersion("2.4.1")
+            }
+        }
+    }
+
     kotlinOptions.jvmTarget = versions.jvmTarget
 
     compileOptions {
@@ -74,7 +83,6 @@ dependencies {
     implementation androidXDeps.compose.activity
     implementation androidXDeps.compose.foundation
     implementation androidXDeps.compose.foundationLayout
-  //  implementation androidXDeps.compose.foundationText
     implementation androidXDeps.compose.material
     implementation androidXDeps.compose.materialIcons
     implementation androidXDeps.compose.runtime
@@ -88,8 +96,6 @@ dependencies {
 
     api dependencyInjectionDeps.hilt
     api dependencyInjectionDeps.hiltViewModel
-   // implementation 'androidx.compose.foundation:foundation:1.0.0-beta04'
-    //implementation 'androidx.compose.material:material:1.0.0-beta04'
     kapt dependencyInjectionDeps.hiltCompiler
 
     implementation project(':demos-core-lib')

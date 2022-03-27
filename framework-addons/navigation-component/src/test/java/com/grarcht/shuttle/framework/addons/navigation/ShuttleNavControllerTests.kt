@@ -1,105 +1,104 @@
 package com.grarcht.shuttle.framework.addons.navigation
 
 import android.os.Bundle
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
-import androidx.navigation.NavOptions
-import androidx.navigation.Navigator
 import com.grarcht.shuttle.framework.CargoShuttle
-import com.grarcht.shuttle.framework.Shuttle
+import com.grarcht.shuttle.framework.addons.InstantTaskExecutorExtension
 import com.grarcht.shuttle.framework.addons.bundle.MockBundleFactory
 import com.grarcht.shuttle.framework.addons.coroutines.CompositeDisposableHandle
+import com.grarcht.shuttle.framework.addons.warehouse.ShuttleDataWarehouse
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import com.grarcht.shuttle.framework.screen.ShuttleFacade
-import com.grarcht.shuttle.framework.addons.warehouse.ShuttleDataWarehouse
-import com.nhaarman.mockitokotlin2.doNothing
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExecutorCoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
-import org.junit.jupiter.api.AfterAll
+import kotlinx.coroutines.test.runTest
+import org.junit.Rule
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.mockito.ArgumentMatchers.anyInt
-import org.mockito.Mockito
-import org.mockito.Mockito.any
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.Mockito.doNothing
 import org.mockito.Mockito.mock
 import java.io.Serializable
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
 
 private const val ACTION_ID = 5000
 private val ARGUMENTS = Bundle.EMPTY
 
+@ExperimentalCoroutinesApi
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(InstantTaskExecutorExtension::class)
 class ShuttleNavControllerTests {
+    private lateinit var mainThreadSurrogate: ExecutorCoroutineDispatcher
+
+    @Rule
+    @JvmField
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+
     private var compositeDisposableHandle: CompositeDisposableHandle? = null
     private var navController = mock(NavController::class.java)
-    private var testScope: CoroutineScope? = null
+    private lateinit var testScope: TestScope
 
-    @OptIn(ObsoleteCoroutinesApi::class)
-    private val mainThreadSurrogate = newSingleThreadContext("UI thread")
-
-    @ExperimentalCoroutinesApi // This is only for the call to Dispatchers.setMain
-    @BeforeAll
-    fun runBeforeAllTests() {
+    @OptIn(DelicateCoroutinesApi::class)
+    @BeforeEach
+    fun `run before each test`() {
+        testScope = TestScope()
         //https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-test/
-        Dispatchers.setMain(mainThreadSurrogate)
+        mainThreadSurrogate = newSingleThreadContext("UI thread")
         compositeDisposableHandle = CompositeDisposableHandle()
     }
 
-    @ExperimentalCoroutinesApi // This is only for the call to Dispatchers.resetMain
-    @AfterAll
-    fun runAfterAllTests() {
+    @AfterEach
+    fun `run after each test`() {
         compositeDisposableHandle?.dispose()
-        Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
+        Dispatchers.resetMain()
         mainThreadSurrogate.close()
         testScope?.cancel()
     }
 
     @Test
-    fun verifyNavigateWithNavDirections() {
-        val cargoId = "cargoId1"
-        val cargo = Cargo(cargoId, 50)
-        val countDownLatch = CountDownLatch(1)
-        val directions = TestNavDirections()
-        val shuttleFacade = mock(ShuttleFacade::class.java)
-        val shuttleWarehouse = ShuttleDataWarehouse()
-        val cargoShuttle = CargoShuttle(shuttleFacade, shuttleWarehouse)
-        var channel: Channel<ShuttlePickupCargoResult>? = null
-        var numberOfValidSteps = 0
-        var storeId = ""
+    fun verifyNavigateWithNavDirections() = testScope.runTest {
+        launch(Dispatchers.Main) {
+            val cargoId = "cargoId1"
+            val cargo = Cargo(cargoId, 50)
+            val directions = TestNavDirections()
+            val shuttleFacade = mock(ShuttleFacade::class.java)
+            val shuttleWarehouse = ShuttleDataWarehouse()
+            val cargoShuttle = CargoShuttle(shuttleFacade, shuttleWarehouse)
+            var channel: Channel<ShuttlePickupCargoResult>?
+            var numberOfValidSteps = 0
+            var storeId = ""
 
-        doNothing().`when`(navController).navigate(directions)
+            doNothing().`when`(navController).navigate(directions)
 
-        // Navigate to the destination
-        val shuttleNavController = ShuttleNavController.navigateWith(
-            shuttleWarehouse,
-            shuttleFacade,
-            navController,
-            directions,
-            bundleFactory = MockBundleFactory()
-        )
-        // The guts of function cleanShuttleOnReturnTo are tested in the framework module's tests.
-        shuttleNavController
-            .transport(cargoId, cargo)
-            .deliver()
+            // Navigate to the destination
+            val shuttleNavController = ShuttleNavController.navigateWith(
+                shuttleWarehouse,
+                shuttleFacade,
+                navController,
+                directions,
+                bundleFactory = MockBundleFactory()
+            )
+            // The guts of function cleanShuttleOnReturnTo are tested in the framework module's tests.
+            shuttleNavController
+                .transport(cargoId, cargo)
+                .deliver()
 
-        // pickup the cargo
-        runBlocking {
-            testScope = this
-
+            // pickup the cargo
             val disposableHandle = launch(Dispatchers.Main) {
                 channel = cargoShuttle.pickupCargo<Cargo>(cargoId)
                 channel
@@ -112,11 +111,9 @@ class ShuttleNavControllerTests {
                             is ShuttlePickupCargoResult.Success<*> -> {
                                 storeId = (shuttleResult.data as Cargo).cargoId
                                 numberOfValidSteps++
-                                countDownLatch.countDown()
                                 cancel()
                             }
                             is ShuttlePickupCargoResult.Error<*> -> {
-                                countDownLatch.countDown()
                                 cancel()
                             }
                         }
@@ -127,42 +124,44 @@ class ShuttleNavControllerTests {
                 }
             }
             compositeDisposableHandle?.add(disposableHandle)
-        }
 
-        countDownLatch.await(1, TimeUnit.SECONDS)
-        Assertions.assertEquals(cargoId, storeId)
-        Assertions.assertEquals(2, numberOfValidSteps)
-        cargoShuttle.cleanShuttleFromAllDeliveries()
+
+            delay(1000L)
+            advanceUntilIdle()
+
+            Assertions.assertEquals(cargoId, storeId)
+            Assertions.assertEquals(2, numberOfValidSteps)
+            cargoShuttle.cleanShuttleFromAllDeliveries()
+        }
     }
 
     @Test
-    fun verifyNavigateWithNavId() {
-        val cargoId = "cargoId2"
-        val cargo = Cargo(cargoId, 150)
-        val countDownLatch = CountDownLatch(1)
-        val shuttleFacade = mock(ShuttleFacade::class.java)
-        val shuttleWarehouse = ShuttleDataWarehouse()
-        val cargoShuttle = CargoShuttle(shuttleFacade, shuttleWarehouse)
-        var channel: Channel<ShuttlePickupCargoResult>? = null
-        var numberOfValidSteps = 0
-        var storeId = ""
+    fun verifyNavigateWithNavId() = testScope.runTest {
+        launch(Dispatchers.Main) {
+            val cargoId = "cargoId2"
+            val cargo = Cargo(cargoId, 150)
+            val shuttleFacade = mock(ShuttleFacade::class.java)
+            val shuttleWarehouse = ShuttleDataWarehouse()
+            val cargoShuttle = CargoShuttle(shuttleFacade, shuttleWarehouse)
+            var channel: Channel<ShuttlePickupCargoResult>?
+            var numberOfValidSteps = 0
+            var storeId = ""
 
-        // Navigate to the destination
-        val shuttleNavController = ShuttleNavController.navigateWith(
-            shuttleWarehouse,
-            shuttleFacade,
-            navController,
-            R.id.nav_host_fragment_container, // used since it's a res id.  For the test, it doesn't matter.
-            bundleFactory = MockBundleFactory()
-        )
-        // The guts of function cleanShuttleOnReturnTo are tested in the framework module's tests.
-        shuttleNavController
-            .transport(cargoId, cargo)
-            .deliver()
+            // Navigate to the destination
+            val shuttleNavController = ShuttleNavController.navigateWith(
+                shuttleWarehouse,
+                shuttleFacade,
+                navController,
+                R.id.nav_host_fragment_container, // used since it's a res id.  For the test, it doesn't matter.
+                bundleFactory = MockBundleFactory()
+            )
+            // The guts of function cleanShuttleOnReturnTo are tested in the framework module's tests.
+            shuttleNavController
+                .transport(cargoId, cargo)
+                .deliver()
 
-        // pickup the cargo
-        runBlocking {
-           // testScope = this
+            // pickup the cargo
+            // testScope = this
 
             val disposableHandle = launch(Dispatchers.Main) {
                 channel = cargoShuttle.pickupCargo<Cargo>(cargoId)
@@ -176,11 +175,9 @@ class ShuttleNavControllerTests {
                             is ShuttlePickupCargoResult.Success<*> -> {
                                 storeId = (shuttleResult.data as Cargo).cargoId
                                 numberOfValidSteps++
-                                countDownLatch.countDown()
                                 cancel()
                             }
                             is ShuttlePickupCargoResult.Error<*> -> {
-                                countDownLatch.countDown()
                                 cancel()
                             }
                         }
@@ -191,17 +188,18 @@ class ShuttleNavControllerTests {
                 }
             }
             compositeDisposableHandle?.add(disposableHandle)
-        }
 
-        countDownLatch.await(1, TimeUnit.SECONDS)
-        Assertions.assertEquals(cargoId, storeId)
-        Assertions.assertEquals(2, numberOfValidSteps)
+            delay(1000L)
+            advanceUntilIdle()
+            Assertions.assertEquals(cargoId, storeId)
+            Assertions.assertEquals(2, numberOfValidSteps)
+        }
     }
 
     private data class Cargo(val cargoId: String, val numberOfBoxes: Int) : Serializable
 
-    private class TestNavDirections : NavDirections {
-        override fun getActionId(): Int = ACTION_ID
-        override fun getArguments(): Bundle = ARGUMENTS
-    }
+    private class TestNavDirections(
+        override val actionId: Int = ACTION_ID,
+        override val arguments: Bundle = ARGUMENTS
+    ) : NavDirections
 }

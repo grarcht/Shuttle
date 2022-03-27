@@ -163,12 +163,14 @@ class MockBundleFactory: BundleFactory {
             )
         )
         Mockito.`when`(bundle.getParcelableArray(ArgumentMatchers.anyString())).thenAnswer(get)
+        @Suppress("UNCHECKED_CAST")
         Mockito.doAnswer(put).`when`(bundle).putParcelableArrayList(
             ArgumentMatchers.anyString(), ArgumentMatchers.any(
                 ArrayList::class.java
             ) as ArrayList<out Parcelable>?
         )
         Mockito.`when`(bundle.getParcelableArrayList<Parcelable>(ArgumentMatchers.anyString())).thenAnswer(get)
+        @Suppress("UNCHECKED_CAST")
         Mockito.doAnswer(put).`when`(bundle).putSparseParcelableArray(
             ArgumentMatchers.anyString(), ArgumentMatchers.any(
                 SparseArray::class.java
@@ -181,18 +183,21 @@ class MockBundleFactory: BundleFactory {
             )
         )
         Mockito.`when`(bundle.getSerializable(ArgumentMatchers.anyString())).thenAnswer(get)
+        @Suppress("UNCHECKED_CAST")
         Mockito.doAnswer(put).`when`(bundle).putIntegerArrayList(
             ArgumentMatchers.anyString(), ArgumentMatchers.any(
                 ArrayList::class.java
             ) as ArrayList<Int>?
         )
         Mockito.`when`(bundle.getIntegerArrayList(ArgumentMatchers.anyString())).thenAnswer(get)
+        @Suppress("UNCHECKED_CAST")
         Mockito.doAnswer(put).`when`(bundle).putStringArrayList(
             ArgumentMatchers.anyString(), ArgumentMatchers.any(
                 ArrayList::class.java
             ) as ArrayList<String>?
         )
         Mockito.`when`(bundle.getStringArrayList(ArgumentMatchers.anyString())).thenAnswer(get)
+        @Suppress("UNCHECKED_CAST")
         Mockito.doAnswer(put).`when`(bundle).putCharSequenceArrayList(
             ArgumentMatchers.anyString(), ArgumentMatchers.any(
                 ArrayList::class.java

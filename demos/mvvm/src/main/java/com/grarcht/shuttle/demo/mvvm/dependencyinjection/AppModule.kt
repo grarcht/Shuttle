@@ -2,13 +2,13 @@ package com.grarcht.shuttle.demo.mvvm.dependencyinjection
 
 import android.app.Application
 import android.content.Context
-import com.grarcht.shuttle.framework.integrations.persistence.io.file.factory.ShuttlePersistenceFileFactory
-import com.grarcht.shuttle.framework.integrations.persistence.io.file.gateway.ShuttlePersistenceFileSystemGateway
+import com.grarcht.shuttle.framework.CargoShuttle
+import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.integrations.extensions.room.ShuttleRoomDataDb
 import com.grarcht.shuttle.framework.integrations.extensions.room.ShuttleRoomDataModelFactory
 import com.grarcht.shuttle.framework.integrations.extensions.room.ShuttleRoomDbConfig
-import com.grarcht.shuttle.framework.CargoShuttle
-import com.grarcht.shuttle.framework.Shuttle
+import com.grarcht.shuttle.framework.integrations.persistence.io.file.factory.ShuttlePersistenceFileFactory
+import com.grarcht.shuttle.framework.integrations.persistence.io.file.gateway.ShuttlePersistenceFileSystemGateway
 import com.grarcht.shuttle.framework.screen.ShuttleCargoFacade
 import com.grarcht.shuttle.framework.screen.ShuttleFacade
 import com.grarcht.shuttle.framework.warehouse.ShuttleRepository

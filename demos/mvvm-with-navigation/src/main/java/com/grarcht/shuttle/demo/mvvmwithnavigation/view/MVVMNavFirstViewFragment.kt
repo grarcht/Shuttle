@@ -14,18 +14,17 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
-import com.grarcht.shuttle.framework.addons.navigation.navigateWithShuttle
 import com.grarcht.shuttle.demo.core.image.ImageMessageType
 import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.core.io.IOResult
 import com.grarcht.shuttle.demo.mvvmwithnavigation.R
 import com.grarcht.shuttle.demo.mvvmwithnavigation.viewmodel.FirstViewModel
 import com.grarcht.shuttle.framework.Shuttle
+import com.grarcht.shuttle.framework.addons.navigation.navigateWithShuttle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.DisposableHandle
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.collect
 import java.io.Serializable
 import javax.inject.Inject
 
