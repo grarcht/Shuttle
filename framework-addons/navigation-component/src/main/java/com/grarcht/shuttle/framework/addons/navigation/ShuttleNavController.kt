@@ -33,9 +33,11 @@ class ShuttleNavController(
     private val navOptions: NavOptions? = null,
     private val navigatorExtras: Navigator.Extras? = null,
     private val internalBundle: Bundle?,
-    backgroundThreadDispatcher: CoroutineDispatcher = Dispatchers.IO
+    backgroundThreadDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    mainThreadDispatcher: CoroutineDispatcher = Dispatchers.Main
 ) {
-    private val coroutineScope = CoroutineScope(backgroundThreadDispatcher)
+    private val backgroundThreadCoroutineScope = CoroutineScope(backgroundThreadDispatcher)
+    private val mainThreadCoroutineScope = CoroutineScope(mainThreadDispatcher)
     private var logTag: String? = null
     private var storeCargoJob: Job? = null
 
@@ -60,7 +62,7 @@ class ShuttleNavController(
         internalBundle?.putParcelable(cargoId, parcelPackage)
 
         serializable?.let {
-            storeCargoJob = coroutineScope.launch {
+            storeCargoJob = backgroundThreadCoroutineScope.launch {
                 shuttleWarehouse.store(cargoId, it)
             }
         }
@@ -102,16 +104,18 @@ class ShuttleNavController(
     }
 
     private fun navigate() {
-        internalBundle?.let {
-            if (navDirections != null) {
-                val directions = ShuttleNavDirections(navDirections.actionId, internalBundle)
-                when {
-                    navOptions != null -> navController.navigate(directions, navOptions)
-                    navigatorExtras != null -> navController.navigate(directions, navigatorExtras)
-                    else -> navController.navigate(directions)
+        mainThreadCoroutineScope.launch {
+            internalBundle?.let {
+                if (navDirections != null) {
+                    val directions = ShuttleNavDirections(navDirections.actionId, internalBundle)
+                    when {
+                        navOptions != null -> navController.navigate(directions, navOptions)
+                        navigatorExtras != null -> navController.navigate(directions, navigatorExtras)
+                        else -> navController.navigate(directions)
+                    }
+                } else if (resId != null) {
+                    navController.navigate(resId, internalBundle, navOptions, navigatorExtras)
                 }
-            } else if (resId != null) {
-                navController.navigate(resId, internalBundle, navOptions, navigatorExtras)
             }
         }
     }
@@ -143,7 +147,9 @@ class ShuttleNavController(
             navDirections: NavDirections,
             navOptions: NavOptions? = null,
             navigatorExtras: Navigator.Extras? = null,
-            bundleFactory: BundleFactory? = DefaultBundleFactory()
+            bundleFactory: BundleFactory? = DefaultBundleFactory(),
+            backgroundThreadDispatcher: CoroutineDispatcher = Dispatchers.IO,
+            mainThreadDispatcher: CoroutineDispatcher = Dispatchers.Main
         ): ShuttleNavController {
             val newBundle = bundleFactory?.create() as Bundle
             return ShuttleNavController(
@@ -153,7 +159,9 @@ class ShuttleNavController(
                 navDirections,
                 navOptions = navOptions,
                 navigatorExtras = navigatorExtras,
-                internalBundle = newBundle
+                internalBundle = newBundle,
+                backgroundThreadDispatcher = backgroundThreadDispatcher,
+                mainThreadDispatcher = mainThreadDispatcher
             )
         }
 
@@ -173,7 +181,9 @@ class ShuttleNavController(
             @IdRes resId: Int,
             navOptions: NavOptions? = null,
             navigatorExtras: Navigator.Extras? = null,
-            bundleFactory: BundleFactory? = DefaultBundleFactory()
+            bundleFactory: BundleFactory? = DefaultBundleFactory(),
+            backgroundThreadDispatcher: CoroutineDispatcher = Dispatchers.IO,
+            mainThreadDispatcher: CoroutineDispatcher = Dispatchers.Main
         ): ShuttleNavController {
             val newBundle = bundleFactory?.create() as Bundle
             return ShuttleNavController(
@@ -183,7 +193,9 @@ class ShuttleNavController(
                 resId = resId,
                 navOptions = navOptions,
                 navigatorExtras = navigatorExtras,
-                internalBundle = newBundle
+                internalBundle = newBundle,
+                backgroundThreadDispatcher = backgroundThreadDispatcher,
+                mainThreadDispatcher = mainThreadDispatcher
             )
         }
     }

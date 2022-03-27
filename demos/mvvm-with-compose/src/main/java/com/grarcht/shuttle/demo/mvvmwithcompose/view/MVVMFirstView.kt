@@ -35,7 +35,6 @@ import kotlinx.coroutines.DisposableHandle
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import java.io.Serializable
 

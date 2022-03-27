@@ -11,7 +11,6 @@ import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
 import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch

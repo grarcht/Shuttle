@@ -3,7 +3,6 @@ package com.grarcht.shuttle.framework.coroutines.channel
 import android.util.Log
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlin.coroutines.cancellation.CancellationException

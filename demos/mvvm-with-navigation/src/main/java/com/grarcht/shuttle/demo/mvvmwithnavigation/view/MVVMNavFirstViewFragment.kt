@@ -2,7 +2,6 @@ package com.grarcht.shuttle.demo.mvvmwithnavigation.view
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -163,7 +162,7 @@ class MVVMNavFirstViewFragment : Fragment() {
         } else if (null != context) {
             val cargoId = ImageMessageType.ImageData.value
             val args = Bundle()
-            args.putParcelable(cargoId, imageModel as Parcelable)
+            args.putSerializable(cargoId, imageModel as Serializable)
             navController?.navigate(R.id.MVVMNavSecondViewActivity, args)
         }
     }

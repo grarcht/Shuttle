@@ -3,7 +3,6 @@ package com.grarcht.shuttle.demo.mvvm.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +24,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
+import java.io.Serializable
 import javax.inject.Inject
 
 private const val LOG_TAG = "MVVMFirstViewFragment"
@@ -151,7 +151,7 @@ class MVVMFirstViewFragment : Fragment() {
             val cargoId = ImageMessageType.ImageData.value
             val destinationClass = MVVMSecondViewActivity::class.java
             val intent = Intent(context, destinationClass.javaClass)
-            intent.putExtra(cargoId, imageModel as Parcelable)
+            intent.putExtra(cargoId, imageModel as Serializable)
             context.startActivity(intent)
         }
     }
