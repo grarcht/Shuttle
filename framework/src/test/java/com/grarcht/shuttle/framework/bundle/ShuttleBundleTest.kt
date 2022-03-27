@@ -14,6 +14,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -95,7 +96,7 @@ class ShuttleBundleTest {
             launch(Dispatchers.Main) {
                 val channel: Channel<ShuttlePickupCargoResult> = it.pickupCargo<PaintColor>(cargoId)
                 channel.consumeAsFlow()
-                    .collect { shuttleResult ->
+                    .collectLatest { shuttleResult ->
                         when (shuttleResult) {
                             ShuttlePickupCargoResult.Loading -> {
                                 /* ignore */

@@ -4,6 +4,7 @@ import android.util.Log
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlin.coroutines.cancellation.CancellationException
 
@@ -18,7 +19,7 @@ suspend fun <E> Channel<E>?.relayFlowIfAvailable(receiver: Channel<E>? = null, l
     if (null != this && null != receiver) {
         val tag = logTag ?: DEFAULT_LOG_TAG
         try {
-            consumeAsFlow().collect {
+            consumeAsFlow().collectLatest {
                 receiver.send(it)
             }
         } catch (e: ClosedReceiveChannelException) {

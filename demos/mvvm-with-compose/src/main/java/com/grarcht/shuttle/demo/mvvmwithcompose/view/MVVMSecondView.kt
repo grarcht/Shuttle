@@ -37,6 +37,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
@@ -112,7 +113,7 @@ class MVVMSecondView(
             viewModel
                 .loadImage(shuttle, cargoId)
                 .consumeAsFlow()
-                .collect {
+                .collectLatest {
                     when (it) {
                         is ShuttlePickupCargoResult.Loading -> {
                             stateUpdate.invoke(IOResult.Loading)

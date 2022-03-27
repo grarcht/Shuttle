@@ -74,7 +74,7 @@ At the destination, one can load the data with Shuttle by doing the following:
     MainScope().async {
         getShuttleChannel()
             .consumeAsFlow()
-            .collect { shuttleResult ->
+            .collectLatest { shuttleResult ->
                 when (shuttleResult) {
                     ShuttlePickupCargoResult.Loading -> {
                         view?.let { initLoadingView(it) }
@@ -142,7 +142,7 @@ The Destination ViewModel:
         viewModelScope.launch {
             shuttle.pickupCargo<Serializable>(cargoId = cargoId)
                 .consumeAsFlow()
-                .collect { shuttleResult ->
+                .collectLatest { shuttleResult ->
                     shuttlePickupCargoResult = shuttleResult
 
                     when (shuttleResult) {

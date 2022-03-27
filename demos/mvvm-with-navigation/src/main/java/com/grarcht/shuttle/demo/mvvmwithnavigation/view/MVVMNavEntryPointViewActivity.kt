@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -65,7 +66,7 @@ class MVVMNavEntryPointViewActivity : AppCompatActivity() {
         // The following could be useful for verification, analytics, et cetera.
         MainScope().launch {
             // Ensure all persisted cargo data is removed.
-            channel.consumeAsFlow().collect {
+            channel.consumeAsFlow().collectLatest {
                 when (it) {
                     is ShuttleRemoveCargoResult.Removing -> {
                         Log.d(LOG_TAG, "Removing all of the cargo.")

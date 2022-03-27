@@ -12,6 +12,7 @@ import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
@@ -81,7 +82,7 @@ open class ShuttleCargoFacade(
             isEnabled = false
 
             GlobalScope.launch {
-                shuttleWarehouse.removeCargoBy(screen.cargoId).consumeAsFlow().collect {
+                shuttleWarehouse.removeCargoBy(screen.cargoId).consumeAsFlow().collectLatest {
                     when (it) {
                         is ShuttleRemoveCargoResult.Removing -> {
                             // ignore

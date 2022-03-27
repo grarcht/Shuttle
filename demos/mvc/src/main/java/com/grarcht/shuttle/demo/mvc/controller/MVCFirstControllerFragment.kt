@@ -22,7 +22,9 @@ import kotlinx.coroutines.DisposableHandle
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -71,7 +73,7 @@ class MVCFirstControllerFragment : Fragment() {
                 .logTag(TAG)
                 .bytesFromRawResource(R.raw.tower)
                 .create()
-                .collect {
+                .collectLatest {
                     when (it) {
                         is IOResult.Unknown,
                         is IOResult.Loading -> {

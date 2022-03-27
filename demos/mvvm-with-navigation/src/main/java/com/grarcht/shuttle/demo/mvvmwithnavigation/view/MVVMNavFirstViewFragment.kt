@@ -25,6 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.DisposableHandle
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collectLatest
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -89,7 +90,7 @@ class MVVMNavFirstViewFragment : Fragment() {
     private fun getImageData() {
         imageGatewayDisposableHandle = MainScope().async {
             viewModel.getImage(resources, R.raw.tower)
-                .collect {
+                .collectLatest {
                     when (it) {
                         is IOResult.Loading -> {
                             enableButtons(false)

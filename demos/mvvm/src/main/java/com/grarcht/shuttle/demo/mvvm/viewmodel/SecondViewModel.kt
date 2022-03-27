@@ -8,6 +8,7 @@ import com.grarcht.shuttle.demo.mvvm.BR
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import java.io.Serializable
@@ -28,7 +29,7 @@ class SecondViewModel : ObservableViewModel() {
         viewModelScope.launch {
             shuttle.pickupCargo<Serializable>(cargoId = cargoId)
                 .consumeAsFlow()
-                .collect { shuttleResult ->
+                .collectLatest { shuttleResult ->
                     shuttlePickupCargoResult = shuttleResult
 
                     when (shuttleResult) {

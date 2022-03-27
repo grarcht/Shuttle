@@ -17,6 +17,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -105,7 +106,7 @@ class ShuttleWarehouseTests {
         val disposableHandle = launch(Dispatchers.Main) {
             val channel: Channel<ShuttleStoreCargoResult> = warehouse.store(cargoId, cargo)
             channel.consumeAsFlow()
-                .collect { shuttleResult ->
+                .collectLatest { shuttleResult ->
                     when (shuttleResult) {
                         is ShuttleStoreCargoResult.Storing -> {
                             /* ignore */
@@ -145,7 +146,7 @@ class ShuttleWarehouseTests {
         val disposableHandle = launch(Dispatchers.Main) {
             val channel: Channel<ShuttleStoreCargoResult> = warehouse.store(cargoId, /* cargo */ null)
             channel.consumeAsFlow()
-                .collect { shuttleResult ->
+                .collectLatest { shuttleResult ->
                     when (shuttleResult) {
                         is ShuttleStoreCargoResult.Storing -> {
                             /* ignore */
@@ -188,7 +189,7 @@ class ShuttleWarehouseTests {
         val disposableHandle = launch(Dispatchers.Main) {
             val channel: Channel<ShuttleStoreCargoResult> = warehouse.store(cargoId, cargo)
             channel.consumeAsFlow()
-                .collect { shuttleResult ->
+                .collectLatest { shuttleResult ->
                     when (shuttleResult) {
                         is ShuttleStoreCargoResult.Storing -> {
                             /* ignore */
@@ -233,7 +234,7 @@ class ShuttleWarehouseTests {
         val disposableHandle = launch(Dispatchers.Main) {
             val channel: Channel<ShuttleStoreCargoResult> = warehouse.store(cargoId, cargo)
             channel.consumeAsFlow()
-                .collect { shuttleResult ->
+                .collectLatest { shuttleResult ->
                     when (shuttleResult) {
                         is ShuttleStoreCargoResult.Storing -> {
                             /* ignore */
@@ -285,7 +286,7 @@ class ShuttleWarehouseTests {
         val disposableHandle = launch(Dispatchers.Main) {
             val channel: Channel<ShuttlePickupCargoResult> = warehouse.pickup<Cargo>(cargoId)
             channel.consumeAsFlow()
-                .collect { shuttleResult ->
+                .collectLatest { shuttleResult ->
                     when (shuttleResult) {
                         is ShuttlePickupCargoResult.Loading -> {
                             /* ignore */
@@ -326,7 +327,7 @@ class ShuttleWarehouseTests {
         val disposableHandle = launch(Dispatchers.Main) {
             val channel: Channel<ShuttlePickupCargoResult> = warehouse.pickup<Cargo>(cargoId)
             channel.consumeAsFlow()
-                .collect { shuttleResult ->
+                .collectLatest { shuttleResult ->
                     when (shuttleResult) {
                         is ShuttlePickupCargoResult.Loading -> {
                             /* ignore */
@@ -368,7 +369,7 @@ class ShuttleWarehouseTests {
         val disposableHandle = launch(Dispatchers.Main) {
             val channel: Channel<ShuttlePickupCargoResult> = warehouse.pickup<Cargo>(cargoId)
             channel.consumeAsFlow()
-                .collect { shuttleResult ->
+                .collectLatest { shuttleResult ->
                     when (shuttleResult) {
                         is ShuttlePickupCargoResult.Loading -> {
                             /* ignore */
@@ -414,7 +415,7 @@ class ShuttleWarehouseTests {
         val disposableHandle = launch(Dispatchers.Main) {
             val channel: Channel<ShuttleStoreCargoResult> = warehouse.store(cargoId, cargo)
             channel.consumeAsFlow()
-                .collect { shuttleResult ->
+                .collectLatest { shuttleResult ->
                     when (shuttleResult) {
                         is ShuttleStoreCargoResult.Storing -> {
                             /* ignore */
@@ -469,7 +470,7 @@ class ShuttleWarehouseTests {
         val disposableHandle = launch(Dispatchers.Main) {
             val channel: Channel<ShuttleRemoveCargoResult> = warehouse.removeCargoBy(cargoId)
             channel.consumeAsFlow()
-                .collect { shuttleResult ->
+                .collectLatest { shuttleResult ->
                     when (shuttleResult) {
                         is ShuttleRemoveCargoResult.Removing -> {
                             successfulStepsMet++
@@ -533,7 +534,7 @@ class ShuttleWarehouseTests {
         val disposableHandle = launch(Dispatchers.Main) {
             val channel: Channel<ShuttleRemoveCargoResult> = warehouse.removeCargoBy(invalidCargoId)
             channel.consumeAsFlow()
-                .collect { shuttleResult ->
+                .collectLatest { shuttleResult ->
                     when (shuttleResult) {
                         is ShuttleRemoveCargoResult.Removing -> {
                             failureStepsMet++
@@ -594,7 +595,7 @@ class ShuttleWarehouseTests {
         launch(Dispatchers.Main) {
             val channel: Channel<ShuttleRemoveCargoResult> = warehouse.removeCargoBy(invalidCargoId)
             channel.consumeAsFlow()
-                .collect { shuttleResult ->
+                .collectLatest { shuttleResult ->
                     when (shuttleResult) {
                         is ShuttleRemoveCargoResult.Removing -> {
                             failureStepsMet++
@@ -652,7 +653,7 @@ class ShuttleWarehouseTests {
         launch(Dispatchers.Main) {
             val channel: Channel<ShuttleRemoveCargoResult> = warehouse.removeCargoBy(cargoId)
             channel.consumeAsFlow()
-                .collect { shuttleResult ->
+                .collectLatest { shuttleResult ->
                     when (shuttleResult) {
                         is ShuttleRemoveCargoResult.Removing -> {
                             failureStepsMet++
@@ -712,7 +713,7 @@ class ShuttleWarehouseTests {
         launch(Dispatchers.Main) {
             val channel: Channel<ShuttleRemoveCargoResult> = warehouse.removeAllCargo()
             channel.consumeAsFlow()
-                .collect { shuttleResult ->
+                .collectLatest { shuttleResult ->
                     when (shuttleResult) {
                         is ShuttleRemoveCargoResult.Removing -> {
                             successfulStepsMet++
@@ -773,7 +774,7 @@ class ShuttleWarehouseTests {
         launch(Dispatchers.Main) {
             val channel: Channel<ShuttleRemoveCargoResult> = warehouse.removeAllCargo()
             channel.consumeAsFlow()
-                .collect { shuttleResult ->
+                .collectLatest { shuttleResult ->
                     when (shuttleResult) {
                         is ShuttleRemoveCargoResult.Removing -> {
                             successfulStepsMet++
@@ -834,7 +835,7 @@ class ShuttleWarehouseTests {
         launch(Dispatchers.Main) {
             val channel: Channel<ShuttleRemoveCargoResult> = warehouse.removeAllCargo()
             channel.consumeAsFlow()
-                .collect { shuttleResult ->
+                .collectLatest { shuttleResult ->
                     when (shuttleResult) {
                         is ShuttleRemoveCargoResult.Removing -> {
                             successfulStepsMet++
@@ -895,7 +896,7 @@ class ShuttleWarehouseTests {
         launch(Dispatchers.Main) {
             val channel: Channel<ShuttleRemoveCargoResult> = warehouse.removeAllCargo()
             channel.consumeAsFlow()
-                .collect { shuttleResult ->
+                .collectLatest { shuttleResult ->
                     when (shuttleResult) {
                         is ShuttleRemoveCargoResult.Removing -> {
                             failureStepsMet++
@@ -935,7 +936,7 @@ class ShuttleWarehouseTests {
             launch(Dispatchers.Main) {
                 val channel: Channel<ShuttleStoreCargoResult> = warehouse.store(cargo.cargoId, cargo)
                 channel.consumeAsFlow()
-                    .collect { shuttleResult ->
+                    .collectLatest { shuttleResult ->
                         when (shuttleResult) {
                             is ShuttleStoreCargoResult.Storing -> {
                                 /* ignore */

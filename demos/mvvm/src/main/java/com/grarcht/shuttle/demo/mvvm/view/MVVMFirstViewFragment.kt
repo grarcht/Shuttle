@@ -24,6 +24,7 @@ import kotlinx.coroutines.DisposableHandle
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 private const val LOG_TAG = "MVVMFirstViewFragment"
@@ -76,7 +77,7 @@ class MVVMFirstViewFragment : Fragment() {
     private fun getImageData() {
         imageGatewayDisposableHandle = MainScope().async {
             viewModel.getImage(resources, R.raw.tower)
-                .collect {
+                .collectLatest {
                     when (it) {
                         is IOResult.Unknown,
                         is IOResult.Loading -> {

@@ -36,6 +36,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import java.io.Serializable
 
 private val SMALL_PADDING = 8.dp
@@ -137,7 +138,7 @@ class MVVMFirstView(
     private fun getImageData(stateUpdate: (IOResult) -> Unit): MVVMFirstView {
         imageGatewayDisposableHandle = MainScope().async {
             viewModel.getImage(context.resources, R.raw.tower)
-                .collect {
+                .collectLatest {
                     when (it) {
                         is IOResult.Unknown -> {
                             stateUpdate.invoke(IOResult.Unknown)
