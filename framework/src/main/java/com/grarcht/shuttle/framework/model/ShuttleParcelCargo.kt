@@ -3,7 +3,6 @@ package com.grarcht.shuttle.framework.model
 import android.os.Parcel
 import android.os.Parcelable
 
-const val NO_FILE_DESCRIPTOR = 0
 const val NO_CARGO_ID = "no cargo id"
 
 /**
@@ -14,7 +13,7 @@ open class ShuttleParcelCargo(val cargoId: String) : Parcelable {
     constructor(parcel: Parcel) : this(parcel.readString() ?: NO_CARGO_ID)
 
     override fun describeContents(): Int {
-        return NO_FILE_DESCRIPTOR
+        return Parcelable.CONTENTS_FILE_DESCRIPTOR
     }
 
     override fun writeToParcel(parcel: Parcel?, flags: Int) {

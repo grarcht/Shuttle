@@ -54,6 +54,7 @@ class MVVMFirstView(
     private var imageGatewayDisposableHandle: DisposableHandle? = null
     private var imageModel: ImageModel? = null
 
+    @Suppress("LongMethod")
     @Composable
     fun SetViewContent() {
         var buttonsEnabled by remember { mutableStateOf(false) }

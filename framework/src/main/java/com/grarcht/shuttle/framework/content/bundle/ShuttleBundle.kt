@@ -5,6 +5,9 @@ import android.util.Log
 import com.grarcht.shuttle.framework.content.ShuttleIntent
 import com.grarcht.shuttle.framework.model.ShuttleParcelCargo
 import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.Serializable
@@ -19,8 +22,10 @@ private const val DEFAULT_LOG_TAG = "ShuttleBundle"
  */
 open class ShuttleBundle(
     private val repository: ShuttleWarehouse,
-    private val internalBundle: Bundle?
+    private val internalBundle: Bundle?,
+    backgroundThreadDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
+    private val backgroundThreadScope = CoroutineScope(backgroundThreadDispatcher)
     private var logTag: String? = null
 
     /**
@@ -43,7 +48,7 @@ open class ShuttleBundle(
         val parcelPackage = ShuttleParcelCargo(cargoId)
         internalBundle?.putParcelable(cargoId, parcelPackage)
 
-        GlobalScope.launch {
+        backgroundThreadScope.launch {
             repository.store(cargoId, serializable)
         }.invokeOnCompletion {
             it?.let { throwable ->

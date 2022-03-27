@@ -105,13 +105,20 @@ class MVVMSecondViewFragment : Fragment() {
     }
 
     private fun extractArgsFrom(savedInstanceState: Bundle?, arguments: Bundle?) {
-        if (null != savedInstanceState) {
-            val cargo: ShuttleParcelCargo? = savedInstanceState.getParcelable(ImageMessageType.ImageData.value)
-            storedCargoId = cargo?.cargoId
-        } else if (null != activity?.intent?.extras) {
-            val args = activity?.intent?.extras
-            val cargo: ShuttleParcelCargo? = args?.getParcelable(ImageMessageType.ImageData.value)
-            storedCargoId = cargo?.cargoId
+        when {
+            null != savedInstanceState -> {
+                val cargo: ShuttleParcelCargo? = savedInstanceState.getParcelable(ImageMessageType.ImageData.value)
+                storedCargoId = cargo?.cargoId
+            }
+            arguments != null -> {
+                val cargo: ShuttleParcelCargo? = arguments?.getParcelable(ImageMessageType.ImageData.value)
+                storedCargoId = cargo?.cargoId
+            }
+            null != activity?.intent?.extras -> {
+                val args = activity?.intent?.extras
+                val cargo: ShuttleParcelCargo? = args?.getParcelable(ImageMessageType.ImageData.value)
+                storedCargoId = cargo?.cargoId
+            }
         }
     }
 

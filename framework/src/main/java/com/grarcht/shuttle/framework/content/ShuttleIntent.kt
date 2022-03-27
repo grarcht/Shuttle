@@ -10,7 +10,9 @@ import android.util.Log
 import com.grarcht.shuttle.framework.model.ShuttleParcelCargo
 import com.grarcht.shuttle.framework.screen.ShuttleFacade
 import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.Serializable
 
@@ -25,6 +27,7 @@ private const val DEFAULT_LOG_TAG = "ShuttleIntent"
  *  <a href="https://en.wikipedia.org/wiki/Fluent_interface">Fluent Interface</a>
  */
 open class ShuttleIntent private constructor() {
+    private var backgroundThreadScope: CoroutineScope? = null
     private var intent: Intent? = null
     private var logTag: String? = null
     private var shuttleScreenFacade: ShuttleFacade? = null
@@ -119,9 +122,9 @@ open class ShuttleIntent private constructor() {
     fun <D : Serializable> transport(cargoId: String, data: D?): ShuttleIntent {
         verifyIntentFunctionWasCalled()
         storeParcelPackageAsIntentData(cargoId)
-        GlobalScope.launch {
+        backgroundThreadScope?.launch {
             warehouse?.store(cargoId, data)
-        }.invokeOnCompletion {
+        }?.invokeOnCompletion {
             it?.let { throwable ->
                 Log.e(
                     logTag, "There was an issues when transporting the data with the " +
@@ -154,7 +157,7 @@ open class ShuttleIntent private constructor() {
         cargoId: String
     ): ShuttleIntent {
         shuttleScreenFacade?.apply {
-            GlobalScope.launch {
+            backgroundThreadScope?.launch {
                 removeCargoAfterDelivery(currentScreenClass, nextScreenClass, cargoId)
             }
         }
@@ -201,11 +204,13 @@ open class ShuttleIntent private constructor() {
          */
         fun with(
             warehouse: ShuttleWarehouse,
-            shuttleScreenFacade: ShuttleFacade? = null
+            shuttleScreenFacade: ShuttleFacade? = null,
+            backgroundThreadDispatcher: CoroutineDispatcher = Dispatchers.IO
         ): ShuttleIntent {
             val shuttleIntent = ShuttleIntent()
             shuttleIntent.warehouse = warehouse
             shuttleIntent.shuttleScreenFacade = shuttleScreenFacade
+            shuttleIntent.backgroundThreadScope = CoroutineScope(backgroundThreadDispatcher)
             return shuttleIntent
         }
     }

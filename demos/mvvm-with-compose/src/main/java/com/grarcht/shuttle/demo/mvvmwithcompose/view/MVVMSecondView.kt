@@ -33,7 +33,10 @@ import com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel.SecondViewModel
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.model.ShuttleParcelCargo
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
@@ -51,8 +54,10 @@ private const val TARGET_VALUE = 1.0f
 class MVVMSecondView(
     private val context: Context,
     private val viewModel: SecondViewModel,
-    private val shuttle: Shuttle
+    private val shuttle: Shuttle,
+    backgroundThreadDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
+    private val backgroundThreadScope = CoroutineScope(backgroundThreadDispatcher)
     private val bitmapDecoder = BitmapDecoder()
     private var deferredImageLoad: Deferred<Unit>? = null
     private var imageModel: ImageModel? = null
@@ -108,7 +113,7 @@ class MVVMSecondView(
     }
 
     private fun getCargo(cargoId: String, stateUpdate: (IOResult) -> Unit) {
-        GlobalScope.launch {
+        backgroundThreadScope.launch {
             viewModel
                 .loadImage(shuttle, cargoId)
                 .consumeAsFlow()

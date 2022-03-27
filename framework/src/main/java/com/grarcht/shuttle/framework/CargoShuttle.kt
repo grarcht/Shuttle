@@ -15,7 +15,9 @@ import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
 import com.grarcht.shuttle.framework.screen.ShuttleFacade
 import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import java.io.Serializable
@@ -33,8 +35,11 @@ import java.io.Serializable
  */
 open class CargoShuttle(
     override val shuttleFacade: ShuttleFacade,
-    override val shuttleWarehouse: ShuttleWarehouse
+    override val shuttleWarehouse: ShuttleWarehouse,
+    backgroundThreadDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : Shuttle {
+    private val backgroundThreadScope = CoroutineScope(backgroundThreadDispatcher)
+
     /**
      * This function creates a [ShuttleBundle].
      * @param bundle Used to create the [ShuttleBundle] object from.  For the other
@@ -157,7 +162,7 @@ open class CargoShuttle(
         nextScreenClass: Class<*>,
         cargoId: String
     ): Shuttle {
-        GlobalScope.launch {
+        backgroundThreadScope.launch {
             shuttleFacade.removeCargoAfterDelivery(currentScreen, nextScreenClass, cargoId)
         }
         return this
@@ -168,7 +173,7 @@ open class CargoShuttle(
      * @param cargoId the id for the cargo shipped with Shuttle
      */
     override fun cleanShuttleFromDeliveryFor(cargoId: String, receiver: Channel<ShuttleRemoveCargoResult>?): Shuttle {
-        GlobalScope.launch {
+        backgroundThreadScope.launch {
             shuttleWarehouse.removeCargoBy(cargoId).relayFlowIfAvailable(receiver)
         }
         return this
@@ -179,7 +184,7 @@ open class CargoShuttle(
      * database.
      */
     override fun cleanShuttleFromAllDeliveries(receiver: Channel<ShuttleRemoveCargoResult>?): Shuttle {
-        GlobalScope.launch {
+        backgroundThreadScope.launch {
             shuttleWarehouse.removeAllCargo().relayFlowIfAvailable(receiver)
         }
         return this

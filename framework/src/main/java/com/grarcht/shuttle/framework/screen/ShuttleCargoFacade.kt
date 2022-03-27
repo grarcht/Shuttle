@@ -9,6 +9,9 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
 import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
@@ -27,8 +30,10 @@ private const val LOG_TAG = "ShuttleCargoFacade"
 open class ShuttleCargoFacade(
     application: Application,
     private val shuttleWarehouse: ShuttleWarehouse,
-    private val handler: Handler? = Handler(Looper.getMainLooper())
+    private val handler: Handler? = Handler(Looper.getMainLooper()),
+    backgroundThreadDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ShuttleFacade {
+    private val backgroundThreadScope = CoroutineScope(backgroundThreadDispatcher)
     internal val screenCallback = ScreenCallback()
 
     init {
@@ -80,7 +85,7 @@ open class ShuttleCargoFacade(
         override fun handleOnBackPressed() {
             isEnabled = false
 
-            GlobalScope.launch {
+            backgroundThreadScope.launch {
                 shuttleWarehouse.removeCargoBy(screen.cargoId).consumeAsFlow().collectLatest {
                     when (it) {
                         is ShuttleRemoveCargoResult.Removing -> {

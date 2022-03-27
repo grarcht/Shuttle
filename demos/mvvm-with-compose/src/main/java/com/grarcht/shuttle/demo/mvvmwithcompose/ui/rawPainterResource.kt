@@ -13,6 +13,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 
+private const val ERROR_MESSAGE = "Only rasterized asset types are supported ex. PNG, JPG"
+
 /**
  * Create a [Painter] from an Android resource id. This can load an instance of
  * [BitmapPainter]for [ImageBitmap] based assets. The resources with the given
@@ -50,9 +52,7 @@ fun rawPainterResource(@RawRes id: Int): Painter {
 private fun loadImageBitmapResource(res: Resources, id: Int): ImageBitmap {
     try {
         return ImageBitmap.imageResource(res, id)
-    } catch (throwable: Throwable) {
-        throw IllegalArgumentException(errorMessage)
+    } catch (@Suppress("TooGenericExceptionCaught") throwable: Throwable) {
+        throw IllegalArgumentException(ERROR_MESSAGE)
     }
 }
-
-private const val errorMessage = "Only rasterized asset types are supported ex. PNG, JPG"
