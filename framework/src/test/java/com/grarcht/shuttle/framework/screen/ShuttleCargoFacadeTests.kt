@@ -15,6 +15,8 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.spy
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 @ExperimentalCoroutinesApi
 @ExtendWith(ArchtTestTaskExecutorExtension::class)
@@ -40,8 +42,10 @@ class ShuttleCargoFacadeTests {
         screenCallback.onActivityCreated(activity)
         activity.onBackPressed()
 
+        CountDownLatch(1).await(1, TimeUnit.SECONDS)
+
         verify(screenCallback).onActivityCreated(activity)
-        verify(activity, times(1)).onBackPressed()
+        verify(activity, times(2)).onBackPressed()
         Assertions.assertEquals(1, warehouse.numberOfRemoveInvocations)
     }
 

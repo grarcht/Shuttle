@@ -7,21 +7,21 @@ import org.junit.jupiter.api.extension.BeforeEachCallback
 import org.junit.jupiter.api.extension.ExtensionContext
 
 
-class InstantTaskExecutorExtension : BeforeEachCallback, AfterEachCallback {
+class ArchtTestTaskExecutorExtension : BeforeEachCallback, AfterEachCallback {
 
     override fun beforeEach(context: ExtensionContext?) {
-        ArchTaskExecutor.getInstance()
-            .setDelegate(object : TaskExecutor() {
-                override fun executeOnDiskIO(runnable: Runnable) = runnable.run()
-
-                override fun postToMainThread(runnable: Runnable) = runnable.run()
-
-                override fun isMainThread(): Boolean = true
-            })
+        ArchTaskExecutor.getInstance().setDelegate(Executor())
     }
 
     override fun afterEach(context: ExtensionContext?) {
         ArchTaskExecutor.getInstance().setDelegate(null)
     }
 
+    private class Executor : TaskExecutor() {
+        override fun executeOnDiskIO(runnable: Runnable) = runnable.run()
+
+        override fun postToMainThread(runnable: Runnable) = runnable.run()
+
+        override fun isMainThread(): Boolean = true
+    }
 }

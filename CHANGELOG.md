@@ -1,6 +1,22 @@
 # Changelog
 
 ## [Released]
+## [2.0.0] - 2022-03-27
+## Added
+- an instant task executor for unit tests
+- an extension function for CompositeDisposableHandle
+- manifests to fix an Android 12 issue with a dependency with manifests missing the exported flag
+
+## Changed
+- updated dependency versions including but not limited to Kotlin 1.6.0
+- updated unit tests with changes for Coroutines with Kotlin 1.6.0
+- updated code for Android 12 and Java 11
+- updated the readme file
+
+## Removed
+- unused proguard files with modules that have consumer proguard files
+- the run configuration file
+
 ## [1.0.0] - 2021-07-01
 ## Added
 - added unit tests for the navigation framework addon

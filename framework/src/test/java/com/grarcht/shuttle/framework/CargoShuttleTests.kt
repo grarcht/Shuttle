@@ -79,12 +79,12 @@ class CargoShuttleTests {
 
     @AfterEach
     fun `run after each test`() {
-        runBlocking { shuttleWarehouse?.removeAllCargo() }
-        File(CARGO_FILE_PATH).deleteRecursively()
         compositeDisposableHandle?.dispose()
         Dispatchers.resetMain()
         testDispatcher.cancel()
         testScope.cancel()
+        runBlocking { shuttleWarehouse?.removeAllCargo() }
+        File(CARGO_FILE_PATH).deleteRecursively()
     }
 
     @Test
@@ -228,19 +228,18 @@ class CargoShuttleTests {
         val noCargo = "no cargo"
         var storeId = ""
         var channel: Channel<ShuttlePickupCargoResult>?
-        val countDownLatch = CountDownLatch(1)
+        val countDownLatch = CountDownLatch(3)
 
         runHandler(handler)
-
         cargoShuttle.cleanShuttleOnReturnTo(firstScreenClass, nextScreenClass, cargoId)
+        awaitOnLatch(countDownLatch, 1, TimeUnit.SECONDS)
+
         cargoShuttle
             .intentCargoWith(Intent.ACTION_MEDIA_BUTTON)
             .transport(cargoId, cargo)
-
-        delay(1000L)
         screenCallback.onActivityCreated(nextScreen)
         nextScreen.onBackPressed()
-        delay(2000L)
+        awaitOnLatch(countDownLatch, 1, TimeUnit.SECONDS)
 
         launch(Dispatchers.Main) {
             channel = cargoShuttle.pickupCargo<Cargo>(cargoId)
@@ -268,7 +267,7 @@ class CargoShuttleTests {
             }
         }.addForDisposal(compositeDisposableHandle)
 
-        awaitOnLatch(countDownLatch, 2, TimeUnit.SECONDS)
+        awaitOnLatch(countDownLatch, 1, TimeUnit.SECONDS)
 
         Assertions.assertEquals(noCargo, storeId)
     }

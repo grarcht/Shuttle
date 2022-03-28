@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'de.mannodermaus.android-junit5'
     id 'org.jetbrains.dokka'
     id 'signing'
     id 'maven-publish'
@@ -28,7 +29,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
+        testInstrumentationRunnerArguments runnerBuilder: 'de.mannodermaus.junit5.AndroidJUnit5Builder'
         consumerProguardFiles "consumer-rules.pro"
     }
 
@@ -47,10 +48,16 @@ dependencies {
     implementation androidXDeps.navigationFragmentKtx
     implementation project(':framework')
 
-    androidTestImplementation testingDeps.junit.ext
-    androidTestImplementation testingDeps.espresso.core
+    androidTestImplementation testingDeps.junit.junit5AndroidTestCore
+    androidTestRuntimeOnly testingDeps.junit.junit5AndroidTestRunner
     androidTestImplementation testingDeps.mockito.core
     androidTestImplementation testingDeps.mockito.kotlin
+    androidTestImplementation testingDeps.junit.jupiterApi
+    androidTestImplementation testingDeps.kotlin.coroutines
+    androidTestImplementation testingDeps.junit.androidCore
+    androidTestImplementation testingDeps.androidTest.monitor
+    androidTestRuntimeOnly testingDeps.junit.jupiterEngine
+    androidTestRuntimeOnly testingDeps.junit.platformCommons // enables a package of tests to be run
 
     testImplementation testingDeps.mockito.core
     testImplementation testingDeps.mockito.kotlin
