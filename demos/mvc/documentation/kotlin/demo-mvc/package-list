@@ -1,6 +1,37 @@
 $dokka.format:html-v1
 $dokka.linkExtension:html
-
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller////PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCFirstControllerFragment.Companion///PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-first-controller-fragment/-companion/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCFirstControllerFragment.Companion/TAG/#/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-first-controller-fragment/-companion/-t-a-g.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCFirstControllerFragment///PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-first-controller-fragment/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCFirstControllerFragment/MVCFirstControllerFragment/#/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-first-controller-fragment/-m-v-c-first-controller-fragment.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCFirstControllerFragment/imageModel/#/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-first-controller-fragment/image-model.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCFirstControllerFragment/onCreate/#android.os.Bundle?/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-first-controller-fragment/on-create.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCFirstControllerFragment/onCreateView/#android.view.LayoutInflater#android.view.ViewGroup?#android.os.Bundle?/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-first-controller-fragment/on-create-view.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCFirstControllerFragment/onDestroyView/#/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-first-controller-fragment/on-destroy-view.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCFirstControllerFragment/onResume/#/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-first-controller-fragment/on-resume.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCFirstControllerFragment/onViewCreated/#android.view.View#android.os.Bundle?/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-first-controller-fragment/on-view-created.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCFirstControllerFragment/shuttle/#/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-first-controller-fragment/shuttle.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCSecondControllerActivity///PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-second-controller-activity/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCSecondControllerActivity/MVCSecondControllerActivity/#/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-second-controller-activity/-m-v-c-second-controller-activity.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCSecondControllerFragment///PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-second-controller-fragment/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCSecondControllerFragment/MVCSecondControllerFragment/#/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-second-controller-fragment/-m-v-c-second-controller-fragment.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCSecondControllerFragment/imageModel/#/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-second-controller-fragment/image-model.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCSecondControllerFragment/onCreateView/#android.view.LayoutInflater#android.view.ViewGroup?#android.os.Bundle?/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-second-controller-fragment/on-create-view.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCSecondControllerFragment/onDestroyView/#/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-second-controller-fragment/on-destroy-view.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCSecondControllerFragment/onSaveInstanceState/#android.os.Bundle/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-second-controller-fragment/on-save-instance-state.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCSecondControllerFragment/onViewCreated/#android.view.View#android.os.Bundle?/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-second-controller-fragment/on-view-created.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCSecondControllerFragment/shuttle/#/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-second-controller-fragment/shuttle.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MVCSecondControllerFragment/storedCargoId/#/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-m-v-c-second-controller-fragment/stored-cargo-id.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MainActivity///PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-main-activity/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MainActivity/MainActivity/#/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-main-activity/-main-activity.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.controller/MainActivity/shuttle/#/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.controller/-main-activity/shuttle.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.dependencyinjection////PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.dependencyinjection/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.dependencyinjection/AppModule///PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.dependencyinjection/-app-module/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvc.dependencyinjection/AppModule/provideShuttle/#android.content.Context/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc.dependencyinjection/-app-module/provide-shuttle.html
+$dokka.location:com.grarcht.shuttle.demo.mvc////PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvc/DemoApplication///PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc/-demo-application/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvc/DemoApplication/DemoApplication/#/PointingToDeclaration/demo-mvc/com.grarcht.shuttle.demo.mvc/-demo-application/-demo-application.html
 com.grarcht.shuttle.demo.mvc
 com.grarcht.shuttle.demo.mvc.controller
 com.grarcht.shuttle.demo.mvc.dependencyinjection

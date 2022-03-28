@@ -2,122 +2,48 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>ShuttleDataModelFactory</title>
-    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
-    <script>var pathToRoot = "../../../";</script>
-    <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
-    <link href="../../../styles/style.css" rel="Stylesheet">
-    <link href="../../../styles/logo-styles.css" rel="Stylesheet">
-    <link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
-    <link href="../../../styles/main.css" rel="Stylesheet">
-    <script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
-    <script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
-    <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
-    <script type="text/javascript" src="../../../scripts/main.js" async="async"></script>
-  </head>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script><link href="../../../styles/style.css" rel="Stylesheet"><link href="../../../styles/jetbrains-mono.css" rel="Stylesheet"><link href="../../../styles/main.css" rel="Stylesheet"><link href="../../../styles/prism.css" rel="Stylesheet"><link href="../../../styles/logo-styles.css" rel="Stylesheet"><script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script><script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script><script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script><script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script><script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>  </head>
   <body>
+    <div class="navigation-wrapper" id="navigation-wrapper">
+      <div id="leftToggler"><span class="icon-toggler"></span></div>
+      <div class="library-name"><a href="../../../index.html">framework-integrations-persistence</a></div>
+      <div></div>
+      <div class="pull-right d-flex"><button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+      </div>
+    </div>
     <div id="container">
       <div id="leftColumn">
-        <div id="logo"></div>
-        <div id="paneSearch"></div>
         <div id="sideMenu"></div>
       </div>
       <div id="main">
-        <div id="leftToggler"><span class="icon-toggler"></span></div>
-        <script type="text/javascript" src="../../../scripts/pages.js"></script>
-        <script type="text/javascript" src="../../../scripts/main.js"></script>
-        <div class="main-content" id="content" pageIds="com.grarcht.shuttle.framework.integrations.persistence.datamodel/ShuttleDataModelFactory///PointingToDeclaration//-1947421381">
-          <div class="navigation-wrapper" id="navigation-wrapper">
-            <div class="breadcrumbs"><a href="../../index.html">framework-integrations-persistence</a>/<a href="../index.html">com.grarcht.shuttle.framework.integrations.persistence.datamodel</a>/<a href="index.html">ShuttleDataModelFactory</a></div>
-            <div class="pull-right d-flex">
-              <div class="filter-section" id="filter-section"><button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":framework-integrations-persistence:dokkaHtml/release">androidJvm</button></div>
-              <div id="searchBar"></div>
-            </div>
-          </div>
+        <div class="main-content" id="content" pageIds="framework-integrations-persistence::com.grarcht.shuttle.framework.integrations.persistence.datamodel/ShuttleDataModelFactory///PointingToDeclaration//-1756491054">
+          <div class="breadcrumbs"><a href="../../../index.html">framework-integrations-persistence</a>/<a href="../index.html">com.grarcht.shuttle.framework.integrations.persistence.datamodel</a>/<a href="index.html">ShuttleDataModelFactory</a></div>
           <div class="cover ">
-            <h1 class="cover"><span>Shuttle</span><wbr></wbr><span>Data</span><wbr></wbr><span>Model</span><wbr></wbr><span>Factory</span></h1>
-            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace">interface <a href="index.html">ShuttleDataModelFactory</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">This factory creates <a href="../-shuttle-data-model/index.html">ShuttleDataModel</a> objects from <a href="https://developer.android.com/reference/kotlin/android/os/Parcelable.html">Parcelable</a> objects.  For more information on the factory design pattern, refer to: &lt;a href=&quot;https://www.tutorialspoint.com/design_pattern/factory_pattern.htm&quot;&gt;     Factory Design Pattern&lt;/a&gt;</p></div></div>
+            <h1 class="cover"><span>Shuttle</span><wbr></wbr><span>Data</span><wbr></wbr><span>Model</span><wbr></wbr><span><span>Factory</span></span></h1>
+            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="index.html">ShuttleDataModelFactory</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">This factory creates <a href="../-shuttle-data-model/index.html">ShuttleDataModel</a> objects from <a href="https://developer.android.com/reference/kotlin/android/os/Parcelable.html">Parcelable</a> objects.  For more information on the factory design pattern, refer to: <a href="https://www.tutorialspoint.com/design_pattern/factory_pattern.htm">     Factory Design Pattern</a></p></div></div>
           </div>
           <div class="tabbedcontent">
             <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Functions">Functions</button></div>
             <div class="tabs-section-body">
               <h2 class="">Functions</h2>
-              <div class="table" data-togglable="Functions"><a data-name="%5Bcom.grarcht.shuttle.framework.integrations.persistence.datamodel%2FShuttleDataModelFactory%2FcreateDataModel%2F%23kotlin.String%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" anchor-label="createDataModel" id="%5Bcom.grarcht.shuttle.framework.integrations.persistence.datamodel%2FShuttleDataModelFactory%2FcreateDataModel%2F%23kotlin.String%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>
+              <div class="table" data-togglable="Functions"><a data-name="157600195%2FFunctions%2F-1756491054" anchor-label="createDataModel" id="157600195%2FFunctions%2F-1756491054" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="create-data-model.html">createDataModel</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.grarcht.shuttle.framework.integrations.persistence.datamodel%2FShuttleDataModelFactory%2FcreateDataModel%2F%23kotlin.String%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="create-data-model.html"><span>create</span><wbr></wbr><span>Data</span><wbr></wbr><span><span>Model</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="157600195%2FFunctions%2F-1756491054"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
-                      <div class="platform-tags ">
-                        <div class="platform-tag jvm-like">androidJvm</div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="create-data-model.html"><span class="token function">createDataModel</span></a><span class="token punctuation">(</span>cargoId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span>filePath<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-shuttle-data-model/index.html">ShuttleDataModel</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Creates <a href="../-shuttle-data-model/index.html">ShuttleDataModel</a> objects from <a href="https://developer.android.com/reference/kotlin/android/os/Parcelable.html">Parcelable</a> objects.</p></div></div></div>
                       </div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace">abstract fun <a href="create-data-model.html">createDataModel</a>(cargoId: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>, filePath: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>): <a href="../-shuttle-data-model/index.html">ShuttleDataModel</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<a data-name="%5Bcom.grarcht.shuttle.framework.integrations.persistence.datamodel%2FShuttleDataModelFactory%2FcreateDataModel%2F%23kotlin.String%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" anchor-label="createDataModel" id="%5Bcom.grarcht.shuttle.framework.integrations.persistence.datamodel%2FShuttleDataModelFactory%2FcreateDataModel%2F%23kotlin.String%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a><div class="brief "><a data-name="%5Bcom.grarcht.shuttle.framework.integrations.persistence.datamodel%2FShuttleDataModelFactory%2FcreateDataModel%2F%23kotlin.String%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" anchor-label="createDataModel" id="%5Bcom.grarcht.shuttle.framework.integrations.persistence.datamodel%2FShuttleDataModelFactory%2FcreateDataModel%2F%23kotlin.String%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>Creates <a href="../-shuttle-data-model/index.html">ShuttleDataModel</a> objects from <a href="https://developer.android.com/reference/kotlin/android/os/Parcelable.html">Parcelable</a> objects.</div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" anchor-label="equals" id="%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../com.grarcht.shuttle.framework.integrations.persistence.result/-shuttle-persistence-remove-cargo-result/-unable-to-remove/index.html#%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381">equals</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="platform-tags ">
-                        <div class="platform-tag jvm-like">androidJvm</div>
-                      </div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace">open operator fun <a href="../../com.grarcht.shuttle.framework.integrations.persistence.result/-shuttle-persistence-remove-cargo-result/-unable-to-remove/index.html#%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381">equals</a>(other: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a>?): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" anchor-label="hashCode" id="%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../com.grarcht.shuttle.framework.integrations.persistence.result/-shuttle-persistence-remove-cargo-result/-unable-to-remove/index.html#%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381">hashCode</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="platform-tags ">
-                        <div class="platform-tag jvm-like">androidJvm</div>
-                      </div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../../com.grarcht.shuttle.framework.integrations.persistence.result/-shuttle-persistence-remove-cargo-result/-unable-to-remove/index.html#%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381">hashCode</a>(): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" anchor-label="toString" id="%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../com.grarcht.shuttle.framework.integrations.persistence.result/-shuttle-persistence-remove-cargo-result/-unable-to-remove/index.html#%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381">toString</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="platform-tags ">
-                        <div class="platform-tag jvm-like">androidJvm</div>
-                      </div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../../com.grarcht.shuttle.framework.integrations.persistence.result/-shuttle-persistence-remove-cargo-result/-unable-to-remove/index.html#%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381">toString</a>(): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
                     </div>
                   </div>
                 </div>
@@ -125,7 +51,7 @@
             </div>
           </div>
         </div>
-        <div class="footer"><span class="go-to-top-icon"><a href="#content"></a></span><span>© 2020 Copyright</span><span class="pull-right"><span>Sponsored and developed by dokka</span><a href="https://github.com/Kotlin/dokka"><span class="padded-icon"></span></a></span></div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span></div>
       </div>
     </div>
   </body>

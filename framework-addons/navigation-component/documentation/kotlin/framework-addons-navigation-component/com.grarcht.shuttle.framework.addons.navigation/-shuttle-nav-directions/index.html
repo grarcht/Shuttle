@@ -2,164 +2,84 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>ShuttleNavDirections</title>
-    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
-    <script>var pathToRoot = "../../../";</script>
-    <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
-    <link href="../../../styles/style.css" rel="Stylesheet">
-    <link href="../../../styles/logo-styles.css" rel="Stylesheet">
-    <link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
-    <link href="../../../styles/main.css" rel="Stylesheet">
-    <script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
-    <script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
-    <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
-    <script type="text/javascript" src="../../../scripts/main.js" async="async"></script>
-  </head>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script><link href="../../../styles/style.css" rel="Stylesheet"><link href="../../../styles/jetbrains-mono.css" rel="Stylesheet"><link href="../../../styles/main.css" rel="Stylesheet"><link href="../../../styles/prism.css" rel="Stylesheet"><link href="../../../styles/logo-styles.css" rel="Stylesheet"><script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script><script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script><script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script><script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script><script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>  </head>
   <body>
+    <div class="navigation-wrapper" id="navigation-wrapper">
+      <div id="leftToggler"><span class="icon-toggler"></span></div>
+      <div class="library-name"><a href="../../../index.html">framework-addons-navigation-component</a></div>
+      <div></div>
+      <div class="pull-right d-flex"><button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+      </div>
+    </div>
     <div id="container">
       <div id="leftColumn">
-        <div id="logo"></div>
-        <div id="paneSearch"></div>
         <div id="sideMenu"></div>
       </div>
       <div id="main">
-        <div id="leftToggler"><span class="icon-toggler"></span></div>
-        <script type="text/javascript" src="../../../scripts/pages.js"></script>
-        <script type="text/javascript" src="../../../scripts/main.js"></script>
-        <div class="main-content" id="content" pageIds="com.grarcht.shuttle.framework.addons.navigation/ShuttleNavDirections///PointingToDeclaration//-1306838174">
-          <div class="navigation-wrapper" id="navigation-wrapper">
-            <div class="breadcrumbs"><a href="../../index.html">framework-addons-navigation-component</a>/<a href="../index.html">com.grarcht.shuttle.framework.addons.navigation</a>/<a href="index.html">ShuttleNavDirections</a></div>
-            <div class="pull-right d-flex">
-              <div class="filter-section" id="filter-section"><button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":framework-addons-navigation-component:dokkaHtml/release">androidJvm</button></div>
-              <div id="searchBar"></div>
-            </div>
-          </div>
+        <div class="main-content" id="content" pageIds="framework-addons-navigation-component::com.grarcht.shuttle.framework.addons.navigation/ShuttleNavDirections///PointingToDeclaration//-87242577">
+          <div class="breadcrumbs"><a href="../../../index.html">framework-addons-navigation-component</a>/<a href="../index.html">com.grarcht.shuttle.framework.addons.navigation</a>/<a href="index.html">ShuttleNavDirections</a></div>
           <div class="cover ">
-            <h1 class="cover"><span>Shuttle</span><wbr></wbr><span>Nav</span><wbr></wbr><span>Directions</span></h1>
-            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-addons-navigation-component:dokkaHtml/release"><div class="symbol monospace">class <a href="index.html">ShuttleNavDirections</a>(actionId: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>, arguments: <a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a>) : <a href="https://developer.android.com/reference/kotlin/androidx/navigation/NavDirections.html">NavDirections</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">This class enables creation of new nav directions from the <span data-unresolved-link="com.grarcht.shuttle.framework.addons.navigation/ShuttleNavDirections/arguments/#/PointingToDeclaration/">arguments</span> not created from the navigation component.</p></div></div>
+            <h1 class="cover"><span>Shuttle</span><wbr></wbr><span>Nav</span><wbr></wbr><span><span>Directions</span></span></h1>
+            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-addons-navigation-component:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">ShuttleNavDirections</a><span class="token punctuation">(</span>actionId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span>arguments<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/androidx/navigation/NavDirections.html">NavDirections</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">This class enables creation of new nav directions from the <a href="arguments.html">arguments</a> not created from the navigation component.</p></div></div>
           </div>
           <div class="tabbedcontent">
-            <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Parameters">Parameters</button></div>
+            <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Parameters">Parameters</button></div>
             <div class="tabs-section-body">
               <h2 class="">Parameters</h2>
               <div data-togglable="Parameters">
-                <div class="platform-hinted WithExtraAttributes" data-platform-hinted="data-platform-hinted" data-togglable="Parameters"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-addons-navigation-component:dokkaHtml/release"><div data-togglable="Parameters"><div class="table" data-togglable="Parameters"><div class="table-row" data-filterable-current=":framework-addons-navigation-component:dokkaHtml/release" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex">actionId</span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">from the original <a href="https://developer.android.com/reference/kotlin/androidx/navigation/NavDirections.html">NavDirections</a></p></div></div></div></div></div><div class="table-row" data-filterable-current=":framework-addons-navigation-component:dokkaHtml/release" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex">arguments</span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">for use with Shuttle</p></div></div></div></div></div></div></div></div></div>
+                <div class="platform-hinted WithExtraAttributes" data-platform-hinted="data-platform-hinted" data-togglable="Parameters"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-addons-navigation-component:dokkaHtml/release"><div data-togglable="Parameters"><div class="table" data-togglable="Parameters"><div class="table-row" data-filterable-current=":framework-addons-navigation-component:dokkaHtml/release" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span>action</span><wbr></wbr><span><span>Id</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">from the original <a href="https://developer.android.com/reference/kotlin/androidx/navigation/NavDirections.html">NavDirections</a></p></div></div></div></div></div><div class="table-row" data-filterable-current=":framework-addons-navigation-component:dokkaHtml/release" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span><span>arguments</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">for use with Shuttle</p></div></div></div></div></div></div></div></div></div>
               </div>
               <h2 class="tabbedcontent">Constructors</h2>
-              <div class="table" data-togglable="Constructors"><a data-name="%5Bcom.grarcht.shuttle.framework.addons.navigation%2FShuttleNavDirections%2FShuttleNavDirections%2F%23kotlin.Int%23android.os.Bundle%2FPointingToDeclaration%2F%5D%2FConstructors%2F-1306838174" anchor-label="ShuttleNavDirections" id="%5Bcom.grarcht.shuttle.framework.addons.navigation%2FShuttleNavDirections%2FShuttleNavDirections%2F%23kotlin.Int%23android.os.Bundle%2FPointingToDeclaration%2F%5D%2FConstructors%2F-1306838174" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"></a>
+              <div class="table" data-togglable="Constructors"><a data-name="-231097585%2FConstructors%2F-87242577" anchor-label="ShuttleNavDirections" id="-231097585%2FConstructors%2F-87242577" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":framework-addons-navigation-component:dokkaHtml/release" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release">
                   <div class="main-subrow keyValue TabbedContent">
-                    <div class=""><span class="inline-flex"><a href="-shuttle-nav-directions.html">ShuttleNavDirections</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.grarcht.shuttle.framework.addons.navigation%2FShuttleNavDirections%2FShuttleNavDirections%2F%23kotlin.Int%23android.os.Bundle%2FPointingToDeclaration%2F%5D%2FConstructors%2F-1306838174"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="-shuttle-nav-directions.html"><span>Shuttle</span><wbr></wbr><span>Nav</span><wbr></wbr><span><span>Directions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-231097585%2FConstructors%2F-87242577"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
-                      <div class="platform-tags ">
-                        <div class="platform-tag jvm-like">androidJvm</div>
-                      </div>
                       <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-addons-navigation-component:dokkaHtml/release"><div class="symbol monospace">fun <a href="-shuttle-nav-directions.html">ShuttleNavDirections</a>(actionId: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>, arguments: <a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">from the original <a href="https://developer.android.com/reference/kotlin/androidx/navigation/NavDirections.html">NavDirections</a></div></div></div>
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-addons-navigation-component:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-shuttle-nav-directions.html"><span class="token function">ShuttleNavDirections</span></a><span class="token punctuation">(</span>actionId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span>arguments<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <h2 class="">Functions</h2>
-              <div class="table" data-togglable="Functions"><a data-name="%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174" anchor-label="equals" id="%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"></a>
+              <h2 class="">Properties</h2>
+              <div class="table" data-togglable="Properties"><a data-name="-1154793592%2FProperties%2F-87242577" anchor-label="actionId" id="-1154793592%2FProperties%2F-87242577" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":framework-addons-navigation-component:dokkaHtml/release" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174">equals</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="action-id.html">actionId</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1154793592%2FProperties%2F-87242577"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
-                      <div class="platform-tags ">
-                        <div class="platform-tag jvm-like">androidJvm</div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-addons-navigation-component:dokkaHtml/release"><a data-name="-1154793592%2FProperties%2F-87242577" anchor-label="actionId" id="-1154793592%2FProperties%2F-87242577" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="action-id.html">actionId</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
                       </div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":framework-addons-navigation-component:dokkaHtml/release" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-addons-navigation-component:dokkaHtml/release"><div class="symbol monospace">open operator fun <a href="index.html#%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174">equals</a>(other: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a>?): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
                     </div>
                   </div>
                 </div>
-<a data-name="%5Bcom.grarcht.shuttle.framework.addons.navigation%2FShuttleNavDirections%2FgetActionId%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174" anchor-label="getActionId" id="%5Bcom.grarcht.shuttle.framework.addons.navigation%2FShuttleNavDirections%2FgetActionId%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"></a>
+<a data-name="1708178955%2FProperties%2F-87242577" anchor-label="arguments" id="1708178955%2FProperties%2F-87242577" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":framework-addons-navigation-component:dokkaHtml/release" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="get-action-id.html">getActionId</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.grarcht.shuttle.framework.addons.navigation%2FShuttleNavDirections%2FgetActionId%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="arguments.html">arguments</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1708178955%2FProperties%2F-87242577"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
-                      <div class="platform-tags ">
-                        <div class="platform-tag jvm-like">androidJvm</div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-addons-navigation-component:dokkaHtml/release"><a data-name="1708178955%2FProperties%2F-87242577" anchor-label="arguments" id="1708178955%2FProperties%2F-87242577" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="arguments.html">arguments</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
                       </div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":framework-addons-navigation-component:dokkaHtml/release" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-addons-navigation-component:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block">@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/IdRes.html">IdRes</a>()</div></div>open override fun <a href="get-action-id.html">getActionId</a>(): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<a data-name="%5Bcom.grarcht.shuttle.framework.addons.navigation%2FShuttleNavDirections%2FgetActionId%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174" anchor-label="getActionId" id="%5Bcom.grarcht.shuttle.framework.addons.navigation%2FShuttleNavDirections%2FgetActionId%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"></a><div class="brief "><a data-name="%5Bcom.grarcht.shuttle.framework.addons.navigation%2FShuttleNavDirections%2FgetActionId%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174" anchor-label="getActionId" id="%5Bcom.grarcht.shuttle.framework.addons.navigation%2FShuttleNavDirections%2FgetActionId%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"></a>Returns a action id to navigate with.</div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="%5Bcom.grarcht.shuttle.framework.addons.navigation%2FShuttleNavDirections%2FgetArguments%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174" anchor-label="getArguments" id="%5Bcom.grarcht.shuttle.framework.addons.navigation%2FShuttleNavDirections%2FgetArguments%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":framework-addons-navigation-component:dokkaHtml/release" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="get-arguments.html">getArguments</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.grarcht.shuttle.framework.addons.navigation%2FShuttleNavDirections%2FgetArguments%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="platform-tags ">
-                        <div class="platform-tag jvm-like">androidJvm</div>
-                      </div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":framework-addons-navigation-component:dokkaHtml/release" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-addons-navigation-component:dokkaHtml/release"><div class="symbol monospace">open override fun <a href="get-arguments.html">getArguments</a>(): <a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<a data-name="%5Bcom.grarcht.shuttle.framework.addons.navigation%2FShuttleNavDirections%2FgetArguments%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174" anchor-label="getArguments" id="%5Bcom.grarcht.shuttle.framework.addons.navigation%2FShuttleNavDirections%2FgetArguments%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"></a><div class="brief "><a data-name="%5Bcom.grarcht.shuttle.framework.addons.navigation%2FShuttleNavDirections%2FgetArguments%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174" anchor-label="getArguments" id="%5Bcom.grarcht.shuttle.framework.addons.navigation%2FShuttleNavDirections%2FgetArguments%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"></a>Returns arguments to pass to the destination</div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174" anchor-label="hashCode" id="%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":framework-addons-navigation-component:dokkaHtml/release" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174">hashCode</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="platform-tags ">
-                        <div class="platform-tag jvm-like">androidJvm</div>
-                      </div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":framework-addons-navigation-component:dokkaHtml/release" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-addons-navigation-component:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174">hashCode</a>(): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174" anchor-label="toString" id="%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":framework-addons-navigation-component:dokkaHtml/release" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174">toString</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="platform-tags ">
-                        <div class="platform-tag jvm-like">androidJvm</div>
-                      </div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":framework-addons-navigation-component:dokkaHtml/release" data-filterable-set=":framework-addons-navigation-component:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-addons-navigation-component:dokkaHtml/release"><div class="symbol monospace">open fun <a href="index.html#%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1306838174">toString</a>(): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
                     </div>
                   </div>
                 </div>
@@ -167,7 +87,7 @@
             </div>
           </div>
         </div>
-        <div class="footer"><span class="go-to-top-icon"><a href="#content"></a></span><span>© 2020 Copyright</span><span class="pull-right"><span>Sponsored and developed by dokka</span><a href="https://github.com/Kotlin/dokka"><span class="padded-icon"></span></a></span></div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span></div>
       </div>
     </div>
   </body>

@@ -2,200 +2,110 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>ShuttlePersistenceFileSystemGateway</title>
-    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
-    <script>var pathToRoot = "../../../";</script>
-    <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
-    <link href="../../../styles/style.css" rel="Stylesheet">
-    <link href="../../../styles/logo-styles.css" rel="Stylesheet">
-    <link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
-    <link href="../../../styles/main.css" rel="Stylesheet">
-    <script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
-    <script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
-    <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
-    <script type="text/javascript" src="../../../scripts/main.js" async="async"></script>
-  </head>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script><link href="../../../styles/style.css" rel="Stylesheet"><link href="../../../styles/jetbrains-mono.css" rel="Stylesheet"><link href="../../../styles/main.css" rel="Stylesheet"><link href="../../../styles/prism.css" rel="Stylesheet"><link href="../../../styles/logo-styles.css" rel="Stylesheet"><script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script><script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script><script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script><script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script><script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>  </head>
   <body>
+    <div class="navigation-wrapper" id="navigation-wrapper">
+      <div id="leftToggler"><span class="icon-toggler"></span></div>
+      <div class="library-name"><a href="../../../index.html">framework-integrations-persistence</a></div>
+      <div></div>
+      <div class="pull-right d-flex"><button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+      </div>
+    </div>
     <div id="container">
       <div id="leftColumn">
-        <div id="logo"></div>
-        <div id="paneSearch"></div>
         <div id="sideMenu"></div>
       </div>
       <div id="main">
-        <div id="leftToggler"><span class="icon-toggler"></span></div>
-        <script type="text/javascript" src="../../../scripts/pages.js"></script>
-        <script type="text/javascript" src="../../../scripts/main.js"></script>
-        <div class="main-content" id="content" pageIds="com.grarcht.shuttle.framework.integrations.persistence.io.file.gateway/ShuttlePersistenceFileSystemGateway///PointingToDeclaration//-1947421381">
-          <div class="navigation-wrapper" id="navigation-wrapper">
-            <div class="breadcrumbs"><a href="../../index.html">framework-integrations-persistence</a>/<a href="../index.html">com.grarcht.shuttle.framework.integrations.persistence.io.file.gateway</a>/<a href="index.html">ShuttlePersistenceFileSystemGateway</a></div>
-            <div class="pull-right d-flex">
-              <div class="filter-section" id="filter-section"><button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":framework-integrations-persistence:dokkaHtml/release">androidJvm</button></div>
-              <div id="searchBar"></div>
-            </div>
-          </div>
+        <div class="main-content" id="content" pageIds="framework-integrations-persistence::com.grarcht.shuttle.framework.integrations.persistence.io.file.gateway/ShuttlePersistenceFileSystemGateway///PointingToDeclaration//-1756491054">
+          <div class="breadcrumbs"><a href="../../../index.html">framework-integrations-persistence</a>/<a href="../index.html">com.grarcht.shuttle.framework.integrations.persistence.io.file.gateway</a>/<a href="index.html">ShuttlePersistenceFileSystemGateway</a></div>
           <div class="cover ">
-            <h1 class="cover"><span>Shuttle</span><wbr></wbr><span>Persistence</span><wbr></wbr><span>File</span><wbr></wbr><span>System</span><wbr></wbr><span>Gateway</span></h1>
-            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace">class <a href="index.html">ShuttlePersistenceFileSystemGateway</a>(fileFactory: <a href="../../com.grarcht.shuttle.framework.integrations.persistence.io.file.factory/-shuttle-file-factory/index.html">ShuttleFileFactory</a>) : <a href="../-shuttle-file-system-gateway/index.html">ShuttleFileSystemGateway</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">A gateway for writing to, reading from, and deleting files from the app's file system space.  This class uses the Gateway Design Pattern.  For more information on this design pattern, refer to: &lt;a href=&quot;https://microservices.io/patterns/apigateway.html&quot;&gt;     Gateway Design Pattern&lt;/a&gt;</p></div></div>
+            <h1 class="cover"><span>Shuttle</span><wbr></wbr><span>Persistence</span><wbr></wbr><span>File</span><wbr></wbr><span>System</span><wbr></wbr><span><span>Gateway</span></span></h1>
+            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">ShuttlePersistenceFileSystemGateway</a><span class="token punctuation">(</span>fileFactory<span class="token operator">: </span><a href="../../com.grarcht.shuttle.framework.integrations.persistence.io.file.factory/-shuttle-file-factory/index.html">ShuttleFileFactory</a><span class="token punctuation">)</span> : <a href="../-shuttle-file-system-gateway/index.html">ShuttleFileSystemGateway</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">A gateway for writing to, reading from, and deleting files from the app's file system space.  This class uses the Gateway Design Pattern.  For more information on this design pattern, refer to: <a href="https://microservices.io/patterns/apigateway.html">     Gateway Design Pattern</a></p></div></div>
           </div>
           <div class="tabbedcontent">
             <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button></div>
             <div class="tabs-section-body">
               <h2 class="tabbedcontent">Constructors</h2>
-              <div class="table" data-togglable="Constructors"><a data-name="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FShuttlePersistenceFileSystemGateway%2F%23com.grarcht.shuttle.framework.integrations.persistence.io.file.factory.ShuttleFileFactory%2FPointingToDeclaration%2F%5D%2FConstructors%2F-1947421381" anchor-label="ShuttlePersistenceFileSystemGateway" id="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FShuttlePersistenceFileSystemGateway%2F%23com.grarcht.shuttle.framework.integrations.persistence.io.file.factory.ShuttleFileFactory%2FPointingToDeclaration%2F%5D%2FConstructors%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>
+              <div class="table" data-togglable="Constructors"><a data-name="-458835422%2FConstructors%2F-1756491054" anchor-label="ShuttlePersistenceFileSystemGateway" id="-458835422%2FConstructors%2F-1756491054" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release">
                   <div class="main-subrow keyValue TabbedContent">
-                    <div class=""><span class="inline-flex"><a href="-shuttle-persistence-file-system-gateway.html">ShuttlePersistenceFileSystemGateway</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FShuttlePersistenceFileSystemGateway%2F%23com.grarcht.shuttle.framework.integrations.persistence.io.file.factory.ShuttleFileFactory%2FPointingToDeclaration%2F%5D%2FConstructors%2F-1947421381"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="-shuttle-persistence-file-system-gateway.html"><span>Shuttle</span><wbr></wbr><span>Persistence</span><wbr></wbr><span>File</span><wbr></wbr><span>System</span><wbr></wbr><span><span>Gateway</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-458835422%2FConstructors%2F-1756491054"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
-                      <div class="platform-tags ">
-                        <div class="platform-tag jvm-like">androidJvm</div>
-                      </div>
                       <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace">fun <a href="-shuttle-persistence-file-system-gateway.html">ShuttlePersistenceFileSystemGateway</a>(fileFactory: <a href="../../com.grarcht.shuttle.framework.integrations.persistence.io.file.factory/-shuttle-file-factory/index.html">ShuttleFileFactory</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-shuttle-persistence-file-system-gateway.html"><span class="token function">ShuttlePersistenceFileSystemGateway</span></a><span class="token punctuation">(</span>fileFactory<span class="token operator">: </span><a href="../../com.grarcht.shuttle.framework.integrations.persistence.io.file.factory/-shuttle-file-factory/index.html">ShuttleFileFactory</a><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
               <h2 class="">Functions</h2>
-              <div class="table" data-togglable="Functions"><a data-name="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FdeleteAllFilesAt%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" anchor-label="deleteAllFilesAt" id="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FdeleteAllFilesAt%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>
+              <div class="table" data-togglable="Functions"><a data-name="645409501%2FFunctions%2F-1756491054" anchor-label="deleteAllFilesAt" id="645409501%2FFunctions%2F-1756491054" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="delete-all-files-at.html">deleteAllFilesAt</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FdeleteAllFilesAt%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="delete-all-files-at.html"><span>delete</span><wbr></wbr><span>All</span><wbr></wbr><span>Files</span><wbr></wbr><span><span>At</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="645409501%2FFunctions%2F-1756491054"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
-                      <div class="platform-tags ">
-                        <div class="platform-tag jvm-like">androidJvm</div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="delete-all-files-at.html"><span class="token function">deleteAllFilesAt</span></a><span class="token punctuation">(</span>directoryPath<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.grarcht.shuttle.framework.integrations.persistence.result/-shuttle-persistence-remove-cargo-result/index.html">ShuttlePersistenceRemoveCargoResult</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Deletes all files at the <a href="delete-all-files-at.html">directoryPath</a>.</p></div></div></div>
                       </div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace">open override fun <a href="delete-all-files-at.html">deleteAllFilesAt</a>(directoryPath: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>): <a href="../../com.grarcht.shuttle.framework.integrations.persistence.result/-shuttle-persistence-remove-cargo-result/index.html">ShuttlePersistenceRemoveCargoResult</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<a data-name="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FdeleteAllFilesAt%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" anchor-label="deleteAllFilesAt" id="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FdeleteAllFilesAt%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a><div class="brief "><a data-name="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FdeleteAllFilesAt%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" anchor-label="deleteAllFilesAt" id="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FdeleteAllFilesAt%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>Deletes all files at the <span data-unresolved-link="com.grarcht.shuttle.framework.integrations.persistence.io.file.gateway/ShuttlePersistenceFileSystemGateway/directoryPath/#/PointingToCallableParameters(-1)/">directoryPath</span>.</div></div>
-</div>
                     </div>
                   </div>
                 </div>
-<a data-name="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FdeleteFile%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" anchor-label="deleteFile" id="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FdeleteFile%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>
+<a data-name="1318543280%2FFunctions%2F-1756491054" anchor-label="deleteFile" id="1318543280%2FFunctions%2F-1756491054" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="delete-file.html">deleteFile</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FdeleteFile%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="delete-file.html"><span>delete</span><wbr></wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1318543280%2FFunctions%2F-1756491054"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
-                      <div class="platform-tags ">
-                        <div class="platform-tag jvm-like">androidJvm</div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="delete-file.html"><span class="token function">deleteFile</span></a><span class="token punctuation">(</span>filePath<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.grarcht.shuttle.framework.integrations.persistence.result/-shuttle-persistence-remove-cargo-result/index.html">ShuttlePersistenceRemoveCargoResult</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Deletes a file at the <a href="delete-file.html">filePath</a>.</p></div></div></div>
                       </div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace">open override fun <a href="delete-file.html">deleteFile</a>(filePath: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>): <a href="../../com.grarcht.shuttle.framework.integrations.persistence.result/-shuttle-persistence-remove-cargo-result/index.html">ShuttlePersistenceRemoveCargoResult</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<a data-name="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FdeleteFile%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" anchor-label="deleteFile" id="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FdeleteFile%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a><div class="brief "><a data-name="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FdeleteFile%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" anchor-label="deleteFile" id="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FdeleteFile%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>Deletes a file at the <span data-unresolved-link="com.grarcht.shuttle.framework.integrations.persistence.io.file.gateway/ShuttlePersistenceFileSystemGateway/filePath/#/PointingToCallableParameters(-1)/">filePath</span>.</div></div>
-</div>
                     </div>
                   </div>
                 </div>
-<a data-name="%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" anchor-label="equals" id="%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>
+<a data-name="1804446117%2FFunctions%2F-1756491054" anchor-label="readFromFile" id="1804446117%2FFunctions%2F-1756491054" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../com.grarcht.shuttle.framework.integrations.persistence.result/-shuttle-persistence-remove-cargo-result/-unable-to-remove/index.html#%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381">equals</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="read-from-file.html"><span>read</span><wbr></wbr><span>From</span><wbr></wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1804446117%2FFunctions%2F-1756491054"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
-                      <div class="platform-tags ">
-                        <div class="platform-tag jvm-like">androidJvm</div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="read-from-file.html"><span class="token function">readFromFile</span></a><span class="token punctuation">(</span>filePath<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/io/Serializable.html">Serializable</a><span class="token operator">?</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Reads the bytes from the file at the <a href="read-from-file.html">filePath</a>.</p></div></div></div>
                       </div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace">open operator fun <a href="../../com.grarcht.shuttle.framework.integrations.persistence.result/-shuttle-persistence-remove-cargo-result/-unable-to-remove/index.html#%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381">equals</a>(other: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a>?): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
                     </div>
                   </div>
                 </div>
-<a data-name="%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" anchor-label="hashCode" id="%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>
+<a data-name="-978242140%2FFunctions%2F-1756491054" anchor-label="writeToFile" id="-978242140%2FFunctions%2F-1756491054" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../com.grarcht.shuttle.framework.integrations.persistence.result/-shuttle-persistence-remove-cargo-result/-unable-to-remove/index.html#%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381">hashCode</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="write-to-file.html"><span>write</span><wbr></wbr><span>To</span><wbr></wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-978242140%2FFunctions%2F-1756491054"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
-                      <div class="platform-tags ">
-                        <div class="platform-tag jvm-like">androidJvm</div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="write-to-file.html"><span class="token function">writeToFile</span></a><span class="token punctuation">(</span>directoryName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span>fileName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span>serializable<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/io/Serializable.html">Serializable</a><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Writes the <a href="write-to-file.html">serializable</a> to the file, named by <a href="write-to-file.html">fileName</a>, in the directory, named by <a href="write-to-file.html">directoryName</a>.</p></div></div></div>
                       </div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../../com.grarcht.shuttle.framework.integrations.persistence.result/-shuttle-persistence-remove-cargo-result/-unable-to-remove/index.html#%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381">hashCode</a>(): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FreadFromFile%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" anchor-label="readFromFile" id="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FreadFromFile%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="read-from-file.html">readFromFile</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FreadFromFile%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="platform-tags ">
-                        <div class="platform-tag jvm-like">androidJvm</div>
-                      </div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace">open override fun <a href="read-from-file.html">readFromFile</a>(filePath: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>): <a href="https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html">Serializable</a>?<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<a data-name="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FreadFromFile%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" anchor-label="readFromFile" id="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FreadFromFile%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a><div class="brief "><a data-name="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FreadFromFile%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" anchor-label="readFromFile" id="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FreadFromFile%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>Reads the bytes from the file at the <span data-unresolved-link="com.grarcht.shuttle.framework.integrations.persistence.io.file.gateway/ShuttlePersistenceFileSystemGateway/filePath/#/PointingToCallableParameters(-1)/">filePath</span>.</div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" anchor-label="toString" id="%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../com.grarcht.shuttle.framework.integrations.persistence.result/-shuttle-persistence-remove-cargo-result/-unable-to-remove/index.html#%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381">toString</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="platform-tags ">
-                        <div class="platform-tag jvm-like">androidJvm</div>
-                      </div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace">open fun <a href="../../com.grarcht.shuttle.framework.integrations.persistence.result/-shuttle-persistence-remove-cargo-result/-unable-to-remove/index.html#%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381">toString</a>(): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FwriteToFile%2F%23kotlin.String%23kotlin.String%23java.io.Serializable%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" anchor-label="writeToFile" id="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FwriteToFile%2F%23kotlin.String%23kotlin.String%23java.io.Serializable%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="write-to-file.html">writeToFile</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FwriteToFile%2F%23kotlin.String%23kotlin.String%23java.io.Serializable%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="platform-tags ">
-                        <div class="platform-tag jvm-like">androidJvm</div>
-                      </div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":framework-integrations-persistence:dokkaHtml/release" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":framework-integrations-persistence:dokkaHtml/release"><div class="symbol monospace">open override fun <a href="write-to-file.html">writeToFile</a>(directoryName: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>, fileName: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>, serializable: <a href="https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html">Serializable</a>): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>?<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<a data-name="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FwriteToFile%2F%23kotlin.String%23kotlin.String%23java.io.Serializable%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" anchor-label="writeToFile" id="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FwriteToFile%2F%23kotlin.String%23kotlin.String%23java.io.Serializable%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a><div class="brief "><a data-name="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FwriteToFile%2F%23kotlin.String%23kotlin.String%23java.io.Serializable%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" anchor-label="writeToFile" id="%5Bcom.grarcht.shuttle.framework.integrations.persistence.io.file.gateway%2FShuttlePersistenceFileSystemGateway%2FwriteToFile%2F%23kotlin.String%23kotlin.String%23java.io.Serializable%2FPointingToDeclaration%2F%5D%2FFunctions%2F-1947421381" data-filterable-set=":framework-integrations-persistence:dokkaHtml/release"></a>Writes the <span data-unresolved-link="com.grarcht.shuttle.framework.integrations.persistence.io.file.gateway/ShuttlePersistenceFileSystemGateway/serializable/#/PointingToCallableParameters(-1)/">serializable</span> to the file, named by <span data-unresolved-link="com.grarcht.shuttle.framework.integrations.persistence.io.file.gateway/ShuttlePersistenceFileSystemGateway/fileName/#/PointingToCallableParameters(-1)/">fileName</span>, in the directory, named by <span data-unresolved-link="com.grarcht.shuttle.framework.integrations.persistence.io.file.gateway/ShuttlePersistenceFileSystemGateway/directoryName/#/PointingToCallableParameters(-1)/">directoryName</span>.</div></div>
-</div>
                     </div>
                   </div>
                 </div>
@@ -203,7 +113,7 @@
             </div>
           </div>
         </div>
-        <div class="footer"><span class="go-to-top-icon"><a href="#content"></a></span><span>© 2020 Copyright</span><span class="pull-right"><span>Sponsored and developed by dokka</span><a href="https://github.com/Kotlin/dokka"><span class="padded-icon"></span></a></span></div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span></div>
       </div>
     </div>
   </body>

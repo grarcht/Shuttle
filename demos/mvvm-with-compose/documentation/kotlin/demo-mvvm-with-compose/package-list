@@ -1,0 +1,40 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.dependencyinjection////PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.dependencyinjection/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.dependencyinjection/AppModule///PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.dependencyinjection/-app-module/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.dependencyinjection/AppModule/provideShuttle/#android.content.Context/PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.dependencyinjection/-app-module/provide-shuttle.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.ui////PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.ui/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.ui//rawPainterResource/#kotlin.Int/PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.ui/raw-painter-resource.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.view////PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.view/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.view/MVVMFirstView///PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.view/-m-v-v-m-first-view/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.view/MVVMFirstView/MVVMFirstView/#android.content.Context#com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel.FirstViewModel#com.grarcht.shuttle.framework.Shuttle/PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.view/-m-v-v-m-first-view/-m-v-v-m-first-view.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.view/MVVMFirstView/SetViewContent/#/PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.view/-m-v-v-m-first-view/-set-view-content.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.view/MVVMFirstView/cleanUpViewResources/#/PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.view/-m-v-v-m-first-view/clean-up-view-resources.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.view/MVVMFirstViewActivity///PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.view/-m-v-v-m-first-view-activity/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.view/MVVMFirstViewActivity/MVVMFirstViewActivity/#/PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.view/-m-v-v-m-first-view-activity/-m-v-v-m-first-view-activity.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.view/MVVMFirstViewActivity/shuttle/#/PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.view/-m-v-v-m-first-view-activity/shuttle.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.view/MVVMSecondView///PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.view/-m-v-v-m-second-view/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.view/MVVMSecondView/MVVMSecondView/#android.content.Context#com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel.SecondViewModel#com.grarcht.shuttle.framework.Shuttle#kotlinx.coroutines.CoroutineDispatcher/PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.view/-m-v-v-m-second-view/-m-v-v-m-second-view.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.view/MVVMSecondView/SetViewContent/#android.os.Bundle?#android.os.Bundle?/PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.view/-m-v-v-m-second-view/-set-view-content.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.view/MVVMSecondView/cleanUpViewResources/#/PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.view/-m-v-v-m-second-view/clean-up-view-resources.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.view/MVVMSecondView/getSavedInstanceState/#com.grarcht.shuttle.framework.Shuttle#android.os.Bundle/PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.view/-m-v-v-m-second-view/get-saved-instance-state.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.view/MVVMSecondViewActivity///PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.view/-m-v-v-m-second-view-activity/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.view/MVVMSecondViewActivity/MVVMSecondViewActivity/#/PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.view/-m-v-v-m-second-view-activity/-m-v-v-m-second-view-activity.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.view/MVVMSecondViewActivity/onSaveInstanceState/#android.os.Bundle#android.os.PersistableBundle/PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.view/-m-v-v-m-second-view-activity/on-save-instance-state.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.view/MVVMSecondViewActivity/shuttle/#/PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.view/-m-v-v-m-second-view-activity/shuttle.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel////PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel/FirstViewModel///PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel/-first-view-model/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel/FirstViewModel/FirstViewModel/#/PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel/-first-view-model/-first-view-model.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel/FirstViewModel/getImage/#android.content.res.Resources#kotlin.Int/PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel/-first-view-model/get-image.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel/SecondViewModel///PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel/-second-view-model/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel/SecondViewModel/SecondViewModel/#/PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel/-second-view-model/-second-view-model.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel/SecondViewModel/loadImage/#com.grarcht.shuttle.framework.Shuttle#kotlin.String/PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel/-second-view-model/load-image.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose////PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose/DemoApplication///PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose/-demo-application/index.html
+$dokka.location:com.grarcht.shuttle.demo.mvvmwithcompose/DemoApplication/DemoApplication/#/PointingToDeclaration/demo-mvvm-with-compose/com.grarcht.shuttle.demo.mvvmwithcompose/-demo-application/-demo-application.html
+com.grarcht.shuttle.demo.mvvmwithcompose
+com.grarcht.shuttle.demo.mvvmwithcompose.dependencyinjection
+com.grarcht.shuttle.demo.mvvmwithcompose.ui
+com.grarcht.shuttle.demo.mvvmwithcompose.view
+com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel
+
