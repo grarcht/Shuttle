@@ -43,11 +43,11 @@ providing convenience functions to remove cargo (automatically or on-demand)
 Refer to the documentation and demo app as a starting point.  The documentation is in the "documentation" directory of each module.  Also, modeling documents for the project are in the project's modeling directory.
 
 To use the maven dependency artifacts with Gradle, add the following to the corresponding build.gradle file(s):
-```
-    implementation 'com.grarcht.shuttle:framework:1.0.0' // Needed
-    implementation 'com.grarcht.shuttle:framework-integrations-extensions-room:1.0.0' // Needed
-    implementation 'com.grarcht.shuttle:framework-integrations-persistence:1.0.0'  // Needed depending on the set up
-    implementation 'com.grarcht.shuttle:framework-addons-navigation-component:1.0.0'  // Optional for integration with the Navigation Component
+```groovy
+    implementation 'com.grarcht.shuttle:framework:2.0.0' // Needed
+    implementation 'com.grarcht.shuttle:framework-integrations-extensions-room:2.0.0' // Needed
+    implementation 'com.grarcht.shuttle:framework-integrations-persistence:2.0.0'  // Needed depending on the set up
+    implementation 'com.grarcht.shuttle:framework-addons-navigation-component:2.0.0'  // Optional for integration with the Navigation Component
 ```
 
 
@@ -59,7 +59,7 @@ For end users wishing to include the Shuttle Framework in a project, the best wa
 
 ### Example usage with Intents
 To transport data with Shuttle and Intent objects, one can do the following:
-```
+```kotlin
     val cargoId = ImageMessageType.ImageData.value
     val startClass = MVCFirstControllerFragment::class.java
     val destinationClass = MVCSecondControllerActivity::class.java
@@ -70,7 +70,7 @@ To transport data with Shuttle and Intent objects, one can do the following:
 ```
 
 At the destination, one can load the data with Shuttle by doing the following:
-```
+```kotlin
     MainScope().async {
         getShuttleChannel()
             .consumeAsFlow()
@@ -97,7 +97,7 @@ At the destination, one can load the data with Shuttle by doing the following:
 #### Example usage with the Navigation Component Addon and Databinding
 
 The Starting View:
-```
+```kotlin
     val cargoId = ImageMessageType.ImageData.value
     val startClass = MVVMNavFirstViewFragment::class.java
     val destinationClass = MVVMNavSecondViewActivity::class.java
@@ -110,7 +110,7 @@ The Starting View:
 ```
 
 The Destination View:
-```
+```kotlin
       onPropertyChangeCallback = object : OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 when (propertyId) {
@@ -138,7 +138,7 @@ The Destination View:
 ```
 
 The Destination ViewModel:
-```
+```kotlin
         viewModelScope.launch {
             shuttle.pickupCargo<Serializable>(cargoId = cargoId)
                 .consumeAsFlow()
