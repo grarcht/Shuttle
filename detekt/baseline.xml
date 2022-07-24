@@ -2,7 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>NewLineAtEndOfFile:CargoShuttleTests.kt$com.grarcht.shuttle.framework.CargoShuttleTests.kt</ID>
-    <ID>NewLineAtEndOfFile:InstantTaskExecutorExtension.kt$com.grarcht.shuttle.framework.InstantTaskExecutorExtension.kt</ID>
+    <ID>WildcardImport:ShuttleCargoFacade.kt$import android.os.Build.*</ID>
   </CurrentIssues>
 </SmellBaseline>

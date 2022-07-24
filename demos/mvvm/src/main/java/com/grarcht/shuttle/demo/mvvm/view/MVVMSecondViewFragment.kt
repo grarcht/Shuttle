@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import com.grarcht.shuttle.demo.core.image.BitmapDecoder
 import com.grarcht.shuttle.demo.core.image.ImageMessageType
 import com.grarcht.shuttle.demo.core.image.ImageModel
+import com.grarcht.shuttle.demo.core.os.getParcelableWith
 import com.grarcht.shuttle.demo.mvvm.BR
 import com.grarcht.shuttle.demo.mvvm.R
 import com.grarcht.shuttle.demo.mvvm.databinding.SecondFragmentBinding
@@ -105,20 +106,11 @@ class MVVMSecondViewFragment : Fragment() {
     }
 
     private fun extractArgsFrom(savedInstanceState: Bundle?, arguments: Bundle?) {
-        when {
-            null != savedInstanceState -> {
-                val cargo: ShuttleParcelCargo? = savedInstanceState.getParcelable(ImageMessageType.ImageData.value)
-                storedCargoId = cargo?.cargoId
-            }
-            arguments != null -> {
-                val cargo: ShuttleParcelCargo? = arguments?.getParcelable(ImageMessageType.ImageData.value)
-                storedCargoId = cargo?.cargoId
-            }
-            null != activity?.intent?.extras -> {
-                val args = activity?.intent?.extras
-                val cargo: ShuttleParcelCargo? = args?.getParcelable(ImageMessageType.ImageData.value)
-                storedCargoId = cargo?.cargoId
-            }
+        val bundle: Bundle? = savedInstanceState ?: arguments ?: activity?.intent?.extras
+        bundle?.let {
+            val cargo: ShuttleParcelCargo? =
+                it.getParcelableWith(ImageMessageType.ImageData.value, ShuttleParcelCargo::class.java)
+            storedCargoId = cargo?.cargoId
         }
     }
 
@@ -152,7 +144,7 @@ class MVVMSecondViewFragment : Fragment() {
         )
         hideLoadingViewAnimator?.duration = ANIMATION_DURATION
         hideLoadingViewAnimator?.addUpdateListener { animation ->
-            val animatedValue: Float = animation?.animatedValue as? Float ?: FADE_OUT_END_ALPHA
+            val animatedValue: Float = animation.animatedValue as? Float ?: FADE_OUT_END_ALPHA
             viewToFadeIn?.alpha = FADE_OUT_START_ALPHA - animatedValue
 
             if (animatedValue == FADE_OUT_END_ALPHA) {

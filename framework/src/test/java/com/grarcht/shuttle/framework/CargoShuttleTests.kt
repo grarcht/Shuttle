@@ -18,7 +18,6 @@ import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
 import com.grarcht.shuttle.framework.screen.ShuttleCargoFacade
 import com.grarcht.shuttle.framework.screen.ShuttleFacade
 import com.grarcht.shuttle.framework.warehouse.ShuttleDataWarehouse
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
@@ -66,7 +65,6 @@ class CargoShuttleTests {
     private lateinit var testScope: TestScope
 
     @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
-    @OptIn(DelicateCoroutinesApi::class)
     @BeforeEach
     fun `run before each test`() {
         testDispatcher = UnconfinedTestDispatcher(TestCoroutineScheduler())

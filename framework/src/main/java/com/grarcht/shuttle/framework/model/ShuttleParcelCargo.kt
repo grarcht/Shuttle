@@ -16,8 +16,8 @@ open class ShuttleParcelCargo(val cargoId: String) : Parcelable {
         return Parcelable.CONTENTS_FILE_DESCRIPTOR
     }
 
-    override fun writeToParcel(parcel: Parcel?, flags: Int) {
-        parcel?.writeString(cargoId)
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(cargoId)
     }
 
     companion object CREATOR : Parcelable.Creator<ShuttleParcelCargo> {

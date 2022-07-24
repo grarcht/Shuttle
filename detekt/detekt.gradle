@@ -1,7 +1,7 @@
 apply plugin: 'io.gitlab.arturbosch.detekt'
 
 detekt {
-    failFast = true
+    allRules = true
     buildUponDefaultConfig = true
     def rootDirectory = rootProject.getRootDir()
     println("Dir ${rootDirectory}")

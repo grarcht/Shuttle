@@ -1,6 +1,29 @@
 # Changelog
 
 ## [Released]
+## [2.0.2] - 2022-07-24
+## Added
+- manifest opt-in for the new back press callback for SDK 33
+
+## Changed
+- rolled back dependency versions to stable version
+
+## Removed
+- the aar file classifier
+
+## [2.0.1] - 2022-07-23 - DON'T USE...USE 2.0.2 instead
+## Added
+- the new back press callback for SDK version 33
+- the new back press trigger for SDK version 33 to avoid the deprecated call to `activity.onBackPressed()`.
+
+## Changed
+- updated versions for many dependencies
+- updated unit tests to remove redundant annotations
+- updated unit tests to test the new back press handling
+
+## Removed
+- Some nullability handling that is no longer needed since the objects cannot be null
+
 ## [2.0.0] - 2022-03-27
 ## Added
 - an instant task executor for unit tests

@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit
 @ExperimentalCoroutinesApi
 @ExtendWith(ArchtTestTaskExecutorExtension::class)
 class ShuttleCargoFacadeTests {
+
     @Test
     fun verifyCargoIsRemovedAfterDelivery() {
         val application = mock(Application::class.java)
@@ -40,12 +41,12 @@ class ShuttleCargoFacadeTests {
         }.`when`(handler).post(any())
         facade.removeCargoAfterDelivery(firstScreenClass, nextScreenClass, cargoId)
         screenCallback.onActivityCreated(activity)
-        activity.onBackPressed()
+        activity.onBackPressedDispatcher.onBackPressed()
 
         CountDownLatch(1).await(1, TimeUnit.SECONDS)
 
         verify(screenCallback).onActivityCreated(activity)
-        verify(activity, times(2)).onBackPressed()
+        verify(activity, times(2)).onBackPressedDispatcher.onBackPressed()
         Assertions.assertEquals(1, warehouse.numberOfRemoveInvocations)
     }
 

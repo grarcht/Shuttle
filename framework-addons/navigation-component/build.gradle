@@ -20,12 +20,12 @@ tasks.dokkaHtml.configure {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
     buildToolsVersion versions.buildToolsVersion
 
     defaultConfig {
         minSdkVersion 26
-        targetSdkVersion 31
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -72,7 +72,7 @@ dependencies {
 
 group 'com.grarcht.shuttle'
 archivesBaseName = 'framework-addons-navigation-component'
-version = '2.0.0'
+version = '2.0.2'
 def testPublish = true
 def isReleaseVersion = true // the opposite is snapshot
 def releaseAARFilePath = isReleaseVersion ?
@@ -173,7 +173,7 @@ afterEvaluate {
                     artifactId = archivesBaseName
                     artifact(sourcesJar) { classifier = 'sources' }
                     artifact(javadocJar) { classifier = 'javadoc' }
-                    artifact(releaseAARFilePath) { classifier = 'release' }
+                    artifact(releaseAARFilePath)
 
                     pom {
                         name = 'Shuttle'
