@@ -27,6 +27,7 @@ import com.grarcht.shuttle.demo.core.image.BitmapDecoder
 import com.grarcht.shuttle.demo.core.image.ImageMessageType
 import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.core.io.IOResult
+import com.grarcht.shuttle.demo.core.os.getParcelableWith
 import com.grarcht.shuttle.demo.mvvmwithcompose.R
 import com.grarcht.shuttle.demo.mvvmwithcompose.ui.rawPainterResource
 import com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel.SecondViewModel
@@ -100,15 +101,13 @@ class MVVMSecondView(
         }
     }
 
-    private fun extractArgsFrom(savedInstanceState: Bundle?, extras: Bundle?): MVVMSecondView {
-        if (null != savedInstanceState) {
-            val cargo: ShuttleParcelCargo? = savedInstanceState.getParcelable(ImageMessageType.ImageData.value)
-            storedCargoId = cargo?.cargoId
-        } else if (null != extras) {
-            val cargo: ShuttleParcelCargo? = extras.getParcelable(ImageMessageType.ImageData.value)
+    private fun extractArgsFrom(savedInstanceState: Bundle?, arguments: Bundle?) {
+        val bundle: Bundle? = savedInstanceState ?: arguments
+        bundle?.let {
+            val cargo: ShuttleParcelCargo? =
+                it.getParcelableWith(ImageMessageType.ImageData.value, ShuttleParcelCargo::class.java)
             storedCargoId = cargo?.cargoId
         }
-        return this
     }
 
     private fun getCargo(cargoId: String, stateUpdate: (IOResult) -> Unit) {

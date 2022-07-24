@@ -2,10 +2,16 @@ package com.grarcht.shuttle.framework.screen
 
 import android.app.Activity
 import android.app.Application
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.KeyEvent
+import android.window.OnBackInvokedCallback
+import android.window.OnBackInvokedDispatcher
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
 import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
@@ -62,13 +68,20 @@ open class ShuttleCargoFacade(
                         activityTypeName.contains(screen.typeName)
                     ) {
                         // watch for the back press event
-                        val callback = ActivityBackPressedCallback(
-                            screen,
-                            activity,
-                            ON_PRESSED_CALLBACK_ENABLED
-                        )
-
-                        activity.onBackPressedDispatcher.addCallback(callback)
+                        if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+                            val callback = ActivityOnBackInvokedCallback(screen, activity)
+                            activity.onBackInvokedDispatcher.registerOnBackInvokedCallback(
+                                OnBackInvokedDispatcher.PRIORITY_DEFAULT,
+                                callback
+                            )
+                        } else {
+                            val callback = ActivityBackPressedCallback(
+                                screen,
+                                activity,
+                                ON_PRESSED_CALLBACK_ENABLED
+                            )
+                            activity.onBackPressedDispatcher.addCallback(callback)
+                        }
                     }
                 }
             }
@@ -83,33 +96,53 @@ open class ShuttleCargoFacade(
 
         override fun handleOnBackPressed() {
             isEnabled = false
+            onBackPressed(screen, activity)
+        }
+    }
 
-            backgroundThreadScope.launch {
-                shuttleWarehouse.removeCargoBy(screen.cargoId).consumeAsFlow().collectLatest {
-                    when (it) {
-                        is ShuttleRemoveCargoResult.Removing -> {
-                            // ignore
-                        }
-                        is ShuttleRemoveCargoResult.DoesNotExist,
-                        is ShuttleRemoveCargoResult.Removed,
-                        is ShuttleRemoveCargoResult.UnableToRemove<*> -> {
-                            cancel() // cancel the channel
-                        }
+    @RequiresApi(VERSION_CODES.TIRAMISU)
+    private inner class ActivityOnBackInvokedCallback(
+        private val screen: Screen,
+        private val activity: Activity
+    ) : OnBackInvokedCallback {
+        override fun onBackInvoked() {
+            onBackPressed(screen, activity)
+        }
+    }
+
+    private fun onBackPressed(screen: Screen, activity: Activity) {
+
+        backgroundThreadScope.launch {
+            shuttleWarehouse.removeCargoBy(screen.cargoId).consumeAsFlow().collectLatest {
+                when (it) {
+                    is ShuttleRemoveCargoResult.Removing -> {
+                        // ignore
+                    }
+                    is ShuttleRemoveCargoResult.DoesNotExist,
+                    is ShuttleRemoveCargoResult.Removed,
+                    is ShuttleRemoveCargoResult.UnableToRemove<*> -> {
+                        cancel() // cancel the channel
                     }
                 }
-            }.invokeOnCompletion { throwable ->
-                throwable?.let {
-                    Log.e(LOG_TAG, "Caught when removing cargo by id.", it)
-                }
+            }
+        }.invokeOnCompletion { throwable ->
+            throwable?.let {
+                Log.e(LOG_TAG, "Caught when removing cargo by id.", it)
+            }
 
-                // Call on back pressed so the user doesn't have to hit the back button twice.
-                handler?.post {
+            // Call on back pressed so the user doesn't have to hit the back button twice.
+            handler?.post {
+                if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+                    val keyEvent = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK)
+                    activity.onKeyDown(KeyEvent.KEYCODE_BACK, keyEvent)
+                } else {
+                    @Suppress("DEPRECATION")
                     activity.onBackPressed()
                 }
-
-                // avoid extra callbacks
-                screenCallback.screens.remove(screen)
             }
+
+            // avoid extra callbacks
+            screenCallback.screens.remove(screen)
         }
     }
 

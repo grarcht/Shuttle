@@ -16,6 +16,7 @@ import androidx.fragment.app.viewModels
 import com.grarcht.shuttle.demo.core.image.BitmapDecoder
 import com.grarcht.shuttle.demo.core.image.ImageMessageType
 import com.grarcht.shuttle.demo.core.image.ImageModel
+import com.grarcht.shuttle.demo.core.os.getParcelableWith
 import com.grarcht.shuttle.demo.mvvmwithnavigation.BR
 import com.grarcht.shuttle.demo.mvvmwithnavigation.R
 import com.grarcht.shuttle.demo.mvvmwithnavigation.databinding.SecondFragmentBinding
@@ -106,11 +107,10 @@ class MVVMNavSecondViewFragment : Fragment() {
     }
 
     private fun extractArgsFrom(savedInstanceState: Bundle?, arguments: Bundle?) {
-        if (null != savedInstanceState) {
-            val cargo: ShuttleParcelCargo? = savedInstanceState.getParcelable(ImageMessageType.ImageData.value)
-            storedCargoId = cargo?.cargoId
-        } else if (null != arguments) {
-            val cargo: ShuttleParcelCargo? = arguments.getParcelable(ImageMessageType.ImageData.value)
+        val bundle: Bundle? = savedInstanceState ?: arguments
+        bundle?.let {
+            val cargo: ShuttleParcelCargo? =
+                it.getParcelableWith(ImageMessageType.ImageData.value, ShuttleParcelCargo::class.java)
             storedCargoId = cargo?.cargoId
         }
     }
@@ -145,7 +145,7 @@ class MVVMNavSecondViewFragment : Fragment() {
         )
         hideLoadingViewAnimator?.duration = ANIMATION_DURATION
         hideLoadingViewAnimator?.addUpdateListener { animation ->
-            val animatedValue: Float = animation?.animatedValue as? Float ?: FADE_OUT_END_ALPHA
+            val animatedValue: Float = animation.animatedValue as? Float ?: FADE_OUT_END_ALPHA
             viewToFadeIn?.alpha = FADE_OUT_START_ALPHA - animatedValue
 
             if (animatedValue == FADE_OUT_END_ALPHA) {
