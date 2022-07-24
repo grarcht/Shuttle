@@ -2,7 +2,6 @@ package com.grarcht.shuttle.framework.screen
 
 import android.app.Application
 import android.os.Handler
-import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import com.grarcht.shuttle.framework.ArchtTestTaskExecutorExtension
 import com.grarcht.shuttle.framework.warehouse.ShuttleDataWarehouse
@@ -22,6 +21,7 @@ import java.util.concurrent.TimeUnit
 @ExperimentalCoroutinesApi
 @ExtendWith(ArchtTestTaskExecutorExtension::class)
 class ShuttleCargoFacadeTests {
+
     @Test
     fun verifyCargoIsRemovedAfterDelivery() {
         val application = mock(Application::class.java)
@@ -41,26 +41,12 @@ class ShuttleCargoFacadeTests {
         }.`when`(handler).post(any())
         facade.removeCargoAfterDelivery(firstScreenClass, nextScreenClass, cargoId)
         screenCallback.onActivityCreated(activity)
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            val keyEvent = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK)
-            activity.onKeyDown(KeyEvent.KEYCODE_BACK, keyEvent)
-        } else {
-            @Suppress("DEPRECATION")
-            activity.onBackPressed()
-        }
+        activity.onBackPressedDispatcher.onBackPressed()
 
         CountDownLatch(1).await(1, TimeUnit.SECONDS)
 
         verify(screenCallback).onActivityCreated(activity)
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            verify(activity, times(1)).onKeyDown(any(Int::class.java), any(KeyEvent::class.java))
-        } else {
-            @Suppress("DEPRECATION")
-            verify(activity, times(2)).onBackPressed()
-        }
-
+        verify(activity, times(2)).onBackPressedDispatcher.onBackPressed()
         Assertions.assertEquals(1, warehouse.numberOfRemoveInvocations)
     }
 

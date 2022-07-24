@@ -43,10 +43,6 @@ android {
         targetCompatibility versions.targetCompatibility
     }
 
-    kotlinOptions {
-        jvmTarget = versions.targetCompatibility
-    }
-
     packagingOptions {
         exclude "META-INF/LICENSE*"
     }
@@ -178,7 +174,7 @@ afterEvaluate {
                     artifactId = archivesBaseName
                     artifact(sourcesJar) { classifier = 'sources' }
                     artifact(javadocJar) { classifier = 'javadoc' }
-                    artifact(releaseAARFilePath) { classifier = 'release' }
+                    artifact(releaseAARFilePath)
 
                     pom {
                         name = 'Shuttle'

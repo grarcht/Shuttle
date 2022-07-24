@@ -173,7 +173,7 @@ afterEvaluate {
                     artifactId = archivesBaseName
                     artifact(sourcesJar) { classifier = 'sources' }
                     artifact(javadocJar) { classifier = 'javadoc' }
-                    artifact(releaseAARFilePath) { classifier = 'release' }
+                    artifact(releaseAARFilePath)
 
                     pom {
                         name = 'Shuttle'
