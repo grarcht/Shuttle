@@ -17,7 +17,7 @@ ext {
             mockito            : '4.5.1',
             navigation         : '2.5.0',
             room               : '2.5.0-alpha02',
-            shuttle            : '2.0.0',
+            shuttle            : '2.0.1',
             sourceCompatibility: JavaVersion.VERSION_11,
             targetCompatibility: JavaVersion.VERSION_11
     ]
