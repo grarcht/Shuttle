@@ -24,6 +24,7 @@ Why keep spending more time and money on governance through code reviews?  Why n
 When envisioning, designing, and creating the architecture, quality attributes and best practices were in mind. These attributes include usability, readability, recognizability, reusability, maintainability, and more.
 
 
+
 ## Background
 The Shuttle framework takes its name from cargo transportation in the freight industry.  Moving and storage companies experience scenarios where large moving trucks cannot transport cargo the entire way to the destination (warehouses, houses, et cetera).  These scenarios might occur from road restrictions, trucks being overweight from large cargo, and more.   As a result, companies use small Shuttle vans to transport smaller cargo groups on multiple trips to deliver the entire shipment.
 
@@ -38,16 +39,23 @@ providing convenience functions to remove cargo (automatically or on-demand)
 
 
 
+## The value of using the Shuttle Framework
+|  Using the framework avoids app crashes.  |  Apps crash when not using the framework.  |
+|-------------------------------------------|--------------------------------------------|
+|  <img src="/media/videos/loaded_image_cargo.gif" width="50%" height="50%"/>  |  <img src="/media/videos/app_crash.gif" width="50%" height="50%"/>  | 
+
+For first-hand examples, refer to the "The Demo Apps" section below.
+
 
 ## Getting Started
 Refer to the documentation and demo app as a starting point.  The documentation is in the "documentation" directory of each module.  Also, modeling documents for the project are in the project's modeling directory.
 
 To use the maven dependency artifacts with Gradle, add the following to the corresponding build.gradle file(s):
 ```groovy
-    implementation 'com.grarcht.shuttle:framework:2.0.0' // Needed
-    implementation 'com.grarcht.shuttle:framework-integrations-extensions-room:2.0.0' // Needed
-    implementation 'com.grarcht.shuttle:framework-integrations-persistence:2.0.0'  // Needed depending on the set up
-    implementation 'com.grarcht.shuttle:framework-addons-navigation-component:2.0.0'  // Optional for integration with the Navigation Component
+    implementation 'com.grarcht.shuttle:framework:2.0.2' // Needed
+    implementation 'com.grarcht.shuttle:framework-integrations-extensions-room:2.0.2' // Needed
+    implementation 'com.grarcht.shuttle:framework-integrations-persistence:2.0.2'  // Needed depending on the set up
+    implementation 'com.grarcht.shuttle:framework-addons-navigation-component:2.0.2'  // Optional for integration with the Navigation Component
 ```
 
 
@@ -233,6 +241,23 @@ With MVVM, the activities and fragments are a part of the View component.   The 
 In the demo app, the ViewModel component is using Google's ViewModel Architecture Component.  The asynchronous notification mechanism used in MVVM is provided using Kotlin Channels, much like Google's Databinding library's Observables.  Databinding has also been included with some demos to show essential integration.
 
 With MVC, the activities and fragments are a part of the Controller Component.  The controllers receive input and modify it for the models or views.
+
+To get a first-hand look, try running the demo apps.
+
+When using the demo apps, there are a couple of flows to be aware of:
+
+1. The success flow that starts from clicking on the "**Navigate using Shuttle**" button.
+
+|  The main menu screen  |  The cargo (image) loading screen  |  The cargo (image) loaded screen  |
+|------------------------|------------------------------------|-----------------------------------|
+|  <img src="/media/screenshots/main_menu.png" width="200" height="400"/>  |  <img src="/media/screenshots/loading_image_cargo.png" width="200" height="400"/>  |  <img src="/media/screenshots/loaded_image_cargo.png" width="200" height="400"/>  |
+
+
+2. The error flow that starts from clicking on the "**Navigate Normally**" button.
+
+|  The main menu screen  |  The screen after the app crash  |
+|------------------------|----------------------------------|
+|  <img src="/media/screenshots/main_menu.png" width="200" height="400"/>  |  <img src="/media/screenshots/loading_image_cargo_failed.png" width="200" height="400"/>  | 
 
 
 
