@@ -39,12 +39,10 @@ providing convenience functions to remove cargo (automatically or on-demand)
 
 
 
-## Seeing Is Believing
-This video shows the successful transportation and loading of image cargo using the Shuttle Framework to avoid app crashes.
-![](/media/videos/transported_and_loaded_image_cargo.gif)
-
-This video shows the app crash that occurs from a Transaction Too Large Exception when the Shuttle Framework is not used.
-![](/media/videos/app_crash.gif)
+## The value of using the Shuttle Framework
+|  Using the framework avoids app crashes.  |  Apps crash when not using the framework.  |
+|-------------------------------------------|--------------------------------------------|
+|  <img src="/media/videos/loaded_image_cargo.gif" width="50%" height="50%"/>  |  <img src="/media/videos/app_crash.gif" width="50%" height="50%"/>  | 
 
 For first-hand examples, refer to the "The Demo Apps" section below.
 
@@ -245,6 +243,22 @@ In the demo app, the ViewModel component is using Google's ViewModel Architectur
 With MVC, the activities and fragments are a part of the Controller Component.  The controllers receive input and modify it for the models or views.
 
 To get a first-hand look, try running the demo apps.
+
+When using the demo apps, there are a couple of flows to be aware of:
+
+1. The success flow that starts from clicking on the "**Navigate using Shuttle**" button.
+
+|  The main menu screen  |  The cargo (image) loading screen  |  The cargo (image) loaded screen  |
+|------------------------|------------------------------------|-----------------------------------|
+|  <img src="/media/screenshots/main_menu.png" width="200" height="400"/>  |  <img src="/media/screenshots/loading_image_cargo.png" width="200" height="400"/>  |  <img src="/media/screenshots/loaded_image_cargo.png" width="200" height="400"/>  |
+
+
+2. The error flow that starts from clicking on the "**Navigate Normally**" button.
+
+|  The main menu screen  |  The screen after the app crash  |
+|------------------------|----------------------------------|
+|  <img src="/media/screenshots/main_menu.png" width="200" height="400"/>  |  <img src="/media/screenshots/loading_image_cargo_failed.png" width="200" height="400"/>  | 
+
 
 
 ## License
