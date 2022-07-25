@@ -1,19 +1,12 @@
 <resources>
     <string name="app_name">Shuttle MVC Demo</string>
-    <string name="architectures_choice_message">Choose an architecture to demo Shuttle with</string>
     <string name="image_retrieved">image retrieved</string>
     <string name="loading_image">Loading Eiffel Tower Image</string>
-    <string name="mvc_button_text">MVC Architecture</string>
-    <string name="mvvm_button_text">MVVM Architecture</string>
-    <string name="mvvm_button_with_navigation_text">MVVM Architecture With Navigation</string>
     <string name="mvc_first_view_title">MVC Architecture With Navigation</string>
-    <string name="mvvm_first_view_title">MVVM Architecture With Navigation</string>
-    <string name="mvvm_first_view_with_navigation_title">MVVM Architecture With Navigation</string>
+    <string name="mvc_first_view_with_navigation_title">MVVM Architecture With Navigation</string>
     <string name="navigate_normally">Navigate Normally</string>
     <string name="navigate_using_shuttle">Navigate using Shuttle</string>
-    <string name="navigate_using_shuttle_and_navigator">Navigate using Shuttle navigator addon</string>
     <string name="the_app_will_crash_without_using_shuttle">The app will crash without using Shuttle.</string>
     <string name="the_app_will_not_crash_using_shuttle">The app will not crash when using Shuttle.</string>
-    <string name="the_app_will_not_crash_using_shuttle_and_navigator">The app will not crash when using Shuttle with the Navigator.</string>
     <string name="unable_to_get_image">The image could not be retrieved. Please double check the changes.</string>
 </resources>

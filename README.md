@@ -24,6 +24,7 @@ Why keep spending more time and money on governance through code reviews?  Why n
 When envisioning, designing, and creating the architecture, quality attributes and best practices were in mind. These attributes include usability, readability, recognizability, reusability, maintainability, and more.
 
 
+
 ## Background
 The Shuttle framework takes its name from cargo transportation in the freight industry.  Moving and storage companies experience scenarios where large moving trucks cannot transport cargo the entire way to the destination (warehouses, houses, et cetera).  These scenarios might occur from road restrictions, trucks being overweight from large cargo, and more.   As a result, companies use small Shuttle vans to transport smaller cargo groups on multiple trips to deliver the entire shipment.
 
@@ -38,16 +39,25 @@ providing convenience functions to remove cargo (automatically or on-demand)
 
 
 
+## Seeing Is Believing
+This video shows the successful transportation and loading of image cargo using the Shuttle Framework to avoid app crashes.
+![](/media/videos/transported_and_loaded_image_cargo.gif)
+
+This video shows the app crash that occurs from a Transaction Too Large Exception when the Shuttle Framework is not used.
+![](/media/videos/app_crash.gif)
+
+For first-hand examples, refer to the "The Demo Apps" section below.
+
 
 ## Getting Started
 Refer to the documentation and demo app as a starting point.  The documentation is in the "documentation" directory of each module.  Also, modeling documents for the project are in the project's modeling directory.
 
 To use the maven dependency artifacts with Gradle, add the following to the corresponding build.gradle file(s):
 ```groovy
-    implementation 'com.grarcht.shuttle:framework:2.0.0' // Needed
-    implementation 'com.grarcht.shuttle:framework-integrations-extensions-room:2.0.0' // Needed
-    implementation 'com.grarcht.shuttle:framework-integrations-persistence:2.0.0'  // Needed depending on the set up
-    implementation 'com.grarcht.shuttle:framework-addons-navigation-component:2.0.0'  // Optional for integration with the Navigation Component
+    implementation 'com.grarcht.shuttle:framework:2.0.2' // Needed
+    implementation 'com.grarcht.shuttle:framework-integrations-extensions-room:2.0.2' // Needed
+    implementation 'com.grarcht.shuttle:framework-integrations-persistence:2.0.2'  // Needed depending on the set up
+    implementation 'com.grarcht.shuttle:framework-addons-navigation-component:2.0.2'  // Optional for integration with the Navigation Component
 ```
 
 
@@ -234,6 +244,7 @@ In the demo app, the ViewModel component is using Google's ViewModel Architectur
 
 With MVC, the activities and fragments are a part of the Controller Component.  The controllers receive input and modify it for the models or views.
 
+To get a first-hand look, try running the demo apps.
 
 
 ## License

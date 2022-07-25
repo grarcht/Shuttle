@@ -1,25 +1,25 @@
 ext {
     versions = [
-            buildToolsVersion  : '30.0.3',
-            compose            : '1.1.1',
-            detekt             : '1.19.0',
-            dokka              : '1.7.10',
-            gradleBuildTools   : '7.2.1',
-            hilt               : '2.43',
-            junitAndroidTest   : '1.3.0',
-            junitJupiter       : '5.8.2',
-            junitPlatform      : '1.8.2',
-            jvmTarget          : '11',
-            kotlin             : '1.6.0', // Compose requires this version
-            kotlinCoroutines   : '1.6.0',
-            kotlinCompilerExt  : '1.6.0',
-            lifecycle          : '2.5.0',
-            mockito            : '4.5.1',
-            navigation         : '2.5.0',
-            room               : '2.4.2',
-            shuttle            : '2.0.2',
-            sourceCompatibility: JavaVersion.VERSION_11,
-            targetCompatibility: JavaVersion.VERSION_11
+            buildToolsVersion       : '30.0.3',
+            compose                 : '1.1.1',
+            detekt                  : '1.19.0',
+            dokka                   : '1.7.10',
+            gradleBuildTools        : '7.2.1',
+            hilt                    : '2.43',
+            junitAndroidTest        : '1.3.0',
+            junitJupiter            : '5.8.2',
+            junitPlatform           : '1.8.2',
+            jvmTarget               : '11',
+            kotlin                  : '1.6.0', // Compose requires this version
+            kotlinCoroutines        : '1.6.0',
+            kotlinComposeCompilerExt: '1.1.0-rc01', // Required by Kotlin version 1.6.0
+            lifecycle               : '2.5.0',
+            mockito                 : '4.5.1',
+            navigation              : '2.5.0',
+            room                    : '2.4.2',
+            shuttle                 : '2.0.2',
+            sourceCompatibility     : JavaVersion.VERSION_11,
+            targetCompatibility     : JavaVersion.VERSION_11
     ]
 
     classpathDeps = [
@@ -57,9 +57,9 @@ ext {
     ]
 
     dependencyInjectionDeps = [
-            hilt         : "com.google.dagger:hilt-android:${versions.hilt}",
-            hiltCompiler : "com.google.dagger:hilt-android-compiler:${versions.hilt}",
-            hiltPlugin   : "com.google.dagger:hilt-android-gradle-plugin:${versions.hilt}"
+            hilt        : "com.google.dagger:hilt-android:${versions.hilt}",
+            hiltCompiler: "com.google.dagger:hilt-android-compiler:${versions.hilt}",
+            hiltPlugin  : "com.google.dagger:hilt-android-gradle-plugin:${versions.hilt}"
     ]
     jetbrainsKotlinDeps = [
             coroutines: "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinCoroutines}",

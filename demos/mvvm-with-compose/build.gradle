@@ -58,7 +58,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion versions.kotlinCompilerExt
+        kotlinCompilerExtensionVersion versions.kotlinComposeCompilerExt
     }
 
     kapt {
