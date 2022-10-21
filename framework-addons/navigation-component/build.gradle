@@ -21,7 +21,6 @@ tasks.dokkaHtml.configure {
 
 android {
     compileSdkVersion 33
-    buildToolsVersion versions.buildToolsVersion
 
     defaultConfig {
         minSdkVersion 26
