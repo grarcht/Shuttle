@@ -20,11 +20,11 @@ tasks.dokkaHtml.configure {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion versions.android.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion 26
-        targetSdkVersion 33
+        minSdkVersion versions.android.minSdkVersion
+        targetSdkVersion versions.android.targetSdkVersion
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
