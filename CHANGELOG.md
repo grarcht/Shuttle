@@ -1,6 +1,15 @@
 # Changelog
 
 ## [Released]
+## [2.0.3] - 2022-10-21
+
+## Changed
+- dependency versions
+- shuttle version references from build scripts
+
+## Removed
+- an unnecessary unit test assertion
+
 ## [2.0.2] - 2022-07-24
 ## Added
 - manifest opt-in for the new back press callback for SDK 33
