@@ -4,17 +4,17 @@
 # Shuttle
 [![License: MIT](https://img.shields.io/github/license/grarcht/shuttle?color=white&style=plastic)](https://github.com/grarcht/Shuttle/blob/main/LICENSE.md)   ![Maven Central](https://img.shields.io/maven-central/v/com.grarcht.shuttle/framework?color=teal&style=plastic)
 
-Shuttle provides a modern, guarded way to pass large Serializable objects with Intent objects or saving them in Bundle objects to avoid app crashes.
+Shuttle provides a modern, guarded way to pass large Serializable objects with Intent objects or save them in Bundle objects to avoid app crashes.
 
 Often, businesses experience the adverse side effects of risks introduced in daily software engineering.   These adverse side effects include time and money spent on app crash investigation, app crash fixes, quality assurance testing, releasing hotfixes, and extra governance through code reviews.
 
-Shuttle reduces the high-level of governance needed to catch Transaction Too Large Exception inducing code by:
-1. storing the Serializable and passes an identifier for the Serializable
+Shuttle reduces the high level of governance needed to catch Transaction Too Large Exception inducing code by:
+1. storing the Serializable and passing an identifier for the Serializable
 2. using a small-sized Bundle for binder transactions
 3. avoiding app crashes from Transaction Too Large Exceptions
 4. enabling retrieval of the stored Serializable at the destination.
 
-Shuttle also excels by:
+Additionally, Shuttle also excels by:
 1. providing a solution with maven artifacts
 2. providing Solution Building Blocks (SBBs) for building on
 3. saving one time in avoiding DB and table setup, especially with creating many tables for the content of different types of objects.
@@ -30,7 +30,7 @@ The Shuttle framework takes its name from cargo transportation in the freight in
 
 After the delivery is complete, employees remove the cargo remnants from the shuttle vans and trucks.  This clean-up task is one of the last steps for the job.
 
-The Shuttle framework takes its roots in these scenarios by:
+The Shuttle framework takes its roots in these scenarios:
 creating a smaller cargo bundle object to use in successfully delivering the data to the destination
 shuttling the corresponding large cargo to a warehouse and storing it for pickup
 linking the smaller cargo with the larger cargo by an identifier
@@ -227,7 +227,7 @@ The Shuttle Framework's design includes the avoidance of imposing technologies o
 ## Heads Up
 If there is other data, like Parcelable objects included in intent data, app crashes may still occur from Transaction Too Large exceptions.
 
-In E.A./S.A. and Software Engineering, one often weighs the pros with the cons on topics.  In Android, different types of data can be passed with Bundle objects.   It is considered best practice to use Parcelable objects over Serializable objects to leverage faster load times.  Unfortunately, Parcelable objects are highly optimized for Inter-process Communication (IPC) and are not safe for storing on disk.   Thus, Google recommends using standard or other forms of serialization.  To properly store and load objects, this project uses serializable objects to store data.   The drawback of this approach is that the load speeds are slower than with Parcelable objects.  This drawback can also impose some risk with implementations having to wait a little longer for objects to load.  The cargo mentioned above has been provided to mitigate the risk and enable consumers to handle the UI with the loading progress indication of choice.
+In E.A./S.A. and Software Engineering, one often weighs the pros with the cons of topics.  In Android, different types of data can be passed with Bundle objects.   It is considered best practice to use Parcelable objects over Serializable objects to leverage faster load times.  Unfortunately, Parcelable objects are highly optimized for Inter-process Communication (IPC) and are not safe for storing on disk.   Thus, Google recommends using standard or other forms of serialization.  To properly store and load objects, this project uses serializable objects to store data.   The drawback of this approach is that the load speeds are slower than with Parcelable objects.  This drawback can also impose some risk with implementations having to wait a little longer for objects to load.  The cargo mentioned above has been provided to mitigate the risk and enable consumers to handle the UI with the loading progress indication of choice.
 
 
 
@@ -246,14 +246,14 @@ To get a first-hand look, try running the demo apps.
 
 When using the demo apps, there are a couple of flows to be aware of:
 
-1. The success flow that starts from clicking on the "**Navigate using Shuttle**" button.
+1. The success flow starts from clicking on the "**Navigate using Shuttle**" button.
 
 |  The main menu screen  |  The cargo (image) loading screen  |  The cargo (image) loaded screen  |
 |------------------------|------------------------------------|-----------------------------------|
 |  <img src="/media/screenshots/main_menu.png" width="200" height="400"/>  |  <img src="/media/screenshots/loading_image_cargo.png" width="200" height="400"/>  |  <img src="/media/screenshots/loaded_image_cargo.png" width="200" height="400"/>  |
 
 
-2. The error flow that starts from clicking on the "**Navigate Normally**" button.
+2. The error flow starts from clicking on the "**Navigate Normally**" button.
 
 |  The main menu screen  |  The screen after the app crash  |
 |------------------------|----------------------------------|

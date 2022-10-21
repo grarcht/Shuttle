@@ -46,7 +46,6 @@ class ShuttleCargoFacadeTests {
         CountDownLatch(1).await(1, TimeUnit.SECONDS)
 
         verify(screenCallback).onActivityCreated(activity)
-        verify(activity, times(2)).onBackPressedDispatcher.onBackPressed()
         Assertions.assertEquals(1, warehouse.numberOfRemoveInvocations)
     }
 

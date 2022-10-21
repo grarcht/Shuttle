@@ -22,13 +22,13 @@ tasks.dokkaHtml.configure {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion versions.android.compileSdkVersion
 
     defaultConfig {
         testInstrumentationRunnerArguments runnerBuilder: 'de.mannodermaus.junit5.AndroidJUnit5Builder'
         testInstrumentationRunnerArguments
-        minSdkVersion 26
-        targetSdkVersion 33
+        minSdkVersion versions.android.minSdkVersion
+        targetSdkVersion versions.android.targetSdkVersion
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -81,7 +81,7 @@ dependencies {
 
 group 'com.grarcht.shuttle'
 archivesBaseName = 'framework'
-version = '2.0.2'
+version = versions.shuttle
 def testPublish = true
 def isReleaseVersion = true // the opposite is snapshot
 def releaseAARFilePath = isReleaseVersion ?
