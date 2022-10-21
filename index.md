@@ -1,17 +1,20 @@
+
+![Shuttle](shuttle_header.png)
+
 # Shuttle
 [![License: MIT](https://img.shields.io/github/license/grarcht/shuttle?color=white&style=plastic)](https://github.com/grarcht/Shuttle/blob/main/LICENSE.md)   ![Maven Central](https://img.shields.io/maven-central/v/com.grarcht.shuttle/framework?color=teal&style=plastic)
 
-Shuttle provides a modern, guarded way to pass large Serializable objects with Intent objects or saving them in Bundle objects to avoid app crashes.
+Shuttle provides a modern, guarded way to pass large Serializable objects with Intent objects or save them in Bundle objects to avoid app crashes.
 
 Often, businesses experience the adverse side effects of risks introduced in daily software engineering.   These adverse side effects include time and money spent on app crash investigation, app crash fixes, quality assurance testing, releasing hotfixes, and extra governance through code reviews.
 
-Shuttle reduces the high-level of governance needed to catch Transaction Too Large Exception inducing code by:
-1. storing the Serializable and passes an identifier for the Serializable
+Shuttle reduces the high level of governance needed to catch Transaction Too Large Exception inducing code by:
+1. storing the Serializable and passing an identifier for the Serializable
 2. using a small-sized Bundle for binder transactions
 3. avoiding app crashes from Transaction Too Large Exceptions
 4. enabling retrieval of the stored Serializable at the destination.
 
-Shuttle also excels by:
+Additionally, Shuttle also excels by:
 1. providing a solution with maven artifacts
 2. providing Solution Building Blocks (SBBs) for building on
 3. saving one time in avoiding DB and table setup, especially with creating many tables for the content of different types of objects.
@@ -21,12 +24,13 @@ Why keep spending more time and money on governance through code reviews?  Why n
 When envisioning, designing, and creating the architecture, quality attributes and best practices were in mind. These attributes include usability, readability, recognizability, reusability, maintainability, and more.
 
 
+
 ## Background
 The Shuttle framework takes its name from cargo transportation in the freight industry.  Moving and storage companies experience scenarios where large moving trucks cannot transport cargo the entire way to the destination (warehouses, houses, et cetera).  These scenarios might occur from road restrictions, trucks being overweight from large cargo, and more.   As a result, companies use small Shuttle vans to transport smaller cargo groups on multiple trips to deliver the entire shipment.
 
 After the delivery is complete, employees remove the cargo remnants from the shuttle vans and trucks.  This clean-up task is one of the last steps for the job.
 
-The Shuttle framework takes its roots in these scenarios by:
+The Shuttle framework takes its roots in these scenarios:
 creating a smaller cargo bundle object to use in successfully delivering the data to the destination
 shuttling the corresponding large cargo to a warehouse and storing it for pickup
 linking the smaller cargo with the larger cargo by an identifier
@@ -35,16 +39,23 @@ providing convenience functions to remove cargo (automatically or on-demand)
 
 
 
+## The value of using the Shuttle Framework
+|  Using the framework avoids app crashes.  |  Apps crash when not using the framework.  |
+|-------------------------------------------|--------------------------------------------|
+|  <img src="/media/videos/loaded_image_cargo.gif" width="50%" height="50%"/>  |  <img src="/media/videos/app_crash.gif" width="50%" height="50%"/>  | 
+
+For first-hand examples, refer to the "The Demo Apps" section below.
+
 
 ## Getting Started
 Refer to the documentation and demo app as a starting point.  The documentation is in the "documentation" directory of each module.  Also, modeling documents for the project are in the project's modeling directory.
 
 To use the maven dependency artifacts with Gradle, add the following to the corresponding build.gradle file(s):
-```
-    implementation 'com.grarcht.shuttle:framework:1.0.0' // Needed
-    implementation 'com.grarcht.shuttle:framework-integrations-extensions-room:1.0.0' // Needed
-    implementation 'com.grarcht.shuttle:framework-integrations-persistence:1.0.0'  // Needed depending on the set up
-    implementation 'com.grarcht.shuttle:framework-addons-navigation-component:1.0.0'  // Optional for integration with the Navigation Component
+```groovy
+    implementation 'com.grarcht.shuttle:framework:2.0.2' // Needed
+    implementation 'com.grarcht.shuttle:framework-integrations-extensions-room:2.0.2' // Needed
+    implementation 'com.grarcht.shuttle:framework-integrations-persistence:2.0.2'  // Needed depending on the set up
+    implementation 'com.grarcht.shuttle:framework-addons-navigation-component:2.0.2'  // Optional for integration with the Navigation Component
 ```
 
 
@@ -56,7 +67,7 @@ For end users wishing to include the Shuttle Framework in a project, the best wa
 
 ### Example usage with Intents
 To transport data with Shuttle and Intent objects, one can do the following:
-```
+```kotlin
     val cargoId = ImageMessageType.ImageData.value
     val startClass = MVCFirstControllerFragment::class.java
     val destinationClass = MVCSecondControllerActivity::class.java
@@ -67,11 +78,11 @@ To transport data with Shuttle and Intent objects, one can do the following:
 ```
 
 At the destination, one can load the data with Shuttle by doing the following:
-```
+```kotlin
     MainScope().async {
         getShuttleChannel()
             .consumeAsFlow()
-            .collect { shuttleResult ->
+            .collectLatest { shuttleResult ->
                 when (shuttleResult) {
                     ShuttlePickupCargoResult.Loading -> {
                         view?.let { initLoadingView(it) }
@@ -94,7 +105,7 @@ At the destination, one can load the data with Shuttle by doing the following:
 #### Example usage with the Navigation Component Addon and Databinding
 
 The Starting View:
-```
+```kotlin
     val cargoId = ImageMessageType.ImageData.value
     val startClass = MVVMNavFirstViewFragment::class.java
     val destinationClass = MVVMNavSecondViewActivity::class.java
@@ -107,7 +118,7 @@ The Starting View:
 ```
 
 The Destination View:
-```
+```kotlin
       onPropertyChangeCallback = object : OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 when (propertyId) {
@@ -135,11 +146,11 @@ The Destination View:
 ```
 
 The Destination ViewModel:
-```
+```kotlin
         viewModelScope.launch {
             shuttle.pickupCargo<Serializable>(cargoId = cargoId)
                 .consumeAsFlow()
-                .collect { shuttleResult ->
+                .collectLatest { shuttleResult ->
                     shuttlePickupCargoResult = shuttleResult
 
                     when (shuttleResult) {
@@ -216,7 +227,7 @@ The Shuttle Framework's design includes the avoidance of imposing technologies o
 ## Heads Up
 If there is other data, like Parcelable objects included in intent data, app crashes may still occur from Transaction Too Large exceptions.
 
-In E.A./S.A. and Software Engineering, one often weighs the pros with the cons on topics.  In Android, different types of data can be passed with Bundle objects.   It is considered best practice to use Parcelable objects over Serializable objects to leverage faster load times.  Unfortunately, Parcelable objects are highly optimized for Inter-process Communication (IPC) and are not safe for storing on disk.   Thus, Google recommends using standard or other forms of serialization.  To properly store and load objects, this project uses serializable objects to store data.   The drawback of this approach is that the load speeds are slower than with Parcelable objects.  This drawback can also impose some risk with implementations having to wait a little longer for objects to load.  The cargo mentioned above has been provided to mitigate the risk and enable consumers to handle the UI with the loading progress indication of choice.
+In E.A./S.A. and Software Engineering, one often weighs the pros with the cons of topics.  In Android, different types of data can be passed with Bundle objects.   It is considered best practice to use Parcelable objects over Serializable objects to leverage faster load times.  Unfortunately, Parcelable objects are highly optimized for Inter-process Communication (IPC) and are not safe for storing on disk.   Thus, Google recommends using standard or other forms of serialization.  To properly store and load objects, this project uses serializable objects to store data.   The drawback of this approach is that the load speeds are slower than with Parcelable objects.  This drawback can also impose some risk with implementations having to wait a little longer for objects to load.  The cargo mentioned above has been provided to mitigate the risk and enable consumers to handle the UI with the loading progress indication of choice.
 
 
 
@@ -230,6 +241,23 @@ With MVVM, the activities and fragments are a part of the View component.   The 
 In the demo app, the ViewModel component is using Google's ViewModel Architecture Component.  The asynchronous notification mechanism used in MVVM is provided using Kotlin Channels, much like Google's Databinding library's Observables.  Databinding has also been included with some demos to show essential integration.
 
 With MVC, the activities and fragments are a part of the Controller Component.  The controllers receive input and modify it for the models or views.
+
+To get a first-hand look, try running the demo apps.
+
+When using the demo apps, there are a couple of flows to be aware of:
+
+1. The success flow starts from clicking on the "**Navigate using Shuttle**" button.
+
+|  The main menu screen  |  The cargo (image) loading screen  |  The cargo (image) loaded screen  |
+|------------------------|------------------------------------|-----------------------------------|
+|  <img src="/media/screenshots/main_menu.png" width="200" height="400"/>  |  <img src="/media/screenshots/loading_image_cargo.png" width="200" height="400"/>  |  <img src="/media/screenshots/loaded_image_cargo.png" width="200" height="400"/>  |
+
+
+2. The error flow starts from clicking on the "**Navigate Normally**" button.
+
+|  The main menu screen  |  The screen after the app crash  |
+|------------------------|----------------------------------|
+|  <img src="/media/screenshots/main_menu.png" width="200" height="400"/>  |  <img src="/media/screenshots/loading_image_cargo_failed.png" width="200" height="400"/>  | 
 
 
 
