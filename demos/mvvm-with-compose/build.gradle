@@ -71,6 +71,8 @@ android {
             option("-Adagger.hilt.android.internal.disableAndroidSuperclassValidation=true")
         }
     }
+
+    namespace 'com.grarcht.shuttle.demo.mvvmwithcompose'
 }
 
 dependencies {

@@ -1,8 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.grarcht.shuttle.framework">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:enableOnBackInvokedCallback="true"
-        tools:targetApi="33" />
+        tools:targetApi="33">
+
+    </application>
 </manifest>

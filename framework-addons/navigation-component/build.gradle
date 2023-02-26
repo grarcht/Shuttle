@@ -40,6 +40,8 @@ android {
         sourceCompatibility versions.sourceCompatibility
         targetCompatibility versions.targetCompatibility
     }
+
+    namespace 'com.grarcht.shuttle.framework.addons.navigation'
 }
 
 dependencies {

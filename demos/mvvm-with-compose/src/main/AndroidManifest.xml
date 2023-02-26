@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.grarcht.shuttle.demo.mvvmwithcompose">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!--
     This is only defined to enable a flow for which Shuttle can be tested with restoring a

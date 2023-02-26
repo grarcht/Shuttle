@@ -46,6 +46,7 @@ android {
             excludes += ['META-INF/LICENSE.md', 'META-INF/LICENSE-notice.md', 'META-INF/AL2.0', 'win32-x86/attach_hotspot_windows.dll', 'win32-x86-64/attach_hotspot_windows.dll', 'META-INF/LGPL2.1', 'META-INF/licenses/ASM']
         }
     }
+    namespace 'com.grarcht.shuttle.framework'
 
 }
 

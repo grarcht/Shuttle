@@ -469,7 +469,12 @@ class CargoShuttleTests {
     }
 
     private data class CargoDataModel(override val cargoId: String, override val filePath: String) : ShuttleDataModel
-    private data class Cargo(val cargoId: String, val numberOfBoxes: Int) : Serializable
+    private data class Cargo(val cargoId: String, val numberOfBoxes: Int) : Serializable {
+        companion object {
+            const val serialVersionUID = -42L
+        }
+    }
+
     private class TestActivity : AppCompatActivity()
     private class TestActivity2 : AppCompatActivity()
 }

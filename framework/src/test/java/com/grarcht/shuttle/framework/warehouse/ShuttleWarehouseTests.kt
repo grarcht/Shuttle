@@ -1,5 +1,6 @@
 package com.grarcht.shuttle.framework.warehouse
 
+import com.grarcht.shuttle.framework.Cargo
 import com.grarcht.shuttle.framework.CargoShuttle
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.coroutines.CompositeDisposableHandle
@@ -963,7 +964,6 @@ class ShuttleWarehouseTests {
         countDownLatch.await(timeout, timeUnit)
     }
 
-    private data class Cargo(val cargoId: String, val numberOfBoxes: Int) : Serializable
     private data class TestShuttleDataModel(
         override val cargoId: String,
         override val filePath: String

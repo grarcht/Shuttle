@@ -45,6 +45,8 @@ android {
     packagingOptions {
         exclude "META-INF/LICENSE*"
     }
+
+    namespace 'com.grarcht.shuttle.framework.integrations.extensions.room'
 }
 
 dependencies {

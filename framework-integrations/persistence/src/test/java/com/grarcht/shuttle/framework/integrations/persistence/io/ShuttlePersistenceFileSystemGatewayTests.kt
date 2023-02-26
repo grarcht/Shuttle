@@ -61,6 +61,4 @@ class ShuttlePersistenceFileSystemGatewayTests {
             gateway?.deleteAllFilesAt(directoryName) ?: ShuttlePersistenceRemoveCargoResult.UnableToRemove
         Assertions.assertEquals(ShuttlePersistenceRemoveCargoResult.Removed, result)
     }
-
-    private class PaintColor(val color: String?) : Serializable
 }

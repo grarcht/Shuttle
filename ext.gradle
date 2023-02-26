@@ -5,21 +5,21 @@ ext {
                     minSdkVersion    : 26,
                     targetSdkVersion : 33
             ],
-            compose                 : '1.2.1',
-            detekt                  : '1.19.0',
+            compose                 : '1.3.1',
+            detekt                  : '1.22.0',
             dokka                   : '1.7.20',
-            gradleBuildTools        : '7.3.1',
-            hilt                    : '2.44',
+            gradleBuildTools        : '7.4.1',
+            hilt                    : '2.45',
             junitAndroidTest        : '1.3.0',
-            junitJupiter            : '5.8.2',
-            junitPlatform           : '1.9.1',
+            junitJupiter            : '5.9.2',
+            junitPlatform           : '1.9.2',
             jvmTarget               : '11',
             kotlin                  : '1.7.20',
             kotlinCoroutines        : '1.6.4',
             kotlinComposeCompilerExt: '1.3.2',
             lifecycle               : '2.5.1',
-            mockito                 : '4.8.0',
-            navigation              : '2.5.2',
+            mockito                 : '5.1.1',
+            navigation              : '2.5.3',
             room                    : '2.4.3',
             shuttle                 : '2.0.3',
             sourceCompatibility     : JavaVersion.VERSION_11,
@@ -34,10 +34,10 @@ ext {
     ]
 
     androidXDeps = [
-            activityKtx          : 'androidx.activity:activity-ktx:1.6.0',
-            appCompat            : 'androidx.appcompat:appcompat:1.5.1',
+            activityKtx          : 'androidx.activity:activity-ktx:1.6.1',
+            appCompat            : 'androidx.appcompat:appcompat:1.6.1',
             compose              : [
-                    activity        : "androidx.activity:activity-compose:1.6.0",
+                    activity        : "androidx.activity:activity-compose:1.6.1",
                     foundation      : "androidx.compose.foundation:foundation:${versions.compose}",
                     foundationLayout: "androidx.compose.foundation:foundation-layout:${versions.compose}",
                     material        : "androidx.compose.material:material:${versions.compose}",
@@ -48,14 +48,14 @@ ext {
             ],
             constraintLayout     : 'androidx.constraintlayout:constraintlayout:2.1.4',
             coreKtx              : 'androidx.core:core-ktx:1.9.0',
-            fragmentKtx          : 'androidx.fragment:fragment-ktx:1.5.3',
+            fragmentKtx          : 'androidx.fragment:fragment-ktx:1.5.5',
             lifecycle            : [
                     extensions         : "androidx.lifecycle:lifecycle-runtime-ktx:${versions.lifecycle}",
                     viewModel          : "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}",
                     viewModelForCompose: "androidx.lifecycle:lifecycle-viewmodel-compose:${versions.lifecycle}",
                     common             : "androidx.lifecycle:lifecycle-common-java8:${versions.lifecycle}"
             ],
-            material             : 'com.google.android.material:material:1.7.0',
+            material             : 'com.google.android.material:material:1.8.0',
             navigationFragmentKtx: "androidx.navigation:navigation-fragment-ktx:${versions.navigation}",
             testRunner           : 'androidx.test.runner.AndroidJUnitRunner'
     ]
@@ -96,10 +96,10 @@ ext {
 
     testingDeps = [
             androidTest: [
-                    monitor: 'androidx.test:monitor:1.5.0'
+                    monitor: 'androidx.test:monitor:1.6.1'
             ],
             espresso   : [
-                    core: 'androidx.test.espresso:espresso-core:3.4.0'
+                    core: 'androidx.test.espresso:espresso-core:3.5.1'
             ],
             junit      : [
                     ext                    : 'androidx.test.ext:junit:1.1.3',
@@ -109,8 +109,8 @@ ext {
                     jupiterParams          : "org.junit.jupiter:junit-jupiter-params:${versions.junitJupiter}",
                     platformCommons        : "org.junit.platform:junit-platform-commons:${versions.junitPlatform}",
                     platformSuite          : "org.junit.platform:junit-platform-suite-api:${versions.junitPlatform}",
-                    androidCore            : 'androidx.arch.core:core-testing:2.1.0',
-                    androidTestRunner      : 'androidx.test:runner:1.4.0',
+                    androidCore            : 'androidx.arch.core:core-testing:2.2.0',
+                    androidTestRunner      : 'androidx.test:runner:1.5.2',
                     junit5AndroidTestCore  : "de.mannodermaus.junit5:android-test-core:${versions.junitAndroidTest}",
                     junit5AndroidTestRunner: "de.mannodermaus.junit5:android-test-runner:${versions.junitAndroidTest}"
             ],
@@ -121,7 +121,7 @@ ext {
                     core        : "org.mockito:mockito-core:${versions.mockito}",
                     inline      : "org.mockito:mockito-inline:${versions.mockito}",
                     junitJupiter: "org.mockito:mockito-junit-jupiter:${versions.mockito}",
-                    kotlin      : 'org.mockito.kotlin:mockito-kotlin:4.0.0'
+                    kotlin      : 'org.mockito.kotlin:mockito-kotlin:4.1.0'
             ]
     ]
 }
