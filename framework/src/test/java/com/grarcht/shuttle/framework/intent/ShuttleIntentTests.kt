@@ -201,7 +201,7 @@ class ShuttleIntentTests {
         ShuttleIntent
             .with(shuttleWarehouse as ShuttleWarehouse)
             .intent(firstIntent)
-            .transport(cargoId, Cargo(numOfBoxes))
+            .transport(cargoId, Cargo(cargoId, numOfBoxes))
 
         delay(1000L)
 
@@ -237,7 +237,7 @@ class ShuttleIntentTests {
         // Verify
         Assertions.assertEquals(1, shuttleWarehouse?.numberOfStoreInvocations)
         val cargo = resultSerializable as Cargo
-        Assertions.assertEquals(numOfBoxes, cargo.boxes)
+        Assertions.assertEquals(numOfBoxes, cargo.numberOfBoxes)
     }
 
     @Suppress("SameParameterValue")

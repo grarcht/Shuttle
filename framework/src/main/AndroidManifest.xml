@@ -4,6 +4,20 @@
     <application
         android:enableOnBackInvokedCallback="true"
         tools:targetApi="33">
-
+        <!--suppress AndroidDomInspection, MissingClass -->
+        <activity
+            android:name="androidx.test.core.app.InstrumentationActivityInvoker$BootstrapActivity"
+            android:exported="false"
+            tools:replace="android:exported"/>
+        <!--suppress AndroidDomInspection, MissingClass -->
+        <activity
+            android:name="androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity"
+            android:exported="false"
+            tools:replace="android:exported"/>
+        <!--suppress AndroidDomInspection, MissingClass -->
+        <activity
+            android:name="androidx.test.core.app.InstrumentationActivityInvoker$EmptyFloatingActivity"
+            android:exported="false"
+            tools:replace="android:exported"/>
     </application>
 </manifest>
