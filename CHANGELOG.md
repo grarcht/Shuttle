@@ -1,6 +1,18 @@
 # Changelog
 
 ## [Released]
+## [2.0.4] - 2023-02-26
+
+## Added
+- suppression annotations for the ```SwallowedException``` warnings
+- replacements for activity attributes to the Framework module's manifest file to remove warnings
+
+## Changed
+- updated versions for many dependencies
+- updated the ```serialVersionUID``` in the ```Serializable``` classes
+- refactored the manifest package declaration to the namespace in the build.gradle files
+- statements throwing ```IllegalStateException``` to use ```error(message)```
+
 ## [2.0.3] - 2022-10-21
 
 ## Changed
