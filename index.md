@@ -52,10 +52,10 @@ Refer to the documentation and demo app as a starting point.  The documentation 
 
 To use the maven dependency artifacts with Gradle, add the following to the corresponding build.gradle file(s):
 ```groovy
-    implementation 'com.grarcht.shuttle:framework:2.0.3' // Needed
-    implementation 'com.grarcht.shuttle:framework-integrations-extensions-room:2.0.3' // Needed
-    implementation 'com.grarcht.shuttle:framework-integrations-persistence:2.0.3'  // Needed depending on the set up
-    implementation 'com.grarcht.shuttle:framework-addons-navigation-component:2.0.3'  // Optional for integration with the Navigation Component
+    implementation 'com.grarcht.shuttle:framework:2.0.4' // Needed
+    implementation 'com.grarcht.shuttle:framework-integrations-extensions-room:2.0.4' // Needed
+    implementation 'com.grarcht.shuttle:framework-integrations-persistence:2.0.4'  // Needed depending on the set up
+    implementation 'com.grarcht.shuttle:framework-addons-navigation-component:2.0.4'  // Optional for integration with the Navigation Component
 ```
 
 
