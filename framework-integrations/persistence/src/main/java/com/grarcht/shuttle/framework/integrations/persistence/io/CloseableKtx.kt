@@ -8,6 +8,7 @@ import java.io.IOException
  * Additionally, if the closable reference is null, no action will be taken.
  */
 fun Closeable?.closeQuietly() {
+    @Suppress("SwallowedException")
     this?.let {
         try {
             this.close()

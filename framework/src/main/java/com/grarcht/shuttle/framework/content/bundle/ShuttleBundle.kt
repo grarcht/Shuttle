@@ -70,9 +70,10 @@ open class ShuttleBundle(
         return internalBundle as Bundle
     }
 
+    @Throws(IllegalStateException::class)
     private fun verifyWithFunctionWasCalled() {
         if (internalBundle == null) {
-            throw IllegalStateException("$logTag.  The with function must be called first.")
+            error("$logTag.  The with function must be called first.")
         }
     }
 

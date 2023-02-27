@@ -38,7 +38,7 @@ android {
         resolutionStrategy.eachDependency { DependencyResolveDetails details ->
             def module = details.requested.module.toString()
             if (module.contains("lifecycle-common") || module.contains("lifecycle-common-java8")) {
-                details.useVersion("2.4.1")
+                details.useVersion("2.5.1")
             }
         }
     }
@@ -71,6 +71,8 @@ android {
             option("-Adagger.hilt.android.internal.disableAndroidSuperclassValidation=true")
         }
     }
+
+    namespace 'com.grarcht.shuttle.demo.mvvmwithcompose'
 }
 
 dependencies {

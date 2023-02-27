@@ -105,6 +105,7 @@ class ShuttlePersistenceFileSystemGateway(
      */
     override fun deleteAllFilesAt(directoryPath: String): ShuttlePersistenceRemoveCargoResult {
         var result: ShuttlePersistenceRemoveCargoResult = ShuttlePersistenceRemoveCargoResult.UnableToRemove
+        @Suppress("SwallowedException")
         try {
             val file = File(directoryPath)
             result = if (file.exists().not()) {
@@ -131,6 +132,7 @@ class ShuttlePersistenceFileSystemGateway(
      */
     override fun deleteFile(filePath: String): ShuttlePersistenceRemoveCargoResult {
         var result: ShuttlePersistenceRemoveCargoResult = ShuttlePersistenceRemoveCargoResult.UnableToRemove
+        @Suppress("SwallowedException")
         try {
             val file = File(filePath)
             result = if (file.exists().not()) {

@@ -81,9 +81,6 @@ class ShuttleBundleTest {
         val paintColorKey = "paint color"
         val paintColorValue = "blue"
         val cargoId = "cargo id"
-
-        class PaintColor(val color: String?) : Serializable
-
         val paintColor = PaintColor("blue")
         val map = mutableMapOf<String?, Any?>(Pair(paintColorKey, paintColorValue))
         val bundleToCreateFrom = MockBundleFactory().create(map)

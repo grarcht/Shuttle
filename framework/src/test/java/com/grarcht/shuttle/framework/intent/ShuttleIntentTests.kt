@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.IntentSender
 import android.net.Uri
 import androidx.fragment.app.Fragment
+import com.grarcht.shuttle.framework.Cargo
 import com.grarcht.shuttle.framework.CargoShuttle
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.content.ShuttleIntent
@@ -200,7 +201,7 @@ class ShuttleIntentTests {
         ShuttleIntent
             .with(shuttleWarehouse as ShuttleWarehouse)
             .intent(firstIntent)
-            .transport(cargoId, Cargo(numOfBoxes))
+            .transport(cargoId, Cargo(cargoId, numOfBoxes))
 
         delay(1000L)
 
@@ -236,7 +237,7 @@ class ShuttleIntentTests {
         // Verify
         Assertions.assertEquals(1, shuttleWarehouse?.numberOfStoreInvocations)
         val cargo = resultSerializable as Cargo
-        Assertions.assertEquals(numOfBoxes, cargo.boxes)
+        Assertions.assertEquals(numOfBoxes, cargo.numberOfBoxes)
     }
 
     @Suppress("SameParameterValue")
@@ -244,6 +245,4 @@ class ShuttleIntentTests {
         @Suppress("BlockingMethodInNonBlockingContext", "SameParameterValue")
         countDownLatch.await(timeout, timeUnit)
     }
-
-    private data class Cargo(val boxes: Int) : Serializable
 }

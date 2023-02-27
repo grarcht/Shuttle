@@ -50,9 +50,10 @@ fun rawPainterResource(@RawRes id: Int): Painter {
  * as part of the composable implementation it is invoked in.
  */
 private fun loadImageBitmapResource(res: Resources, id: Int): ImageBitmap {
+    @Suppress("SwallowedException")
     try {
         return ImageBitmap.imageResource(res, id)
-    } catch (@Suppress("TooGenericExceptionCaught") throwable: Throwable) {
+    } catch (@Suppress("TooGenericExceptionCaught")throwable: Throwable) {
         throw IllegalArgumentException(ERROR_MESSAGE)
     }
 }

@@ -14,6 +14,7 @@ class BitmapDecoder {
      * @return the decoded [Bitmap] or null if an exception was thrown
      */
     fun decodeBitmap(imageBytes: ByteArray): Bitmap? {
+        @Suppress("SwallowedException")
         return try {
             val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
             bitmap

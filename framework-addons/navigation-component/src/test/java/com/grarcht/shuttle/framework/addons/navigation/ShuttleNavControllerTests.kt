@@ -34,7 +34,6 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito.doNothing
 import org.mockito.Mockito.mock
-import java.io.Serializable
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
@@ -200,8 +199,6 @@ class ShuttleNavControllerTests {
         @Suppress("BlockingMethodInNonBlockingContext", "SameParameterValue")
         countDownLatch.await(timeout, timeUnit)
     }
-
-    private data class Cargo(val cargoId: String, val numberOfBoxes: Int) : Serializable
 
     private class TestNavDirections(
         override val actionId: Int = ACTION_ID,

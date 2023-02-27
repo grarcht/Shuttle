@@ -54,27 +54,24 @@ class MVVMFirstView(
     private var imageGatewayDisposableHandle: DisposableHandle? = null
     private var imageModel: ImageModel? = null
 
-    @Suppress("LongMethod")
     @Composable
     fun SetViewContent() {
         var buttonsEnabled by remember { mutableStateOf(false) }
-
         val title = context.resources.getString(R.string.mvvm_first_view_title)
+        val largePaddingModifier = Modifier
+            .padding(LARGE_PADDING)
+            .fillMaxHeight()
+            .fillMaxWidth()
+
         Text(
             text = title,
             style = MaterialTheme.typography.h4,
             textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(LARGE_PADDING)
-                .fillMaxHeight()
-                .fillMaxWidth(),
+            modifier = largePaddingModifier
         )
 
         Column(
-            modifier = Modifier
-                .padding(LARGE_PADDING)
-                .fillMaxHeight()
-                .fillMaxWidth(),
+            modifier = largePaddingModifier,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {

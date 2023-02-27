@@ -187,7 +187,7 @@ open class ShuttleIntent private constructor() {
 
     private fun verifyIntentFunctionWasCalled() {
         if (intent == null) {
-            throw IllegalStateException("$logTag.  Double check the usage of the fluid interface.  The intent is null.")
+            error("$logTag.  Double check the usage of the fluid interface.  The intent is null.")
         }
     }
 

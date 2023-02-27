@@ -37,8 +37,6 @@ class ImageModel(
 
     // Required
     companion object {
-        @JvmStatic
-        private val serialVersionUID = -10693L
-
+        const val serialVersionUID = -10693L
     }
 }
