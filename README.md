@@ -3,7 +3,7 @@
 
 # Shuttle
 [![License: MIT](https://img.shields.io/github/license/grarcht/shuttle?color=white&style=plastic)](https://github.com/grarcht/Shuttle/blob/main/LICENSE.md)   ![Maven Central](https://img.shields.io/maven-central/v/com.grarcht.shuttle/framework?color=teal&style=plastic)
-
+[![Featured in androidweekly.net](https://img.shields.io/badge/Featured%20in%20androidweekly.net-Issue%20%23455-4998C2)](https://androidweekly.net/issues/issue-455)
 
 Shuttle provides a modern, guarded way to pass large Serializable objects with Intent objects or save them in Bundle objects to avoid app crashes.
 
