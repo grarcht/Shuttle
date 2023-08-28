@@ -25,4 +25,9 @@ sealed class ShuttleStoreCargoResult {
      * @param cargoId for the cargo being stored
      */
     class Storing(val cargoId: String) : ShuttleStoreCargoResult()
+
+    /**
+     * The initial state for Shuttle not storing the cargo yet.
+     */
+    object NotStoringCargoYet : ShuttleStoreCargoResult()
 }

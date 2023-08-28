@@ -5,17 +5,10 @@ plugins {
     id 'org.jetbrains.dokka'
     id 'signing'
     id 'maven-publish'
+    id 'org.jetbrains.kotlin.android'
 }
 
-dokkaHtml.configure {
-    dokkaSourceSets {
-        named("main") {
-            noAndroidSdkLink.set(false)
-        }
-    }
-}
-
-tasks.dokkaHtml.configure {
+dokkaHtml {
     outputDirectory.set(file("documentation/kotlin"))
 }
 
@@ -34,7 +27,9 @@ android {
 
     buildTypes.release.minifyEnabled false
     testOptions.unitTests.returnDefaultValues = true
-    kotlinOptions.jvmTarget = versions.jvmTarget
+    kotlinOptions {
+        jvmTarget = versions.jvmTarget
+    }
 
     compileOptions {
         sourceCompatibility versions.sourceCompatibility
@@ -48,6 +43,8 @@ dependencies {
     implementation jetbrainsKotlinDeps.stdlib
     implementation androidXDeps.navigationFragmentKtx
     implementation project(':framework')
+    implementation androidXDeps.annotationJvm
+    implementation androidXDeps.coreKtx
 
     androidTestImplementation testingDeps.junit.junit5AndroidTestCore
     androidTestRuntimeOnly testingDeps.junit.junit5AndroidTestRunner

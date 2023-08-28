@@ -70,7 +70,6 @@ class ShuttlePersistenceFileSystemGateway(
     ): String? {
         var file: File? = File("$directoryName/$fileName")
 
-
         // DO NOT REMOVE
         // This condition guards against modifying the data underneath the hood.  If it is modified, resulting parcels
         // from unmarshaling can be unreadable.  When using Google's Navigation Architecture component, there are have

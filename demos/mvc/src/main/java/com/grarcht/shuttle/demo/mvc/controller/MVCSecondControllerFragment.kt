@@ -9,6 +9,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.grarcht.shuttle.demo.core.image.BitmapDecoder
 import com.grarcht.shuttle.demo.core.image.ImageMessageType
 import com.grarcht.shuttle.demo.core.image.ImageModel
@@ -19,12 +20,11 @@ import com.grarcht.shuttle.framework.model.ShuttleParcelCargo
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.launch
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -86,22 +86,27 @@ class MVCSecondControllerFragment : Fragment() {
             showSuccessView(view, imageModel as ImageModel)
             return
         }
-
-        deferredImageLoad = MainScope().async {
+        lifecycleScope.launch {
             getShuttleChannel()
                 .consumeAsFlow()
                 .collectLatest { shuttleResult ->
                     when (shuttleResult) {
-                        ShuttlePickupCargoResult.Loading -> {
+                        is ShuttlePickupCargoResult.Loading -> {
                             view?.let { initLoadingView(it) }
                         }
+
                         is ShuttlePickupCargoResult.Success<*> -> {
                             showSuccessView(view, shuttleResult.data as ImageModel)
                             cancel()
                         }
+
                         is ShuttlePickupCargoResult.Error<*> -> {
                             showErrorView(view)
                             cancel()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }

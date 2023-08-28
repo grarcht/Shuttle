@@ -1,22 +1,15 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
     id 'org.jetbrains.dokka'
     id 'signing'
     id 'maven-publish'
     id 'de.mannodermaus.android-junit5'
+    id 'org.jetbrains.kotlin.android'
 }
 
-dokkaHtml.configure {
-    dokkaSourceSets {
-        named("main") {
-            noAndroidSdkLink.set(false)
-        }
-    }
-}
-
-tasks.dokkaHtml.configure {
+dokkaHtml {
     outputDirectory.set(file("documentation/kotlin"))
 }
 
@@ -34,7 +27,9 @@ android {
     }
 
     buildTypes.release.minifyEnabled false
-    kotlinOptions.jvmTarget = versions.jvmTarget
+    kotlinOptions {
+        jvmTarget = versions.jvmTarget
+    }
     testOptions.unitTests.returnDefaultValues = true
 
     compileOptions {
@@ -47,6 +42,7 @@ android {
 
 dependencies {
     implementation jetbrainsKotlinDeps.stdlib
+    implementation androidXDeps.coreKtx
     androidTestImplementation testingDeps.junit.androidTestRunner
     androidTestImplementation testingDeps.junit.jupiterApi
     androidTestImplementation testingDeps.junit.jupiterEngine

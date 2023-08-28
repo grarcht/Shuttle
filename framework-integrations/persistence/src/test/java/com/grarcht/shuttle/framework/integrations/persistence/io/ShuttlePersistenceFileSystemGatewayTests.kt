@@ -11,7 +11,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.io.File
-import java.io.Serializable
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ShuttlePersistenceFileSystemGatewayTests {

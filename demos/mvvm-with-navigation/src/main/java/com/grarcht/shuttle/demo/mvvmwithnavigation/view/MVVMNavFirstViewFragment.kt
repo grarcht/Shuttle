@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
@@ -21,8 +22,6 @@ import com.grarcht.shuttle.demo.mvvmwithnavigation.viewmodel.FirstViewModel
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.addons.navigation.navigateWithShuttle
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.DisposableHandle
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
 import java.io.Serializable
@@ -32,16 +31,14 @@ private const val LOG_TAG = "MVVMFirstViewFragment"
 
 @AndroidEntryPoint
 class MVVMNavFirstViewFragment : Fragment() {
-    private val viewModel by viewModels<FirstViewModel>()
-    private var imageGatewayDisposableHandle: DisposableHandle? = null
     private var imageModel: ImageModel? = null
     private var navController: NavController? = null
     private var navNormallyButton: Button? = null
     private var navWithShuttleButton: Button? = null
+    private val viewModel by viewModels<FirstViewModel>()
 
     @Inject
     lateinit var shuttle: Shuttle
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.first_view, container, false)
@@ -60,11 +57,6 @@ class MVVMNavFirstViewFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         enableButtons(true)
-    }
-
-    override fun onDestroyView() {
-        imageGatewayDisposableHandle?.dispose()
-        super.onDestroyView()
     }
 
     private fun enableButtons(enable: Boolean) {
@@ -87,8 +79,8 @@ class MVVMNavFirstViewFragment : Fragment() {
     }
 
     private fun getImageData() {
-        imageGatewayDisposableHandle = MainScope().async {
-            viewModel.getImage(resources, R.raw.tower)
+        lifecycleScope.async {
+            viewModel.getImage(resources, com.grarcht.shuttle.demo.core.R.raw.tower)
                 .collectLatest {
                     when (it) {
                         is IOResult.Loading -> {

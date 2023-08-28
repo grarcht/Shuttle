@@ -4,11 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-
 import com.grarcht.shuttle.framework.integrations.persistence.ShuttleDataAccessObject
 import com.grarcht.shuttle.framework.integrations.persistence.ShuttleDataAccessObject.Companion.STORE_CARGO_FAILED
 import com.grarcht.shuttle.framework.integrations.persistence.datamodel.ShuttleDataModel
-
 
 /**
  * This data access object class takes inspiration from the Decorator and Template Design

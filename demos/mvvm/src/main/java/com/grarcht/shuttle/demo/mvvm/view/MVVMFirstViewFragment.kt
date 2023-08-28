@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import com.grarcht.shuttle.demo.core.image.ImageMessageType
 import com.grarcht.shuttle.demo.core.image.ImageModel
@@ -19,11 +20,9 @@ import com.grarcht.shuttle.demo.mvvm.R
 import com.grarcht.shuttle.demo.mvvm.viewmodel.FirstViewModel
 import com.grarcht.shuttle.framework.Shuttle
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.DisposableHandle
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -31,15 +30,13 @@ private const val LOG_TAG = "MVVMFirstViewFragment"
 
 @AndroidEntryPoint
 class MVVMFirstViewFragment : Fragment() {
-    private val viewModel by viewModels<FirstViewModel>()
-    private var imageGatewayDisposableHandle: DisposableHandle? = null
-
+    private var imageModel: ImageModel? = null
     private var navNormallyButton: Button? = null
     private var navWithShuttleButton: Button? = null
+    private val viewModel by viewModels<FirstViewModel>()
 
     @Inject
     lateinit var shuttle: Shuttle
-    var imageModel: ImageModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,12 +44,12 @@ class MVVMFirstViewFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.first_view, container, false)
+        return inflater.inflate(com.grarcht.shuttle.demo.core.R.layout.first_view, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.findViewById<TextView>(R.id.first_view_title_text).text =
+        view.findViewById<TextView>(com.grarcht.shuttle.demo.core.R.id.first_view_title_text).text =
             view.resources.getString(R.string.mvvm_first_view_title)
         initOnClickNavigateWithShuttle(view)
         initOnClickNavigateNormally(view)
@@ -64,19 +61,14 @@ class MVVMFirstViewFragment : Fragment() {
         enableButtons(true)
     }
 
-    override fun onDestroyView() {
-        imageGatewayDisposableHandle?.dispose()
-        super.onDestroyView()
-    }
-
     private fun enableButtons(enable: Boolean) {
         navWithShuttleButton?.isEnabled = enable
         navNormallyButton?.isEnabled = enable
     }
 
     private fun getImageData() {
-        imageGatewayDisposableHandle = MainScope().async {
-            viewModel.getImage(resources, R.raw.tower)
+        lifecycleScope.launch {
+            viewModel.getImage(resources, com.grarcht.shuttle.demo.core.R.raw.tower)
                 .collectLatest {
                     when (it) {
                         is IOResult.Unknown,
@@ -110,7 +102,7 @@ class MVVMFirstViewFragment : Fragment() {
 
     private fun initOnClickNavigateWithShuttle(view: View?) {
         view?.apply {
-            navWithShuttleButton = findViewById(R.id.nav_with_shuttle_button)
+            navWithShuttleButton = findViewById(com.grarcht.shuttle.demo.core.R.id.nav_with_shuttle_button)
             navWithShuttleButton?.setOnClickListener {
                 it.isEnabled = false
                 navigateWithShuttle(context)
@@ -120,7 +112,7 @@ class MVVMFirstViewFragment : Fragment() {
 
     private fun initOnClickNavigateNormally(view: View?) {
         view?.apply {
-            navNormallyButton = findViewById(R.id.nav_normally_button)
+            navNormallyButton = findViewById(com.grarcht.shuttle.demo.core.R.id.nav_normally_button)
             navNormallyButton?.setOnClickListener {
                 it.isEnabled = false
                 navigateNormally(context)

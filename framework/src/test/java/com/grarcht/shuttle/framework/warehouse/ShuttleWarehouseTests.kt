@@ -36,12 +36,11 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.mockito.Mockito
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.mock
 import java.io.File
-import java.io.Serializable
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
@@ -112,14 +111,20 @@ class ShuttleWarehouseTests {
                         is ShuttleStoreCargoResult.Storing -> {
                             /* ignore */
                         }
+
                         is ShuttleStoreCargoResult.Success -> {
                             storedId = shuttleResult.cargoId
                             channel.cancel()
                             countDownLatch.countDown()
                         }
+
                         is ShuttleStoreCargoResult.Error<*> -> {
                             countDownLatch.countDown()
                             Assertions.fail()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -145,6 +150,7 @@ class ShuttleWarehouseTests {
 
         // Will be launched in the mainThreadSurrogate dispatcher
         val disposableHandle = launch(Dispatchers.Main) {
+            @Suppress("ktlint:experimental:comment-wrapping")
             val channel: Channel<ShuttleStoreCargoResult> = warehouse.store(cargoId, /* cargo */ null)
             channel.consumeAsFlow()
                 .collectLatest { shuttleResult ->
@@ -152,13 +158,19 @@ class ShuttleWarehouseTests {
                         is ShuttleStoreCargoResult.Storing -> {
                             /* ignore */
                         }
+
                         is ShuttleStoreCargoResult.Success -> {
                             Assertions.fail<String>()
                             countDownLatch.countDown()
                         }
+
                         is ShuttleStoreCargoResult.Error<*> -> {
                             countDownLatch.countDown()
                             channel.cancel()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -195,13 +207,19 @@ class ShuttleWarehouseTests {
                         is ShuttleStoreCargoResult.Storing -> {
                             /* ignore */
                         }
+
                         is ShuttleStoreCargoResult.Success -> {
                             Assertions.fail<String>()
                             countDownLatch.countDown()
                         }
+
                         is ShuttleStoreCargoResult.Error<*> -> {
                             countDownLatch.countDown()
                             channel.cancel()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -225,7 +243,6 @@ class ShuttleWarehouseTests {
         val cargo = Cargo(cargoId, 10)
         val countDownLatch = CountDownLatch(1)
 
-
         `when`(
             fileSystemGateway.writeToFile("$CARGO_FILE_PATH/cargo/", cargoId, cargo)
         ).thenReturn("$CARGO_FILE_PATH/cargo/$cargoId")
@@ -240,13 +257,19 @@ class ShuttleWarehouseTests {
                         is ShuttleStoreCargoResult.Storing -> {
                             /* ignore */
                         }
+
                         is ShuttleStoreCargoResult.Success -> {
                             Assertions.fail<String>()
                             countDownLatch.countDown()
                         }
+
                         is ShuttleStoreCargoResult.Error<*> -> {
                             countDownLatch.countDown()
                             channel.cancel()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -256,7 +279,6 @@ class ShuttleWarehouseTests {
             }
         }
         compositeDisposableHandle?.add(disposableHandle)
-
 
         delay(1000L)
     }
@@ -292,14 +314,20 @@ class ShuttleWarehouseTests {
                         is ShuttlePickupCargoResult.Loading -> {
                             /* ignore */
                         }
+
                         is ShuttlePickupCargoResult.Success<*> -> {
                             storedId = (shuttleResult.data as Cargo).cargoId
                             channel.cancel()
                             countDownLatch.countDown()
                         }
+
                         is ShuttlePickupCargoResult.Error<*> -> {
                             countDownLatch.countDown()
                             Assertions.fail()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -323,6 +351,7 @@ class ShuttleWarehouseTests {
         val cargoId = "cargoId1"
         val countDownLatch = CountDownLatch(1)
 
+        @Suppress("ktlint:experimental:comment-wrapping")
         `when`(dao.getCargoBy(anyOrNull())).thenReturn(/* ShuttleDataModel */ null)
 
         val disposableHandle = launch(Dispatchers.Main) {
@@ -333,14 +362,19 @@ class ShuttleWarehouseTests {
                         is ShuttlePickupCargoResult.Loading -> {
                             /* ignore */
                         }
+
                         is ShuttlePickupCargoResult.Success<*> -> {
                             countDownLatch.countDown()
                             Assertions.fail()
-
                         }
+
                         is ShuttlePickupCargoResult.Error<*> -> {
                             channel.cancel()
                             countDownLatch.countDown()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -375,14 +409,19 @@ class ShuttleWarehouseTests {
                         is ShuttlePickupCargoResult.Loading -> {
                             /* ignore */
                         }
+
                         is ShuttlePickupCargoResult.Success<*> -> {
                             countDownLatch.countDown()
                             Assertions.fail()
-
                         }
+
                         is ShuttlePickupCargoResult.Error<*> -> {
                             channel.cancel()
                             countDownLatch.countDown()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -421,14 +460,20 @@ class ShuttleWarehouseTests {
                         is ShuttleStoreCargoResult.Storing -> {
                             /* ignore */
                         }
+
                         is ShuttleStoreCargoResult.Success -> {
                             storedId = shuttleResult.cargoId
                             channel.cancel()
                             countDownLatch.countDown()
                         }
+
                         is ShuttleStoreCargoResult.Error<*> -> {
                             countDownLatch.countDown()
                             Assertions.fail()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -476,19 +521,26 @@ class ShuttleWarehouseTests {
                         is ShuttleRemoveCargoResult.Removing -> {
                             successfulStepsMet++
                         }
+
                         is ShuttleRemoveCargoResult.Removed -> {
                             successfulStepsMet++
                             removedCargoId = shuttleResult.cargoId
                             channel.cancel()
                             countDownLatch.countDown()
                         }
+
                         is ShuttleRemoveCargoResult.UnableToRemove<*> -> {
                             channel.cancel()
                             countDownLatch.countDown()
                         }
+
                         is ShuttleRemoveCargoResult.DoesNotExist -> {
                             channel.cancel()
                             countDownLatch.countDown()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -540,18 +592,25 @@ class ShuttleWarehouseTests {
                         is ShuttleRemoveCargoResult.Removing -> {
                             failureStepsMet++
                         }
+
                         is ShuttleRemoveCargoResult.Removed -> {
                             countDownLatch.countDown()
                             channel.cancel()
                         }
+
                         is ShuttleRemoveCargoResult.UnableToRemove<*> -> {
                             countDownLatch.countDown()
                             channel.cancel()
                         }
+
                         is ShuttleRemoveCargoResult.DoesNotExist -> {
                             failureStepsMet++
                             countDownLatch.countDown()
                             channel.cancel()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -601,15 +660,22 @@ class ShuttleWarehouseTests {
                         is ShuttleRemoveCargoResult.Removing -> {
                             failureStepsMet++
                         }
+
                         is ShuttleRemoveCargoResult.Removed -> {
                             channel.cancel()
                         }
+
                         is ShuttleRemoveCargoResult.UnableToRemove<*> -> {
                             failureStepsMet++
                             channel.cancel()
                         }
+
                         is ShuttleRemoveCargoResult.DoesNotExist -> {
                             channel.cancel()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -659,18 +725,25 @@ class ShuttleWarehouseTests {
                         is ShuttleRemoveCargoResult.Removing -> {
                             failureStepsMet++
                         }
+
                         is ShuttleRemoveCargoResult.Removed -> {
                             countDownLatch.countDown()
                             channel.cancel()
                         }
+
                         is ShuttleRemoveCargoResult.UnableToRemove<*> -> {
                             failureStepsMet++
                             countDownLatch.countDown()
                             channel.cancel()
                         }
+
                         is ShuttleRemoveCargoResult.DoesNotExist -> {
                             countDownLatch.countDown()
                             channel.cancel()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -719,19 +792,26 @@ class ShuttleWarehouseTests {
                         is ShuttleRemoveCargoResult.Removing -> {
                             successfulStepsMet++
                         }
+
                         is ShuttleRemoveCargoResult.Removed -> {
                             successfulStepsMet++
                             removedCargoId = shuttleResult.cargoId
                             countDownLatch.countDown()
                             channel.cancel()
                         }
+
                         is ShuttleRemoveCargoResult.UnableToRemove<*> -> {
                             countDownLatch.countDown()
                             channel.cancel()
                         }
+
                         is ShuttleRemoveCargoResult.DoesNotExist -> {
                             countDownLatch.countDown()
                             channel.cancel()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -780,19 +860,26 @@ class ShuttleWarehouseTests {
                         is ShuttleRemoveCargoResult.Removing -> {
                             successfulStepsMet++
                         }
+
                         is ShuttleRemoveCargoResult.Removed -> {
                             removedCargoId = shuttleResult.cargoId
                             countDownLatch.countDown()
                             channel.cancel()
                         }
+
                         is ShuttleRemoveCargoResult.UnableToRemove<*> -> {
                             successfulStepsMet++
                             countDownLatch.countDown()
                             channel.cancel()
                         }
+
                         is ShuttleRemoveCargoResult.DoesNotExist -> {
                             countDownLatch.countDown()
                             channel.cancel()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -841,19 +928,26 @@ class ShuttleWarehouseTests {
                         is ShuttleRemoveCargoResult.Removing -> {
                             successfulStepsMet++
                         }
+
                         is ShuttleRemoveCargoResult.Removed -> {
                             removedCargoId = shuttleResult.cargoId
                             countDownLatch.countDown()
                             channel.cancel()
                         }
+
                         is ShuttleRemoveCargoResult.UnableToRemove<*> -> {
                             countDownLatch.countDown()
                             channel.cancel()
                         }
+
                         is ShuttleRemoveCargoResult.DoesNotExist -> {
                             successfulStepsMet++
                             countDownLatch.countDown()
                             channel.cancel()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -902,19 +996,26 @@ class ShuttleWarehouseTests {
                         is ShuttleRemoveCargoResult.Removing -> {
                             failureStepsMet++
                         }
+
                         is ShuttleRemoveCargoResult.Removed -> {
                             removedCargoId = shuttleResult.cargoId
                             countDownLatch.countDown()
                             channel.cancel()
                         }
+
                         is ShuttleRemoveCargoResult.UnableToRemove<*> -> {
                             failureStepsMet++
                             countDownLatch.countDown()
                             channel.cancel()
                         }
+
                         is ShuttleRemoveCargoResult.DoesNotExist -> {
                             countDownLatch.countDown()
                             channel.cancel()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -942,11 +1043,17 @@ class ShuttleWarehouseTests {
                             is ShuttleStoreCargoResult.Storing -> {
                                 /* ignore */
                             }
+
                             is ShuttleStoreCargoResult.Success -> {
                                 channel.cancel()
                             }
+
                             is ShuttleStoreCargoResult.Error<*> -> {
                                 channel.cancel()
+                            }
+
+                            else -> {
+                                // ignore
                             }
                         }
                     }

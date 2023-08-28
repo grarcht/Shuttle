@@ -4,6 +4,6 @@ import java.io.Serializable
 
 data class Cargo(val cargoId: String, val numberOfBoxes: Int) : Serializable {
     companion object {
-        const val serialVersionUID = -53L
+        private const val serialVersionUID: Long = -53
     }
 }

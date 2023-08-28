@@ -1,13 +1,13 @@
 package com.grarcht.shuttle.demo.mvvm.viewmodel
 
-import androidx.databinding.Bindable
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.grarcht.shuttle.demo.core.image.ImageModel
-import com.grarcht.shuttle.demo.databinding.ObservableViewModel
-import com.grarcht.shuttle.demo.mvvm.BR
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
+import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult.NotPickingUpCargoYet
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
@@ -16,33 +16,20 @@ import java.io.Serializable
 /**
  * The MVVM ViewModel used with the Second View and corresponding model.
  */
-/**
- * The MVVM ViewModel used with the Second View and corresponding model.
- */
-class SecondViewModel : ObservableViewModel() {
-    var imageModel: ImageModel? = null
+class SecondViewModel : ViewModel() {
+    private val pickupCargoMutableStateFlow = MutableStateFlow<ShuttlePickupCargoResult>(NotPickingUpCargoYet)
+    private val pickupCargoStateFlow: StateFlow<ShuttlePickupCargoResult> = pickupCargoMutableStateFlow
 
-    @get:Bindable
-    var shuttlePickupCargoResult: ShuttlePickupCargoResult? = null
-
-    fun loadImage(shuttle: Shuttle, cargoId: String) {
+    fun loadImage(shuttle: Shuttle, cargoId: String): StateFlow<ShuttlePickupCargoResult> {
         viewModelScope.launch {
             shuttle.pickupCargo<Serializable>(cargoId = cargoId)
                 .consumeAsFlow()
                 .collectLatest { shuttleResult ->
-                    shuttlePickupCargoResult = shuttleResult
+                    pickupCargoMutableStateFlow.value = shuttleResult
 
                     when (shuttleResult) {
-                        ShuttlePickupCargoResult.Loading -> {
-                            notifyPropertyChanged(BR.shuttlePickupCargoResult)
-                        }
-                        is ShuttlePickupCargoResult.Success<*> -> {
-                            imageModel = shuttleResult.data as ImageModel
-                            notifyPropertyChanged(BR.shuttlePickupCargoResult)
-                            cancel()
-                        }
+                        is ShuttlePickupCargoResult.Success<*>,
                         is ShuttlePickupCargoResult.Error<*> -> {
-                            notifyPropertyChanged(BR.shuttlePickupCargoResult)
                             cancel()
                         }
                         else -> {
@@ -51,5 +38,7 @@ class SecondViewModel : ObservableViewModel() {
                     }
                 }
         }
+
+        return pickupCargoStateFlow
     }
 }

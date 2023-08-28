@@ -4,8 +4,8 @@ import android.app.Application
 import android.content.Context
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 
 /**
  * Verifies the [ShuttleRoomDbFactory] functionality.
@@ -27,5 +27,4 @@ class ShuttleRoomDbFactoryTest {
 
         db.close()
     }
-
 }

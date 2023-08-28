@@ -5,19 +5,12 @@ plugins {
     id 'de.mannodermaus.android-junit5'
     id 'signing'
     id 'maven-publish'
+    id 'org.jetbrains.kotlin.android'
 }
 
 apply from: '../detekt/detekt.gradle'
 
-dokkaHtml.configure {
-    dokkaSourceSets {
-        named("main") {
-            noAndroidSdkLink.set(false)
-        }
-    }
-}
-
-tasks.dokkaHtml.configure {
+dokkaHtml {
     outputDirectory.set(file("documentation/kotlin"))
 }
 
@@ -35,7 +28,9 @@ android {
 
     buildTypes.release.minifyEnabled false
     testOptions.unitTests.returnDefaultValues = true
-    kotlinOptions.jvmTarget = versions.jvmTarget
+    kotlinOptions {
+        jvmTarget = versions.jvmTarget
+    }
 
     compileOptions {
         sourceCompatibility versions.sourceCompatibility
@@ -57,6 +52,8 @@ dependencies {
     implementation androidXDeps.appCompat
     implementation androidXDeps.lifecycle.extensions
     api project(':framework-integrations-persistence')
+    implementation androidXDeps.coreKtx
+    implementation androidXDeps.annotationJvm
 
     androidTestImplementation testingDeps.junit.junit5AndroidTestCore
     androidTestRuntimeOnly testingDeps.junit.junit5AndroidTestRunner

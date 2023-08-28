@@ -7,6 +7,7 @@ detekt {
     println("Dir ${rootDirectory}")
     config = files("${rootDirectory}/detekt/detekt.yml")
     baseline = file("${rootDirectory}/detekt/baseline.xml")
+    autoCorrect = true
 
     reports {
         html.enabled = true
@@ -14,4 +15,10 @@ detekt {
         txt.enabled = true
         sarif.enabled = true
     }
+
+    toolVersion = "1.23.1"
+}
+
+dependencies {
+    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1"
 }

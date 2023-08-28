@@ -5,7 +5,6 @@ import androidx.room.RoomDatabase
 import com.grarcht.shuttle.framework.integrations.persistence.ShuttleDataAccessObject
 import com.grarcht.shuttle.framework.integrations.persistence.ShuttleDatabase
 
-
 /**
  * This class is used to create and access the Shuttle database.
  */

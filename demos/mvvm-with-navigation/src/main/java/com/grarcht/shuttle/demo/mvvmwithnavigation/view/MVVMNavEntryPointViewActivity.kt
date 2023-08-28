@@ -5,12 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import com.grarcht.shuttle.demo.mvvmwithnavigation.R
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
@@ -64,7 +64,7 @@ class MVVMNavEntryPointViewActivity : AppCompatActivity() {
         shuttle.cleanShuttleFromAllDeliveries(channel)
 
         // The following could be useful for verification, analytics, et cetera.
-        MainScope().launch {
+        lifecycleScope.launch {
             // Ensure all persisted cargo data is removed.
             channel.consumeAsFlow().collectLatest {
                 when (it) {

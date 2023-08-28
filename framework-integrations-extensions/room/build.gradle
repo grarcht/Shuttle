@@ -1,22 +1,15 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
     id 'org.jetbrains.dokka'
     id 'signing'
     id 'maven-publish'
     id 'de.mannodermaus.android-junit5'
+    id 'org.jetbrains.kotlin.android'
 }
 
-dokkaHtml.configure {
-    dokkaSourceSets {
-        named("main") {
-            noAndroidSdkLink.set(false)
-        }
-    }
-}
-
-tasks.dokkaHtml.configure {
+dokkaHtml {
     outputDirectory.set(file("documentation/kotlin"))
 }
 
@@ -34,7 +27,9 @@ android {
     }
 
     buildTypes.release.minifyEnabled false
-    kotlinOptions.jvmTarget = versions.jvmTarget
+    kotlinOptions {
+        jvmTarget = versions.jvmTarget
+    }
     testOptions.unitTests.returnDefaultValues = true
 
     compileOptions {
@@ -54,15 +49,19 @@ dependencies {
     implementation androidXDeps.coreKtx
     implementation androidXDeps.appCompat
     api roomDeps.runtime
-    kapt roomDeps.compiler
+    implementation androidXDeps.coreKtx
+    ksp roomDeps.compiler
     api roomDeps.ktx
     api project(':framework-integrations-persistence')
+    implementation androidXDeps.annotationJvm
+
     androidTestImplementation testingDeps.junit.androidTestRunner
     androidTestImplementation testingDeps.junit.jupiterApi
     androidTestImplementation testingDeps.junit.jupiterEngine
     androidTestImplementation testingDeps.junit.jupiterParams
     androidTestImplementation testingDeps.junit.junit5AndroidTestCore
     androidTestRuntimeOnly testingDeps.junit.junit5AndroidTestRunner
+
     testImplementation roomDeps.testHelpers
     testImplementation testingDeps.mockito.core
     testImplementation testingDeps.mockito.kotlin
