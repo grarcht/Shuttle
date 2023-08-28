@@ -22,12 +22,12 @@ tasks.dokkaHtml.configure {
 }
 
 android {
-    compileSdkVersion versions.android.compileSdkVersion
+    compileSdk versions.android.compileSdk
 
     defaultConfig {
         applicationId 'com.grarcht.shuttle.demo.mvvm_with_navigation'
-        minSdkVersion versions.android.minSdkVersion
-        targetSdkVersion versions.android.targetSdkVersion
+        minSdk versions.android.minSdk
+        targetSdk versions.android.targetSdk
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
