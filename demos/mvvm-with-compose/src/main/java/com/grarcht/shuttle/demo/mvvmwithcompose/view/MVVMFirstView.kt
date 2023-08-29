@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LifecycleCoroutineScope
 import com.grarcht.shuttle.demo.core.image.ImageMessageType
 import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.core.io.IOResult
@@ -31,11 +32,9 @@ import com.grarcht.shuttle.demo.mvvmwithcompose.R
 import com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel.FirstViewModel
 import com.grarcht.shuttle.framework.Shuttle
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.DisposableHandle
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.io.Serializable
 
 private val SMALL_PADDING = 8.dp
@@ -48,10 +47,10 @@ private const val UNABLE_TO_GET_IMAGE_MODEL_ERROR_MESSAGE = "Caught when getting
 
 class MVVMFirstView(
     private val context: Context,
+    private val lifecycleScope: LifecycleCoroutineScope,
     private val viewModel: FirstViewModel,
     private val shuttle: Shuttle
 ) {
-    private var imageGatewayDisposableHandle: DisposableHandle? = null
     private var imageModel: ImageModel? = null
 
     @Composable
@@ -125,16 +124,14 @@ class MVVMFirstView(
         }
     }
 
-
     fun cleanUpViewResources() {
-        imageGatewayDisposableHandle?.dispose()
         // Ensure all persisted cargo data is removed.
         shuttle.cleanShuttleFromAllDeliveries()
     }
 
     private fun getImageData(stateUpdate: (IOResult) -> Unit): MVVMFirstView {
-        imageGatewayDisposableHandle = MainScope().async {
-            viewModel.getImage(context.resources, R.raw.tower)
+        lifecycleScope.launch {
+            viewModel.getImage(context.resources, com.grarcht.shuttle.demo.core.R.raw.tower)
                 .collectLatest {
                     when (it) {
                         is IOResult.Unknown -> {

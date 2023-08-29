@@ -79,6 +79,7 @@ class ActivityLifecycleCallbackTests {
 
         Assertions.assertEquals(0, callback.numberOfInvocations)
     }
+
     @Test
     fun verifyTheOnActivityDestroyedFunctionIsANoOperationFunction() {
         val callback = TestActivityLifecycleCallback()

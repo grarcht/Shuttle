@@ -128,6 +128,9 @@ class MVVMSecondView(
                             stateUpdate.invoke(IOResult.Error(it.throwable as Throwable))
                             cancel()
                         }
+                        else -> {
+                            // ignore
+                        }
                     }
                 }
         }
@@ -150,7 +153,7 @@ class MVVMSecondView(
         Box {
             // Background loading image
             Image(
-                rawPainterResource(id = R.raw.loading),
+                rawPainterResource(id = com.grarcht.shuttle.demo.core.R.raw.loading),
                 contentDescription = SUCCESS_CONTENT_DESCRIPTION,
                 contentScale = ContentScale.FillBounds
             )
@@ -189,7 +192,7 @@ class MVVMSecondView(
     @Composable
     private fun ShowErrorImage() {
         Image(
-            painter = rawPainterResource(id = R.raw.broken_soccer_ball),
+            painter = rawPainterResource(id = com.grarcht.shuttle.demo.core.R.raw.broken_soccer_ball),
             contentDescription = ERROR_CONTENT_DESCRIPTION
         )
 

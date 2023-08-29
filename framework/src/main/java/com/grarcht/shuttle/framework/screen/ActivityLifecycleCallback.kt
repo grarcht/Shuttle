@@ -43,4 +43,3 @@ internal abstract class ActivityLifecycleCallback : Application.ActivityLifecycl
      */
     abstract fun onActivityCreated(activity: Activity)
 }
-

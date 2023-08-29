@@ -2,30 +2,23 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'org.jetbrains.dokka'
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.30'
+    id 'org.jetbrains.kotlin.android'
 }
 
 apply from: '../../detekt/detekt.gradle'
 
-dokkaHtml.configure {
-    dokkaSourceSets {
-        named("main") {
-            noAndroidSdkLink.set(false)
-        }
-    }
-}
-
-tasks.dokkaHtml.configure {
+dokkaHtml {
     outputDirectory.set(file("documentation/kotlin"))
 }
 
 android {
-    compileSdkVersion 33
+    compileSdk versions.android.compileSdk
 
     defaultConfig {
-        minSdkVersion 26
-        targetSdkVersion 33
+        minSdk versions.android.minSdk
+        targetSdk versions.android.target
         versionCode 1
         versionName "1.0"
 
@@ -41,12 +34,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = versions.jvmTarget
     }
 
     namespace 'com.grarcht.shuttle.demo.core'
@@ -54,15 +47,17 @@ android {
 
 dependencies {
     implementation jetbrainsKotlinDeps.stdlib
+    implementation androidXDeps.annotationJvm
+    implementation androidXDeps.coreKtx
     implementation androidXDeps.lifecycle.extensions
     implementation androidXDeps.lifecycle.viewModel
 
     // To use typical module dependencies, comment out the above dependency and
     // uncomment the following:
-    //implementation project(':framework-integrations-persistence')
-    //implementation project(':framework-integrations-extensions-room')
+    implementation project(':framework-integrations-persistence')
+    implementation project(':framework-integrations-extensions-room')
 
     // To use maven dependencies, use the following
-    implementation shuttle.integrationsPersistence
-    implementation shuttle.integrationsExtensionsRoom
+//    implementation shuttle.integrationsPersistence
+//    implementation shuttle.integrationsExtensionsRoom
 }

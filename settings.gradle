@@ -1,4 +1,3 @@
-
 rootProject.name = "Shuttle"
 
 include ':framework'
@@ -6,14 +5,12 @@ include ':solution-builder'
 
 // Demo Modules
 include ':demos-core-lib'
-include ':demos-databinding-lib'
 include ':demo-mvc'
 include ':demo-mvvm'
 include ':demo-mvvm-with-compose'
 include ':demo-mvvm-with-navigation'
 
 project(':demos-core-lib').projectDir = new File(settingsDir, 'demos/core')
-project(':demos-databinding-lib').projectDir = new File(settingsDir, 'demos/databinding')
 project(':demo-mvc').projectDir = new File(settingsDir, 'demos/mvc')
 project(':demo-mvvm').projectDir = new File(settingsDir, 'demos/mvvm')
 project(':demo-mvvm-with-compose').projectDir = new File(settingsDir, 'demos/mvvm-with-compose')

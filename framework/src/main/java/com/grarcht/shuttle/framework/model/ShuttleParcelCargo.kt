@@ -30,4 +30,3 @@ open class ShuttleParcelCargo(val cargoId: String) : Parcelable {
         }
     }
 }
-

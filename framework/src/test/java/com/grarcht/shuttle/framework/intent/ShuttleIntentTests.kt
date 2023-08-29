@@ -135,7 +135,6 @@ class ShuttleIntentTests {
         Assertions.assertNotNull(intent)
     }
 
-
     @Test
     fun verifyCreatingShuttleIntentWithAnActionUriContextAndClass() = testScope.runTest {
         val warehouse: ShuttleWarehouse = mock(ShuttleWarehouse::class.java)
@@ -206,13 +205,12 @@ class ShuttleIntentTests {
         delay(1000L)
 
         launch(Dispatchers.Main) {
-
             val defaultResult = Channel<ShuttlePickupCargoResult>(1)
             val channel: Channel<ShuttlePickupCargoResult> = shuttle?.pickupCargo<Cargo>(cargoId) ?: defaultResult
             channel.consumeAsFlow()
                 .collectLatest { shuttleResult ->
                     when (shuttleResult) {
-                        ShuttlePickupCargoResult.Loading -> {
+                        is ShuttlePickupCargoResult.Loading -> {
                             /* ignore */
                         }
                         is ShuttlePickupCargoResult.Success<*> -> {
@@ -223,6 +221,9 @@ class ShuttleIntentTests {
                         is ShuttlePickupCargoResult.Error<*> -> {
                             Assertions.fail()
                         }
+                        else -> {
+                            // ignore
+                        }
                     }
                 }
         }.invokeOnCompletion {
@@ -232,7 +233,6 @@ class ShuttleIntentTests {
         }.addForDisposal(compositeDisposableHandle)
 
         awaitOnLatch(countDownLatch, 1L, TimeUnit.SECONDS)
-
 
         // Verify
         Assertions.assertEquals(1, shuttleWarehouse?.numberOfStoreInvocations)

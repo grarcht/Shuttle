@@ -1,6 +1,9 @@
-<?xml version="1.0" ?>
-<!--suppress CheckTagEmptyBody -->
+<?xml version='1.0' encoding='UTF-8'?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
-  <CurrentIssues></CurrentIssues>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>NoNameShadowing:MVVMFirstView.kt$MVVMFirstView${ if (it !is CancellationException) { Log.w(TAG, UNABLE_TO_GET_IMAGE_MODEL_ERROR_MESSAGE, it) } }</ID>
+    <ID>UseOrEmpty:MVVMSecondView.kt$MVVMSecondView$storedCargoId ?: ""</ID>
+    <ID>VarCouldBeVal:MVVMSecondView.kt$MVVMSecondView$private var deferredImageLoad: Deferred&lt;Unit>? = null</ID>
+  </CurrentIssues>
 </SmellBaseline>

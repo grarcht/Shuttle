@@ -95,7 +95,7 @@ class ShuttleBundleTest {
                 channel.consumeAsFlow()
                     .collectLatest { shuttleResult ->
                         when (shuttleResult) {
-                            ShuttlePickupCargoResult.Loading -> {
+                            is ShuttlePickupCargoResult.Loading -> {
                                 /* ignore */
                             }
                             is ShuttlePickupCargoResult.Success<*> -> {
@@ -106,6 +106,9 @@ class ShuttleBundleTest {
                             is ShuttlePickupCargoResult.Error<*> -> {
                                 countDownLatch.countDown()
                                 fail()
+                            }
+                            else -> {
+                                // ignore
                             }
                         }
                     }

@@ -42,7 +42,7 @@ open class ShuttleRepository(
      */
     override suspend fun <D : Serializable> pickup(cargoId: String): Channel<ShuttlePickupCargoResult> {
         val pickupCargoChannel = Channel<ShuttlePickupCargoResult>(PICKUP_CARGO_CHANNEL_CAPACITY)
-        pickupCargoChannel.send(ShuttlePickupCargoResult.Loading)
+        pickupCargoChannel.send(ShuttlePickupCargoResult.Loading(cargoId))
 
         pickupCargoChannel.apply {
             val shuttleDataModel = shuttleDao.getCargoBy(cargoId)
@@ -159,7 +159,6 @@ open class ShuttleRepository(
         }
         return removeCargoChannel
     }
-
 
     override suspend fun removeAllCargo(): Channel<ShuttleRemoveCargoResult> {
         val removeCargoChannel = Channel<ShuttleRemoveCargoResult>(REMOVE_CARGO_CHANNEL_CAPACITY)

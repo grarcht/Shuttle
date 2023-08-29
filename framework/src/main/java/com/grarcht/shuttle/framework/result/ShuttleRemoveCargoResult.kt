@@ -33,6 +33,11 @@ sealed class ShuttleRemoveCargoResult {
         val throwable: T? = null
     ) : ShuttleRemoveCargoResult() where T : Throwable
 
+    /**
+     * The initial state for Shuttle not removing the cargo yet.
+     */
+    object NotRemovingCargoYet : ShuttleRemoveCargoResult()
+
     companion object {
         const val ALL_CARGO = "All Cargo"
     }

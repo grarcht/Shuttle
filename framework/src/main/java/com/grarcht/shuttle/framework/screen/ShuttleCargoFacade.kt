@@ -140,10 +140,10 @@ open class ShuttleCargoFacade(
     }
 
     private fun onBackPressed(screen: Screen, activity: AppCompatActivity) {
-
         backgroundThreadScope.launch {
             shuttleWarehouse.removeCargoBy(screen.cargoId).consumeAsFlow().collectLatest {
                 when (it) {
+                    ShuttleRemoveCargoResult.NotRemovingCargoYet,
                     is ShuttleRemoveCargoResult.Removing -> {
                         // ignore
                     }

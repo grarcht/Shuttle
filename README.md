@@ -80,7 +80,7 @@ To transport data with Shuttle and Intent objects, one can do the following:
 
 At the destination, one can load the data with Shuttle by doing the following:
 ```kotlin
-    MainScope().async {
+    lifecycleScope.launch {
         getShuttleChannel()
             .consumeAsFlow()
             .collectLatest { shuttleResult ->
@@ -103,7 +103,7 @@ At the destination, one can load the data with Shuttle by doing the following:
 
 
 
-#### Example usage with the Navigation Component Addon and Databinding
+#### Example usage with the Navigation Component Addon
 
 The Starting View:
 ```kotlin
@@ -120,26 +120,28 @@ The Starting View:
 
 The Destination View:
 ```kotlin
-      onPropertyChangeCallback = object : OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                when (propertyId) {
-                    BR.shuttlePickupCargoResult -> {
-                        when (viewModel.shuttlePickupCargoResult) {
-                            ShuttlePickupCargoResult.Loading -> {
-                                view?.let { initLoadingView(it) }
-                            }
-                            is ShuttlePickupCargoResult.Success<*> -> {
-                                if (null != view && viewModel.imageModel != null) {
-                                    showSuccessView(view, viewModel.imageModel as ImageModel)
-                                }
-                            }
-                            is ShuttlePickupCargoResult.Error<*> -> {
-                                view?.let { showErrorView(it) }
-                            }
-                            else -> {
-                                // ignore
-                            }
-                        }
+      lifecycleScope.launch {
+        viewModel
+            .loadImage(shuttle, cargoId)
+            .collectLatest { shuttleResult ->
+                when (shuttleResult) {
+                    is ShuttlePickupCargoResult.Loading -> {
+                        view?.let { initLoadingView(it) }
+                    }
+    
+                    is ShuttlePickupCargoResult.Success<*> -> {
+                        imageModel = shuttleResult.data as ImageModel
+                        view?.let { showSuccessView(view, imageModel as ImageModel) }
+                        cancel()
+                    }
+    
+                    is ShuttlePickupCargoResult.Error<*> -> {
+                        view?.let { showErrorView(it) }
+                        cancel()
+                    }
+    
+                    else -> {
+                        // ignore
                     }
                 }
             }
@@ -148,31 +150,23 @@ The Destination View:
 
 The Destination ViewModel:
 ```kotlin
-        viewModelScope.launch {
-            shuttle.pickupCargo<Serializable>(cargoId = cargoId)
-                .consumeAsFlow()
-                .collectLatest { shuttleResult ->
-                    shuttlePickupCargoResult = shuttleResult
-
-                    when (shuttleResult) {
-                        ShuttlePickupCargoResult.Loading -> {
-                            notifyPropertyChanged(BR.shuttlePickupCargoResult)
-                        }
-                        is ShuttlePickupCargoResult.Success<*> -> {
-                            imageModel = shuttleResult.data as ImageModel
-                            notifyPropertyChanged(BR.shuttlePickupCargoResult)
-                            cancel()
-                        }
-                        is ShuttlePickupCargoResult.Error<*> -> {
-                            notifyPropertyChanged(BR.shuttlePickupCargoResult)
-                            cancel()
-                        }
-                        else -> {
-                            // ignore
-                        }
+    viewModelScope.launch {
+        shuttle.pickupCargo<Serializable>(cargoId = cargoId)
+            .consumeAsFlow()
+            .collectLatest { shuttleResult ->
+                pickupCargoMutableStateFlow.value = shuttleResult
+    
+                when (shuttleResult) {
+                    is ShuttlePickupCargoResult.Success<*>,
+                    is ShuttlePickupCargoResult.Error<*> -> {
+                        cancel()
+                    }
+                    else -> {
+                        // ignore
                     }
                 }
-        }
+            }
+    }
 ```
 
 

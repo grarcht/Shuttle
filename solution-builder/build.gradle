@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdk versions.android.compileSdk
 
     defaultConfig {
-        minSdkVersion 26
-        targetSdkVersion 33
+        minSdk versions.android.minSdk
+        targetSdk versions.android.targetSdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -21,7 +21,9 @@ android {
         }
     }
 
-    kotlinOptions.jvmTarget = versions.jvmTarget
+    kotlinOptions {
+        jvmTarget = versions.jvmTarget
+    }
 
     compileOptions {
         sourceCompatibility versions.sourceCompatibility
@@ -43,12 +45,12 @@ dependencies {
 
     // If other integration extensions are desired, they should have corresponding
     // dependency declarations here.
-//    withRoom project(':framework')
-//    withRoom project(':framework-integrations-persistence')
-//    withRoom project(':framework-integrations-extensions-room')
+    withRoom project(':framework')
+    withRoom project(':framework-integrations-persistence')
+    withRoom project(':framework-integrations-extensions-room')
 
     // To use maven dependencies, use the following:
-    withRoom shuttle.framework
-    withRoom shuttle.integrationsPersistence
-    withRoom shuttle.integrationsExtensionsRoom
+//    withRoom shuttle.framework
+//    withRoom shuttle.integrationsPersistence
+//    withRoom shuttle.integrationsExtensionsRoom
 }

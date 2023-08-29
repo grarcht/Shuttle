@@ -4,6 +4,6 @@ import java.io.Serializable
 
 class PaintColor(val color: String?) : Serializable {
     companion object {
-        const val serialVersionUID = -84L
+        private const val serialVersionUID: Long = -84
     }
 }

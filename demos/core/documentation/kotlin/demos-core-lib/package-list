@@ -4,10 +4,12 @@ $dokka.location:com.grarcht.shuttle.demo.core.image////PointingToDeclaration/de
 $dokka.location:com.grarcht.shuttle.demo.core.image/BitmapDecoder///PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.image/-bitmap-decoder/index.html
 $dokka.location:com.grarcht.shuttle.demo.core.image/BitmapDecoder/BitmapDecoder/#/PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.image/-bitmap-decoder/-bitmap-decoder.html
 $dokka.location:com.grarcht.shuttle.demo.core.image/BitmapDecoder/decodeBitmap/#kotlin.ByteArray/PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.image/-bitmap-decoder/decode-bitmap.html
-$dokka.location:com.grarcht.shuttle.demo.core.image/ImageMessageType.ImageData///PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.image/-image-message-type/-image-data/index.html
+$dokka.location:com.grarcht.shuttle.demo.core.image/ImageMessageType.ImageData///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}demos-core-lib/com.grarcht.shuttle.demo.core.image/-image-message-type/-image-data/index.html
 $dokka.location:com.grarcht.shuttle.demo.core.image/ImageMessageType///PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.image/-image-message-type/index.html
 $dokka.location:com.grarcht.shuttle.demo.core.image/ImageMessageType/toString/#/PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.image/-image-message-type/to-string.html
 $dokka.location:com.grarcht.shuttle.demo.core.image/ImageMessageType/value/#/PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.image/-image-message-type/value.html
+$dokka.location:com.grarcht.shuttle.demo.core.image/ImageMessageType/valueOf/#kotlin.String/PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.image/-image-message-type/value-of.html
+$dokka.location:com.grarcht.shuttle.demo.core.image/ImageMessageType/values/#/PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.image/-image-message-type/values.html
 $dokka.location:com.grarcht.shuttle.demo.core.image/ImageModel.Companion///PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.image/-image-model/-companion/index.html
 $dokka.location:com.grarcht.shuttle.demo.core.image/ImageModel///PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.image/-image-model/index.html
 $dokka.location:com.grarcht.shuttle.demo.core.image/ImageModel/ImageModel/#kotlin.String#kotlin.ByteArray/PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.image/-image-model/-image-model.html
@@ -33,6 +35,9 @@ $dokka.location:com.grarcht.shuttle.demo.core.io/RawResourceGateway/RawResourceG
 $dokka.location:com.grarcht.shuttle.demo.core.io/RawResourceGateway/bytesFromRawResource/#kotlin.Int/PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.io/-raw-resource-gateway/bytes-from-raw-resource.html
 $dokka.location:com.grarcht.shuttle.demo.core.io/RawResourceGateway/create/#/PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.io/-raw-resource-gateway/create.html
 $dokka.location:com.grarcht.shuttle.demo.core.io/RawResourceGateway/logTag/#kotlin.String/PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.io/-raw-resource-gateway/log-tag.html
+$dokka.location:com.grarcht.shuttle.demo.core.os////PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.os/index.html
+$dokka.location:com.grarcht.shuttle.demo.core.os//getParcelableWith/android.os.Bundle#kotlin.String?#java.lang.Class[TypeParam(bounds=[kotlin.Any?])]/PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.os/get-parcelable-with.html
 com.grarcht.shuttle.demo.core.image
 com.grarcht.shuttle.demo.core.io
+com.grarcht.shuttle.demo.core.os
 

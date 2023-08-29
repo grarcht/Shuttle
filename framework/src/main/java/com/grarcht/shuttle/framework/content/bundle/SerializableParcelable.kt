@@ -5,6 +5,6 @@ import java.io.Serializable
 
 data class SerializableParcelable(val parcelable: Parcelable) : Serializable {
     companion object {
-        const val serialVersionUID = -32453L
+        private const val serialVersionUID: Long = -32453
     }
 }

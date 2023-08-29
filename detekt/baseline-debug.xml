@@ -1,6 +1,9 @@
-<?xml version="1.0" ?>
-<!--suppress CheckTagEmptyBody -->
+<?xml version='1.0' encoding='UTF-8'?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
-  <CurrentIssues></CurrentIssues>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>NoNameShadowing:MVVMNavFirstViewFragment.kt$MVVMNavFirstViewFragment${ Log.w(LOG_TAG, "Caught when getting the image model.", it) }</ID>
+    <ID>UseOrEmpty:MVVMNavSecondViewFragment.kt$MVVMNavSecondViewFragment$storedCargoId ?: ""</ID>
+    <ID>VarCouldBeVal:MVVMNavSecondViewFragment.kt$MVVMNavSecondViewFragment$private var deferredImageLoad: Deferred&lt;Unit>? = null</ID>
+  </CurrentIssues>
 </SmellBaseline>

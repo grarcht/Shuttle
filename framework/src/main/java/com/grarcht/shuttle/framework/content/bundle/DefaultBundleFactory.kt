@@ -50,4 +50,3 @@ open class DefaultBundleFactory : BundleFactory {
         return Bundle(bundle)
     }
 }
-

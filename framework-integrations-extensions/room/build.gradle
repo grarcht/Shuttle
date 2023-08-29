@@ -1,31 +1,24 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
     id 'org.jetbrains.dokka'
     id 'signing'
     id 'maven-publish'
     id 'de.mannodermaus.android-junit5'
+    id 'org.jetbrains.kotlin.android'
 }
 
-dokkaHtml.configure {
-    dokkaSourceSets {
-        named("main") {
-            noAndroidSdkLink.set(false)
-        }
-    }
-}
-
-tasks.dokkaHtml.configure {
+dokkaHtml {
     outputDirectory.set(file("documentation/kotlin"))
 }
 
 android {
-    compileSdkVersion versions.android.compileSdkVersion
+    compileSdk versions.android.compileSdk
 
     defaultConfig {
-        minSdkVersion versions.android.minSdkVersion
-        targetSdkVersion versions.android.targetSdkVersion
+        minSdk versions.android.minSdk
+        targetSdk versions.android.targetSdk
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -34,7 +27,9 @@ android {
     }
 
     buildTypes.release.minifyEnabled false
-    kotlinOptions.jvmTarget = versions.jvmTarget
+    kotlinOptions {
+        jvmTarget = versions.jvmTarget
+    }
     testOptions.unitTests.returnDefaultValues = true
 
     compileOptions {
@@ -54,15 +49,19 @@ dependencies {
     implementation androidXDeps.coreKtx
     implementation androidXDeps.appCompat
     api roomDeps.runtime
-    kapt roomDeps.compiler
+    implementation androidXDeps.coreKtx
+    ksp roomDeps.compiler
     api roomDeps.ktx
     api project(':framework-integrations-persistence')
+    implementation androidXDeps.annotationJvm
+
     androidTestImplementation testingDeps.junit.androidTestRunner
     androidTestImplementation testingDeps.junit.jupiterApi
     androidTestImplementation testingDeps.junit.jupiterEngine
     androidTestImplementation testingDeps.junit.jupiterParams
     androidTestImplementation testingDeps.junit.junit5AndroidTestCore
     androidTestRuntimeOnly testingDeps.junit.junit5AndroidTestRunner
+
     testImplementation roomDeps.testHelpers
     testImplementation testingDeps.mockito.core
     testImplementation testingDeps.mockito.kotlin
@@ -86,35 +85,35 @@ def debugAARFilePath = isReleaseVersion ?
 def javadocJarFileName = "${archivesBaseName}-javadoc.jar"
 def sourcesJarFileName = "${archivesBaseName}-sources.jar"
 
-task javadocJar(type: Jar) {
+tasks.register('javadocJar', Jar) {
     archiveClassifier.set('javadoc')
-    archiveName(javadocJarFileName)
+    archiveFileName = javadocJarFileName
     from dokkaJavadoc
 }
 
-task sourcesJar(type: Jar) {
+tasks.register('sourcesJar', Jar) {
     archiveClassifier.set('sources')
-    archiveName(sourcesJarFileName)
+    archiveFileName = sourcesJarFileName
     from android.sourceSets.main.java.srcDirs
 }
 
 // rename the aar files
-task renameArtifacts() {
-    android.libraryVariants.all { variant ->
-        variant.outputs.all { output ->
+tasks.register('renameArtifacts') {
+    android.libraryVariants.configureEach { variant ->
+        variant.outputs.configureEach { output ->
             def debugSuffix = 'debug.aar'
             def releaseSuffix = 'release.aar'
-            if (null != outputFileName) {
+            if (null != output.name) {
                 if (isReleaseVersion) {
-                    if (outputFileName.endsWith(debugSuffix))
-                        outputFileName = "$archivesBaseName-$debugSuffix"
-                    else if (outputFileName.endsWith(releaseSuffix))
-                        outputFileName = "$archivesBaseName-$releaseSuffix"
+                    if (output.name.endsWith(debugSuffix))
+                        output.name = "$archivesBaseName-$debugSuffix"
+                    else if (output.name.endsWith(releaseSuffix))
+                        output.name = "$archivesBaseName-$releaseSuffix"
                 } else {
-                    if (outputFileName.endsWith(debugSuffix))
-                        outputFileName = "$archivesBaseName-debug-SNAPSHOT.aar"
-                    else if (outputFileName.endsWith(releaseSuffix))
-                        outputFileName = "$archivesBaseName-release-SNAPSHOT.aar"
+                    if (output.name.endsWith(debugSuffix))
+                        output.name = "$archivesBaseName-debug-SNAPSHOT.aar"
+                    else if (output.name.endsWith(releaseSuffix))
+                        output.name = "$archivesBaseName-release-SNAPSHOT.aar"
                 }
             }
         }

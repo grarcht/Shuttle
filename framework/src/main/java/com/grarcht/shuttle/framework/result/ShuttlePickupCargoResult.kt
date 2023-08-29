@@ -25,5 +25,10 @@ sealed class ShuttlePickupCargoResult {
     /**
      * The state for when Shuttle has started picking up the cargo.
      */
-    object Loading : ShuttlePickupCargoResult()
+    class Loading(val cargoId: String) : ShuttlePickupCargoResult()
+
+    /**
+     * The initial state for Shuttle not picking up the cargo yet.
+     */
+    object NotPickingUpCargoYet : ShuttlePickupCargoResult()
 }
