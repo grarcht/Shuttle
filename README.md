@@ -6,7 +6,8 @@
 [![Featured in androidweekly.net](https://img.shields.io/badge/Featured%20in%20androidweekly.net-Issue%20%23455-4998C2)](https://androidweekly.net/issues/issue-455)
 
 ## Overview Video
-https://youtu.be/4Nl9zlcbwU4
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/4Nl9zlcbwU4?si=R3Nwu_Ay6DiixXQO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ## Overview
 Shuttle provides a modern, guarded way to pass large Serializable objects with Intent objects or save them in Bundle objects to avoid app crashes.
