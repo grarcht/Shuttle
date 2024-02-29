@@ -33,7 +33,7 @@ interface ShuttleWarehouse {
     suspend fun removeCargoBy(cargoId: String): Channel<ShuttleRemoveCargoResult>
 
     /**
-     * Removes all of the cargo from the warehouse.
+     * Removes all cargo from the warehouse.
      */
     suspend fun removeAllCargo(): Channel<ShuttleRemoveCargoResult>
 }

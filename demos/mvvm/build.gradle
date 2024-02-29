@@ -4,6 +4,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'org.jetbrains.dokka'
     id 'kotlin-kapt'
+    id 'org.jetbrains.kotlin.android'
 }
 
 apply from: '../../detekt/detekt.gradle'
@@ -80,6 +81,7 @@ dependencies {
     implementation androidXDeps.lifecycle.extensions
     implementation androidXDeps.lifecycle.viewModel
     implementation dependencyInjectionDeps.hilt
+    implementation 'androidx.core:core-ktx:+'
     kapt dependencyInjectionDeps.hiltCompiler
     implementation project(':demos-core-lib')
     implementation project(':demos-databinding-lib')

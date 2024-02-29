@@ -5,6 +5,7 @@ plugins {
     id 'de.mannodermaus.android-junit5'
     id 'signing'
     id 'maven-publish'
+    id 'org.jetbrains.kotlin.android'
 }
 
 apply from: '../detekt/detekt.gradle'
@@ -57,6 +58,7 @@ dependencies {
     implementation androidXDeps.appCompat
     implementation androidXDeps.lifecycle.extensions
     api project(':framework-integrations-persistence')
+    implementation 'androidx.core:core-ktx:+'
 
     androidTestImplementation testingDeps.junit.junit5AndroidTestCore
     androidTestRuntimeOnly testingDeps.junit.junit5AndroidTestRunner

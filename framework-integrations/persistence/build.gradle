@@ -6,6 +6,7 @@ plugins {
     id 'signing'
     id 'maven-publish'
     id 'de.mannodermaus.android-junit5'
+    id 'org.jetbrains.kotlin.android'
 }
 
 dokkaHtml.configure {
@@ -47,6 +48,7 @@ android {
 
 dependencies {
     implementation jetbrainsKotlinDeps.stdlib
+    implementation 'androidx.core:core-ktx:+'
     androidTestImplementation testingDeps.junit.androidTestRunner
     androidTestImplementation testingDeps.junit.jupiterApi
     androidTestImplementation testingDeps.junit.jupiterEngine

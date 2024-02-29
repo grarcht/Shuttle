@@ -6,6 +6,7 @@ plugins {
     id 'signing'
     id 'maven-publish'
     id 'de.mannodermaus.android-junit5'
+    id 'org.jetbrains.kotlin.android'
 }
 
 dokkaHtml.configure {
@@ -54,6 +55,7 @@ dependencies {
     implementation androidXDeps.coreKtx
     implementation androidXDeps.appCompat
     api roomDeps.runtime
+    implementation 'androidx.core:core-ktx:+'
     kapt roomDeps.compiler
     api roomDeps.ktx
     api project(':framework-integrations-persistence')

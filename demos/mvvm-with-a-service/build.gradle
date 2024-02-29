@@ -1,0 +1,106 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'dagger.hilt.android.plugin'
+    id 'org.jetbrains.dokka'
+    id 'kotlin-kapt'
+    id 'org.jetbrains.kotlin.android'
+}
+
+apply from: '../../detekt/detekt.gradle'
+
+dokkaHtml.configure {
+    dokkaSourceSets {
+        named("main") {
+            noAndroidSdkLink.set(false)
+        }
+    }
+}
+
+tasks.dokkaHtml.configure {
+    outputDirectory.set(file("documentation/kotlin"))
+}
+
+android {
+    compileSdkVersion versions.android.compileSdkVersion
+
+    defaultConfig {
+        applicationId "com.grarcht.shuttle.demo.mvvm"
+        minSdkVersion versions.android.minSdkVersion
+        targetSdkVersion versions.android.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+    }
+
+    kapt {
+        correctErrorTypes true
+        javacOptions {
+            // https://youtrack.jetbrains.com/issue/KT-47416
+            // https://github.com/nvmnghia/yacv/commit/7f85c02e3d3d965fd780f130af802c73822699df
+            // These options are normally set automatically via the Hilt Gradle plugin, but we
+            // set them manually to workaround a bug in the Kotlin 1.5.20
+            option("-Adagger.fastInit=ENABLED")
+            option("-Adagger.hilt.android.internal.disableAndroidSuperclassValidation=true")
+        }
+    }
+
+    namespace 'com.grarcht.shuttle.demo.mvvm'
+}
+
+dependencies {
+    implementation jetbrainsKotlinDeps.stdlib
+    implementation jetbrainsKotlinDeps.coroutines
+    implementation androidXDeps.appCompat
+    implementation androidXDeps.constraintLayout
+    implementation androidXDeps.material
+    implementation androidXDeps.fragmentKtx
+    implementation androidXDeps.lifecycle.extensions
+    implementation androidXDeps.lifecycle.viewModel
+    implementation dependencyInjectionDeps.hilt
+    implementation 'androidx.core:core-ktx:+'
+    implementation project(':framework')
+    implementation 'androidx.annotation:annotation-jvm:1.7.1'
+    kapt dependencyInjectionDeps.hiltCompiler
+    implementation project(':demos-core-lib')
+    implementation project(':demos-databinding-lib')
+
+    // To use a single aar file dependency, do something like the following.
+    // If another integration extension is desired, a corresponding configuration should be
+    // declared here for the "solution-builder" project.
+    // implementation project(path: ':solution-builder', configuration: 'withRoom')
+
+    // To use lighter weight, independent dependencies, comment out the above dependency and
+    // uncomment the following:
+    // implementation project(':framework')
+    // implementation project(':framework-integrations-persistence')
+    // implementation project(':framework-integrations-extensions-room')
+
+    // To use maven dependencies, use the following
+    implementation shuttle.framework
+    implementation shuttle.integrationsPersistence
+    implementation shuttle.integrationsExtensionsRoom
+}

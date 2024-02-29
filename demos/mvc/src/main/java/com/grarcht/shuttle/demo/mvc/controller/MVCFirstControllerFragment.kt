@@ -119,7 +119,7 @@ class MVCFirstControllerFragment : Fragment() {
 
     private fun initOnClickNavigateNormally(view: View?) {
         view?.apply {
-            navNormallyButton = findViewById(R.id.nav_normally_button)
+            navNormallyButton = findViewById(R.id.nav_without_shuttle_button)
             navNormallyButton?.setOnClickListener {
                 it.isEnabled = false
                 navigateNormally(context)

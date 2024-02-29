@@ -20,9 +20,7 @@ class ImageModel(
         other as ImageModel
 
         if (cargoId != other.cargoId) return false
-        if (!imageData.contentEquals(other.imageData)) return false
-
-        return true
+        return imageData.contentEquals(other.imageData)
     }
 
     override fun hashCode(): Int {

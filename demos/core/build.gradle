@@ -4,6 +4,7 @@ plugins {
     id 'org.jetbrains.dokka'
     id 'kotlin-kapt'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.30'
+    id 'org.jetbrains.kotlin.android'
 }
 
 apply from: '../../detekt/detekt.gradle'
@@ -65,4 +66,5 @@ dependencies {
     // To use maven dependencies, use the following
     implementation shuttle.integrationsPersistence
     implementation shuttle.integrationsExtensionsRoom
+    implementation 'androidx.core:core-ktx:+'
 }

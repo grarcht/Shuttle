@@ -5,6 +5,7 @@ plugins {
     id 'org.jetbrains.dokka'
     id 'signing'
     id 'maven-publish'
+    id 'org.jetbrains.kotlin.android'
 }
 
 dokkaHtml.configure {
@@ -48,6 +49,7 @@ dependencies {
     implementation jetbrainsKotlinDeps.stdlib
     implementation androidXDeps.navigationFragmentKtx
     implementation project(':framework')
+    implementation 'androidx.core:core-ktx:+'
 
     androidTestImplementation testingDeps.junit.junit5AndroidTestCore
     androidTestRuntimeOnly testingDeps.junit.junit5AndroidTestRunner

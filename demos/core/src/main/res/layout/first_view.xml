@@ -33,7 +33,7 @@
         android:textColor="@android:color/holo_green_dark" />
 
     <Button
-        android:id="@+id/nav_normally_button"
+        android:id="@+id/nav_without_shuttle_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

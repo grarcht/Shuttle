@@ -7,7 +7,7 @@ sealed class IOResult {
     /**
      * State for other than [Loading], [Success], and [Error].
      */
-    object Unknown: IOResult()
+    object Unknown : IOResult()
 
     /**
      * State for loading data.
@@ -24,5 +24,5 @@ sealed class IOResult {
      * State for unsuccessful IO work.
      * @param throwable caught with IO work
      */
-    class Error<T>(val throwable: T) : IOResult() where T : Throwable
+    class Error<T>(val message: String? = null, val throwable: T) : IOResult() where T : Throwable
 }
