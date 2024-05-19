@@ -23,13 +23,12 @@ tasks.dokkaHtml.configure {
 }
 
 android {
-    compileSdkVersion versions.android.compileSdkVersion
-
     defaultConfig {
         testInstrumentationRunnerArguments runnerBuilder: 'de.mannodermaus.junit5.AndroidJUnit5Builder'
         testInstrumentationRunnerArguments
-        minSdkVersion versions.android.minSdkVersion
-        targetSdkVersion versions.android.targetSdkVersion
+        compileSdk versions.android.compileSdk
+        minSdk versions.android.minSdk
+        targetSdk versions.android.targetSdk
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -98,13 +97,13 @@ def sourcesJarFileName = "${archivesBaseName}-sources.jar"
 
 task javadocJar(type: Jar) {
     archiveClassifier.set('javadoc')
-    archiveName(javadocJarFileName)
+    archiveFileName = javadocJarFileName
     from dokkaJavadoc
 }
 
 task sourcesJar(type: Jar) {
     archiveClassifier.set('sources')
-    archiveName(sourcesJarFileName)
+    archiveFileName = sourcesJarFileName
     from android.sourceSets.main.java.srcDirs
 }
 

@@ -5,19 +5,51 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/title_text"
         style="@style/TitleText"
+        android:id="@+id/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="@dimen/margin_buttons_small"
-        android:text="@string/architectures_choice_message" />
+        android:text="@string/mvvm_view_title"/>
 
     <Button
-        android:id="@+id/mvvm_usage_button"
-        android:layout_width="wrap_content"
+        android:id="@+id/nav_with_shuttle_button"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="@dimen/margin_buttons_small"
-        android:text="@string/mvvm_button_text" />
+        android:layout_marginStart="@dimen/margin_buttons_small"
+        android:layout_marginTop="@dimen/margin_buttons_small"
+        android:layout_marginEnd="@dimen/margin_buttons_small"
+        android:enabled="false"
+        android:text="@string/get_image_using_shuttle"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/nav_with_shuttle_button_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_buttons_small"
+        android:gravity="center"
+        android:text="@string/the_app_will_not_crash_using_shuttle"
+        android:textColor="@android:color/holo_green_dark" />
+
+    <Button
+        android:id="@+id/nav_without_shuttle_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="@dimen/margin_buttons_small"
+        android:layout_marginTop="@dimen/margin_buttons_large"
+        android:layout_marginEnd="@dimen/margin_buttons_small"
+        android:enabled="false"
+        android:text="@string/get_image_normally"
+        android:visibility="visible" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_buttons_small"
+        android:gravity="center"
+        android:text="@string/the_app_will_crash_without_using_shuttle"
+        android:textColor="@android:color/holo_red_dark" />
 </LinearLayout>

@@ -1,5 +1,6 @@
-package com.grarcht.shuttle.demo.mvvm.view
+package com.grarcht.shuttle.demo.mvvmwithaservice.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.grarcht.shuttle.demo.mvvm.R
@@ -7,6 +8,9 @@ import com.grarcht.shuttle.framework.Shuttle
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+/**
+ * Part of the view component for adding/displaying the views (fragments), cleaning shuttle, etc.
+ */
 @AndroidEntryPoint
 class MVVMViewActivity : AppCompatActivity() {
     private val viewFragment = MVVMViewFragment()
@@ -26,6 +30,7 @@ class MVVMViewActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+    @SuppressLint("CommitTransaction")
     private fun addMainFragmentToContainer() {
         if (viewFragment.isAdded.not()) {
             supportFragmentManager.beginTransaction()

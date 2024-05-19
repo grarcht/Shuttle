@@ -2,10 +2,10 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="demo-mvvm-with-compose">
+      <entry key="demo-mvvm-with-a-service">
         <State />
       </entry>
-      <entry key="mvvm-with-a-service.Shuttle.demo-mvvm-with-a-service">
+      <entry key="demo-mvvm-with-compose">
         <State />
       </entry>
     </value>

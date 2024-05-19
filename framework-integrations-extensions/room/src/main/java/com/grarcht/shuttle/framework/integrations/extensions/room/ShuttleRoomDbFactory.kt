@@ -16,10 +16,19 @@ open class ShuttleRoomDbFactory {
      * @return the db object reference
      */
     fun createDb(config: ShuttleRoomDbConfig): ShuttleRoomDataDb {
-        return Room.databaseBuilder(
-            config.context.applicationContext,
-            ShuttleRoomDataDb::class.java,
-            DB_NAME
-        ).build()
+        return if (config.multiprocess) {
+            Room.databaseBuilder(
+                    config.context.applicationContext,
+                    ShuttleRoomDataDb::class.java,
+                    DB_NAME
+                ).enableMultiInstanceInvalidation()
+                .build()
+        } else {
+            Room.databaseBuilder(
+                config.context.applicationContext,
+                ShuttleRoomDataDb::class.java,
+                DB_NAME
+            ).build()
+        }
     }
 }

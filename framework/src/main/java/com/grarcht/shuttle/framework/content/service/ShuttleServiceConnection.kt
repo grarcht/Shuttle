@@ -9,8 +9,8 @@ import android.os.Messenger
 import androidx.lifecycle.Lifecycle
 import com.grarcht.shuttle.framework.app.ShuttleConnectedServiceModel
 import com.grarcht.shuttle.framework.app.ShuttleService
-import com.grarcht.shuttle.framework.error.ShuttleErrorObservable
-import com.grarcht.shuttle.framework.error.ShuttleServiceError
+import com.grarcht.shuttle.framework.visibility.observation.ShuttleVisibilityObservable
+import com.grarcht.shuttle.framework.visibility.error.ShuttleServiceError
 import com.grarcht.shuttle.framework.os.ShuttleBinder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
@@ -21,33 +21,45 @@ private const val UNABLE_TO_DISCONNECT_MESSAGE = "Unable to disconnect from the 
 private const val UNKNOWN_STATE_NAME = "Unknown state."
 
 /**
- * @param connectedService
- * @param isConnected
+ * Connects to a [ShuttleService], either remote service with IPC or a local service.
+ * @param serviceName used for logging
+ * @param errorObservable provides visibility in to possible errors
+ * @param useWithIPC true, if this service should be remote and use interprocess communication
+ * @param coroutineScope used to emit a [ShuttleConnectedServiceModel] over a [Channel]
+ * @param serviceChannel emits a [ShuttleConnectedServiceModel]
  */
 @Suppress("MemberVisibilityCanBePrivate")
 open class ShuttleServiceConnection<S : ShuttleService, B : ShuttleBinder<S>>(
     private val serviceName: String,
-    private val errorObservable: ShuttleErrorObservable,
+    private val errorObservable: ShuttleVisibilityObservable,
     private val useWithIPC: Boolean = false,
-    private val coroutineScope: CoroutineScope
+    private val coroutineScope: CoroutineScope,
+    private val serviceChannel: Channel<ShuttleConnectedServiceModel<S>>
 ) : ServiceConnection {
     var localService: S? = null
     var ipcServiceMessenger: Messenger? = null
 
     protected var context: Context? = null
     protected var isConnected: Boolean = false
-    open var serviceChannel: Channel<ShuttleConnectedServiceModel<S>>? = null
 
-    fun isConnectedToService(): Boolean = isConnected
-
+    /**
+     * Sets the reference for [ipcServiceMessenger] or [localService] and emits a [ShuttleConnectedServiceModel].
+     *
+     * @param componentName The concrete component name of the service that has been connected.
+     * @param service The IBinder of the Service's communication channel, which you can now make calls on.
+     *
+     * @see [ServiceConnection.onServiceConnected]
+     */
     @Suppress("UNCHECKED_CAST")
-    override fun onServiceConnected(className: ComponentName?, service: IBinder?) {
-        val binder = service as B
-
-        if (useWithIPC) {
+    override fun onServiceConnected(componentName: ComponentName?, service: IBinder?) {
+        if (useWithIPC) { // a remote (non-local) service
             ipcServiceMessenger = Messenger(service)
             emitConnectedServiceModel(ipcServiceMessenger = ipcServiceMessenger)
         } else { // non-IPC service (service is in the app process)
+            // If this error (android.os.BinderProxy cannot be cast to ShuttleBinder) is thrown, it
+            // means that the app is trying to bind to a remote service and useWithIPC was set to false.
+            // UseIPC needs to be set to true or a local service should be used.
+            val binder = service as B
             localService = binder.getService()
             emitConnectedServiceModel(localService)
         }
@@ -56,7 +68,7 @@ open class ShuttleServiceConnection<S : ShuttleService, B : ShuttleBinder<S>>(
     }
 
     private fun emitConnectedServiceModel(localService: S? = null, ipcServiceMessenger: Messenger? = null) {
-        serviceChannel?.let {
+        serviceChannel.let {
             coroutineScope.launch {
                 val model = ShuttleConnectedServiceModel<S>(localService, ipcServiceMessenger)
                 it.send(model)
@@ -64,30 +76,47 @@ open class ShuttleServiceConnection<S : ShuttleService, B : ShuttleBinder<S>>(
         }
     }
 
-    override fun onServiceDisconnected(className: ComponentName?) {
+    /**
+     * Resets references.
+     *
+     * @param componentName The concrete component name of the service whose connection has been lost.
+     *
+     * @see [ServiceConnection.onServiceDisconnected]
+     */
+    override fun onServiceDisconnected(componentName: ComponentName?) {
         isConnected = false
         localService = null
         ipcServiceMessenger = null
     }
 
+    /**
+     * Connects to the [ShuttleService].
+     *
+     * @param context used for binding to the service
+     * @param serviceClazz for the [ShuttleService] to connect to
+     */
     @Suppress("UNCHECKED_CAST")
     open fun connectToService(
         context: Context,
-        serviceClazz: Class<S>,
-        serviceChannel: Channel<ShuttleConnectedServiceModel<S>>
+        serviceClazz: Class<S>
     ): ShuttleServiceConnection<S, ShuttleBinder<S>> {
-        connectToService(context, serviceClazz, lifecycle = null, serviceChannel)
+        connectToService(context, serviceClazz, lifecycle = null)
         return this as ShuttleServiceConnection<S, ShuttleBinder<S>>
     }
 
+    /**
+     * Connects to the [ShuttleService].
+     *
+     * @param context used for binding to the service
+     * @param serviceClazz for the [ShuttleService] to connect to
+     * @param lifecycle used for lifecycle state checks in connecting to the service
+     */
     @Suppress("UNCHECKED_CAST")
     open fun connectToService(
         context: Context,
         serviceClazz: Class<S>,
-        lifecycle: Lifecycle?,
-        serviceChannel: Channel<ShuttleConnectedServiceModel<S>>
+        lifecycle: Lifecycle?
     ): ShuttleServiceConnection<S, ShuttleBinder<S>> {
-        this.serviceChannel = serviceChannel
 
         try {
             val shouldConnect = lifecycle == null || lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)
@@ -101,11 +130,14 @@ open class ShuttleServiceConnection<S : ShuttleService, B : ShuttleBinder<S>>(
             val lifecycleStateName = lifecycle?.currentState?.name ?: UNKNOWN_STATE_NAME
             val message = "$UNABLE_TO_CONNECT_MESSAGE ${e.message}"
             val error = ShuttleServiceError.ConnectToServiceError(serviceName, lifecycleStateName, message, e)
-            errorObservable.onError(error)
+            errorObservable.observe(error)
         }
         return this as ShuttleServiceConnection<S, ShuttleBinder<S>>
     }
 
+    /**
+     * Disconnects from the [ShuttleService].
+     */
     open fun disconnectFromService() {
         if (isConnected) {
             try {
@@ -116,7 +148,7 @@ open class ShuttleServiceConnection<S : ShuttleService, B : ShuttleBinder<S>>(
             } catch (e: Exception) {
                 val message = "$UNABLE_TO_DISCONNECT_MESSAGE ${e.message}"
                 val error = ShuttleServiceError.DisconnectFromServiceError(serviceName, Unit, message, e)
-                errorObservable.onError(error)
+                errorObservable.observe(error)
             }
         }
     }

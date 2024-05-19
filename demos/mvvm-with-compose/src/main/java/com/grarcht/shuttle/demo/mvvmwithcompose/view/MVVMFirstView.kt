@@ -152,7 +152,7 @@ class MVVMFirstView(
                         is IOResult.Error<*> -> {
                             val errorMessage = it.throwable.message ?: UNABLE_TO_GET_IMAGE_BYTES_ERROR_MESSAGE
                             Log.e(TAG, errorMessage, it.throwable)
-                            stateUpdate.invoke(IOResult.Error(it.throwable))
+                            stateUpdate.invoke(IOResult.Error(throwable = it.throwable))
                             cancel()
                         }
                     }

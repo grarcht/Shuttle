@@ -54,10 +54,10 @@ class RawResourceGateway(private var resources: Resources) {
                 }
             } catch (rnfe: NotFoundException) {
                 Log.e(logTag, "Unable to load byte array", rnfe)
-                emit(IOResult.Error(rnfe))
+                emit(IOResult.Error(throwable = rnfe))
             } catch (ioe: IOException) {
                 Log.e(logTag, "Unable to load byte array", ioe)
-                emit(IOResult.Error(ioe))
+                emit(IOResult.Error(throwable = ioe))
             } finally {
                 bufferedInputStream.closeQuietly()
                 inputStream.closeQuietly()
@@ -73,7 +73,7 @@ class RawResourceGateway(private var resources: Resources) {
     fun create(): Flow<IOResult> {
         return if (flow == null) {
             flow {
-                emit(IOResult.Error(Exception("Function ")))
+                emit(IOResult.Error(throwable = Exception("Function ")))
             }
         } else {
             flow as Flow<IOResult>

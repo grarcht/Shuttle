@@ -125,7 +125,7 @@ class MVVMSecondView(
                             cancel()
                         }
                         is ShuttlePickupCargoResult.Error<*> -> {
-                            stateUpdate.invoke(IOResult.Error(it.throwable as Throwable))
+                            stateUpdate.invoke(IOResult.Error(throwable = it.throwable as Throwable))
                             cancel()
                         }
                     }

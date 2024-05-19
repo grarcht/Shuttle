@@ -1,4 +1,4 @@
-package com.grarcht.shuttle.demo.mvvm
+package com.grarcht.shuttle.demo.mvvmwithaservice
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

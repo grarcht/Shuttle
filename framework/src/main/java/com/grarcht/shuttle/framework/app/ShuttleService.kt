@@ -1,25 +1,27 @@
 package com.grarcht.shuttle.framework.app
 
 import android.app.Service
-import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.os.Message
 import com.grarcht.shuttle.framework.os.ShuttleBinder
+import com.grarcht.shuttle.framework.os.messenger.ShuttleMessageReceiver
 import com.grarcht.shuttle.framework.os.messenger.ShuttleMessengerDecorator
 import java.io.Serializable
 
 /**
  * The base service class for services to leverage Shuttle to transport cargo data.
- * @param config the configuration for the service
  */
-open class ShuttleService(
-    open val config: ShuttleServiceConfig
-) : Service() {
+open class ShuttleService : Service(), ShuttleMessageReceiver {
     /**
-     * Clients use this binder for local, non-IPC services.
+     * The configuration for the service.
      */
-    open var localServiceBinder: ShuttleBinder<ShuttleService>? = null
+    open lateinit var config: ShuttleServiceConfig
+
+    /**
+     * Clients use this binder for bound (local & IPC) services.
+     */
+    open var binder: ShuttleBinder<ShuttleService>? = null
 
     /**
      * Clients use this messenger to send messages to this service.
@@ -27,17 +29,10 @@ open class ShuttleService(
     open var ipcServiceMessengerDecorator: ShuttleMessengerDecorator? = null
 
     /**
-     * Create the local service binder if this service is used as a local service.
-     */
-    override fun onCreate() {
-        super.onCreate()
-        createBinderForALocalService()
-    }
-
-    /**
      * @see [Service.onStartCommand]
      */
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+//        createBinder()
         return START_REDELIVER_INTENT
     }
 
@@ -45,18 +40,14 @@ open class ShuttleService(
      * @see [Service.onBind]
      */
     override fun onBind(intent: Intent?): IBinder? {
-        return if (localServiceBinder == null) {
-            localServiceBinder
-        } else {
-            initMessengerDecoratorForIPC()
-        }
+        return createBinder()
     }
 
     /**
      * @see [Service.onRebind]
      */
     override fun onRebind(intent: Intent?) {
-        initMessengerDecoratorForIPC()
+        createBinder()
     }
 
     /**
@@ -75,30 +66,37 @@ open class ShuttleService(
         super.onDestroy()
     }
 
+    private fun createBinder(): IBinder? {
+        return if (config.bindingType.isMessengerBoundService()) {
+            createMessengerDecoratorForIPC()
+        } else {
+            createBinderForLocalBoundService()
+        }
+    }
+
     /**
      * Creates the binder object for binding with local, non-IPC services.
      */
-    open fun createBinderForALocalService() {
-        if (config.bindingType == ShuttleServiceBindingType.LOCAL) {
-            localServiceBinder = ShuttleBinder(this)
+    open fun createBinderForLocalBoundService(): ShuttleBinder<ShuttleService>? {
+        if (config.bindingType.isLocalBoundService()) {
+            binder = ShuttleBinder(this)
         }
+        return binder
     }
 
     /**
      * Initialize the messenger decorator for Inter-Process Communication, meaning the service and app are in different
      * processes and a messenger will need to be used.
      */
-    open fun initMessengerDecoratorForIPC(): IBinder? {
-        return if (config.bindingType == ShuttleServiceBindingType.MESSENGER) {
-            ipcServiceMessengerDecorator = if (ipcServiceMessengerDecorator != null)
-                ipcServiceMessengerDecorator
-            else
-                config.messengerFactory.createMessenger(
+    open fun createMessengerDecoratorForIPC(): IBinder? {
+        return if (config.bindingType == ShuttleServiceType.BOUND_MESSENGER) {
+            if (ipcServiceMessengerDecorator == null)
+                ipcServiceMessengerDecorator = config.messengerFactory.createMessenger(
                     mainLooper,
                     config.serviceName,
-                    context = this,
-                    shuttleService = this,
-                    config.errorObservable
+                    messageReceiver = this,
+                    config.errorObservable,
+                    config.messageValidator
                 )
             ipcServiceMessengerDecorator?.getBinder()
         } else {
@@ -110,7 +108,7 @@ open class ShuttleService(
      * Releases resources, including cleaning shuttle from all deliveries used by the IPC service.
      */
     open fun releaseResourcesForIPCServices() {
-        if (config.bindingType == ShuttleServiceBindingType.MESSENGER) {
+        if (config.bindingType == ShuttleServiceType.BOUND_MESSENGER) {
             ipcServiceMessengerDecorator?.let {
                 val cargoIds = it.cargoIds
                 for (cargoId in cargoIds) {
@@ -119,6 +117,7 @@ open class ShuttleService(
                 it.clearCargoIds()
                 ipcServiceMessengerDecorator = null
             }
+            binder = null
         }
     }
 
@@ -126,8 +125,8 @@ open class ShuttleService(
      * Releases resources for local, non-iPC services.
      */
     open fun releaseResourcesForLocalServices() {
-        if (config.bindingType == ShuttleServiceBindingType.LOCAL) {
-            localServiceBinder = null
+        if (config.bindingType == ShuttleServiceType.BOUND_LOCAL) {
+            binder = null
         }
     }
 
@@ -136,13 +135,27 @@ open class ShuttleService(
      * @param cargoId of the cargo to transport
      * @param cargo to transport
      */
-    open fun <D : Serializable> transportCargoWithShuttle(cargoId: String, cargo: D?) {
+    open fun <D : Serializable> transportCargoWithShuttle(
+        cargoId: String,
+        cargo: D?
+    ) {
+        val cargoIntent = getCargoIntentForTransport(cargoId, cargo)
+        sendBroadcast(cargoIntent)
+    }
+
+    /**
+     * Override this function to provide the cargo intent, used for transporting cargo with [Shuttle]. What is
+     * provided below is the default implementation.
+     */
+    open fun <D : Serializable> getCargoIntentForTransport(
+        cargoId: String,
+        cargo: D?
+    ): Intent {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
-        val cargoIntent = config.shuttle.intentCargoWith(intent)
+        return config.shuttle.intentCargoWith(intent)
             .logTag(getServiceName())
             .transport(cargoId, cargo) // to the warehouse
             .create()
-        super.sendBroadcast(cargoIntent)
     }
 
     /**
@@ -158,9 +171,12 @@ open class ShuttleService(
      *
      * Since this service supports local binding and messenger binding for IPC, and this function is for the
      * latter, then this function is open and not abstract.
+     *
+     *  @param messageWhat see [Message.what]
+     *  @param msg see [Message]
      */
     @Suppress("unused", "EmptyMethod", "RedundantSuppression")
-    open fun onReceiveMessage(context: Context, messageWhat: Int, msg: Message) {
+    override fun onReceiveMessage(messageWhat: Int, msg: Message) {
         // ignore
     }
 }

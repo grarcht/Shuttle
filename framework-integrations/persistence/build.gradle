@@ -22,11 +22,10 @@ tasks.dokkaHtml.configure {
 }
 
 android {
-    compileSdkVersion versions.android.compileSdkVersion
-
     defaultConfig {
-        minSdkVersion versions.android.minSdkVersion
-        targetSdkVersion versions.android.targetSdkVersion
+        compileSdk versions.android.compileSdk
+        minSdk versions.android.minSdk
+        targetSdk versions.android.targetSdk
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -79,13 +78,13 @@ def sourcesJarFileName = "${archivesBaseName}-sources.jar"
 
 task javadocJar(type: Jar) {
     archiveClassifier.set('javadoc')
-    archiveName(javadocJarFileName)
+    archiveFileName = javadocJarFileName
     from dokkaJavadoc
 }
 
 task sourcesJar(type: Jar) {
     archiveClassifier.set('sources')
-    archiveName(sourcesJarFileName)
+    archiveFileName = sourcesJarFileName
     from android.sourceSets.main.java.srcDirs
 }
 

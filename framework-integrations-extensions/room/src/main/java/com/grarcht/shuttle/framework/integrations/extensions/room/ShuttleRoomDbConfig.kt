@@ -5,4 +5,4 @@ import android.content.Context
 /**
  * The config used in configuring the database.
  */
-data class ShuttleRoomDbConfig(val context: Context)
+data class ShuttleRoomDbConfig(val context: Context, val multiprocess: Boolean = false)

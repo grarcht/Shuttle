@@ -22,12 +22,11 @@ tasks.dokkaHtml.configure {
 }
 
 android {
-    compileSdkVersion versions.android.compileSdkVersion
-
     defaultConfig {
-        applicationId "com.grarcht.shuttle.demo.mvvm"
-        minSdkVersion versions.android.minSdkVersion
-        targetSdkVersion versions.android.targetSdkVersion
+        applicationId 'com.grarcht.shuttle.demo.mvvm_with_a_service'
+        compileSdk versions.android.compileSdk
+        minSdk versions.android.minSdk
+        targetSdk versions.android.targetSdk
         versionCode 1
         versionName "1.0"
 
@@ -43,12 +42,12 @@ android {
 
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility versions.sourceCompatibility
+        targetCompatibility versions.targetCompatibility
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = versions.jvmTarget
     }
 
     buildFeatures {
@@ -81,10 +80,12 @@ dependencies {
     implementation androidXDeps.lifecycle.extensions
     implementation androidXDeps.lifecycle.viewModel
     implementation dependencyInjectionDeps.hilt
-    implementation 'androidx.core:core-ktx:+'
-    implementation project(':framework')
-    implementation 'androidx.annotation:annotation-jvm:1.7.1'
+    implementation androidXDeps.coreKtx
+    implementation androidXDeps.annotationJvm
+
     kapt dependencyInjectionDeps.hiltCompiler
+
+    implementation project(':framework')
     implementation project(':demos-core-lib')
     implementation project(':demos-databinding-lib')
 
@@ -95,12 +96,12 @@ dependencies {
 
     // To use lighter weight, independent dependencies, comment out the above dependency and
     // uncomment the following:
-    // implementation project(':framework')
-    // implementation project(':framework-integrations-persistence')
-    // implementation project(':framework-integrations-extensions-room')
+     implementation project(':framework')
+     implementation project(':framework-integrations-persistence')
+     implementation project(':framework-integrations-extensions-room')
 
     // To use maven dependencies, use the following
-    implementation shuttle.framework
-    implementation shuttle.integrationsPersistence
-    implementation shuttle.integrationsExtensionsRoom
+//    implementation shuttle.framework
+//    implementation shuttle.integrationsPersistence
+//    implementation shuttle.integrationsExtensionsRoom
 }
