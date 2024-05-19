@@ -9,6 +9,7 @@ import android.util.Log
 private const val ERROR_UNABLE_TO_UNREGISTER_RECEIVER = "Unable to unregister the receiver."
 private const val ERROR_UNABLE_TO_REGISTER_RECEIVER = "Unable to register the receiver."
 
+@Suppress("unused")
 @SuppressLint("UnspecifiedRegisterReceiverFlag")
 fun Context?.registerReceiverQuietly(receiver: BroadcastReceiver, filter: IntentFilter, logTag: String? = null) {
     this?.let {

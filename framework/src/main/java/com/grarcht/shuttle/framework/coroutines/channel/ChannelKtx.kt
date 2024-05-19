@@ -34,6 +34,7 @@ suspend fun <E> Channel<E>?.relayFlowIfAvailable(receiver: Channel<E>? = null, l
     }
 }
 
+@Suppress("unused")
 fun  <E> Channel<E>?.closeQuietly(scope: CoroutineScope?,
                                   cause: CancellationException? = null,
                                   logTag: String? = null

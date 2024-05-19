@@ -40,6 +40,7 @@ open class ShuttleRepository(
      * @param cargoId Used to get the cargo.
      * @return the channel for the results
      */
+    @Suppress("unused")
     override suspend fun <D : Serializable> pickup(cargoId: String): Channel<ShuttlePickupCargoResult> {
         val pickupCargoChannel = Channel<ShuttlePickupCargoResult>(PICKUP_CARGO_CHANNEL_CAPACITY)
         pickupCargoChannel.send(ShuttlePickupCargoResult.Loading)

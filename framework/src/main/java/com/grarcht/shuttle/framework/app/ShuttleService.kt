@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.os.Message
+import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.os.ShuttleBinder
 import com.grarcht.shuttle.framework.os.messenger.ShuttleMessageReceiver
 import com.grarcht.shuttle.framework.os.messenger.ShuttleMessengerDecorator

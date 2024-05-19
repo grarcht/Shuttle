@@ -70,7 +70,7 @@ open class ShuttleServiceConnection<S : ShuttleService, B : ShuttleBinder<S>>(
     private fun emitConnectedServiceModel(localService: S? = null, ipcServiceMessenger: Messenger? = null) {
         serviceChannel.let {
             coroutineScope.launch {
-                val model = ShuttleConnectedServiceModel<S>(localService, ipcServiceMessenger)
+                val model = ShuttleConnectedServiceModel(localService, ipcServiceMessenger)
                 it.send(model)
             }
         }
@@ -95,7 +95,7 @@ open class ShuttleServiceConnection<S : ShuttleService, B : ShuttleBinder<S>>(
      * @param context used for binding to the service
      * @param serviceClazz for the [ShuttleService] to connect to
      */
-    @Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST", "unused")
     open fun connectToService(
         context: Context,
         serviceClazz: Class<S>

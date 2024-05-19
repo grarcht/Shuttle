@@ -2,7 +2,6 @@ package com.grarcht.shuttle.framework.visibility.observation
 
 import com.grarcht.shuttle.framework.visibility.ShuttleVisibilityData
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.SendChannel
 
 /**
  * Observes visibility data, used to provide insight into the customer experience.
