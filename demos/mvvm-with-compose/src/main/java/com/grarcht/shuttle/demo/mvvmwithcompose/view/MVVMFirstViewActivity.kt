@@ -20,6 +20,7 @@ class MVVMFirstViewActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mvvmFirstView = MVVMFirstView(this, viewModel, shuttle)
+
         setContent {
             mvvmFirstView.SetViewContent()
         }

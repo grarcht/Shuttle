@@ -67,7 +67,7 @@ android {
         }
     }
 
-    namespace 'com.grarcht.shuttle.demo.mvvm'
+    namespace 'com.grarcht.shuttle.demo.mvvmwithaservice'
 }
 
 dependencies {
@@ -82,10 +82,7 @@ dependencies {
     implementation dependencyInjectionDeps.hilt
     implementation androidXDeps.coreKtx
     implementation androidXDeps.annotationJvm
-
     kapt dependencyInjectionDeps.hiltCompiler
-
-    implementation project(':framework')
     implementation project(':demos-core-lib')
     implementation project(':demos-databinding-lib')
 

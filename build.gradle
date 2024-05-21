@@ -2,19 +2,23 @@ buildscript {
     apply from: 'ext.gradle'
 
     repositories {
-        // Instead of using the gogole() repo function, specify the maven url instead.  There is
+        mavenCentral()
+
+        // Instead of using the google() repo function, specify the maven url instead.  There is
         // an issue with the hilt dependencies where there are extra dependencies that are pulled
         // in via the gradle module file.  Using the POM file as the source of truth fixes that
         // issue.  This is now being universally applied for all Google artifacts.
         maven {
             url 'https://maven.google.com/'
             metadataSources {
+                //noinspection ForeignDelegate
                 mavenPom()
+                //noinspection ForeignDelegate
                 artifact()
+                //noinspection ForeignDelegate
                 ignoreGradleMetadataRedirection()
             }
         }
-        mavenCentral()
         gradlePluginPortal()
     }
     dependencies {
@@ -26,41 +30,41 @@ buildscript {
         classpath dependencyInjectionDeps.hilt
         classpath staticAnalysisDeps.detektPlugin
         classpath dependencyInjectionDeps.hiltPlugin
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.46.0'
     }
 }
 
 plugins {
-    id('com.github.ben-manes.versions').version('0.46.0')
-    id('io.gitlab.arturbosch.detekt').version('1.22.0')
-    id("org.jetbrains.dokka").version "1.7.20"
+    id 'com.github.ben-manes.versions' version '0.46.0'
+    id 'io.gitlab.arturbosch.detekt' version '1.23.1'
+    id 'org.jetbrains.dokka' version '1.8.20'
+    id 'com.google.devtools.ksp' version '1.9.0-1.0.12' apply false
+    id 'org.jetbrains.kotlin.android' version '1.9.0' apply false
 }
 
+apply from: "$rootDir/detekt/detekt.gradle"
+
 repositories {
-    // Instead of using the gogole() repo function, specify the maven url instead.  There is
+    mavenCentral()
+
+    // Instead of using the google() repo function, specify the maven url instead.  There is
     // an issue with the hilt dependencies where there are extra dependencies that are pulled
     // in via the gradle module file.  Using the POM file as the source of truth fixes that
     // issue.  This is now being universally applied for all Google artifacts.
     maven {
         url 'https://maven.google.com/'
         metadataSources {
+            //noinspection ForeignDelegate
             mavenPom()
+            //noinspection ForeignDelegate
             artifact()
+            //noinspection ForeignDelegate
             ignoreGradleMetadataRedirection()
         }
     }
-    mavenCentral()
     gradlePluginPortal()
 }
 
-detekt {
-    toolVersion = "1.22.0"
-    config = files("detekt/detekt.yml")
-    buildUponDefaultConfig = true
-}
-
-dependencies {
-    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.19.0"
-}
 
 def rootDir = projectDir.absolutePath
 
@@ -75,30 +79,37 @@ allprojects {
         maven {
             url 'https://repo1.maven.org/maven2/com/grarcht/shuttle/'
             metadataSources {
+                //noinspection ForeignDelegate
                 mavenPom()
+                //noinspection ForeignDelegate
                 artifact()
+                //noinspection ForeignDelegate
                 ignoreGradleMetadataRedirection()
             }
         }
 
-        // Instead of using the gogole() repo function, specify the maven url instead.  There is
+        mavenCentral()
+
+        // Instead of using the google() repo function, specify the maven url instead.  There is
         // an issue with the hilt dependencies where there are extra dependencies that are pulled
         // in via the gradle module file.  Using the POM file as the source of truth fixes that
         // issue.  This is now being universally applied for all Google artifacts.
         maven {
             url 'https://maven.google.com/'
             metadataSources {
+                //noinspection ForeignDelegate
                 mavenPom()
+                //noinspection ForeignDelegate
                 artifact()
+                //noinspection ForeignDelegate
                 ignoreGradleMetadataRedirection()
             }
         }
 
-        mavenCentral()
         gradlePluginPortal()
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+tasks.register("clean", Delete) {
+    delete rootProject.layout.buildDirectory
 }

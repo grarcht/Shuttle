@@ -15,7 +15,7 @@ import com.grarcht.shuttle.demo.core.image.ImageMessageType
 import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.core.io.IOResult
 import com.grarcht.shuttle.demo.core.io.RawResourceGateway
-import com.grarcht.shuttle.demo.mvc.R
+import com.grarcht.shuttle.demo.core.R
 import com.grarcht.shuttle.framework.Shuttle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.DisposableHandle
@@ -67,9 +67,11 @@ class MVCFirstControllerFragment : Fragment() {
 
     private fun getImageData() {
         imageGatewayDisposableHandle = MainScope().async {
+            val towerImageId: Int = R.raw.tower
+
             RawResourceGateway.with(resources)
                 .logTag(TAG)
-                .bytesFromRawResource(R.raw.tower)
+                .bytesFromRawResource(towerImageId)
                 .create()
                 .collectLatest {
                     when (it) {

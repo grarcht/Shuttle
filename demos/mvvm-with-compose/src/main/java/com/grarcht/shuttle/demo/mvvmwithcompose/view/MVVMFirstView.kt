@@ -134,21 +134,25 @@ class MVVMFirstView(
 
     private fun getImageData(stateUpdate: (IOResult) -> Unit): MVVMFirstView {
         imageGatewayDisposableHandle = MainScope().async {
-            viewModel.getImage(context.resources, R.raw.tower)
+            val imageId = com.grarcht.shuttle.demo.core.R.raw.tower
+            viewModel.getImage(context.resources, imageId)
                 .collectLatest {
                     when (it) {
                         is IOResult.Unknown -> {
                             stateUpdate.invoke(IOResult.Unknown)
                         }
+
                         is IOResult.Loading -> {
                             stateUpdate.invoke(IOResult.Loading)
                         }
+
                         is IOResult.Success<*> -> {
                             val byteArray = it.data as ByteArray
                             imageModel = ImageModel(ImageMessageType.ImageData.value, byteArray)
                             stateUpdate.invoke(IOResult.Success(true))
                             cancel()
                         }
+
                         is IOResult.Error<*> -> {
                             val errorMessage = it.throwable.message ?: UNABLE_TO_GET_IMAGE_BYTES_ERROR_MESSAGE
                             Log.e(TAG, errorMessage, it.throwable)

@@ -34,16 +34,19 @@ android {
         testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
     }
 
-    configurations.all {
+    configurations.configureEach {
         resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-            def module = details.requested.module.toString()
-            if (module.contains("lifecycle-common") || module.contains("lifecycle-common-java8")) {
-                details.useVersion("2.5.1")
+            def name = details.requested.name
+            if (name == "androidx.collection:collection:1.1.0" ||
+                    name == "androidx.collection:collection-jvm:1.4.0") {
+                details.useVersion("1.1.0")
             }
         }
     }
 
-    kotlinOptions.jvmTarget = versions.jvmTarget
+    kotlinOptions {
+        jvmTarget = versions.jvmTarget
+    }
 
     compileOptions {
         sourceCompatibility versions.sourceCompatibility
@@ -80,6 +83,7 @@ dependencies {
     implementation jetbrainsKotlinDeps.coroutines
 
     implementation androidXDeps.activityKtx
+    implementation androidXDeps.annotationJvm
     implementation androidXDeps.appCompat
     implementation androidXDeps.compose.activity
     implementation androidXDeps.compose.foundation
@@ -96,7 +100,6 @@ dependencies {
     implementation androidXDeps.material
 
     api dependencyInjectionDeps.hilt
-    implementation 'androidx.core:core-ktx:+'
     kapt dependencyInjectionDeps.hiltCompiler
 
     implementation project(':demos-core-lib')
@@ -110,15 +113,14 @@ dependencies {
 
     // To use lighter weight, independent dependencies, comment out the above dependency and
     // uncomment the following:
-    // implementation project(':framework')
-    // implementation project(':framework-integrations-persistence')
-    // implementation project(':framework-integrations-extensions-room')
-    // implementation project(':framework-addons-navigation-component')
+     implementation project(':framework')
+     implementation project(':framework-integrations-persistence')
+     implementation project(':framework-integrations-extensions-room')
 
     // To use maven dependencies, use the following:
-    implementation shuttle.framework
-    implementation shuttle.integrationsExtensionsRoom
-    implementation shuttle.addOnsNavigationComponent
+//    implementation shuttle.framework
+//    implementation shuttle.integrationsPersistence
+//    implementation shuttle.integrationsExtensionsRoom
 
     androidTestImplementation testingDeps.junit.ext
     androidTestImplementation testingDeps.espresso.core

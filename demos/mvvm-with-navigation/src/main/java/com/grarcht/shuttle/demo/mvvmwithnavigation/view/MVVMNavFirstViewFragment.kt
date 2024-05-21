@@ -88,7 +88,9 @@ class MVVMNavFirstViewFragment : Fragment() {
 
     private fun getImageData() {
         imageGatewayDisposableHandle = MainScope().async {
-            viewModel.getImage(resources, R.raw.tower)
+            val towerImageId: Int = com.grarcht.shuttle.demo.core.R.raw.tower
+
+            viewModel.getImage(resources, towerImageId)
                 .collectLatest {
                     when (it) {
                         is IOResult.Loading -> {

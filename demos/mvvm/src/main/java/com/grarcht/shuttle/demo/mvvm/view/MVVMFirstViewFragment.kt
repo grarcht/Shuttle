@@ -47,13 +47,14 @@ class MVVMFirstViewFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.first_view, container, false)
+        val layoutId = com.grarcht.shuttle.demo.core.R.layout.first_view
+        return inflater.inflate(layoutId, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.findViewById<TextView>(R.id.first_view_title_text).text =
-            view.resources.getString(R.string.mvvm_first_view_title)
+        val viewId = com.grarcht.shuttle.demo.core.R.id.first_view_title_text
+        view.findViewById<TextView>(viewId).text = view.resources.getString(R.string.mvvm_first_view_title)
         initOnClickNavigateWithShuttle(view)
         initOnClickNavigateNormally(view)
         getImageData()
@@ -76,19 +77,22 @@ class MVVMFirstViewFragment : Fragment() {
 
     private fun getImageData() {
         imageGatewayDisposableHandle = MainScope().async {
-            viewModel.getImage(resources, R.raw.tower)
+            val imageId = com.grarcht.shuttle.demo.core.R.raw.tower
+            viewModel.getImage(resources, imageId)
                 .collectLatest {
                     when (it) {
                         is IOResult.Unknown,
                         is IOResult.Loading -> {
                             enableButtons(false)
                         }
+
                         is IOResult.Success<*> -> {
                             val byteArray = it.data as ByteArray
                             imageModel = ImageModel(ImageMessageType.ImageData.value, byteArray)
                             enableButtons(true)
                             cancel()
                         }
+
                         is IOResult.Error<*> -> {
                             val errorMessage = it.throwable.message ?: "Unable to get the image byte array."
 
@@ -110,7 +114,8 @@ class MVVMFirstViewFragment : Fragment() {
 
     private fun initOnClickNavigateWithShuttle(view: View?) {
         view?.apply {
-            navWithShuttleButton = findViewById(R.id.nav_with_shuttle_button)
+            val buttonId = com.grarcht.shuttle.demo.core.R.id.nav_with_shuttle_button
+            navWithShuttleButton = findViewById(buttonId)
             navWithShuttleButton?.setOnClickListener {
                 it.isEnabled = false
                 navigateWithShuttle(context)
@@ -120,7 +125,8 @@ class MVVMFirstViewFragment : Fragment() {
 
     private fun initOnClickNavigateNormally(view: View?) {
         view?.apply {
-            navNormallyButton = findViewById(R.id.nav_without_shuttle_button)
+            val buttonId = com.grarcht.shuttle.demo.core.R.id.nav_without_shuttle_button
+            navNormallyButton = findViewById(buttonId)
             navNormallyButton?.setOnClickListener {
                 it.isEnabled = false
                 navigateNormally(context)

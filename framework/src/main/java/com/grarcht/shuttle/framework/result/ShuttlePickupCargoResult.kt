@@ -25,5 +25,5 @@ sealed class ShuttlePickupCargoResult {
     /**
      * The state for when Shuttle has started picking up the cargo.
      */
-    object Loading : ShuttlePickupCargoResult()
+    data object Loading : ShuttlePickupCargoResult()
 }

@@ -20,7 +20,7 @@ import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.DialogFragment
 import com.grarcht.shuttle.demo.core.image.BitmapDecoder
 import com.grarcht.shuttle.demo.core.image.ImageModel
-import com.grarcht.shuttle.demo.mvvm.R
+import com.grarcht.shuttle.demo.mvvmwithaservice.R
 
 private const val ANIMATION_DURATION = 750L
 private const val DIALOG_TYPE = "dialog_type"

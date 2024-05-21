@@ -63,7 +63,6 @@ class MVVMSecondView(
     private var imageModel: ImageModel? = null
     private var storedCargoId: String? = null
 
-    @Suppress("PreviewMustBeTopLevelFunction")
     @Composable
     fun SetViewContent(
         savedInstanceState: Bundle? = null,
@@ -149,17 +148,18 @@ class MVVMSecondView(
     private fun ShowLoadingViews() {
         Box {
             // Background loading image
+            val imageId = com.grarcht.shuttle.demo.core.R.raw.loading
             Image(
-                rawPainterResource(id = R.raw.loading),
+                rawPainterResource(id = imageId),
                 contentDescription = SUCCESS_CONTENT_DESCRIPTION,
                 contentScale = ContentScale.FillBounds
             )
 
             // Circular progress loading indicator
-            val progress by rememberInfiniteTransition().animateFloat(
+            val progress by rememberInfiniteTransition(label = "InfiniteTransition").animateFloat(
                 initialValue = INITIAL_VALUE,
                 targetValue = TARGET_VALUE,
-                animationSpec = infiniteRepeatable(animation = tween(ANIMATION_TWEEN_MILLIS))
+                animationSpec = infiniteRepeatable(animation = tween(ANIMATION_TWEEN_MILLIS)), label = ""
             )
             val modifier = Modifier
                 .size(CIRCULAR_PROGRESS_SIZE)
@@ -188,8 +188,9 @@ class MVVMSecondView(
 
     @Composable
     private fun ShowErrorImage() {
+        val imageId = com.grarcht.shuttle.demo.core.R.raw.broken_soccer_ball
         Image(
-            painter = rawPainterResource(id = R.raw.broken_soccer_ball),
+            painter = rawPainterResource(id = imageId),
             contentDescription = ERROR_CONTENT_DESCRIPTION
         )
 

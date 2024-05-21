@@ -2,22 +2,14 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'org.jetbrains.dokka'
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.30'
     id 'org.jetbrains.kotlin.android'
 }
 
 apply from: '../../detekt/detekt.gradle'
 
-dokkaHtml.configure {
-    dokkaSourceSets {
-        named("main") {
-            noAndroidSdkLink.set(false)
-        }
-    }
-}
-
-tasks.dokkaHtml.configure {
+dokkaHtml {
     outputDirectory.set(file("documentation/kotlin"))
 }
 
@@ -54,16 +46,17 @@ android {
 
 dependencies {
     implementation jetbrainsKotlinDeps.stdlib
+    implementation androidXDeps.annotationJvm
+    implementation androidXDeps.coreKtx
     implementation androidXDeps.lifecycle.extensions
     implementation androidXDeps.lifecycle.viewModel
 
     // To use typical module dependencies, comment out the above dependency and
     // uncomment the following:
-    //implementation project(':framework-integrations-persistence')
-    //implementation project(':framework-integrations-extensions-room')
+    implementation project(':framework-integrations-persistence')
+    implementation project(':framework-integrations-extensions-room')
 
     // To use maven dependencies, use the following
-    implementation shuttle.integrationsPersistence
-    implementation shuttle.integrationsExtensionsRoom
-    implementation 'androidx.core:core-ktx:+'
+//    implementation shuttle.integrationsPersistence
+//    implementation shuttle.integrationsExtensionsRoom
 }

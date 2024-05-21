@@ -35,7 +35,9 @@ android {
 
     buildTypes.release.minifyEnabled false
     testOptions.unitTests.returnDefaultValues = true
-    kotlinOptions.jvmTarget = versions.jvmTarget
+    kotlinOptions {
+        jvmTarget = versions.jvmTarget
+    }
 
     compileOptions {
         sourceCompatibility versions.sourceCompatibility
@@ -53,11 +55,11 @@ android {
 dependencies {
     implementation jetbrainsKotlinDeps.stdlib
     implementation jetbrainsKotlinDeps.coroutines
-    implementation androidXDeps.coreKtx
     implementation androidXDeps.appCompat
     implementation androidXDeps.lifecycle.extensions
     api project(':framework-integrations-persistence')
-    implementation 'androidx.core:core-ktx:+'
+    implementation androidXDeps.coreKtx
+    implementation androidXDeps.annotationJvm
 
     androidTestImplementation testingDeps.junit.junit5AndroidTestCore
     androidTestRuntimeOnly testingDeps.junit.junit5AndroidTestRunner
@@ -95,35 +97,35 @@ def debugAARFilePath = isReleaseVersion ?
 def javadocJarFileName = "${archivesBaseName}-javadoc.jar"
 def sourcesJarFileName = "${archivesBaseName}-sources.jar"
 
-task javadocJar(type: Jar) {
+tasks.register('javadocJar', Jar) {
     archiveClassifier.set('javadoc')
     archiveFileName = javadocJarFileName
     from dokkaJavadoc
 }
 
-task sourcesJar(type: Jar) {
+tasks.register('sourcesJar', Jar) {
     archiveClassifier.set('sources')
     archiveFileName = sourcesJarFileName
     from android.sourceSets.main.java.srcDirs
 }
 
 // rename the aar files
-task renameArtifacts() {
-    android.libraryVariants.all { variant ->
-        variant.outputs.all { output ->
+tasks.register('renameArtifacts') {
+    android.libraryVariants.configureEach { variant ->
+        variant.outputs.configureEach { output ->
             def debugSuffix = 'debug.aar'
             def releaseSuffix = 'release.aar'
-            if (null != outputFileName) {
+            if (null != output.name) {
                 if (isReleaseVersion) {
-                    if (outputFileName.endsWith(debugSuffix))
-                        outputFileName = "$archivesBaseName-$debugSuffix"
-                    else if (outputFileName.endsWith(releaseSuffix))
-                        outputFileName = "$archivesBaseName-$releaseSuffix"
+                    if (output.name.endsWith(debugSuffix))
+                        output.name = "$archivesBaseName-$debugSuffix"
+                    else if (output.name.endsWith(releaseSuffix))
+                        output.name = "$archivesBaseName-$releaseSuffix"
                 } else {
-                    if (outputFileName.endsWith(debugSuffix))
-                        outputFileName = "$archivesBaseName-debug-SNAPSHOT.aar"
-                    else if (outputFileName.endsWith(releaseSuffix))
-                        outputFileName = "$archivesBaseName-release-SNAPSHOT.aar"
+                    if (output.name.endsWith(debugSuffix))
+                        output.name = "$archivesBaseName-debug-SNAPSHOT.aar"
+                    else if (output.name.endsWith(releaseSuffix))
+                        output.name = "$archivesBaseName-release-SNAPSHOT.aar"
                 }
             }
         }

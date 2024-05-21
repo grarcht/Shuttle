@@ -9,15 +9,7 @@ plugins {
 
 apply from: '../../detekt/detekt.gradle'
 
-dokkaHtml.configure {
-    dokkaSourceSets {
-        named("main") {
-            noAndroidSdkLink.set(false)
-        }
-    }
-}
-
-tasks.dokkaHtml.configure {
+dokkaHtml {
     outputDirectory.set(file("documentation/kotlin"))
 }
 
@@ -80,8 +72,9 @@ dependencies {
     implementation androidXDeps.lifecycle.extensions
     implementation androidXDeps.lifecycle.viewModel
     implementation dependencyInjectionDeps.hilt
-    implementation 'androidx.core:core-ktx:+'
+    implementation androidXDeps.coreKtx
     kapt dependencyInjectionDeps.hiltCompiler
+    implementation androidXDeps.annotationJvm
     implementation project(':demos-core-lib')
     implementation project(':demos-databinding-lib')
 
@@ -92,12 +85,12 @@ dependencies {
 
     // To use lighter weight, independent dependencies, comment out the above dependency and
     // uncomment the following:
-    // implementation project(':framework')
-    // implementation project(':framework-integrations-persistence')
-    // implementation project(':framework-integrations-extensions-room')
+    implementation project(':framework')
+    implementation project(':framework-integrations-persistence')
+    implementation project(':framework-integrations-extensions-room')
 
     // To use maven dependencies, use the following
-    implementation shuttle.framework
-    implementation shuttle.integrationsPersistence
-    implementation shuttle.integrationsExtensionsRoom
+//    implementation shuttle.framework
+//    implementation shuttle.integrationsPersistence
+//    implementation shuttle.integrationsExtensionsRoom
 }

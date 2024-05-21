@@ -14,7 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import com.grarcht.shuttle.demo.core.image.ImageMessageType
 import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.core.io.IOResult
-import com.grarcht.shuttle.demo.mvvm.R
+import com.grarcht.shuttle.demo.mvvmwithaservice.R
 import com.grarcht.shuttle.demo.mvvmwithaservice.viewmodel.DemoViewModel
 import com.grarcht.shuttle.framework.Shuttle
 import dagger.hilt.android.AndroidEntryPoint

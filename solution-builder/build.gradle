@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-    id 'org.jetbrains.kotlin.android'
 }
 
 android {
@@ -40,7 +39,7 @@ configurations {
 
 dependencies {
     implementation jetbrainsKotlinDeps.stdlib
-    implementation 'androidx.core:core-ktx:+'
+    implementation androidXDeps.coreKtx
 
     // If other integration extensions are desired, they should have corresponding
     // dependency declarations here.

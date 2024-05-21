@@ -3,7 +3,7 @@ package com.grarcht.shuttle.demo.mvvmwithaservice.view
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.grarcht.shuttle.demo.mvvm.R
+import com.grarcht.shuttle.demo.mvvmwithaservice.R
 import com.grarcht.shuttle.framework.Shuttle
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
