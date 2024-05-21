@@ -115,6 +115,9 @@ class ShuttleNavControllerTests {
                             countDownLatch.countDown()
                             cancel()
                         }
+                        else -> {
+                            // ignore
+                        }
                     }
                 }
         }.invokeOnCompletion {
@@ -123,7 +126,6 @@ class ShuttleNavControllerTests {
             }
         }
         compositeDisposableHandle?.add(disposableHandle)
-
 
         delay(1000L)
         advanceUntilIdle()
@@ -150,7 +152,8 @@ class ShuttleNavControllerTests {
             shuttleWarehouse,
             shuttleFacade,
             navController,
-            R.id.nav_host_fragment_container, // used since it's a res id.  For the test, it doesn't matter.
+            /* used since it's a res id.  For the test, it doesn't matter. */
+            androidx.navigation.fragment.R.id.nav_host_fragment_container,
             bundleFactory = MockBundleFactory()
         )
         // The guts of function cleanShuttleOnReturnTo are tested in the framework module's tests.
@@ -178,6 +181,9 @@ class ShuttleNavControllerTests {
                         is ShuttlePickupCargoResult.Error<*> -> {
                             countDownLatch.countDown()
                             cancel()
+                        }
+                        else -> {
+                            // ignore
                         }
                     }
                 }

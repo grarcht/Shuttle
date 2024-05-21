@@ -32,16 +32,15 @@ private const val LOG_TAG = "MVVMFirstViewFragment"
 
 @AndroidEntryPoint
 class MVVMNavFirstViewFragment : Fragment() {
-    private val viewModel by viewModels<FirstViewModel>()
     private var imageGatewayDisposableHandle: DisposableHandle? = null
     private var imageModel: ImageModel? = null
     private var navController: NavController? = null
     private var navNormallyButton: Button? = null
     private var navWithShuttleButton: Button? = null
+    private val viewModel by viewModels<FirstViewModel>()
 
     @Inject
     lateinit var shuttle: Shuttle
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.first_view, container, false)
@@ -96,11 +95,13 @@ class MVVMNavFirstViewFragment : Fragment() {
                         is IOResult.Loading -> {
                             enableButtons(false)
                         }
+
                         is IOResult.Success<*> -> {
                             val byteArray = it.data as ByteArray
                             imageModel = ImageModel(ImageMessageType.ImageData.value, byteArray)
                             enableButtons(true)
                         }
+
                         is IOResult.Error<*> -> {
                             val errorMessage = it.throwable.message ?: "Unable to get the image byte array."
 
@@ -110,6 +111,7 @@ class MVVMNavFirstViewFragment : Fragment() {
                                 Snackbar.make(view as View, errorMessage, Snackbar.LENGTH_SHORT).show()
                             }
                         }
+
                         else -> {
                             // ignore
                         }

@@ -161,7 +161,6 @@ open class ShuttleRepository(
         return removeCargoChannel
     }
 
-
     override suspend fun removeAllCargo(): Channel<ShuttleRemoveCargoResult> {
         val removeCargoChannel = Channel<ShuttleRemoveCargoResult>(REMOVE_CARGO_CHANNEL_CAPACITY)
         removeCargoChannel.send(ShuttleRemoveCargoResult.Removing(ALL_CARGO))

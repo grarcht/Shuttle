@@ -16,10 +16,10 @@ open class ShuttleDataWarehouse : ShuttleWarehouse {
     private val removeCargoChannel = Channel<ShuttleRemoveCargoResult>(4)
 
     override suspend fun <D : Serializable> pickup(cargoId: String): Channel<ShuttlePickupCargoResult> {
-        pickupCargoChannel.send(ShuttlePickupCargoResult.Loading)
+        pickupCargoChannel.send(ShuttlePickupCargoResult.Loading(cargoId))
 
         val cargo = cache[cargoId]
-        if(cargo == null){
+        if (cargo == null) {
             pickupCargoChannel.send(ShuttlePickupCargoResult.Error<Throwable>(cargoId, "Cargo does not exist."))
         } else {
             pickupCargoChannel.send(ShuttlePickupCargoResult.Success(cargo as D))

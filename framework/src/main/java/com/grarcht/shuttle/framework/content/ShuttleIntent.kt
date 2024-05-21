@@ -33,7 +33,6 @@ open class ShuttleIntent private constructor() {
     private var shuttleScreenFacade: ShuttleFacade? = null
     private var warehouse: ShuttleWarehouse? = null
 
-
     /**
      * Creates a [ShuttleIntent] to use with function chaining in the fluent interface.
      * @param intent Contains the data to shuttle.
@@ -127,8 +126,9 @@ open class ShuttleIntent private constructor() {
         }?.invokeOnCompletion {
             it?.let { throwable ->
                 Log.e(
-                    logTag, "There was an issues when transporting the data with the " +
-                            "Shuttle Intent.", throwable
+                    logTag,
+                    "There was an issues when transporting the data with the Shuttle Intent.",
+                    throwable
                 )
             }
         }
@@ -215,4 +215,3 @@ open class ShuttleIntent private constructor() {
         }
     }
 }
-

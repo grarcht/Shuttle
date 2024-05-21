@@ -127,6 +127,9 @@ class MVVMSecondView(
                             stateUpdate.invoke(IOResult.Error(throwable = it.throwable as Throwable))
                             cancel()
                         }
+                        is ShuttlePickupCargoResult.NotPickingUpCargoYet -> {
+                            // ignore
+                        }
                     }
                 }
         }

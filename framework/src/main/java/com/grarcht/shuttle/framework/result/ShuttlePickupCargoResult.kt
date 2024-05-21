@@ -26,4 +26,9 @@ sealed class ShuttlePickupCargoResult {
      * The state for when Shuttle has started picking up the cargo.
      */
     data object Loading : ShuttlePickupCargoResult()
+
+    /**
+     * The initial state for Shuttle not picking up the cargo yet.
+     */
+    data object NotPickingUpCargoYet : ShuttlePickupCargoResult()
 }

@@ -40,4 +40,3 @@ interface BundleFactory {
      */
     fun create(bundle: PersistableBundle): Bundle
 }
-

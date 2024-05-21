@@ -35,6 +35,6 @@ class ImageModel(
 
     // Required
     companion object {
-        const val serialVersionUID = -10693L
+        private const val serialVersionUID: Long = -10693
     }
 }

@@ -26,6 +26,14 @@
       </SelectionState>
       <SelectionState runConfigName="demo-mvvm">
         <option name="selectionMode" value="DROPDOWN" />
+        <DropdownSelection timestamp="2024-05-21T05:44:45.850240Z">
+          <Target type="DEFAULT_BOOT">
+            <handle>
+              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/greg/.android/avd/Pixel_6a_API_33.avd" />
+            </handle>
+          </Target>
+        </DropdownSelection>
+        <DialogSelection />
       </SelectionState>
       <SelectionState runConfigName="demo-mvvm-with-a-service">
         <option name="selectionMode" value="DROPDOWN" />

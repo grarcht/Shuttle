@@ -8,23 +8,23 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.core.widget.ContentLoadingProgressBar
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.grarcht.shuttle.demo.core.image.BitmapDecoder
 import com.grarcht.shuttle.demo.core.image.ImageMessageType
 import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.core.os.getParcelableWith
-import com.grarcht.shuttle.demo.mvvm.BR
 import com.grarcht.shuttle.demo.mvvm.R
-import com.grarcht.shuttle.demo.mvvm.databinding.SecondFragmentBinding
 import com.grarcht.shuttle.demo.mvvm.viewmodel.SecondViewModel
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.model.ShuttleParcelCargo
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val ANIMATION_DURATION = 750L
@@ -42,21 +42,17 @@ class MVVMSecondViewFragment : Fragment() {
     private var hideLoadingViewAnimator: ObjectAnimator? = null
     private val viewModel by viewModels<SecondViewModel>()
     private var imageModel: ImageModel? = null
-    private var onPropertyChangeCallback: Observable.OnPropertyChangedCallback? = null
     private var storedCargoId: String? = null
 
     @Inject
     lateinit var shuttle: Shuttle
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val view = inflater.inflate(R.layout.second_fragment, container, false)
-        DataBindingUtil.bind<SecondFragmentBinding>(view)
-        return view
+        return inflater.inflate(R.layout.second_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         extractArgsFrom(savedInstanceState, arguments)
-        observeBindingNotifications()
         loadImageModel()
     }
 
@@ -73,36 +69,7 @@ class MVVMSecondViewFragment : Fragment() {
     override fun onDestroyView() {
         deferredImageLoad?.cancel()
         contentLoadingProgressBar.hide()
-        viewModel.removeOnPropertyChangedCallback(onPropertyChangeCallback as Observable.OnPropertyChangedCallback)
         super.onDestroyView()
-    }
-
-    private fun observeBindingNotifications() {
-        onPropertyChangeCallback = object : Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                when (propertyId) {
-                    BR.shuttlePickupCargoResult -> {
-                        when (viewModel.shuttlePickupCargoResult) {
-                            ShuttlePickupCargoResult.Loading -> {
-                                view?.let { initLoadingView(it) }
-                            }
-                            is ShuttlePickupCargoResult.Success<*> -> {
-                                if (null != view && viewModel.imageModel != null) {
-                                    showSuccessView(view, viewModel.imageModel as ImageModel)
-                                }
-                            }
-                            is ShuttlePickupCargoResult.Error<*> -> {
-                                view?.let { showErrorView(it) }
-                            }
-                            else -> {
-                                // ignore
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        viewModel.addOnPropertyChangedCallback(onPropertyChangeCallback as Observable.OnPropertyChangedCallback)
     }
 
     private fun extractArgsFrom(savedInstanceState: Bundle?, arguments: Bundle?) {
@@ -126,7 +93,32 @@ class MVVMSecondViewFragment : Fragment() {
             return
         }
 
-        viewModel.loadImage(shuttle, cargoId)
+        lifecycleScope.launch {
+            viewModel
+                .loadImage(shuttle, cargoId)
+                .collectLatest { shuttleResult ->
+                    when (shuttleResult) {
+                        is ShuttlePickupCargoResult.Loading -> {
+                            view?.let { initLoadingView(it) }
+                        }
+
+                        is ShuttlePickupCargoResult.Success<*> -> {
+                            imageModel = shuttleResult.data as ImageModel
+                            view?.let { showSuccessView(view, imageModel as ImageModel) }
+                            cancel()
+                        }
+
+                        is ShuttlePickupCargoResult.Error<*> -> {
+                            view?.let { showErrorView(it) }
+                            cancel()
+                        }
+
+                        else -> {
+                            // ignore
+                        }
+                    }
+                }
+        }
     }
 
     private fun initLoadingView(view: View) {

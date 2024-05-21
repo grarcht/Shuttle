@@ -31,11 +31,10 @@ private const val LOG_TAG = "MVVMFirstViewFragment"
 
 @AndroidEntryPoint
 class MVVMFirstViewFragment : Fragment() {
-    private val viewModel by viewModels<FirstViewModel>()
     private var imageGatewayDisposableHandle: DisposableHandle? = null
-
     private var navNormallyButton: Button? = null
     private var navWithShuttleButton: Button? = null
+    private val viewModel by viewModels<FirstViewModel>()
 
     @Inject
     lateinit var shuttle: Shuttle

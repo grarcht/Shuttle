@@ -11,10 +11,8 @@ $dokka.location:com.grarcht.shuttle.demo.mvvm.view/MVVMFirstViewFragment.Compani
 $dokka.location:com.grarcht.shuttle.demo.mvvm.view/MVVMFirstViewFragment.Companion/TAG/#/PointingToDeclaration/demo-mvvm/com.grarcht.shuttle.demo.mvvm.view/-m-v-v-m-first-view-fragment/-companion/-t-a-g.html
 $dokka.location:com.grarcht.shuttle.demo.mvvm.view/MVVMFirstViewFragment///PointingToDeclaration/demo-mvvm/com.grarcht.shuttle.demo.mvvm.view/-m-v-v-m-first-view-fragment/index.html
 $dokka.location:com.grarcht.shuttle.demo.mvvm.view/MVVMFirstViewFragment/MVVMFirstViewFragment/#/PointingToDeclaration/demo-mvvm/com.grarcht.shuttle.demo.mvvm.view/-m-v-v-m-first-view-fragment/-m-v-v-m-first-view-fragment.html
-$dokka.location:com.grarcht.shuttle.demo.mvvm.view/MVVMFirstViewFragment/imageModel/#/PointingToDeclaration/demo-mvvm/com.grarcht.shuttle.demo.mvvm.view/-m-v-v-m-first-view-fragment/image-model.html
 $dokka.location:com.grarcht.shuttle.demo.mvvm.view/MVVMFirstViewFragment/onCreate/#android.os.Bundle?/PointingToDeclaration/demo-mvvm/com.grarcht.shuttle.demo.mvvm.view/-m-v-v-m-first-view-fragment/on-create.html
 $dokka.location:com.grarcht.shuttle.demo.mvvm.view/MVVMFirstViewFragment/onCreateView/#android.view.LayoutInflater#android.view.ViewGroup?#android.os.Bundle?/PointingToDeclaration/demo-mvvm/com.grarcht.shuttle.demo.mvvm.view/-m-v-v-m-first-view-fragment/on-create-view.html
-$dokka.location:com.grarcht.shuttle.demo.mvvm.view/MVVMFirstViewFragment/onDestroyView/#/PointingToDeclaration/demo-mvvm/com.grarcht.shuttle.demo.mvvm.view/-m-v-v-m-first-view-fragment/on-destroy-view.html
 $dokka.location:com.grarcht.shuttle.demo.mvvm.view/MVVMFirstViewFragment/onResume/#/PointingToDeclaration/demo-mvvm/com.grarcht.shuttle.demo.mvvm.view/-m-v-v-m-first-view-fragment/on-resume.html
 $dokka.location:com.grarcht.shuttle.demo.mvvm.view/MVVMFirstViewFragment/onViewCreated/#android.view.View#android.os.Bundle?/PointingToDeclaration/demo-mvvm/com.grarcht.shuttle.demo.mvvm.view/-m-v-v-m-first-view-fragment/on-view-created.html
 $dokka.location:com.grarcht.shuttle.demo.mvvm.view/MVVMFirstViewFragment/shuttle/#/PointingToDeclaration/demo-mvvm/com.grarcht.shuttle.demo.mvvm.view/-m-v-v-m-first-view-fragment/shuttle.html
@@ -33,9 +31,7 @@ $dokka.location:com.grarcht.shuttle.demo.mvvm.viewmodel/FirstViewModel/FirstView
 $dokka.location:com.grarcht.shuttle.demo.mvvm.viewmodel/FirstViewModel/getImage/#android.content.res.Resources#kotlin.Int/PointingToDeclaration/demo-mvvm/com.grarcht.shuttle.demo.mvvm.viewmodel/-first-view-model/get-image.html
 $dokka.location:com.grarcht.shuttle.demo.mvvm.viewmodel/SecondViewModel///PointingToDeclaration/demo-mvvm/com.grarcht.shuttle.demo.mvvm.viewmodel/-second-view-model/index.html
 $dokka.location:com.grarcht.shuttle.demo.mvvm.viewmodel/SecondViewModel/SecondViewModel/#/PointingToDeclaration/demo-mvvm/com.grarcht.shuttle.demo.mvvm.viewmodel/-second-view-model/-second-view-model.html
-$dokka.location:com.grarcht.shuttle.demo.mvvm.viewmodel/SecondViewModel/imageModel/#/PointingToDeclaration/demo-mvvm/com.grarcht.shuttle.demo.mvvm.viewmodel/-second-view-model/image-model.html
 $dokka.location:com.grarcht.shuttle.demo.mvvm.viewmodel/SecondViewModel/loadImage/#com.grarcht.shuttle.framework.Shuttle#kotlin.String/PointingToDeclaration/demo-mvvm/com.grarcht.shuttle.demo.mvvm.viewmodel/-second-view-model/load-image.html
-$dokka.location:com.grarcht.shuttle.demo.mvvm.viewmodel/SecondViewModel/shuttlePickupCargoResult/#/PointingToDeclaration/demo-mvvm/com.grarcht.shuttle.demo.mvvm.viewmodel/-second-view-model/shuttle-pickup-cargo-result.html
 $dokka.location:com.grarcht.shuttle.demo.mvvm////PointingToDeclaration/demo-mvvm/com.grarcht.shuttle.demo.mvvm/index.html
 $dokka.location:com.grarcht.shuttle.demo.mvvm/DemoApplication///PointingToDeclaration/demo-mvvm/com.grarcht.shuttle.demo.mvvm/-demo-application/index.html
 $dokka.location:com.grarcht.shuttle.demo.mvvm/DemoApplication/DemoApplication/#/PointingToDeclaration/demo-mvvm/com.grarcht.shuttle.demo.mvvm/-demo-application/-demo-application.html

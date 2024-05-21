@@ -88,14 +88,15 @@ class Receiver(
                                 is ShuttlePickupCargoResult.Error<*> -> {
                                     channel.send(IOResult.Error(throwable = Throwable(it.message)))
                                 }
-
                                 ShuttlePickupCargoResult.Loading -> {
                                     // Ignore.  The state should already be the loading state.
                                 }
-
                                 is ShuttlePickupCargoResult.Success<*> -> {
                                     val imageModel = it.data as ImageModel
                                     channel.send(IOResult.Success(imageModel))
+                                }
+                                ShuttlePickupCargoResult.NotPickingUpCargoYet -> {
+                                    // Ignore
                                 }
                             }
                         }

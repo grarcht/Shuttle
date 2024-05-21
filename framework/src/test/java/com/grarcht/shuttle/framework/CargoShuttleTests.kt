@@ -41,9 +41,9 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 import org.mockito.kotlin.spy
 import java.io.File
 import java.io.Serializable
@@ -188,14 +188,20 @@ class CargoShuttleTests {
                         is ShuttlePickupCargoResult.Loading -> {
                             /* ignore */
                         }
+
                         is ShuttlePickupCargoResult.Success<*> -> {
                             storedId = (shuttleResult.data as Cargo).cargoId
                             countDownLatch.countDown()
                             channel.cancel()
                         }
+
                         is ShuttlePickupCargoResult.Error<*> -> {
                             countDownLatch.countDown()
                             channel.cancel()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -248,14 +254,20 @@ class CargoShuttleTests {
                         is ShuttlePickupCargoResult.Loading -> {
                             /* ignore */
                         }
+
                         is ShuttlePickupCargoResult.Success<*> -> {
                             countDownLatch.countDown()
                             cancel()
                         }
+
                         is ShuttlePickupCargoResult.Error<*> -> {
                             storeId = noCargo
                             countDownLatch.countDown()
                             cancel()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -303,17 +315,24 @@ class CargoShuttleTests {
                             countDownLatch.countDown()
                             cancel()
                         }
+
                         is ShuttleRemoveCargoResult.Removed -> {
                             numberOfValidSteps++
                             countDownLatch.countDown()
                             cancel()
                         }
+
                         is ShuttleRemoveCargoResult.Removing -> {
                             numberOfValidSteps++
                         }
+
                         is ShuttleRemoveCargoResult.UnableToRemove<*> -> {
                             countDownLatch.countDown()
                             cancel()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -336,14 +355,20 @@ class CargoShuttleTests {
                         is ShuttlePickupCargoResult.Loading -> {
                             /* ignore */
                         }
+
                         is ShuttlePickupCargoResult.Success<*> -> {
                             countDownLatch.countDown()
                             cancel()
                         }
+
                         is ShuttlePickupCargoResult.Error<*> -> {
                             storeId = noCargo
                             countDownLatch.countDown()
                             cancel()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -394,17 +419,24 @@ class CargoShuttleTests {
                             countDownLatch.countDown()
                             cancel()
                         }
+
                         is ShuttleRemoveCargoResult.Removed -> {
                             numberOfValidSteps++
                             countDownLatch.countDown()
                             cancel()
                         }
+
                         is ShuttleRemoveCargoResult.Removing -> {
                             numberOfValidSteps++
                         }
+
                         is ShuttleRemoveCargoResult.UnableToRemove<*> -> {
                             countDownLatch.countDown()
                             cancel()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -432,13 +464,19 @@ class CargoShuttleTests {
                         is ShuttlePickupCargoResult.Loading -> {
                             /* ignore */
                         }
+
                         is ShuttlePickupCargoResult.Success<*> -> {
                             countDownLatch.countDown()
                         }
+
                         is ShuttlePickupCargoResult.Error<*> -> {
                             storeId = noCargo
                             countDownLatch.countDown()
                             cancel()
+                        }
+
+                        else -> {
+                            // ignore
                         }
                     }
                 }
@@ -471,7 +509,7 @@ class CargoShuttleTests {
     private data class CargoDataModel(override val cargoId: String, override val filePath: String) : ShuttleDataModel
     private data class Cargo(val cargoId: String, val numberOfBoxes: Int) : Serializable {
         companion object {
-            const val serialVersionUID = -42L
+            private const val serialVersionUID: Long = -42
         }
     }
 

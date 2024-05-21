@@ -92,7 +92,8 @@ interface Shuttle {
      */
     fun intentCargoWith(
         action: String,
-        uri: Uri, packageContext: Context,
+        uri: Uri,
+        packageContext: Context,
         cls: Class<*>
     ): ShuttleIntent
 
@@ -155,4 +156,3 @@ interface Shuttle {
      */
     fun cleanShuttleFromAllDeliveries(receiver: Channel<ShuttleRemoveCargoResult>? = null): Shuttle
 }
-

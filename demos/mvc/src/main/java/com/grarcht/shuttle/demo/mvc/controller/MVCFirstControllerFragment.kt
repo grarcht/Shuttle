@@ -44,12 +44,12 @@ class MVCFirstControllerFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.first_view, container, false)
+        return inflater.inflate(com.grarcht.shuttle.demo.core.R.layout.first_view, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.findViewById<TextView>(R.id.first_view_title_text).text =
+        view.findViewById<TextView>(com.grarcht.shuttle.demo.core.R.id.first_view_title_text).text =
             view.resources.getString(R.string.mvc_first_view_title)
         initOnClickNavigateWithShuttle(view)
         initOnClickNavigateNormally(view)
@@ -67,7 +67,7 @@ class MVCFirstControllerFragment : Fragment() {
 
     private fun getImageData() {
         imageGatewayDisposableHandle = MainScope().async {
-            val towerImageId: Int = R.raw.tower
+            val towerImageId: Int = com.grarcht.shuttle.demo.core.R.raw.tower
 
             RawResourceGateway.with(resources)
                 .logTag(TAG)
