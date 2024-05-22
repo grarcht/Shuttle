@@ -18,7 +18,7 @@ class ShuttleLifecycleAwareServiceConnection<S : ShuttleService, B : ShuttleBind
     private val config: ShuttleLifecycleAwareServiceConnectionConfig<S>
 ) : DefaultLifecycleObserver,
     ShuttleServiceConnection<S, B>(
-        config.serviceConnectionFactory.createShuttleServiceConnectionConfig(config)
+        config.serviceConnectionFactory.createServiceConnectionConfig(config)
     ) {
 
     init {
@@ -32,7 +32,6 @@ class ShuttleLifecycleAwareServiceConnection<S : ShuttleService, B : ShuttleBind
     override fun onStart(owner: LifecycleOwner) {
         context?.let {
             super.connectToService(
-                context as Context,
                 config.serviceClazz,
                 lifecycle = owner.lifecycle
             )

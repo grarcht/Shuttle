@@ -33,7 +33,7 @@ class ShuttleServiceConnectionTypesFactory : ShuttleServiceConnectionFactory {
      * @return the newly created config
      */
     @Suppress("LongParameterList")
-    override fun <S : ShuttleService> createShuttleServiceConnectionConfig(
+    override fun <S : ShuttleService> createServiceConnectionConfig(
         context: Context?,
         serviceName: String,
         errorObservable: ShuttleVisibilityObservable,
@@ -83,7 +83,7 @@ class ShuttleServiceConnectionTypesFactory : ShuttleServiceConnectionFactory {
         coroutineScope: CoroutineScope,
         serviceChannel: Channel<ShuttleConnectedServiceModel<S>>
     ): ShuttleServiceConnection<S, B> {
-        val config = createShuttleServiceConnectionConfig(
+        val config = createServiceConnectionConfig(
             context,
             serviceName,
             errorObservable,
@@ -103,10 +103,10 @@ class ShuttleServiceConnectionTypesFactory : ShuttleServiceConnectionFactory {
      * @return the newly created config
      */
     @Suppress("LongParameterList")
-    override fun <S : ShuttleService, B : ShuttleBinder<S>> createShuttleServiceConnectionConfig(
+    override fun <S : ShuttleService, B : ShuttleBinder<S>> createServiceConnectionConfig(
         config: ShuttleLifecycleAwareServiceConnectionConfig<S>
     ): ShuttleServiceConnectionConfig<S> {
-        return createShuttleServiceConnectionConfig(
+        return createServiceConnectionConfig(
             config.context,
             config.serviceName,
             config.errorObservable,

@@ -81,39 +81,36 @@ open class ShuttleServiceConnection<S : ShuttleService, B : ShuttleBinder<S>>(
     /**
      * Connects to the [ShuttleService].
      *
-     * @param context used for binding to the service
      * @param serviceClazz for the [ShuttleService] to connect to
      */
     @Suppress("UNCHECKED_CAST", "unused")
     open fun connectToService(
-        context: Context,
         serviceClazz: Class<S>
     ): ShuttleServiceConnection<S, ShuttleBinder<S>> {
-        connectToService(context, serviceClazz, lifecycle = null)
+        connectToService(serviceClazz, lifecycle = null)
         return this as ShuttleServiceConnection<S, ShuttleBinder<S>>
     }
 
     /**
      * Connects to the [ShuttleService].
      *
-     * @param context used for binding to the service
      * @param serviceClazz for the [ShuttleService] to connect to
      * @param lifecycle used for lifecycle state checks in connecting to the service
      */
     @Suppress("UNCHECKED_CAST", "TooGenericExceptionCaught")
     open fun connectToService(
-        context: Context,
         serviceClazz: Class<S>,
         lifecycle: Lifecycle?
     ): ShuttleServiceConnection<S, ShuttleBinder<S>> {
         try {
             val shouldConnect = lifecycle == null || lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)
             if (shouldConnect) {
-                Intent(context, serviceClazz).also { intent ->
-                    context.bindService(intent, this, Context.BIND_AUTO_CREATE)
+                context?.let {
+                    Intent(context, serviceClazz).also { intent ->
+                        it.bindService(intent, this, Context.BIND_AUTO_CREATE)
+                    }
                 }
             }
-            this.context = context
         } catch (e: SecurityException) {
             val lifecycleStateName = lifecycle?.currentState?.name ?: UNKNOWN_STATE_NAME
             val message = "$UNABLE_TO_CONNECT_MESSAGE ${e.message}"

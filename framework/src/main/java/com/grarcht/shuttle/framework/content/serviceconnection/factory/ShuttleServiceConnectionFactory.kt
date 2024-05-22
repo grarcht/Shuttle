@@ -34,7 +34,7 @@ interface ShuttleServiceConnectionFactory {
      * @return the newly created config
      */
     @Suppress("LongParameterList")
-    fun <S : ShuttleService> createShuttleServiceConnectionConfig(
+    fun <S : ShuttleService> createServiceConnectionConfig(
         context: Context?,
         serviceName: String,
         errorObservable: ShuttleVisibilityObservable,
@@ -83,7 +83,7 @@ interface ShuttleServiceConnectionFactory {
      *
      * @return the newly created config
      */
-    fun <S : ShuttleService, B : ShuttleBinder<S>> createShuttleServiceConnectionConfig(
+    fun <S : ShuttleService, B : ShuttleBinder<S>> createServiceConnectionConfig(
         config: ShuttleLifecycleAwareServiceConnectionConfig<S>
     ): ShuttleServiceConnectionConfig<S>
 
