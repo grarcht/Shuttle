@@ -20,7 +20,8 @@ $dokka.location:com.grarcht.shuttle.demo.core.image/ImageModel/imageData/#/Point
 $dokka.location:com.grarcht.shuttle.demo.core.image/ImageModel/toString/#/PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.image/-image-model/to-string.html
 $dokka.location:com.grarcht.shuttle.demo.core.io////PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.io/index.html
 $dokka.location:com.grarcht.shuttle.demo.core.io/IOResult.Error///PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.io/-i-o-result/-error/index.html
-$dokka.location:com.grarcht.shuttle.demo.core.io/IOResult.Error/Error/#TypeParam(bounds=[kotlin.Throwable])/PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.io/-i-o-result/-error/-error.html
+$dokka.location:com.grarcht.shuttle.demo.core.io/IOResult.Error/Error/#kotlin.String?#TypeParam(bounds=[kotlin.Throwable])/PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.io/-i-o-result/-error/-error.html
+$dokka.location:com.grarcht.shuttle.demo.core.io/IOResult.Error/message/#/PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.io/-i-o-result/-error/message.html
 $dokka.location:com.grarcht.shuttle.demo.core.io/IOResult.Error/throwable/#/PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.io/-i-o-result/-error/throwable.html
 $dokka.location:com.grarcht.shuttle.demo.core.io/IOResult.Loading///PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.io/-i-o-result/-loading/index.html
 $dokka.location:com.grarcht.shuttle.demo.core.io/IOResult.Success///PointingToDeclaration/demos-core-lib/com.grarcht.shuttle.demo.core.io/-i-o-result/-success/index.html

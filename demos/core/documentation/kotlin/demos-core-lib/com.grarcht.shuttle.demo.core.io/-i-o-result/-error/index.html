@@ -58,24 +58,24 @@
   <div class="breadcrumbs"><a href="../../../../index.html">demos-core-lib</a><span class="delimiter">/</span><a href="../../index.html">com.grarcht.shuttle.demo.core.io</a><span class="delimiter">/</span><a href="../index.html">IOResult</a><span class="delimiter">/</span><span class="current">Error</span></div>
   <div class="cover ">
     <h1 class="cover"><span><span>Error</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demos-core-lib:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">Error</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">T</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html">Throwable</a><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>throwable<span class="token operator">: </span><a href="index.html">T</a></span></span><span class="token punctuation">)</span> : <a href="../index.html">IOResult</a></div><p class="paragraph">State for unsuccessful IO work.</p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":demos-core-lib:dokkaHtml/release" data-filterable-set=":demos-core-lib:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>throwable</span></span></u></div></span></div><div><div class="title"><p class="paragraph">caught with IO work</p></div></div></div></div></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demos-core-lib:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">Error</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">T</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html">Throwable</a><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>message<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>throwable<span class="token operator">: </span><a href="index.html">T</a></span></span><span class="token punctuation">)</span> : <a href="../index.html">IOResult</a></div><p class="paragraph">State for unsuccessful IO work.</p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":demos-core-lib:dokkaHtml/release" data-filterable-set=":demos-core-lib:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>throwable</span></span></u></div></span></div><div><div class="title"><p class="paragraph">caught with IO work</p></div></div></div></div></div></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
         <h2 class="">Constructors</h2>
-        <div class="table"><a data-name="1573847032%2FConstructors%2F-61922042" anchor-label="Error" id="1573847032%2FConstructors%2F-61922042" data-filterable-set=":demos-core-lib:dokkaHtml/release"></a>
+        <div class="table"><a data-name="1870532186%2FConstructors%2F-61922042" anchor-label="Error" id="1870532186%2FConstructors%2F-61922042" data-filterable-set=":demos-core-lib:dokkaHtml/release"></a>
           <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":demos-core-lib:dokkaHtml/release" data-filterable-set=":demos-core-lib:dokkaHtml/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-error.html"><span><span>Error</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1573847032%2FConstructors%2F-61922042"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1870532186%2FConstructors%2F-61922042"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demos-core-lib:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">throwable<span class="token operator">: </span><a href="index.html">T</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demos-core-lib:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">message<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">throwable<span class="token operator">: </span><a href="index.html">T</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
@@ -84,7 +84,22 @@
       </div>
       <div data-togglable="PROPERTY">
         <h2 class="">Properties</h2>
-        <div class="table"><a data-name="-591117305%2FProperties%2F-61922042" anchor-label="throwable" id="-591117305%2FProperties%2F-61922042" data-filterable-set=":demos-core-lib:dokkaHtml/release"></a>
+        <div class="table"><a data-name="662820256%2FProperties%2F-61922042" anchor-label="message" id="662820256%2FProperties%2F-61922042" data-filterable-set=":demos-core-lib:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demos-core-lib:dokkaHtml/release" data-filterable-set=":demos-core-lib:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="message.html"><span><span>message</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="662820256%2FProperties%2F-61922042"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demos-core-lib:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="message.html">message</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-591117305%2FProperties%2F-61922042" anchor-label="throwable" id="-591117305%2FProperties%2F-61922042" data-filterable-set=":demos-core-lib:dokkaHtml/release"></a>
           <div class="table-row" data-filterable-current=":demos-core-lib:dokkaHtml/release" data-filterable-set=":demos-core-lib:dokkaHtml/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
@@ -105,7 +120,7 @@
   </div>
 </div>
       <div class="footer">
-        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span
                 class="pull-right"><span>Generated by </span><a
                 href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
       </div>

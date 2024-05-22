@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>AppModule</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+            <a href="../../../index.html">
+                    <span>demo-mvvm-with-a-service</span>
+            </a>
+    </div>
+    <div>
+    </div>
+    <div class="pull-right d-flex">
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":demo-mvvm-with-a-service:dokkaHtml/release">androidJvm</button>
+        </div>
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="demo-mvvm-with-a-service::com.grarcht.shuttle.demo.mvvmwithaservice.dependencyinjection/AppModule///PointingToDeclaration//1210457879">
+  <div class="breadcrumbs"><a href="../../../index.html">demo-mvvm-with-a-service</a><span class="delimiter">/</span><a href="../index.html">com.grarcht.shuttle.demo.mvvmwithaservice.dependencyinjection</a><span class="delimiter">/</span><span class="current">AppModule</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>App</span><wbr></wbr><span><span>Module</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="dagger/Module///PointingToDeclaration/"><span class="token annotation builtin">Module</span></span></div></div><span class="token keyword">object </span><a href="index.html">AppModule</a></div><p class="paragraph">This module shows the basics of integrating the Shuttle Framework with Hilt by providing what is needed to get set up with the default solution.  Typically, the dependencies are created in separate functions and passed into the provides function.  To keep a high level of readability and recognizability with this demo, most of the dependencies are created within the provideShuttle function.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-1246099250%2FFunctions%2F1210457879" anchor-label="provideRemoteServiceConfig" id="-1246099250%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="provide-remote-service-config.html"><span>provide</span><wbr></wbr><span>Remote</span><wbr></wbr><span>Service</span><wbr></wbr><span><span>Config</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1246099250%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="dagger/Provides///PointingToDeclaration/"><span class="token annotation builtin">Provides</span></span></div><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="javax.inject/Named///PointingToDeclaration/"><span class="token annotation builtin">Named</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;RemoteServiceConfig&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="provide-remote-service-config.html"><span class="token function">provideRemoteServiceConfig</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">shuttle<span class="token operator">: </span><span data-unresolved-link="com.grarcht.shuttle.framework/Shuttle///PointingToDeclaration/">Shuttle</span><span class="token punctuation">, </span></span><span class="parameter ">errorObservable<span class="token operator">: </span><span data-unresolved-link="com.grarcht.shuttle.framework.visibility.observation/ShuttleVisibilityObservable///PointingToDeclaration/">ShuttleVisibilityObservable</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.grarcht.shuttle.framework.app/ShuttleServiceConfig///PointingToDeclaration/">ShuttleServiceConfig</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="629726317%2FFunctions%2F1210457879" anchor-label="provideShuttle" id="629726317%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="provide-shuttle.html"><span>provide</span><wbr></wbr><span><span>Shuttle</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="629726317%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="dagger/Provides///PointingToDeclaration/"><span class="token annotation builtin">Provides</span></span></div><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="javax.inject/Singleton///PointingToDeclaration/"><span class="token annotation builtin">Singleton</span></span></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="provide-shuttle.html"><span class="token function">provideShuttle</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">applicationContext<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.grarcht.shuttle.framework/Shuttle///PointingToDeclaration/">Shuttle</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1510683069%2FFunctions%2F1210457879" anchor-label="provideShuttleServiceConnectionFactory" id="-1510683069%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="provide-shuttle-service-connection-factory.html"><span>provide</span><wbr></wbr><span>Shuttle</span><wbr></wbr><span>Service</span><wbr></wbr><span>Connection</span><wbr></wbr><span><span>Factory</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1510683069%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="dagger/Provides///PointingToDeclaration/"><span class="token annotation builtin">Provides</span></span></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="provide-shuttle-service-connection-factory.html"><span class="token function">provideShuttleServiceConnectionFactory</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.grarcht.shuttle.framework.content.serviceconnection.factory/ShuttleServiceConnectionFactory///PointingToDeclaration/">ShuttleServiceConnectionFactory</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2144625087%2FFunctions%2F1210457879" anchor-label="providesMainScope" id="2144625087%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="provides-main-scope.html"><span>provides</span><wbr></wbr><span>Main</span><wbr></wbr><span><span>Scope</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2144625087%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="javax.inject/Named///PointingToDeclaration/"><span class="token annotation builtin">Named</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;MainScope&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="dagger/Provides///PointingToDeclaration/"><span class="token annotation builtin">Provides</span></span></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="provides-main-scope.html"><span class="token function">providesMainScope</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines/CoroutineScope///PointingToDeclaration/">CoroutineScope</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1791773537%2FFunctions%2F1210457879" anchor-label="providesReporter" id="-1791773537%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="provides-reporter.html"><span>provides</span><wbr></wbr><span><span>Reporter</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1791773537%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="dagger/Provides///PointingToDeclaration/"><span class="token annotation builtin">Provides</span></span></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="provides-reporter.html"><span class="token function">providesReporter</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.grarcht.shuttle.framework.visibility/ShuttleVisibilityReporter///PointingToDeclaration/">ShuttleVisibilityReporter</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1234060900%2FFunctions%2F1210457879" anchor-label="providesShuttleErrorObservable" id="-1234060900%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="provides-shuttle-error-observable.html"><span>provides</span><wbr></wbr><span>Shuttle</span><wbr></wbr><span>Error</span><wbr></wbr><span><span>Observable</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1234060900%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="dagger/Provides///PointingToDeclaration/"><span class="token annotation builtin">Provides</span></span></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="provides-shuttle-error-observable.html"><span class="token function">providesShuttleErrorObservable</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">reporter<span class="token operator">: </span><span data-unresolved-link="com.grarcht.shuttle.framework.visibility/ShuttleVisibilityReporter///PointingToDeclaration/">ShuttleVisibilityReporter</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="javax.inject/Named///PointingToDeclaration/"><span class="token annotation builtin">Named</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;MainScope&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span> </span>mainScope<span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines/CoroutineScope///PointingToDeclaration/">CoroutineScope</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.grarcht.shuttle.framework.visibility.observation/ShuttleVisibilityObservable///PointingToDeclaration/">ShuttleVisibilityObservable</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+    </div>
+</div>
+</body>
+</html>

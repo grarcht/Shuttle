@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>ShuttleServiceConfig</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+            <a href="../../../index.html">
+                    <span>framework</span>
+            </a>
+    </div>
+    <div>
+3.0.0    </div>
+    <div class="pull-right d-flex">
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":framework:dokkaHtml/release">androidJvm</button>
+        </div>
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="framework::com.grarcht.shuttle.framework.app/ShuttleServiceConfig///PointingToDeclaration//1325206814">
+  <div class="breadcrumbs"><a href="../../../index.html">framework</a><span class="delimiter">/</span><a href="../index.html">com.grarcht.shuttle.framework.app</a><span class="delimiter">/</span><span class="current">ShuttleServiceConfig</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Shuttle</span><wbr></wbr><span>Service</span><wbr></wbr><span><span>Config</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":framework:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="index.html">ShuttleServiceConfig</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>serviceName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>shuttle<span class="token operator">: </span><a href="../../com.grarcht.shuttle.framework/-shuttle/index.html">Shuttle</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>rebindOnUnbind<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>errorObservable<span class="token operator">: </span><a href="../../com.grarcht.shuttle.framework.visibility.observation/-shuttle-visibility-observable/index.html">ShuttleVisibilityObservable</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>bindingType<span class="token operator">: </span><a href="../-shuttle-service-type/index.html">ShuttleServiceType</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>messengerFactory<span class="token operator">: </span><a href="../../com.grarcht.shuttle.framework.os.messenger.factory/-shuttle-messenger-factory/index.html">ShuttleMessengerFactory</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>messageValidator<span class="token operator">: </span><a href="../../com.grarcht.shuttle.framework.validator/-shuttle-validator/index.html">ShuttleValidator</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://developer.android.com/reference/kotlin/android/os/Message.html">Message</a><span class="token operator">&gt;</span><span class="token operator"> = </span>ShuttleServiceMessageValidator()</span></span><span class="token punctuation">)</span></div><p class="paragraph">Used to configure a <a href="../-shuttle-service/index.html">ShuttleService</a>.</p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>service</span><wbr></wbr><span><span>Name</span></span></u></div></span></div><div><div class="title"><p class="paragraph">the name of the service</p></div></div></div></div><div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>shuttle</span></span></u></div></span></div><div><div class="title"><p class="paragraph">used to transport and pickup cargo</p></div></div></div></div><div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>rebind</span><wbr></wbr><span>On</span><wbr></wbr><span><span>Unbind</span></span></u></div></span></div><div><div class="title"><p class="paragraph">if true, the service will rebind when an unbind occurs</p></div></div></div></div><div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>error</span><wbr></wbr><span><span>Observable</span></span></u></div></span></div><div><div class="title"><p class="paragraph">used to observe errors</p></div></div></div></div><div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>binding</span><wbr></wbr><span><span>Type</span></span></u></div></span></div><div><div class="title"><p class="paragraph">used to determine the binder to create</p></div></div></div></div><div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>messenger</span><wbr></wbr><span><span>Factory</span></span></u></div></span></div><div><div class="title"><p class="paragraph">creates the service's messenger</p></div></div></div></div><div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>message</span><wbr></wbr><span><span>Validator</span></span></u></div></span></div><div><div class="title"><p class="paragraph">validates received messages</p></div></div></div></div></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-646620373%2FConstructors%2F1325206814" anchor-label="ShuttleServiceConfig" id="-646620373%2FConstructors%2F1325206814" data-filterable-set=":framework:dokkaHtml/release"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-shuttle-service-config.html"><span>Shuttle</span><wbr></wbr><span>Service</span><wbr></wbr><span><span>Config</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-646620373%2FConstructors%2F1325206814"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":framework:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">serviceName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">shuttle<span class="token operator">: </span><a href="../../com.grarcht.shuttle.framework/-shuttle/index.html">Shuttle</a><span class="token punctuation">, </span></span><span class="parameter ">rebindOnUnbind<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter ">errorObservable<span class="token operator">: </span><a href="../../com.grarcht.shuttle.framework.visibility.observation/-shuttle-visibility-observable/index.html">ShuttleVisibilityObservable</a><span class="token punctuation">, </span></span><span class="parameter ">bindingType<span class="token operator">: </span><a href="../-shuttle-service-type/index.html">ShuttleServiceType</a><span class="token punctuation">, </span></span><span class="parameter ">messengerFactory<span class="token operator">: </span><a href="../../com.grarcht.shuttle.framework.os.messenger.factory/-shuttle-messenger-factory/index.html">ShuttleMessengerFactory</a><span class="token punctuation">, </span></span><span class="parameter ">messageValidator<span class="token operator">: </span><a href="../../com.grarcht.shuttle.framework.validator/-shuttle-validator/index.html">ShuttleValidator</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://developer.android.com/reference/kotlin/android/os/Message.html">Message</a><span class="token operator">&gt;</span><span class="token operator"> = </span>ShuttleServiceMessageValidator()</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-298543276%2FProperties%2F1325206814" anchor-label="bindingType" id="-298543276%2FProperties%2F1325206814" data-filterable-set=":framework:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="binding-type.html"><span>binding</span><wbr></wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-298543276%2FProperties%2F1325206814"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":framework:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="binding-type.html">bindingType</a><span class="token operator">: </span><a href="../-shuttle-service-type/index.html">ShuttleServiceType</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1005580232%2FProperties%2F1325206814" anchor-label="errorObservable" id="1005580232%2FProperties%2F1325206814" data-filterable-set=":framework:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="error-observable.html"><span>error</span><wbr></wbr><span><span>Observable</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1005580232%2FProperties%2F1325206814"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":framework:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="error-observable.html">errorObservable</a><span class="token operator">: </span><a href="../../com.grarcht.shuttle.framework.visibility.observation/-shuttle-visibility-observable/index.html">ShuttleVisibilityObservable</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="673648316%2FProperties%2F1325206814" anchor-label="messageValidator" id="673648316%2FProperties%2F1325206814" data-filterable-set=":framework:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="message-validator.html"><span>message</span><wbr></wbr><span><span>Validator</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="673648316%2FProperties%2F1325206814"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":framework:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="message-validator.html">messageValidator</a><span class="token operator">: </span><a href="../../com.grarcht.shuttle.framework.validator/-shuttle-validator/index.html">ShuttleValidator</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://developer.android.com/reference/kotlin/android/os/Message.html">Message</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1727840048%2FProperties%2F1325206814" anchor-label="messengerFactory" id="-1727840048%2FProperties%2F1325206814" data-filterable-set=":framework:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="messenger-factory.html"><span>messenger</span><wbr></wbr><span><span>Factory</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1727840048%2FProperties%2F1325206814"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":framework:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="messenger-factory.html">messengerFactory</a><span class="token operator">: </span><a href="../../com.grarcht.shuttle.framework.os.messenger.factory/-shuttle-messenger-factory/index.html">ShuttleMessengerFactory</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1408572258%2FProperties%2F1325206814" anchor-label="rebindOnUnbind" id="1408572258%2FProperties%2F1325206814" data-filterable-set=":framework:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="rebind-on-unbind.html"><span>rebind</span><wbr></wbr><span>On</span><wbr></wbr><span><span>Unbind</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1408572258%2FProperties%2F1325206814"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":framework:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="rebind-on-unbind.html">rebindOnUnbind</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1175884045%2FProperties%2F1325206814" anchor-label="serviceName" id="-1175884045%2FProperties%2F1325206814" data-filterable-set=":framework:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="service-name.html"><span>service</span><wbr></wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1175884045%2FProperties%2F1325206814"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":framework:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="service-name.html">serviceName</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2123463226%2FProperties%2F1325206814" anchor-label="shuttle" id="2123463226%2FProperties%2F1325206814" data-filterable-set=":framework:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="shuttle.html"><span><span>shuttle</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2123463226%2FProperties%2F1325206814"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":framework:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="shuttle.html">shuttle</a><span class="token operator">: </span><a href="../../com.grarcht.shuttle.framework/-shuttle/index.html">Shuttle</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+    </div>
+</div>
+</body>
+</html>

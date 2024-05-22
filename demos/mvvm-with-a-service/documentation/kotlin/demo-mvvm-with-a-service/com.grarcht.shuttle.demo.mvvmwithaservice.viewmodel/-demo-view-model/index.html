@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>DemoViewModel</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+            <a href="../../../index.html">
+                    <span>demo-mvvm-with-a-service</span>
+            </a>
+    </div>
+    <div>
+    </div>
+    <div class="pull-right d-flex">
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":demo-mvvm-with-a-service:dokkaHtml/release">androidJvm</button>
+        </div>
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="demo-mvvm-with-a-service::com.grarcht.shuttle.demo.mvvmwithaservice.viewmodel/DemoViewModel///PointingToDeclaration//1210457879">
+  <div class="breadcrumbs"><a href="../../../index.html">demo-mvvm-with-a-service</a><span class="delimiter">/</span><a href="../index.html">com.grarcht.shuttle.demo.mvvmwithaservice.viewmodel</a><span class="delimiter">/</span><span class="current">DemoViewModel</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Demo</span><wbr></wbr><span>View</span><wbr></wbr><span><span>Model</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">DemoViewModel</a> <span><span class="token annotation builtin">@</span><span data-unresolved-link="javax.inject/Inject///PointingToDeclaration/"><span class="token annotation builtin">Inject</span></span> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">reporter<span class="token operator">: </span><span data-unresolved-link="com.grarcht.shuttle.framework.visibility/ShuttleVisibilityReporter///PointingToDeclaration/">ShuttleVisibilityReporter</span><span class="token punctuation">, </span></span><span class="parameter ">shuttle<span class="token operator">: </span><span data-unresolved-link="com.grarcht.shuttle.framework/Shuttle///PointingToDeclaration/">Shuttle</span><span class="token punctuation">, </span></span><span class="parameter ">serviceConnectionFactory<span class="token operator">: </span><span data-unresolved-link="com.grarcht.shuttle.framework.content.serviceconnection.factory/ShuttleServiceConnectionFactory///PointingToDeclaration/">ShuttleServiceConnectionFactory</span></span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/ViewModel.html">ViewModel</a></div><p class="paragraph">The MVVM ViewModel used to connect with the <a href="../../com.grarcht.shuttle.demo.mvvmwithaservice.model/-remote-service/index.html">RemoteService</a>.</p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>reporter</span></span></u></div></span></div><div><div class="title"><p class="paragraph">reports feedback to increase visibility</p></div></div></div></div><div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>shuttle</span></span></u></div></span></div><div><div class="title"><p class="paragraph">used to store and retrieve cargo</p></div></div></div></div><div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>service</span><wbr></wbr><span>Connection</span><wbr></wbr><span><span>Factory</span></span></u></div></span></div><div><div class="title"><p class="paragraph">creates variations of service connections</p></div></div></div></div></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-831292727%2FConstructors%2F1210457879" anchor-label="DemoViewModel" id="-831292727%2FConstructors%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-demo-view-model.html"><span>Demo</span><wbr></wbr><span>View</span><wbr></wbr><span><span>Model</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-831292727%2FConstructors%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="javax.inject/Inject///PointingToDeclaration/"><span class="token annotation builtin">Inject</span></span></div></div><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">reporter<span class="token operator">: </span><span data-unresolved-link="com.grarcht.shuttle.framework.visibility/ShuttleVisibilityReporter///PointingToDeclaration/">ShuttleVisibilityReporter</span><span class="token punctuation">, </span></span><span class="parameter ">shuttle<span class="token operator">: </span><span data-unresolved-link="com.grarcht.shuttle.framework/Shuttle///PointingToDeclaration/">Shuttle</span><span class="token punctuation">, </span></span><span class="parameter ">serviceConnectionFactory<span class="token operator">: </span><span data-unresolved-link="com.grarcht.shuttle.framework.content.serviceconnection.factory/ShuttleServiceConnectionFactory///PointingToDeclaration/">ShuttleServiceConnectionFactory</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="1893469955%2FClasslikes%2F1210457879" anchor-label="Companion" id="1893469955%2FClasslikes%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-companion/index.html"><span><span>Companion</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1893469955%2FClasslikes%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">object </span><a href="-companion/index.html">Companion</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="264516373%2FFunctions%2F1210457879" anchor-label="addCloseable" id="264516373%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#264516373%2FFunctions%2F1210457879"><span>add</span><wbr></wbr><span><span>Closeable</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="264516373%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#264516373%2FFunctions%2F1210457879"><span class="token function">addCloseable</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a> </span>p0<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/io/Closeable.html">Closeable</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1855239994%2FFunctions%2F1210457879" anchor-label="initMessaging" id="1855239994%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="init-messaging.html"><span>init</span><wbr></wbr><span><span>Messaging</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1855239994%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="init-messaging.html"><span class="token function">initMessaging</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">lifecycle<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/Lifecycle.html">Lifecycle</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1512887004%2FFunctions%2F1210457879" anchor-label="transportImageCargoUsingShuttleAndIPC" id="-1512887004%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="transport-image-cargo-using-shuttle-and-i-p-c.html"><span>transport</span><wbr></wbr><span>Image</span><wbr></wbr><span>Cargo</span><wbr></wbr><span>Using</span><wbr></wbr><span>Shuttle</span><wbr></wbr><span>And</span><wbr></wbr><span><span>IPC</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1512887004%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="transport-image-cargo-using-shuttle-and-i-p-c.html"><span class="token function">transportImageCargoUsingShuttleAndIPC</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">cargoId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RawRes.html"><span class="token annotation builtin">RawRes</span></a> </span>imageId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines.flow/Flow///PointingToDeclaration/">Flow</span><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="com.grarcht.shuttle.demo.core.io/IOResult///PointingToDeclaration/">IOResult</span><span class="token operator">&gt;</span><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Transports the image cargo WITH using Shuttle and is used to demonstrate successful transportation of oversized cargo.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="291611441%2FFunctions%2F1210457879" anchor-label="transportImageCargoWithoutUsingShuttle" id="291611441%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="transport-image-cargo-without-using-shuttle.html"><span>transport</span><wbr></wbr><span>Image</span><wbr></wbr><span>Cargo</span><wbr></wbr><span>Without</span><wbr></wbr><span>Using</span><wbr></wbr><span><span>Shuttle</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="291611441%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="transport-image-cargo-without-using-shuttle.html"><span class="token function">transportImageCargoWithoutUsingShuttle</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">cargoId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RawRes.html"><span class="token annotation builtin">RawRes</span></a> </span>imageId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines.flow/Flow///PointingToDeclaration/">Flow</span><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="com.grarcht.shuttle.demo.core.io/IOResult///PointingToDeclaration/">IOResult</span><span class="token operator">&gt;</span><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Transports the image cargo WITHOUT using Shuttle and is used to demonstrate process crashes when transporting oversized cargo.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+    </div>
+</div>
+</body>
+</html>

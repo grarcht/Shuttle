@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Receiver</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+            <a href="../../../index.html">
+                    <span>demo-mvvm-with-a-service</span>
+            </a>
+    </div>
+    <div>
+    </div>
+    <div class="pull-right d-flex">
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":demo-mvvm-with-a-service:dokkaHtml/release">androidJvm</button>
+        </div>
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="demo-mvvm-with-a-service::com.grarcht.shuttle.demo.mvvmwithaservice.model/Receiver///PointingToDeclaration//1210457879">
+  <div class="breadcrumbs"><a href="../../../index.html">demo-mvvm-with-a-service</a><span class="delimiter">/</span><a href="../index.html">com.grarcht.shuttle.demo.mvvmwithaservice.model</a><span class="delimiter">/</span><span class="current">Receiver</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Receiver</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">Receiver</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">shuttle<span class="token operator">: </span><span data-unresolved-link="com.grarcht.shuttle.framework/Shuttle///PointingToDeclaration/">Shuttle</span><span class="token punctuation">, </span></span><span class="parameter ">scope<span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines/CoroutineScope///PointingToDeclaration/">CoroutineScope</span><span class="token punctuation">, </span></span><span class="parameter ">visibilityObservable<span class="token operator">: </span><span data-unresolved-link="com.grarcht.shuttle.framework.visibility.observation/ShuttleVisibilityObservable///PointingToDeclaration/">ShuttleVisibilityObservable</span><span class="token punctuation">, </span></span><span class="parameter ">handleNoResponseReceived<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/android/content/BroadcastReceiver.html">BroadcastReceiver</a></div><p class="paragraph">A receiver that receives and processes broadcasts from the <a href="../-remote-service/index.html">RemoteService</a>.</p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>shuttle</span></span></u></div></span></div><div><div class="title"><p class="paragraph">used to store and pickup oversized cargo from the warehouse</p></div></div></div></div><div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>scope</span></span></u></div></span></div><div><div class="title"><p class="paragraph">for emitting <span data-unresolved-link="com.grarcht.shuttle.demo.core.io/IOResult///PointingToDeclaration/">IOResult</span>s via <span data-unresolved-link="kotlinx.coroutines.channels/Channel///PointingToDeclaration/">Channel</span>s</p></div></div></div></div><div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>handle</span><wbr></wbr><span>No</span><wbr></wbr><span>Response</span><wbr></wbr><span><span>Received</span></span></u></div></span></div><div><div class="title"><p class="paragraph">true to handle the situation when the app keeps showing the loading screen after a transaction too large exception is thrown in the service process</p></div></div></div></div></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-1899272759%2FConstructors%2F1210457879" anchor-label="Receiver" id="-1899272759%2FConstructors%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-receiver.html"><span><span>Receiver</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1899272759%2FConstructors%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">shuttle<span class="token operator">: </span><span data-unresolved-link="com.grarcht.shuttle.framework/Shuttle///PointingToDeclaration/">Shuttle</span><span class="token punctuation">, </span></span><span class="parameter ">scope<span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines/CoroutineScope///PointingToDeclaration/">CoroutineScope</span><span class="token punctuation">, </span></span><span class="parameter ">visibilityObservable<span class="token operator">: </span><span data-unresolved-link="com.grarcht.shuttle.framework.visibility.observation/ShuttleVisibilityObservable///PointingToDeclaration/">ShuttleVisibilityObservable</span><span class="token punctuation">, </span></span><span class="parameter ">handleNoResponseReceived<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-1736595109%2FProperties%2F1210457879" anchor-label="flow" id="-1736595109%2FProperties%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="flow.html"><span><span>flow</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1736595109%2FProperties%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="flow.html">flow</a><span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines.flow/Flow///PointingToDeclaration/">Flow</span><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="com.grarcht.shuttle.demo.core.io/IOResult///PointingToDeclaration/">IOResult</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-1578158536%2FFunctions%2F1210457879" anchor-label="abortBroadcast" id="-1578158536%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1578158536%2FFunctions%2F1210457879"><span>abort</span><wbr></wbr><span><span>Broadcast</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1578158536%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#-1578158536%2FFunctions%2F1210457879"><span class="token function">abortBroadcast</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-547655405%2FFunctions%2F1210457879" anchor-label="clearAbortBroadcast" id="-547655405%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-547655405%2FFunctions%2F1210457879"><span>clear</span><wbr></wbr><span>Abort</span><wbr></wbr><span><span>Broadcast</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-547655405%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#-547655405%2FFunctions%2F1210457879"><span class="token function">clearAbortBroadcast</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1852574954%2FFunctions%2F1210457879" anchor-label="getAbortBroadcast" id="1852574954%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1852574954%2FFunctions%2F1210457879"><span>get</span><wbr></wbr><span>Abort</span><wbr></wbr><span><span>Broadcast</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1852574954%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#1852574954%2FFunctions%2F1210457879"><span class="token function">getAbortBroadcast</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2066178064%2FFunctions%2F1210457879" anchor-label="getDebugUnregister" id="-2066178064%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-2066178064%2FFunctions%2F1210457879"><span>get</span><wbr></wbr><span>Debug</span><wbr></wbr><span><span>Unregister</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2066178064%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#-2066178064%2FFunctions%2F1210457879"><span class="token function">getDebugUnregister</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1855658543%2FFunctions%2F1210457879" anchor-label="getResultCode" id="-1855658543%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1855658543%2FFunctions%2F1210457879"><span>get</span><wbr></wbr><span>Result</span><wbr></wbr><span><span>Code</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1855658543%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#-1855658543%2FFunctions%2F1210457879"><span class="token function">getResultCode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="485630644%2FFunctions%2F1210457879" anchor-label="getResultData" id="485630644%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#485630644%2FFunctions%2F1210457879"><span>get</span><wbr></wbr><span>Result</span><wbr></wbr><span><span>Data</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="485630644%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#485630644%2FFunctions%2F1210457879"><span class="token function">getResultData</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1243983328%2FFunctions%2F1210457879" anchor-label="getResultExtras" id="1243983328%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1243983328%2FFunctions%2F1210457879"><span>get</span><wbr></wbr><span>Result</span><wbr></wbr><span><span>Extras</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1243983328%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#1243983328%2FFunctions%2F1210457879"><span class="token function">getResultExtras</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="289542651%2FFunctions%2F1210457879" anchor-label="getSentFromPackage" id="289542651%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#289542651%2FFunctions%2F1210457879"><span>get</span><wbr></wbr><span>Sent</span><wbr></wbr><span>From</span><wbr></wbr><span><span>Package</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="289542651%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#289542651%2FFunctions%2F1210457879"><span class="token function">getSentFromPackage</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-726187215%2FFunctions%2F1210457879" anchor-label="getSentFromUid" id="-726187215%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-726187215%2FFunctions%2F1210457879"><span>get</span><wbr></wbr><span>Sent</span><wbr></wbr><span>From</span><wbr></wbr><span><span>Uid</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-726187215%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#-726187215%2FFunctions%2F1210457879"><span class="token function">getSentFromUid</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="478464125%2FFunctions%2F1210457879" anchor-label="goAsync" id="478464125%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#478464125%2FFunctions%2F1210457879"><span>go</span><wbr></wbr><span><span>Async</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="478464125%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#478464125%2FFunctions%2F1210457879"><span class="token function">goAsync</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/BroadcastReceiver.PendingResult.html">BroadcastReceiver.PendingResult</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-448034677%2FFunctions%2F1210457879" anchor-label="isInitialStickyBroadcast" id="-448034677%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-448034677%2FFunctions%2F1210457879"><span>is</span><wbr></wbr><span>Initial</span><wbr></wbr><span>Sticky</span><wbr></wbr><span><span>Broadcast</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-448034677%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#-448034677%2FFunctions%2F1210457879"><span class="token function">isInitialStickyBroadcast</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1250697259%2FFunctions%2F1210457879" anchor-label="isOrderedBroadcast" id="1250697259%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1250697259%2FFunctions%2F1210457879"><span>is</span><wbr></wbr><span>Ordered</span><wbr></wbr><span><span>Broadcast</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1250697259%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#1250697259%2FFunctions%2F1210457879"><span class="token function">isOrderedBroadcast</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-848835811%2FFunctions%2F1210457879" anchor-label="onReceive" id="-848835811%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-receive.html"><span>on</span><wbr></wbr><span><span>Receive</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-848835811%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-receive.html"><span class="token function">onReceive</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">intent<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Receives and processes broadcasts from the <a href="../-remote-service/index.html">RemoteService</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1162131393%2FFunctions%2F1210457879" anchor-label="peekService" id="-1162131393%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1162131393%2FFunctions%2F1210457879"><span>peek</span><wbr></wbr><span><span>Service</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1162131393%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#-1162131393%2FFunctions%2F1210457879"><span class="token function">peekService</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/IBinder.html">IBinder</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1081576450%2FFunctions%2F1210457879" anchor-label="register" id="1081576450%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="register.html"><span><span>register</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1081576450%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="register.html"><span class="token function">register</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Registers the receiver.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1800318805%2FFunctions%2F1210457879" anchor-label="releaseResources" id="-1800318805%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="release-resources.html"><span>release</span><wbr></wbr><span><span>Resources</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1800318805%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="release-resources.html"><span class="token function">releaseResources</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Releases the resources.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="375803713%2FFunctions%2F1210457879" anchor-label="setDebugUnregister" id="375803713%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#375803713%2FFunctions%2F1210457879"><span>set</span><wbr></wbr><span>Debug</span><wbr></wbr><span><span>Unregister</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="375803713%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#375803713%2FFunctions%2F1210457879"><span class="token function">setDebugUnregister</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="48379132%2FFunctions%2F1210457879" anchor-label="setOrderedHint" id="48379132%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#48379132%2FFunctions%2F1210457879"><span>set</span><wbr></wbr><span>Ordered</span><wbr></wbr><span><span>Hint</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="48379132%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#48379132%2FFunctions%2F1210457879"><span class="token function">setOrderedHint</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="455010187%2FFunctions%2F1210457879" anchor-label="setResult" id="455010187%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#455010187%2FFunctions%2F1210457879"><span>set</span><wbr></wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="455010187%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#455010187%2FFunctions%2F1210457879"><span class="token function">setResult</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">p2<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1146739549%2FFunctions%2F1210457879" anchor-label="setResultCode" id="-1146739549%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1146739549%2FFunctions%2F1210457879"><span>set</span><wbr></wbr><span>Result</span><wbr></wbr><span><span>Code</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1146739549%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#-1146739549%2FFunctions%2F1210457879"><span class="token function">setResultCode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="44586972%2FFunctions%2F1210457879" anchor-label="setResultData" id="44586972%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#44586972%2FFunctions%2F1210457879"><span>set</span><wbr></wbr><span>Result</span><wbr></wbr><span><span>Data</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="44586972%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#44586972%2FFunctions%2F1210457879"><span class="token function">setResultData</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1065610694%2FFunctions%2F1210457879" anchor-label="setResultExtras" id="1065610694%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1065610694%2FFunctions%2F1210457879"><span>set</span><wbr></wbr><span>Result</span><wbr></wbr><span><span>Extras</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1065610694%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#1065610694%2FFunctions%2F1210457879"><span class="token function">setResultExtras</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1749401339%2FFunctions%2F1210457879" anchor-label="unregisterReceiverQuietly" id="1749401339%2FFunctions%2F1210457879" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":demo-mvvm-with-a-service:dokkaHtml/release" data-filterable-set=":demo-mvvm-with-a-service:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unregister-receiver-quietly.html"><span>unregister</span><wbr></wbr><span>Receiver</span><wbr></wbr><span><span>Quietly</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1749401339%2FFunctions%2F1210457879"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":demo-mvvm-with-a-service:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="unregister-receiver-quietly.html"><span class="token function">unregisterReceiverQuietly</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Unregisters the receiver, catching a logging associated errors.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+    </div>
+</div>
+</body>
+</html>

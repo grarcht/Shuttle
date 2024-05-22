@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>ShuttleServiceConnection</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+            <a href="../../../index.html">
+                    <span>framework</span>
+            </a>
+    </div>
+    <div>
+3.0.0    </div>
+    <div class="pull-right d-flex">
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":framework:dokkaHtml/release">androidJvm</button>
+        </div>
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="framework::com.grarcht.shuttle.framework.content.serviceconnection/ShuttleServiceConnection///PointingToDeclaration//1325206814">
+  <div class="breadcrumbs"><a href="../../../index.html">framework</a><span class="delimiter">/</span><a href="../index.html">com.grarcht.shuttle.framework.content.serviceconnection</a><span class="delimiter">/</span><span class="current">ShuttleServiceConnection</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Shuttle</span><wbr></wbr><span>Service</span><wbr></wbr><span><span>Connection</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":framework:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">ShuttleServiceConnection</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">S</a><span class="token operator"> : </span><a href="../../com.grarcht.shuttle.framework.app/-shuttle-service/index.html">ShuttleService</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="index.html">B</a><span class="token operator"> : </span><a href="../../com.grarcht.shuttle.framework.os/-shuttle-binder/index.html">ShuttleBinder</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">S</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><a href="../-shuttle-service-connection-config/index.html">ShuttleServiceConnectionConfig</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">S</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/android/content/ServiceConnection.html">ServiceConnection</a></div><p class="paragraph">Connects to a <a href="../../com.grarcht.shuttle.framework.app/-shuttle-service/index.html">ShuttleService</a>, either remote service with IPC or a local service.</p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>config</span></span></u></div></span></div><div></div></div></div></div><h4 class="">Inheritors</h4><div class="table"><div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../com.grarcht.shuttle.framework.content.serviceconnection.lifecycleaware/-shuttle-lifecycle-aware-service-connection/index.html">ShuttleLifecycleAwareServiceConnection</a></div></span></div><div></div></div></div></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-247670821%2FConstructors%2F1325206814" anchor-label="ShuttleServiceConnection" id="-247670821%2FConstructors%2F1325206814" data-filterable-set=":framework:dokkaHtml/release"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-shuttle-service-connection.html"><span>Shuttle</span><wbr></wbr><span>Service</span><wbr></wbr><span><span>Connection</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-247670821%2FConstructors%2F1325206814"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":framework:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><a href="../-shuttle-service-connection-config/index.html">ShuttleServiceConnectionConfig</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">S</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-1860481190%2FProperties%2F1325206814" anchor-label="ipcServiceMessenger" id="-1860481190%2FProperties%2F1325206814" data-filterable-set=":framework:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="ipc-service-messenger.html"><span>ipc</span><wbr></wbr><span>Service</span><wbr></wbr><span><span>Messenger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1860481190%2FProperties%2F1325206814"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":framework:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="ipc-service-messenger.html">ipcServiceMessenger</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Messenger.html">Messenger</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1115720804%2FProperties%2F1325206814" anchor-label="localService" id="-1115720804%2FProperties%2F1325206814" data-filterable-set=":framework:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="local-service.html"><span>local</span><wbr></wbr><span><span>Service</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1115720804%2FProperties%2F1325206814"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":framework:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="local-service.html">localService</a><span class="token operator">: </span><a href="index.html">S</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="1123878439%2FFunctions%2F1325206814" anchor-label="connectToService" id="1123878439%2FFunctions%2F1325206814" data-filterable-set=":framework:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="connect-to-service.html"><span>connect</span><wbr></wbr><span>To</span><wbr></wbr><span><span>Service</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1123878439%2FFunctions%2F1325206814"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":framework:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="connect-to-service.html"><span class="token function">connectToService</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">serviceClazz<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/Class.html">Class</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">S</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ShuttleServiceConnection</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">S</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="../../com.grarcht.shuttle.framework.os/-shuttle-binder/index.html">ShuttleBinder</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">S</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="connect-to-service.html"><span class="token function">connectToService</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">serviceClazz<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/Class.html">Class</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">S</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">lifecycle<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/Lifecycle.html">Lifecycle</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ShuttleServiceConnection</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">S</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="../../com.grarcht.shuttle.framework.os/-shuttle-binder/index.html">ShuttleBinder</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">S</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Connects to the <a href="../../com.grarcht.shuttle.framework.app/-shuttle-service/index.html">ShuttleService</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-520850971%2FFunctions%2F1325206814" anchor-label="disconnectFromService" id="-520850971%2FFunctions%2F1325206814" data-filterable-set=":framework:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="disconnect-from-service.html"><span>disconnect</span><wbr></wbr><span>From</span><wbr></wbr><span><span>Service</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-520850971%2FFunctions%2F1325206814"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":framework:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="disconnect-from-service.html"><span class="token function">disconnectFromService</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Disconnects from the <a href="../../com.grarcht.shuttle.framework.app/-shuttle-service/index.html">ShuttleService</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1190834026%2FFunctions%2F1325206814" anchor-label="onBindingDied" id="1190834026%2FFunctions%2F1325206814" data-filterable-set=":framework:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.grarcht.shuttle.framework.content.serviceconnection.lifecycleaware/-shuttle-lifecycle-aware-service-connection/index.html#1190834026%2FFunctions%2F1325206814"><span>on</span><wbr></wbr><span>Binding</span><wbr></wbr><span><span>Died</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1190834026%2FFunctions%2F1325206814"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":framework:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="../../com.grarcht.shuttle.framework.content.serviceconnection.lifecycleaware/-shuttle-lifecycle-aware-service-connection/index.html#1190834026%2FFunctions%2F1325206814"><span class="token function">onBindingDied</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/ComponentName.html">ComponentName</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1495798625%2FFunctions%2F1325206814" anchor-label="onNullBinding" id="-1495798625%2FFunctions%2F1325206814" data-filterable-set=":framework:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.grarcht.shuttle.framework.content.serviceconnection.lifecycleaware/-shuttle-lifecycle-aware-service-connection/index.html#-1495798625%2FFunctions%2F1325206814"><span>on</span><wbr></wbr><span>Null</span><wbr></wbr><span><span>Binding</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1495798625%2FFunctions%2F1325206814"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":framework:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="../../com.grarcht.shuttle.framework.content.serviceconnection.lifecycleaware/-shuttle-lifecycle-aware-service-connection/index.html#-1495798625%2FFunctions%2F1325206814"><span class="token function">onNullBinding</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/ComponentName.html">ComponentName</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-365168812%2FFunctions%2F1325206814" anchor-label="onServiceConnected" id="-365168812%2FFunctions%2F1325206814" data-filterable-set=":framework:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-service-connected.html"><span>on</span><wbr></wbr><span>Service</span><wbr></wbr><span><span>Connected</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-365168812%2FFunctions%2F1325206814"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":framework:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-service-connected.html"><span class="token function">onServiceConnected</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">componentName<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/ComponentName.html">ComponentName</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">service<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/IBinder.html">IBinder</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Sets the reference for <a href="ipc-service-messenger.html">ipcServiceMessenger</a> or <a href="local-service.html">localService</a> and emits a <a href="../../com.grarcht.shuttle.framework.app/-shuttle-connected-service-model/index.html">ShuttleConnectedServiceModel</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="609877976%2FFunctions%2F1325206814" anchor-label="onServiceDisconnected" id="609877976%2FFunctions%2F1325206814" data-filterable-set=":framework:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":framework:dokkaHtml/release" data-filterable-set=":framework:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-service-disconnected.html"><span>on</span><wbr></wbr><span>Service</span><wbr></wbr><span><span>Disconnected</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="609877976%2FFunctions%2F1325206814"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":framework:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-service-disconnected.html"><span class="token function">onServiceDisconnected</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">componentName<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/ComponentName.html">ComponentName</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Resets references.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+    </div>
+</div>
+</body>
+</html>

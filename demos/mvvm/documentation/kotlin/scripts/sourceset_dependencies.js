@@ -1,1 +1,1 @@
-sourceset_dependencies='{":demo-mvvm:dokkaHtml/debug":[],":demo-mvvm:dokkaHtml/generatedByKspDebugKotlin":[],":demo-mvvm:dokkaHtml/generatedByKspReleaseKotlin":[],":demo-mvvm:dokkaHtml/main":[],":demo-mvvm:dokkaHtml/release":[]}'
+sourceset_dependencies='{":demo-mvvm:dokkaHtml/debug":[],":demo-mvvm:dokkaHtml/main":[],":demo-mvvm:dokkaHtml/release":[]}'
