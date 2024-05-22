@@ -2,7 +2,7 @@ package com.grarcht.shuttle.framework.app
 
 import android.os.Message
 import com.grarcht.shuttle.framework.Shuttle
-import com.grarcht.shuttle.framework.os.messenger.ShuttleMessengerFactory
+import com.grarcht.shuttle.framework.os.messenger.factory.ShuttleMessengerFactory
 import com.grarcht.shuttle.framework.validator.ShuttleServiceMessageValidator
 import com.grarcht.shuttle.framework.validator.ShuttleValidator
 import com.grarcht.shuttle.framework.visibility.observation.ShuttleVisibilityObservable

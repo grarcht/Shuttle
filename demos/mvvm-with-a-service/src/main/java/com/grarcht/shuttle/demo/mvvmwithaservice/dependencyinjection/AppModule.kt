@@ -15,7 +15,7 @@ import com.grarcht.shuttle.framework.integrations.extensions.room.ShuttleRoomDat
 import com.grarcht.shuttle.framework.integrations.extensions.room.ShuttleRoomDbConfig
 import com.grarcht.shuttle.framework.integrations.persistence.io.file.factory.ShuttlePersistenceFileFactory
 import com.grarcht.shuttle.framework.integrations.persistence.io.file.gateway.ShuttlePersistenceFileSystemGateway
-import com.grarcht.shuttle.framework.os.messenger.ShuttleServiceMessengerFactory
+import com.grarcht.shuttle.framework.os.messenger.factory.ShuttleServiceMessengerFactory
 import com.grarcht.shuttle.framework.screen.ShuttleCargoFacade
 import com.grarcht.shuttle.framework.screen.ShuttleFacade
 import com.grarcht.shuttle.framework.visibility.ShuttleVisibilityReporter
