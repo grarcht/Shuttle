@@ -3,7 +3,11 @@
 
 # Shuttle
 [![License: MIT](https://img.shields.io/github/license/grarcht/shuttle?color=white&style=plastic)](https://github.com/grarcht/Shuttle/blob/main/LICENSE.md)   ![Maven Central](https://img.shields.io/maven-central/v/com.grarcht.shuttle/framework?color=teal&style=plastic)
-[![Featured in androidweekly.net](https://img.shields.io/badge/Featured%20in%20androidweekly.net-Issue%20%23455-4998C2)](https://androidweekly.net/issues/issue-455)
+
+## Featured in androidweekly.net
+
+[![Issue #594](https://img.shields.io/badge/Featured%20in%20androidweekly.net-Issue%20%23455-4998C2)](https://androidweekly.net/issues/issue-594)
+[![Issue #455](https://img.shields.io/badge/Featured%20in%20androidweekly.net-Issue%20%23455-4998C2)](https://androidweekly.net/issues/issue-455)
 
 ## Overview
 
@@ -58,10 +62,10 @@ Refer to the documentation and demo app as a starting point.  The documentation 
 
 To use the maven dependency artifacts with Gradle, add the following to the corresponding build.gradle file(s):
 ```groovy
-    implementation 'com.grarcht.shuttle:framework:2.1.0' // Needed
-    implementation 'com.grarcht.shuttle:framework-integrations-persistence:2.1.0'  // Needed
-    implementation 'com.grarcht.shuttle:framework-integrations-extensions-room:2.1.0' // Needed unless an alternative is used
-    implementation 'com.grarcht.shuttle:framework-addons-navigation-component:2.1.0'  // Optional for integration with the Navigation Component
+    implementation 'com.grarcht.shuttle:framework:3.0.0' // Needed
+    implementation 'com.grarcht.shuttle:framework-integrations-persistence:3.0.0'  // Needed
+    implementation 'com.grarcht.shuttle:framework-integrations-extensions-room:3.0.0' // Needed unless an alternative is used
+    implementation 'com.grarcht.shuttle:framework-addons-navigation-component:3.0.0'  // Optional for integration with the Navigation Component
 ```
 
 
