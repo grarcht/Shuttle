@@ -6,8 +6,8 @@
 
 ## Featured in androidweekly.net
 
-[![Issue #594](https://img.shields.io/badge/Issue%20%23594)](https://androidweekly.net/issues/issue-594)
-[![Issue #455](https://img.shields.io/badge/Issue%20%23455)](https://androidweekly.net/issues/issue-455)
+[![Featured in androidweekly.net](https://img.shields.io/badge/Featured%20in%20androidweekly.net-Issue%20%23455-4998C2)](https://androidweekly.net/issues/issue-455)
+
 
 ## Overview
 
