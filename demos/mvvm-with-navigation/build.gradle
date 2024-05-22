@@ -80,16 +80,16 @@ dependencies {
 
     // To use lighter weight, independent dependencies, comment out the above dependency and
     // uncomment the following:
-     implementation project(':framework')
-     implementation project(':framework-integrations-persistence')
-     implementation project(':framework-integrations-extensions-room')
-     implementation project(':framework-addons-navigation-component')
+//     implementation project(':framework')
+//     implementation project(':framework-integrations-persistence')
+//     implementation project(':framework-integrations-extensions-room')
+//     implementation project(':framework-addons-navigation-component')
 
     // To use maven dependencies, use the following:
-//    implementation shuttle.framework
-//    implementation shuttle.integrationsPersistence
-//    implementation shuttle.integrationsExtensionsRoom
-//    implementation shuttle.addOnsNavigationComponent
+    implementation shuttle.framework
+    implementation shuttle.integrationsPersistence
+    implementation shuttle.integrationsExtensionsRoom
+    implementation shuttle.addOnsNavigationComponent
 
     androidTestImplementation testingDeps.junit.ext
     androidTestImplementation testingDeps.espresso.core

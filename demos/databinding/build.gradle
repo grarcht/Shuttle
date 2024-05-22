@@ -47,8 +47,8 @@ dependencies {
 
     // To use typical module dependencies, comment out the above dependency and
     // uncomment the following:
-    implementation project(':framework')
+//    implementation project(':framework')
 
     // To use maven dependencies, use the following
-//    implementation shuttle.framework
+    implementation shuttle.framework
 }
