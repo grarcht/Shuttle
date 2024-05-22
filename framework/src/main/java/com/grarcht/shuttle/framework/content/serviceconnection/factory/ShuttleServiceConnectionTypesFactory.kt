@@ -32,6 +32,7 @@ class ShuttleServiceConnectionTypesFactory : ShuttleServiceConnectionFactory {
      *
      * @return the newly created config
      */
+    @Suppress("LongParameterList")
     override fun <S : ShuttleService> createShuttleServiceConnectionConfig(
         context: Context?,
         serviceName: String,
@@ -73,6 +74,7 @@ class ShuttleServiceConnectionTypesFactory : ShuttleServiceConnectionFactory {
      *
      * @return the newly created config
      */
+    @Suppress("LongParameterList")
     override fun <S : ShuttleService, B : ShuttleBinder<S>> createServiceConnection(
         context: Context?,
         serviceName: String,
@@ -100,6 +102,7 @@ class ShuttleServiceConnectionTypesFactory : ShuttleServiceConnectionFactory {
      *
      * @return the newly created config
      */
+    @Suppress("LongParameterList")
     override fun <S : ShuttleService, B : ShuttleBinder<S>> createShuttleServiceConnectionConfig(
         config: ShuttleLifecycleAwareServiceConnectionConfig<S>
     ): ShuttleServiceConnectionConfig<S> {
@@ -127,6 +130,7 @@ class ShuttleServiceConnectionTypesFactory : ShuttleServiceConnectionFactory {
      *
      * @return the newly created config
      */
+    @Suppress("LongParameterList")
     override fun <S : ShuttleService> createLifecycleAwareServiceConnectionConfig(
         context: Context?,
         serviceClazz: Class<S>,
@@ -177,6 +181,7 @@ class ShuttleServiceConnectionTypesFactory : ShuttleServiceConnectionFactory {
      *
      * @return the newly created config
      */
+    @Suppress("LongParameterList")
     override fun <S : ShuttleService, B : ShuttleBinder<S>> createLifecycleAwareServiceConnection(
         context: Context?,
         serviceClazz: Class<S>,

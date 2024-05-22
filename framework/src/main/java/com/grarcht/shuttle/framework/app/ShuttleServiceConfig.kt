@@ -26,5 +26,4 @@ data class ShuttleServiceConfig(
     val bindingType: ShuttleServiceType,
     val messengerFactory: ShuttleMessengerFactory,
     val messageValidator: ShuttleValidator<Message> = ShuttleServiceMessageValidator()
-    
 )

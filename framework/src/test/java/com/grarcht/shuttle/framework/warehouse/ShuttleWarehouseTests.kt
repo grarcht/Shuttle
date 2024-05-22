@@ -151,7 +151,7 @@ class ShuttleWarehouseTests {
         // Will be launched in the mainThreadSurrogate dispatcher
         val disposableHandle = launch(Dispatchers.Main) {
             @Suppress("ktlint:experimental:comment-wrapping")
-            val channel: Channel<ShuttleStoreCargoResult> = warehouse.store(cargoId, /* cargo */ null)
+            val channel: Channel<ShuttleStoreCargoResult> = warehouse.store(cargoId, null)
             channel.consumeAsFlow()
                 .collectLatest { shuttleResult ->
                     when (shuttleResult) {
@@ -352,7 +352,7 @@ class ShuttleWarehouseTests {
         val countDownLatch = CountDownLatch(1)
 
         @Suppress("ktlint:experimental:comment-wrapping")
-        `when`(dao.getCargoBy(anyOrNull())).thenReturn(/* ShuttleDataModel */ null)
+        `when`(dao.getCargoBy(anyOrNull())).thenReturn(null)
 
         val disposableHandle = launch(Dispatchers.Main) {
             val channel: Channel<ShuttlePickupCargoResult> = warehouse.pickup<Cargo>(cargoId)

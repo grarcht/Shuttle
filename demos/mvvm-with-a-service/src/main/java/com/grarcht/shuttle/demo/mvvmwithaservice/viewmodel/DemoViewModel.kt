@@ -47,7 +47,8 @@ class DemoViewModel @Inject constructor(
     private val serviceConnectionFactory: ShuttleServiceConnectionFactory
 ) : ViewModel() {
     private val remoteServiceChannel = Channel<ShuttleConnectedServiceModel<RemoteService>>()
-    private val visibilityObservable: ShuttleVisibilityObservable = ShuttleChannelVisibilityObservable(reporter, viewModelScope)
+    private val visibilityObservable: ShuttleVisibilityObservable =
+        ShuttleChannelVisibilityObservable(reporter, viewModelScope)
     private var ipcServiceConnection: ShuttleServiceConnection<RemoteService, ShuttleBinder<RemoteService>>? = null
     private var ipcServiceReceiver: Receiver? = null
     private var ipcMessenger: Messenger? = null

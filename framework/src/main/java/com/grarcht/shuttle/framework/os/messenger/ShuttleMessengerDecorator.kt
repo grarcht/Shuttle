@@ -53,6 +53,7 @@ open class ShuttleMessengerDecorator(
     fun getBinder(): IBinder? = rawMessenger.binder
 
     private inner class Callback : Handler.Callback {
+        @Suppress("TooGenericExceptionCaught")
         override fun handleMessage(msg: Message): Boolean {
             var handled = false
             val isMessageValid = messageValidator.validate(msg)

@@ -100,7 +100,7 @@ open class ShuttleServiceConnection<S : ShuttleService, B : ShuttleBinder<S>>(
      * @param serviceClazz for the [ShuttleService] to connect to
      * @param lifecycle used for lifecycle state checks in connecting to the service
      */
-    @Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST", "TooGenericExceptionCaught")
     open fun connectToService(
         context: Context,
         serviceClazz: Class<S>,
@@ -114,6 +114,11 @@ open class ShuttleServiceConnection<S : ShuttleService, B : ShuttleBinder<S>>(
                 }
             }
             this.context = context
+        } catch (e: SecurityException) {
+            val lifecycleStateName = lifecycle?.currentState?.name ?: UNKNOWN_STATE_NAME
+            val message = "$UNABLE_TO_CONNECT_MESSAGE ${e.message}"
+            val error = ShuttleServiceError.ConnectToServiceError(config.serviceName, lifecycleStateName, message, e)
+            config.errorObservable.observe(error)
         } catch (e: Exception) {
             val lifecycleStateName = lifecycle?.currentState?.name ?: UNKNOWN_STATE_NAME
             val message = "$UNABLE_TO_CONNECT_MESSAGE ${e.message}"
@@ -126,6 +131,7 @@ open class ShuttleServiceConnection<S : ShuttleService, B : ShuttleBinder<S>>(
     /**
      * Disconnects from the [ShuttleService].
      */
+    @Suppress("TooGenericExceptionCaught")
     open fun disconnectFromService() {
         if (isConnected) {
             try {

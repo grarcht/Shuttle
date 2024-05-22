@@ -31,5 +31,5 @@ data class ShuttleLifecycleAwareServiceConnectionConfig<S : ShuttleService>(
     val useWithIPC: Boolean = false,
     val coroutineScope: CoroutineScope,
     val serviceChannel: Channel<ShuttleConnectedServiceModel<S>>,
-    val serviceConnectionFactory : ShuttleServiceConnectionFactory
+    val serviceConnectionFactory: ShuttleServiceConnectionFactory
 )

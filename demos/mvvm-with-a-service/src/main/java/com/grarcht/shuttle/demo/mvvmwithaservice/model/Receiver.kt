@@ -174,11 +174,8 @@ class Receiver(
                 override fun run() {
                     if (!responseReceived) {
                         scope.launch {
-                            Log.e(
-                                LOG_TAG,
-                                "Unable to retrieve the image after the Transaction Too " +
-                                        "Large Exception was thrown in the remote process."
-                            )
+                            val msg = "Unable to retrieve image. Exception thrown in remote process."
+                            Log.e(LOG_TAG, msg)
                             exitProcess(0)
                         }
                     }

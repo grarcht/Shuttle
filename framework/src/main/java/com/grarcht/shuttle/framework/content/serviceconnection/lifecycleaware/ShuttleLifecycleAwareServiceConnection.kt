@@ -9,16 +9,17 @@ import com.grarcht.shuttle.framework.content.serviceconnection.ShuttleServiceCon
 import com.grarcht.shuttle.framework.os.ShuttleBinder
 
 /**
- * A lifecycle aware service connection, which connects to the [ShuttleService] when [onStart] is called and disconnects the service
- * when [onStop] is called.
+ * A lifecycle aware service connection, which connects to the [ShuttleService] when
+ * [onStart] is called and disconnects the service when [onStop] is called.
  *
  * @param config
  */
 class ShuttleLifecycleAwareServiceConnection<S : ShuttleService, B : ShuttleBinder<S>>(
     private val config: ShuttleLifecycleAwareServiceConnectionConfig<S>
-) : ShuttleServiceConnection<S, B>(
-    config.serviceConnectionFactory.createShuttleServiceConnectionConfig(config)
-), DefaultLifecycleObserver {
+) : DefaultLifecycleObserver,
+    ShuttleServiceConnection<S, B>(
+        config.serviceConnectionFactory.createShuttleServiceConnectionConfig(config)
+    ) {
 
     init {
         config.lifecycle.addObserver(this)
