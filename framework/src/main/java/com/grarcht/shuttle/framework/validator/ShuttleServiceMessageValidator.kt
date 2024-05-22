@@ -16,9 +16,9 @@ class ShuttleServiceMessageValidator : ShuttleValidator<Message> {
      * @return true if the data is valid.
      */
     override fun validate(data: Message): Boolean {
-        return if (data.data != null && data.data is Bundle) {
-            val bundle = data.data
-            val cargoId = bundle.getString(CARGO_ID_KEY, NO_CARGO_ID)
+        val dataBundle: Bundle? = data.data
+        return if (dataBundle != null) {
+            val cargoId = dataBundle.getString(CARGO_ID_KEY, NO_CARGO_ID)
             cargoId != NO_CARGO_ID
         } else {
             false
