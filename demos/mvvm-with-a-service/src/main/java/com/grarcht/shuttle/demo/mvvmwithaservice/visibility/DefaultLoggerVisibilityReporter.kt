@@ -27,9 +27,21 @@ class DefaultLoggerVisibilityReporter(
             is ShuttleVisibilityFeedback.Information<*> -> Log.i(LOG_TAG, visibilityData.message)
             is ShuttleDefaultError.ObservedError -> Log.e(LOG_TAG, visibilityData.errorMessage, visibilityData.error)
             is ShuttleServiceError.GeneralError<*> -> Log.e(LOG_TAG, visibilityData.errorMessage, visibilityData.error)
-            is ShuttleServiceError.ConnectToServiceError<*> -> Log.e(LOG_TAG, visibilityData.errorMessage, visibilityData.error)
-            is ShuttleServiceError.DisconnectFromServiceError<*> -> Log.e(LOG_TAG, visibilityData.errorMessage, visibilityData.error)
-            is ShuttleServiceError.HandleMessageError<*> -> Log.e(LOG_TAG, visibilityData.errorMessage, visibilityData.error)
+            is ShuttleServiceError.ConnectToServiceError<*> -> Log.e(
+                LOG_TAG,
+                visibilityData.errorMessage,
+                visibilityData.error
+            )
+            is ShuttleServiceError.DisconnectFromServiceError<*> -> Log.e(
+                LOG_TAG,
+                visibilityData.errorMessage,
+                visibilityData.error
+            )
+            is ShuttleServiceError.HandleMessageError<*> -> Log.e(
+                LOG_TAG,
+                visibilityData.errorMessage,
+                visibilityData.error
+            )
         }
     }
 }

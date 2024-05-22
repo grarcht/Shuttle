@@ -24,10 +24,12 @@ sealed class ShuttleStoreCargoResult {
      * The state for when Shuttle has started storing the cargo.
      * @param cargoId for the cargo being stored
      */
+    @Suppress("MemberVisibilityCanBePrivate")
     class Storing(val cargoId: String) : ShuttleStoreCargoResult()
 
     /**
      * The initial state for Shuttle not storing the cargo yet.
      */
-    object NotStoringCargoYet : ShuttleStoreCargoResult()
+    @Suppress("MemberVisibilityCanBePrivate")
+    data class NotStoringCargoYet(val cargoId: String) : ShuttleStoreCargoResult()
 }

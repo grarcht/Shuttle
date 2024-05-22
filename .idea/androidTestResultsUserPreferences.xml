@@ -8,6 +8,7 @@
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">
                 <map>
+                  <entry key="10_Tablet_API_33" value="120" />
                   <entry key="Duration" value="90" />
                   <entry key="Google Pixel 6a" value="120" />
                   <entry key="Pixel_3_API_33" value="120" />

@@ -1,10 +1,10 @@
 package com.grarcht.shuttle.framework.integrations.extensions.room
 
 import androidx.test.platform.app.InstrumentationRegistry
-import org.junit.Assert.assertTrue
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.AfterClass
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.jupiter.api.Assertions

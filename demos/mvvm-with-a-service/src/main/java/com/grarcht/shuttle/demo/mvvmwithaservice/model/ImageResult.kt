@@ -3,6 +3,7 @@ package com.grarcht.shuttle.demo.mvvmwithaservice.model
 /**
  * Denotes the image retrieval state in the [RemoteService] and [Receiver].
  */
+@Suppress("MagicNumber")
 enum class ImageResult(val state: Int) {
     UNKNOWN(0),
     LOADING(1),

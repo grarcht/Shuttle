@@ -1,4 +1,4 @@
-package com.grarcht.shuttle.framework.content.service
+package com.grarcht.shuttle.framework.content.serviceconnection
 
 import android.content.ComponentName
 import android.content.Context
@@ -9,11 +9,8 @@ import android.os.Messenger
 import androidx.lifecycle.Lifecycle
 import com.grarcht.shuttle.framework.app.ShuttleConnectedServiceModel
 import com.grarcht.shuttle.framework.app.ShuttleService
-import com.grarcht.shuttle.framework.visibility.observation.ShuttleVisibilityObservable
-import com.grarcht.shuttle.framework.visibility.error.ShuttleServiceError
 import com.grarcht.shuttle.framework.os.ShuttleBinder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.channels.Channel
+import com.grarcht.shuttle.framework.visibility.error.ShuttleServiceError
 import kotlinx.coroutines.launch
 
 private const val UNABLE_TO_CONNECT_MESSAGE = "Unable to connect to the service: "
@@ -22,24 +19,16 @@ private const val UNKNOWN_STATE_NAME = "Unknown state."
 
 /**
  * Connects to a [ShuttleService], either remote service with IPC or a local service.
- * @param serviceName used for logging
- * @param errorObservable provides visibility in to possible errors
- * @param useWithIPC true, if this service should be remote and use interprocess communication
- * @param coroutineScope used to emit a [ShuttleConnectedServiceModel] over a [Channel]
- * @param serviceChannel emits a [ShuttleConnectedServiceModel]
+ * @param config
  */
 @Suppress("MemberVisibilityCanBePrivate")
 open class ShuttleServiceConnection<S : ShuttleService, B : ShuttleBinder<S>>(
-    private val serviceName: String,
-    private val errorObservable: ShuttleVisibilityObservable,
-    private val useWithIPC: Boolean = false,
-    private val coroutineScope: CoroutineScope,
-    private val serviceChannel: Channel<ShuttleConnectedServiceModel<S>>
+    private val config: ShuttleServiceConnectionConfig<S>
 ) : ServiceConnection {
     var localService: S? = null
     var ipcServiceMessenger: Messenger? = null
 
-    protected var context: Context? = null
+    protected var context: Context? = config.context
     protected var isConnected: Boolean = false
 
     /**
@@ -52,7 +41,7 @@ open class ShuttleServiceConnection<S : ShuttleService, B : ShuttleBinder<S>>(
      */
     @Suppress("UNCHECKED_CAST")
     override fun onServiceConnected(componentName: ComponentName?, service: IBinder?) {
-        if (useWithIPC) { // a remote (non-local) service
+        if (config.useWithIPC) { // a remote (non-local) service
             ipcServiceMessenger = Messenger(service)
             emitConnectedServiceModel(ipcServiceMessenger = ipcServiceMessenger)
         } else { // non-IPC service (service is in the app process)
@@ -68,8 +57,8 @@ open class ShuttleServiceConnection<S : ShuttleService, B : ShuttleBinder<S>>(
     }
 
     private fun emitConnectedServiceModel(localService: S? = null, ipcServiceMessenger: Messenger? = null) {
-        serviceChannel.let {
-            coroutineScope.launch {
+        config.serviceChannel.let {
+            config.coroutineScope.launch {
                 val model = ShuttleConnectedServiceModel(localService, ipcServiceMessenger)
                 it.send(model)
             }
@@ -117,7 +106,6 @@ open class ShuttleServiceConnection<S : ShuttleService, B : ShuttleBinder<S>>(
         serviceClazz: Class<S>,
         lifecycle: Lifecycle?
     ): ShuttleServiceConnection<S, ShuttleBinder<S>> {
-
         try {
             val shouldConnect = lifecycle == null || lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)
             if (shouldConnect) {
@@ -129,8 +117,8 @@ open class ShuttleServiceConnection<S : ShuttleService, B : ShuttleBinder<S>>(
         } catch (e: Exception) {
             val lifecycleStateName = lifecycle?.currentState?.name ?: UNKNOWN_STATE_NAME
             val message = "$UNABLE_TO_CONNECT_MESSAGE ${e.message}"
-            val error = ShuttleServiceError.ConnectToServiceError(serviceName, lifecycleStateName, message, e)
-            errorObservable.observe(error)
+            val error = ShuttleServiceError.ConnectToServiceError(config.serviceName, lifecycleStateName, message, e)
+            config.errorObservable.observe(error)
         }
         return this as ShuttleServiceConnection<S, ShuttleBinder<S>>
     }
@@ -147,8 +135,8 @@ open class ShuttleServiceConnection<S : ShuttleService, B : ShuttleBinder<S>>(
                 }
             } catch (e: Exception) {
                 val message = "$UNABLE_TO_DISCONNECT_MESSAGE ${e.message}"
-                val error = ShuttleServiceError.DisconnectFromServiceError(serviceName, Unit, message, e)
-                errorObservable.observe(error)
+                val error = ShuttleServiceError.DisconnectFromServiceError(config.serviceName, Unit, message, e)
+                config.errorObservable.observe(error)
             }
         }
     }

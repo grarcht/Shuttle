@@ -51,11 +51,12 @@ class LCEDialogFragment : DialogFragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.lce_view, container)
     }
-
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
@@ -163,7 +164,8 @@ class LCEDialogFragment : DialogFragment() {
                 screenWidth = it.width()
             }
         } else {
-            @Suppress("DEPRECATION") dialog.window?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
+            @Suppress("DEPRECATION")
+            dialog.window?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
             screenHeight = displayMetrics.heightPixels
             screenWidth = displayMetrics.widthPixels
         }
@@ -194,7 +196,6 @@ class LCEDialogFragment : DialogFragment() {
                 }
             }
         }
-
     }
 
     companion object {

@@ -14,8 +14,8 @@ enum class ShuttleServiceType(private val typeName: String) {
      */
     @Suppress("unused")
     fun isBoundService() = this.typeName == BOUND_AIDL.typeName ||
-            this.typeName == BOUND_LOCAL.typeName ||
-            this.typeName == BOUND_MESSENGER.typeName
+        this.typeName == BOUND_LOCAL.typeName ||
+        this.typeName == BOUND_MESSENGER.typeName
 
     /**
      * @return true of the service is of type [BOUND_AIDL].

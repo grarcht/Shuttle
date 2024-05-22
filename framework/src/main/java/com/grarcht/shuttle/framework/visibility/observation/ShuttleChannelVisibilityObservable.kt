@@ -12,7 +12,6 @@ private const val ERROR_ADDING_CHANNEL = "Unable to add the channel:"
 private const val ERROR_CLOSING_CHANNELS = "Unable to close the channels."
 private const val ERROR_CLEARING_CHANNELS = "Unable to clear the channels."
 
-
 /**
  * Observes visibility data, used to provide insight into the customer experience.
  */

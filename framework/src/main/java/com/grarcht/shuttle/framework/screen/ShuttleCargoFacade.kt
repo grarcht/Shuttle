@@ -143,10 +143,11 @@ open class ShuttleCargoFacade(
         backgroundThreadScope.launch {
             shuttleWarehouse.removeCargoBy(screen.cargoId).consumeAsFlow().collectLatest {
                 when (it) {
-                    ShuttleRemoveCargoResult.NotRemovingCargoYet,
+                    is ShuttleRemoveCargoResult.NotRemovingCargoYet,
                     is ShuttleRemoveCargoResult.Removing -> {
                         // ignore
                     }
+
                     is ShuttleRemoveCargoResult.DoesNotExist,
                     is ShuttleRemoveCargoResult.Removed,
                     is ShuttleRemoveCargoResult.UnableToRemove<*> -> {

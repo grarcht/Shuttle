@@ -43,7 +43,7 @@ open class ShuttleRepository(
     @Suppress("unused")
     override suspend fun <D : Serializable> pickup(cargoId: String): Channel<ShuttlePickupCargoResult> {
         val pickupCargoChannel = Channel<ShuttlePickupCargoResult>(PICKUP_CARGO_CHANNEL_CAPACITY)
-        pickupCargoChannel.send(ShuttlePickupCargoResult.Loading)
+        pickupCargoChannel.send(ShuttlePickupCargoResult.Loading(cargoId))
 
         pickupCargoChannel.apply {
             val shuttleDataModel = shuttleDao.getCargoBy(cargoId)
@@ -126,6 +126,7 @@ open class ShuttleRepository(
                         val result = ShuttleRemoveCargoResult.DoesNotExist(cargoId = cargoId)
                         removeCargoChannel.send(result)
                     }
+
                     is ShuttlePersistenceRemoveCargoResult.UnableToRemove -> {
                         val result = ShuttleRemoveCargoResult.UnableToRemove<Throwable>(
                             cargoId = cargoId,
@@ -133,6 +134,7 @@ open class ShuttleRepository(
                         )
                         removeCargoChannel.send(result)
                     }
+
                     is ShuttlePersistenceRemoveCargoResult.Removed -> {
                         val returnValue = shuttleDao.deleteCargoBy(cargoId)
 
@@ -173,10 +175,12 @@ open class ShuttleRepository(
                         val result = ShuttleRemoveCargoResult.UnableToRemove<Throwable>(cargoId = ALL_CARGO)
                         removeCargoChannel.send(result)
                     }
+
                     is ShuttlePersistenceRemoveCargoResult.DoesNotExist -> {
                         val result = ShuttleRemoveCargoResult.DoesNotExist(cargoId = ALL_CARGO)
                         removeCargoChannel.send(result)
                     }
+
                     is ShuttlePersistenceRemoveCargoResult.Removed -> {
                         val returnValue = shuttleDao.deleteAllCargoData()
 

@@ -8,6 +8,8 @@ import com.grarcht.shuttle.framework.CargoShuttle
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.app.ShuttleServiceConfig
 import com.grarcht.shuttle.framework.app.ShuttleServiceType
+import com.grarcht.shuttle.framework.content.serviceconnection.factory.ShuttleServiceConnectionFactory
+import com.grarcht.shuttle.framework.content.serviceconnection.factory.ShuttleServiceConnectionTypesFactory
 import com.grarcht.shuttle.framework.integrations.extensions.room.ShuttleRoomDataDb
 import com.grarcht.shuttle.framework.integrations.extensions.room.ShuttleRoomDataModelFactory
 import com.grarcht.shuttle.framework.integrations.extensions.room.ShuttleRoomDbConfig
@@ -41,6 +43,10 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object AppModule {
+    @Provides
+    fun provideShuttleServiceConnectionFactory(): ShuttleServiceConnectionFactory =
+        ShuttleServiceConnectionTypesFactory()
+
     @Named("MainScope")
     @Provides
     fun providesMainScope(): CoroutineScope = MainScope()

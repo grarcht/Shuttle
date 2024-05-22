@@ -7,7 +7,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
-import com.grarcht.shuttle.framework.addons.navigation.BuildConfig
 import com.grarcht.shuttle.framework.content.bundle.BundleFactory
 import com.grarcht.shuttle.framework.content.bundle.DefaultBundleFactory
 import com.grarcht.shuttle.framework.content.bundle.ShuttleBundle

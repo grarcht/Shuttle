@@ -175,7 +175,8 @@ class RemoteService : ShuttleService() {
     }
 
     /**
-     * Transports the image cargo and sends it without using Shuttle for cargo transport prior to calling [sendBroadcast].
+     * Transports the image cargo and sends it without using Shuttle for cargo
+     * transport prior to calling [sendBroadcast].
      */
     private fun transportImageBytesWithoutShuttle(msg: Message) {
         val imageId: Int = msg.data.getInt(KEY_IMAGE_ID)

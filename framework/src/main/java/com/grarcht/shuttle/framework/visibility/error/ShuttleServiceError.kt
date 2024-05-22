@@ -52,7 +52,6 @@ interface ShuttleServiceError : ShuttleError {
         val error: Throwable
     ) : ShuttleServiceError
 
-
     /**
      * Represents non-specific errors.
      *

@@ -1,7 +1,7 @@
 package com.grarcht.shuttle.framework.app
 
 import android.os.Messenger
-import com.grarcht.shuttle.framework.content.service.ShuttleServiceConnection
+import com.grarcht.shuttle.framework.content.serviceconnection.ShuttleServiceConnection
 
 /**
  * Holds the service references, emitted from the [ShuttleServiceConnection].

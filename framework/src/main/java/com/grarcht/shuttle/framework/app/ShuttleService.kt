@@ -91,7 +91,7 @@ open class ShuttleService : Service(), ShuttleMessageReceiver {
      */
     open fun createMessengerDecoratorForIPC(): IBinder? {
         return if (config.bindingType == ShuttleServiceType.BOUND_MESSENGER) {
-            if (ipcServiceMessengerDecorator == null)
+            if (ipcServiceMessengerDecorator == null) {
                 ipcServiceMessengerDecorator = config.messengerFactory.createMessenger(
                     mainLooper,
                     config.serviceName,
@@ -99,6 +99,7 @@ open class ShuttleService : Service(), ShuttleMessageReceiver {
                     config.errorObservable,
                     config.messageValidator
                 )
+            }
             ipcServiceMessengerDecorator?.getBinder()
         } else {
             null

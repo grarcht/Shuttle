@@ -18,10 +18,10 @@ open class ShuttleRoomDbFactory {
     fun createDb(config: ShuttleRoomDbConfig): ShuttleRoomDataDb {
         return if (config.multiprocess) {
             Room.databaseBuilder(
-                    config.context.applicationContext,
-                    ShuttleRoomDataDb::class.java,
-                    DB_NAME
-                ).enableMultiInstanceInvalidation()
+                config.context.applicationContext,
+                ShuttleRoomDataDb::class.java,
+                DB_NAME
+            ).enableMultiInstanceInvalidation()
                 .build()
         } else {
             Room.databaseBuilder(

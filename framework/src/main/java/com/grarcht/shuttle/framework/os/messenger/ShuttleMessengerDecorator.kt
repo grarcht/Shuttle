@@ -17,7 +17,6 @@ private const val INVALID_CARGO = "Unable to process the message with invalid ca
 private const val UNABLE_TO_HANDLE_MESSAGE = "Unable to handle the message: "
 private const val VISIBILITY_CONTEXT = ""
 
-
 /**
  * Decorates a [Messenger] with cargo validation.  This class is based on the Decorator Design Pattern.
  * For more information, refer to:

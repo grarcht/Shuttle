@@ -25,7 +25,8 @@ import javax.inject.Inject
 private const val LOG_TAG = "MVVMViewFragment"
 
 /**
- * Part of the view component for displaying the views and communicating with the [DemoViewModel] component to retrieve the cargo.
+ * Part of the view component for displaying the views and communicating
+ * with the [DemoViewModel] component to retrieve the cargo.
  */
 @AndroidEntryPoint
 class MVVMViewFragment : Fragment() {
@@ -121,7 +122,10 @@ class MVVMViewFragment : Fragment() {
                         is IOResult.Success<*> -> showSuccessContentDialog(it.data as ImageModel)
                         is IOResult.Error<*> -> showErrorDialog(it.message, it.throwable)
                         IOResult.Unknown -> {
-                            Log.w(LOG_TAG, "Unknown result when getting the image using the remote Shuttle Service (IPC).")
+                            Log.w(
+                                LOG_TAG,
+                                "Unknown result when getting the image using the remote Shuttle Service (IPC)."
+                            )
                         }
                     }
                 }
@@ -171,7 +175,7 @@ class MVVMViewFragment : Fragment() {
 
         val previousDialogFragment = lceDialogFragment
         val thrown = throwable?.message ?: ""
-        val message = "${errorMessage}. $thrown"
+        val message = "$errorMessage. $thrown"
         lceDialogFragment = LCEDialogFragment.createErrorDialogWith(message)
         setDialogOnDismissListener()
         lceDialogFragment?.show(parentFragmentManager, LCEDialogFragment.TAG_LCE_ERROR)

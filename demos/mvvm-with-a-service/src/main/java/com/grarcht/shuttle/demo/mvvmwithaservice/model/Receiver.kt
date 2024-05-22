@@ -88,13 +88,16 @@ class Receiver(
                                 is ShuttlePickupCargoResult.Error<*> -> {
                                     channel.send(IOResult.Error(throwable = Throwable(it.message)))
                                 }
-                                ShuttlePickupCargoResult.Loading -> {
+
+                                is ShuttlePickupCargoResult.Loading -> {
                                     // Ignore.  The state should already be the loading state.
                                 }
+
                                 is ShuttlePickupCargoResult.Success<*> -> {
                                     val imageModel = it.data as ImageModel
                                     channel.send(IOResult.Success(imageModel))
                                 }
+
                                 ShuttlePickupCargoResult.NotPickingUpCargoYet -> {
                                     // Ignore
                                 }
@@ -132,9 +135,13 @@ class Receiver(
                 } else {
                     it.registerReceiver(this, filter)
                 }
-            } catch (t: Throwable) {
-                val message = "$UNABLE_TO_RECEIVE_CARGO ${t.message}"
-                val error = ShuttleDefaultError.ObservedError(CONTEXT, message, t)
+            } catch (se: SecurityException) {
+                val message = "$UNABLE_TO_RECEIVE_CARGO ${se.message}"
+                val error = ShuttleDefaultError.ObservedError(CONTEXT, message, se)
+                visibilityObservable.observe(error)
+            } catch (iae: IllegalArgumentException) {
+                val message = "$UNABLE_TO_RECEIVE_CARGO ${iae.message}"
+                val error = ShuttleDefaultError.ObservedError(CONTEXT, message, iae)
                 visibilityObservable.observe(error)
             }
         }
@@ -156,21 +163,30 @@ class Receiver(
     }
 
     private fun sendErrorForResponseNotReceived() {
-        // Sometimes, after the transaction too large exception is thrown on the emulator, the app crashes and sometimes only the remote process
-        // stops responding. To improve the experience with the demo app when the remote service stops responding and the app keeps showing the
-        // loading screen, if a response is not received after 5 seconds, the process is exited.
+        // Sometimes, after the transaction too large exception is thrown on the emulator,
+        // the app crashes and sometimes only the remote process stops responding. To improve
+        // the experience with the demo app when the remote service stops responding and the
+        // app keeps showing the loading screen, if a response is not received after 5 seconds,
+        // the process is exited.
         val timer = Timer()
-        timer.schedule(object : TimerTask() {
-            override fun run() {
-                if (!responseReceived) {
-                    scope.launch {
-                        Log.e(LOG_TAG, "Unable to retrieve the image after the Transaction Too Large Exception was thrown in the remote process.")
-                        exitProcess(0)
+        timer.schedule(
+            object : TimerTask() {
+                override fun run() {
+                    if (!responseReceived) {
+                        scope.launch {
+                            Log.e(
+                                LOG_TAG,
+                                "Unable to retrieve the image after the Transaction Too " +
+                                        "Large Exception was thrown in the remote process."
+                            )
+                            exitProcess(0)
+                        }
                     }
+                    cancel()
+                    timer.cancel()
                 }
-                cancel()
-                timer.cancel()
-            }
-        }, TIMER_DELAY)
+            },
+            TIMER_DELAY
+        )
     }
 }

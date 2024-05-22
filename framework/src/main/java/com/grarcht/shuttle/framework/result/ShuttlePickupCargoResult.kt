@@ -25,10 +25,12 @@ sealed class ShuttlePickupCargoResult {
     /**
      * The state for when Shuttle has started picking up the cargo.
      */
-    data object Loading : ShuttlePickupCargoResult()
+    @Suppress("MemberVisibilityCanBePrivate")
+    open class Loading(val cargoId: String) : ShuttlePickupCargoResult()
 
     /**
      * The initial state for Shuttle not picking up the cargo yet.
      */
+    @Suppress("MemberVisibilityCanBePrivate")
     data object NotPickingUpCargoYet : ShuttlePickupCargoResult()
 }

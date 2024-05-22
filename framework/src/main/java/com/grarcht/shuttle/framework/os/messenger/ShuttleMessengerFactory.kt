@@ -2,8 +2,8 @@ package com.grarcht.shuttle.framework.os.messenger
 
 import android.os.Looper
 import android.os.Message
-import com.grarcht.shuttle.framework.visibility.observation.ShuttleVisibilityObservable
 import com.grarcht.shuttle.framework.validator.ShuttleValidator
+import com.grarcht.shuttle.framework.visibility.observation.ShuttleVisibilityObservable
 
 /**
  * Creates [ShuttleMessengerDecorator]s. This interface is based the factory design pattern. For

@@ -15,8 +15,8 @@ import com.grarcht.shuttle.demo.mvvmwithaservice.model.RemoteService
 import com.grarcht.shuttle.framework.CARGO_ID_KEY
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.app.ShuttleConnectedServiceModel
-import com.grarcht.shuttle.framework.content.service.ShuttleLifecycleAwareServiceConnection
-import com.grarcht.shuttle.framework.content.service.ShuttleServiceConnection
+import com.grarcht.shuttle.framework.content.serviceconnection.ShuttleServiceConnection
+import com.grarcht.shuttle.framework.content.serviceconnection.factory.ShuttleServiceConnectionFactory
 import com.grarcht.shuttle.framework.os.ShuttleBinder
 import com.grarcht.shuttle.framework.visibility.ShuttleVisibilityReporter
 import com.grarcht.shuttle.framework.visibility.error.ShuttleDefaultError
@@ -36,12 +36,15 @@ private const val UNABLE_TO_SEND_MESSAGE = "Unable to send message using IPC."
 /**
  * The MVVM ViewModel used to connect with the [RemoteService].
  *
+ * @param reporter reports feedback to increase visibility
  * @param shuttle used to store and retrieve cargo
+ * @param serviceConnectionFactory creates variations of service connections
  */
 @HiltViewModel
 class DemoViewModel @Inject constructor(
     reporter: ShuttleVisibilityReporter,
-    private val shuttle: Shuttle
+    private val shuttle: Shuttle,
+    private val serviceConnectionFactory: ShuttleServiceConnectionFactory
 ) : ViewModel() {
     private val remoteServiceChannel = Channel<ShuttleConnectedServiceModel<RemoteService>>()
     private val visibilityObservable: ShuttleVisibilityObservable = ShuttleChannelVisibilityObservable(reporter, viewModelScope)
@@ -66,9 +69,9 @@ class DemoViewModel @Inject constructor(
     private fun initServiceConnection(context: Context?, lifecycle: Lifecycle) {
         // Start and connect to the service
         if (ipcServiceConnection == null) {
-            ipcServiceConnection = ShuttleLifecycleAwareServiceConnection(
-                RemoteService::class.java,
+            ipcServiceConnection = serviceConnectionFactory.createLifecycleAwareServiceConnection(
                 context,
+                RemoteService::class.java,
                 lifecycle,
                 SERVICE_NAME,
                 visibilityObservable,
@@ -88,7 +91,8 @@ class DemoViewModel @Inject constructor(
     }
 
     /**
-     * Transports the image cargo WITHOUT using Shuttle and is used to demonstrate process crashes when transporting oversized cargo.
+     * Transports the image cargo WITHOUT using Shuttle and is used to demonstrate process
+     * crashes when transporting oversized cargo.
      *
      * @param context for registering a [Receiver]
      * @param cargoId for the cargo to transport and pick up
@@ -122,7 +126,8 @@ class DemoViewModel @Inject constructor(
     }
 
     /**
-     * Transports the image cargo WITH using Shuttle and is used to demonstrate successful transportation of oversized cargo.
+     * Transports the image cargo WITH using Shuttle and is used to demonstrate successful
+     * transportation of oversized cargo.
      *
      * @param context for registering a [Receiver]
      * @param cargoId for the cargo to transport and pick up
@@ -136,7 +141,12 @@ class DemoViewModel @Inject constructor(
         initReceiver(context)
 
         return if (ipcMessenger != null) {
-            val msg: Message = Message.obtain(null, MessagingAction.TRANSPORT_IMAGE_CARGO_WITH_SHUTTLE.actionValue, 0, 0)
+            val msg: Message = Message.obtain(
+                null,
+                MessagingAction.TRANSPORT_IMAGE_CARGO_WITH_SHUTTLE.actionValue,
+                0,
+                0
+            )
             msg.data.putString(CARGO_ID_KEY, cargoId)
             msg.data.putInt(RemoteService.KEY_IMAGE_ID, imageId)
 

@@ -2,10 +2,10 @@ package com.grarcht.shuttle.framework.app
 
 import android.os.Message
 import com.grarcht.shuttle.framework.Shuttle
-import com.grarcht.shuttle.framework.visibility.observation.ShuttleVisibilityObservable
 import com.grarcht.shuttle.framework.os.messenger.ShuttleMessengerFactory
 import com.grarcht.shuttle.framework.validator.ShuttleServiceMessageValidator
 import com.grarcht.shuttle.framework.validator.ShuttleValidator
+import com.grarcht.shuttle.framework.visibility.observation.ShuttleVisibilityObservable
 
 /**
  * Used to configure a [ShuttleService].
@@ -26,4 +26,5 @@ data class ShuttleServiceConfig(
     val bindingType: ShuttleServiceType,
     val messengerFactory: ShuttleMessengerFactory,
     val messageValidator: ShuttleValidator<Message> = ShuttleServiceMessageValidator()
+    
 )

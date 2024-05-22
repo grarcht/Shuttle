@@ -20,6 +20,7 @@ sealed class ShuttleRemoveCargoResult {
      * The state for when Shuttle has started removing the cargo.
      * @param cargoId for the cargo being removed.  It can be [ALL_CARGO].
      */
+    @Suppress("MemberVisibilityCanBePrivate")
     class Removing(val cargoId: String) : ShuttleRemoveCargoResult()
 
     /**
@@ -36,7 +37,8 @@ sealed class ShuttleRemoveCargoResult {
     /**
      * The initial state for Shuttle not removing the cargo yet.
      */
-    object NotRemovingCargoYet : ShuttleRemoveCargoResult()
+    @Suppress("MemberVisibilityCanBePrivate")
+    open class NotRemovingCargoYet(val cargoId: String) : ShuttleRemoveCargoResult()
 
     companion object {
         const val ALL_CARGO = "All Cargo"

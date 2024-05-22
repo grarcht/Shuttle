@@ -162,7 +162,8 @@ class MVVMSecondView(
             val progress by rememberInfiniteTransition(label = "InfiniteTransition").animateFloat(
                 initialValue = INITIAL_VALUE,
                 targetValue = TARGET_VALUE,
-                animationSpec = infiniteRepeatable(animation = tween(ANIMATION_TWEEN_MILLIS)), label = ""
+                animationSpec = infiniteRepeatable(animation = tween(ANIMATION_TWEEN_MILLIS)),
+                label = ""
             )
             val modifier = Modifier
                 .size(CIRCULAR_PROGRESS_SIZE)
