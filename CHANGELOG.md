@@ -2,6 +2,27 @@
 
 ## [Released]
 
+## [3.0.0] - 2024-05-21
+
+## Added
+
+- framework code to support Android services (remote and local): ```ShuttleService```, 
+  ```LifecycleAwareShuttleServiceConnection```, ```ShuttleServiceMessageValidator```, and more.
+- mvvm-with-a-service demo module
+- a cargo id parameter to the new states from version 2.1.0
+- a test class for the message validator
+
+## Changed
+
+- reverted an artifact versions to get the compose code to build
+- brought back some databinding temporarily for the demos with the intention to remove it soon
+- updated the documentation with Dokka
+- updated the compile and target sdk version to 34
+- code updates for issues reported by detekt
+- organized import statements
+- dependency declaration clean up
+
+
 ## [2.1.0] - 2023-08-29
 
 ## Added
