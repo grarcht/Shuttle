@@ -1,5 +1,5 @@
 buildscript {
-    apply from: 'ext.gradle'
+    apply from: 'gradle/ext.gradle'
 
     repositories {
         mavenCentral()
@@ -71,7 +71,7 @@ repositories {
 def rootDir = projectDir.absolutePath
 
 allprojects {
-    apply from: "$rootDir/ext.gradle"
+    apply from: "$rootDir/gradle/ext.gradle"
     apply from: "$rootDir/detekt/detekt.gradle"
 
     repositories {
