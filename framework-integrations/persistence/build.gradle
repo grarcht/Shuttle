@@ -1,12 +1,12 @@
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-    id 'com.google.devtools.ksp'
-    id 'org.jetbrains.dokka'
-    id 'signing'
-    id 'maven-publish'
-    id 'de.mannodermaus.android-junit5'
-    id 'org.jetbrains.kotlin.android'
+    alias libs.plugins.android.library
+    alias libs.plugins.kotlin.android
+    alias libs.plugins.google.ksp
+    alias libs.plugins.jetbrains.dokka
+    alias libs.plugins.signing
+    alias libs.plugins.maven.publish
+    alias libs.plugins.android.junit5
+    alias libs.plugins.jetbrains.kotlin.android
 }
 
 dokkaHtml {
@@ -15,9 +15,9 @@ dokkaHtml {
 
 android {
     defaultConfig {
-        compileSdk versions.android.compileSdk
-        minSdk versions.android.minSdk
-        targetSdk versions.android.targetSdk
+        compileSdk libs.versions.compileSdk.get().toInteger()
+        minSdk libs.versions.minSdk.get().toInteger()
+        targetSdk libs.versions.targetSdk.get().toInteger()
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -27,38 +27,41 @@ android {
 
     buildTypes.release.minifyEnabled false
     kotlinOptions {
-        jvmTarget = versions.jvmTarget
+        jvmTarget = libs.versions.jvmTarget.get()
     }
     testOptions.unitTests.returnDefaultValues = true
 
     compileOptions {
-        sourceCompatibility versions.sourceCompatibility
-        targetCompatibility versions.targetCompatibility
+        sourceCompatibility libs.versions.sourceCompatibility.get()
+        targetCompatibility libs.versions.targetCompatibility.get()
     }
 
     namespace 'com.grarcht.shuttle.framework.integrations.persistence'
 }
 
 dependencies {
-    implementation jetbrainsKotlinDeps.stdlib
-    implementation androidXDeps.coreKtx
-    androidTestImplementation testingDeps.junit.androidTestRunner
-    androidTestImplementation testingDeps.junit.jupiterApi
-    androidTestImplementation testingDeps.junit.jupiterEngine
-    androidTestImplementation testingDeps.junit.jupiterParams
-    androidTestImplementation testingDeps.junit.junit5AndroidTestCore
-    androidTestRuntimeOnly testingDeps.junit.junit5AndroidTestRunner
-    testImplementation testingDeps.mockito.core
-    testImplementation testingDeps.mockito.kotlin
-    testImplementation testingDeps.junit.jupiterApi
-    testRuntimeOnly testingDeps.junit.jupiterEngine
-    testImplementation testingDeps.junit.androidCore
-    testRuntimeOnly testingDeps.junit.platformCommons // enables a package of tests to be run
+    implementation libs.jetbrainsKotlinDeps.stdlib
+    implementation libs.android.coreKtx
+
+    androidTestImplementation libs.testingDeps.junit.androidTestRunner
+    androidTestImplementation libs.testingDeps.junit.jupiterApi
+    androidTestImplementation libs.testingDeps.junit.jupiterEngine
+    androidTestImplementation libs.testingDeps.junit.jupiterParams
+    androidTestImplementation libs.testingDeps.junit.junit5AndroidTestCore
+    androidTestRuntimeOnly libs.testingDeps.junit.junit5AndroidTestRunner
+
+    testImplementation libs.testingDeps.mockito.core
+    testImplementation libs.testingDeps.mockito.kotlin
+    testImplementation libs.testingDeps.junit.jupiterApi
+    testImplementation libs.testingDeps.junit.androidCore
+
+    testRuntimeOnly libs.testingDeps.junit.jupiterEngine
+    testRuntimeOnly libs.testingDeps.junit.platformCommons // enables a package of tests to be run
 }
 
 group 'com.grarcht.shuttle'
 archivesBaseName = 'framework-integrations-persistence'
-version = versions.shuttle
+version = libs.versions.shuttle
 def testPublish = true
 def isReleaseVersion = true // the opposite is snapshot
 def releaseAARFilePath = isReleaseVersion ?

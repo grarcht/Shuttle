@@ -1,11 +1,12 @@
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'org.jetbrains.dokka'
-    id 'dagger.hilt.android.plugin'
-    id 'kotlin-kapt'
-    id 'de.mannodermaus.android-junit5'
-    id 'org.jetbrains.kotlin.android'
+    alias libs.plugins.android.application
+    alias libs.plugins.kotlin.android
+    alias libs.plugins.jetbrains.dokka
+    alias libs.plugins.google.dagger.hilt
+    alias libs.plugins.android.junit5
+    alias libs.plugins.jetbrains.kotlin.android
+    alias libs.plugins.compose.compiler
+    alias libs.plugins.google.ksp
 }
 
 apply from: '../../detekt/detekt.gradle'
@@ -17,9 +18,9 @@ dokkaHtml {
 android {
     defaultConfig {
         applicationId 'com.grarcht.shuttle.mvvm_with_compose'
-        compileSdk versions.android.compileSdk
-        minSdk versions.android.minSdk
-        targetSdk versions.android.targetSdk
+        compileSdk libs.versions.compileSdk.get().toInteger()
+        minSdk libs.versions.minSdk.get().toInteger()
+        targetSdk libs.versions.targetSdk.get().toInteger()
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -37,12 +38,12 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = versions.jvmTarget
+        jvmTarget = libs.versions.jvmTarget.get()
     }
 
     compileOptions {
-        sourceCompatibility versions.sourceCompatibility
-        targetCompatibility versions.targetCompatibility
+        sourceCompatibility libs.versions.sourceCompatibility.get()
+        targetCompatibility libs.versions.targetCompatibility.get()
     }
 
     buildFeatures {
@@ -52,47 +53,35 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion versions.kotlinComposeCompilerExt
-    }
-
-    kapt {
-        correctErrorTypes true
-        javacOptions {
-            // https://youtrack.jetbrains.com/issue/KT-47416
-            // https://github.com/nvmnghia/yacv/commit/7f85c02e3d3d965fd780f130af802c73822699df
-            // These options are normally set automatically via the Hilt Gradle plugin, but we
-            // set them manually to workaround a bug in the Kotlin 1.5.20
-            option("-Adagger.fastInit=ENABLED")
-            option("-Adagger.hilt.android.internal.disableAndroidSuperclassValidation=true")
-        }
+        kotlinCompilerExtensionVersion libs.versions.kotlinComposeCompilerExt.get()
     }
 
     namespace 'com.grarcht.shuttle.demo.mvvmwithcompose'
 }
 
 dependencies {
-    implementation jetbrainsKotlinDeps.stdlib
-    implementation jetbrainsKotlinDeps.coroutines
+    implementation libs.jetbrainsKotlinDeps.stdlib
+    implementation libs.jetbrainsKotlinDeps.coroutines
 
-    implementation androidXDeps.activityKtx
-    implementation androidXDeps.annotationJvm
-    implementation androidXDeps.appCompat
-    implementation androidXDeps.compose.activity
-    implementation androidXDeps.compose.foundation
-    implementation androidXDeps.compose.foundationLayout
-    implementation androidXDeps.compose.material
-    implementation androidXDeps.compose.materialIcons
-    implementation androidXDeps.compose.runtime
-    implementation androidXDeps.compose.ui
-    implementation androidXDeps.compose.uiTooling
-    implementation androidXDeps.constraintLayout
-    implementation androidXDeps.coreKtx
-    implementation androidXDeps.lifecycle.extensions
-    implementation androidXDeps.lifecycle.viewModel
-    implementation androidXDeps.material
+    implementation libs.android.activityKtx
+    implementation libs.android.annotationJvm
+    implementation libs.android.appCompat
+    implementation libs.android.compose.activity
+    implementation libs.android.compose.foundation
+    implementation libs.android.compose.foundationLayout
+    implementation libs.android.compose.material
+    implementation libs.android.compose.materialIcons
+    implementation libs.android.compose.runtime
+    implementation libs.android.compose.ui
+    implementation libs.android.compose.uiTooling
+    implementation libs.android.constraintLayout
+    implementation libs.android.coreKtx
+    implementation libs.android.lifecycle.extensions
+    implementation libs.android.lifecycle.viewModel
+    implementation libs.android.material
 
-    api dependencyInjectionDeps.hilt
-    kapt dependencyInjectionDeps.hiltCompiler
+    api libs.dependencyInjectionDeps.hilt
+    ksp libs.dependencyInjectionDeps.hiltCompiler
 
     implementation project(':demos-core-lib')
     implementation project(':demos-databinding-lib')
@@ -110,13 +99,13 @@ dependencies {
 //    implementation project(':framework-integrations-extensions-room')
 
     // To use maven dependencies, use the following:
-    implementation shuttle.framework
-    implementation shuttle.integrationsPersistence
-    implementation shuttle.integrationsExtensionsRoom
+    implementation libs.shuttle.framework
+    implementation libs.shuttle.integrationsPersistence
+    implementation libs.shuttle.integrationsExtensionsRoom
 
-    androidTestImplementation testingDeps.junit.ext
-    androidTestImplementation testingDeps.espresso.core
-    androidTestRuntimeOnly testingDeps.junit.junit5AndroidTestRunner
-    testImplementation testingDeps.junit.jupiterApi
-    testRuntimeOnly testingDeps.junit.jupiterEngine
+    androidTestImplementation libs.testingDeps.junit.ext
+    androidTestImplementation libs.testingDeps.espresso.core
+    androidTestRuntimeOnly libs.testingDeps.junit.junit5AndroidTestRunner
+    testImplementation libs.testingDeps.junit.jupiterApi
+    testRuntimeOnly libs.testingDeps.junit.jupiterEngine
 }

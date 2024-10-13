@@ -1,11 +1,11 @@
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-    id 'de.mannodermaus.android-junit5'
-    id 'org.jetbrains.dokka'
-    id 'signing'
-    id 'maven-publish'
-    id 'org.jetbrains.kotlin.android'
+    alias libs.plugins.android.library
+    alias libs.plugins.kotlin.android
+    alias libs.plugins.android.junit5
+    alias libs.plugins.jetbrains.dokka
+    alias libs.plugins.signing
+    alias libs.plugins.maven.publish
+    alias libs.plugins.jetbrains.kotlin.android
 }
 
 dokkaHtml {
@@ -14,9 +14,9 @@ dokkaHtml {
 
 android {
     defaultConfig {
-        compileSdk versions.android.compileSdk
-        minSdk versions.android.minSdk
-        targetSdk versions.android.targetSdk
+        compileSdk libs.versions.compileSdk.get().toInteger()
+        minSdk libs.versions.minSdk.get().toInteger()
+        targetSdk libs.versions.targetSdk.get().toInteger()
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -27,12 +27,12 @@ android {
     buildTypes.release.minifyEnabled false
     testOptions.unitTests.returnDefaultValues = true
     kotlinOptions {
-        jvmTarget = versions.jvmTarget
+        jvmTarget = libs.versions.jvmTarget.get()
     }
 
     compileOptions {
-        sourceCompatibility versions.sourceCompatibility
-        targetCompatibility versions.targetCompatibility
+        sourceCompatibility libs.versions.sourceCompatibility.get()
+        targetCompatibility libs.versions.targetCompatibility.get()
     }
 
     buildFeatures {
@@ -43,37 +43,38 @@ android {
 }
 
 dependencies {
-    implementation jetbrainsKotlinDeps.stdlib
-    implementation androidXDeps.navigationFragmentKtx
-    implementation androidXDeps.annotationJvm
-    implementation androidXDeps.coreKtx
+    implementation libs.jetbrainsKotlinDeps.stdlib
+    implementation libs.android.navigationFragmentKtx
+    implementation libs.android.annotationJvm
+    implementation libs.android.coreKtx
     implementation project(':framework')
 
-    androidTestImplementation testingDeps.junit.junit5AndroidTestCore
-    androidTestRuntimeOnly testingDeps.junit.junit5AndroidTestRunner
-    androidTestImplementation testingDeps.mockito.core
-    androidTestImplementation testingDeps.mockito.kotlin
-    androidTestImplementation testingDeps.junit.jupiterApi
-    androidTestImplementation testingDeps.kotlin.coroutines
-    androidTestImplementation testingDeps.junit.androidCore
-    androidTestImplementation testingDeps.androidTest.monitor
-    androidTestRuntimeOnly testingDeps.junit.jupiterEngine
-    androidTestRuntimeOnly testingDeps.junit.platformCommons // enables a package of tests to be run
+    androidTestImplementation libs.testingDeps.junit.junit5AndroidTestCore
+    androidTestRuntimeOnly libs.testingDeps.junit.junit5AndroidTestRunner
+    androidTestImplementation libs.testingDeps.mockito.core
+    androidTestImplementation libs.testingDeps.mockito.kotlin
+    androidTestImplementation libs.testingDeps.junit.jupiterApi
+    androidTestImplementation libs.testingDeps.kotlin.coroutines
+    androidTestImplementation libs.testingDeps.junit.androidCore
+    androidTestImplementation libs.testingDeps.androidTest.monitor
+    androidTestRuntimeOnly libs.testingDeps.junit.jupiterEngine
+    androidTestRuntimeOnly libs.testingDeps.junit.platformCommons // enables a package of tests to be run
 
-    testImplementation testingDeps.mockito.core
-    testImplementation testingDeps.mockito.kotlin
-    testImplementation testingDeps.mockito.inline
-    testImplementation testingDeps.androidTest.monitor
-    testImplementation testingDeps.junit.jupiterApi
-    testImplementation testingDeps.kotlin.coroutines
-    testImplementation testingDeps.junit.androidCore
-    testRuntimeOnly testingDeps.junit.jupiterEngine
-    testRuntimeOnly testingDeps.junit.platformCommons // enables a package of tests to be run
+    testImplementation libs.testingDeps.mockito.core
+    testImplementation libs.testingDeps.mockito.kotlin
+    testImplementation libs.testingDeps.mockito.inline
+    testImplementation libs.testingDeps.androidTest.monitor
+    testImplementation libs.testingDeps.junit.jupiterApi
+    testImplementation libs.testingDeps.kotlin.coroutines
+    testImplementation libs.testingDeps.junit.androidCore
+
+    testRuntimeOnly libs.testingDeps.junit.jupiterEngine
+    testRuntimeOnly libs.testingDeps.junit.platformCommons // enables a package of tests to be run
 }
 
 group 'com.grarcht.shuttle'
 archivesBaseName = 'framework-addons-navigation-component'
-version = versions.shuttle
+version = libs.versions.shuttle
 def testPublish = true
 def isReleaseVersion = true // the opposite is snapshot
 def releaseAARFilePath = isReleaseVersion ?

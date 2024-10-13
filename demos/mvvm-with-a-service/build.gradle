@@ -1,10 +1,10 @@
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'dagger.hilt.android.plugin'
-    id 'org.jetbrains.dokka'
-    id 'kotlin-kapt'
-    id 'org.jetbrains.kotlin.android'
+    alias libs.plugins.android.application
+    alias libs.plugins.kotlin.android
+    alias libs.plugins.google.dagger.hilt
+    alias libs.plugins.jetbrains.dokka
+    alias libs.plugins.google.ksp
+    alias libs.plugins.jetbrains.kotlin.android
 }
 
 apply from: '../../detekt/detekt.gradle'
@@ -24,9 +24,9 @@ tasks.dokkaHtml.configure {
 android {
     defaultConfig {
         applicationId 'com.grarcht.shuttle.demo.mvvm_with_a_service'
-        compileSdk versions.android.compileSdk
-        minSdk versions.android.minSdk
-        targetSdk versions.android.targetSdk
+        compileSdk libs.versions.compileSdk.get().toInteger()
+        minSdk libs.versions.minSdk.get().toInteger()
+        targetSdk libs.versions.targetSdk.get().toInteger()
         versionCode 1
         versionName "1.0"
 
@@ -42,12 +42,12 @@ android {
 
 
     compileOptions {
-        sourceCompatibility versions.sourceCompatibility
-        targetCompatibility versions.targetCompatibility
+        sourceCompatibility libs.versions.sourceCompatibility.get()
+        targetCompatibility libs.versions.targetCompatibility.get()
     }
 
     kotlinOptions {
-        jvmTarget = versions.jvmTarget
+        jvmTarget = libs.versions.jvmTarget.get()
     }
 
     buildFeatures {
@@ -55,34 +55,22 @@ android {
         viewBinding true
     }
 
-    kapt {
-        correctErrorTypes true
-        javacOptions {
-            // https://youtrack.jetbrains.com/issue/KT-47416
-            // https://github.com/nvmnghia/yacv/commit/7f85c02e3d3d965fd780f130af802c73822699df
-            // These options are normally set automatically via the Hilt Gradle plugin, but we
-            // set them manually to workaround a bug in the Kotlin 1.5.20
-            option("-Adagger.fastInit=ENABLED")
-            option("-Adagger.hilt.android.internal.disableAndroidSuperclassValidation=true")
-        }
-    }
-
     namespace 'com.grarcht.shuttle.demo.mvvmwithaservice'
 }
 
 dependencies {
-    implementation jetbrainsKotlinDeps.stdlib
-    implementation jetbrainsKotlinDeps.coroutines
-    implementation androidXDeps.appCompat
-    implementation androidXDeps.constraintLayout
-    implementation androidXDeps.material
-    implementation androidXDeps.fragmentKtx
-    implementation androidXDeps.lifecycle.extensions
-    implementation androidXDeps.lifecycle.viewModel
-    implementation dependencyInjectionDeps.hilt
-    implementation androidXDeps.coreKtx
-    implementation androidXDeps.annotationJvm
-    kapt dependencyInjectionDeps.hiltCompiler
+    implementation libs.jetbrainsKotlinDeps.stdlib
+    implementation libs.jetbrainsKotlinDeps.coroutines
+    implementation libs.android.appCompat
+    implementation libs.android.constraintLayout
+    implementation libs.android.material
+    implementation libs.android.fragmentKtx
+    implementation libs.android.lifecycle.extensions
+    implementation libs.android.lifecycle.viewModel
+    implementation libs.dependencyInjectionDeps.hilt
+    implementation libs.android.coreKtx
+    implementation libs.android.annotationJvm
+    ksp libs.dependencyInjectionDeps.hiltCompiler
     implementation project(':demos-core-lib')
     implementation project(':demos-databinding-lib')
 
@@ -98,7 +86,7 @@ dependencies {
 //     implementation project(':framework-integrations-extensions-room')
 
     // To use maven dependencies, use the following
-    implementation shuttle.framework
-    implementation shuttle.integrationsPersistence
-    implementation shuttle.integrationsExtensionsRoom
+    implementation libs.shuttle.framework
+    implementation libs.shuttle.integrationsPersistence
+    implementation libs.shuttle.integrationsExtensionsRoom
 }

@@ -1,5 +1,4 @@
 buildscript {
-    ext.kotlin_version = '1.9.0'
     apply from: 'ext.gradle'
 
     repositories {
@@ -23,24 +22,26 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath classpathDeps.gradleBuildTools
-        classpath classpathDeps.kotlinGradlePlugin
-        classpath classpathDeps.dokkaGradlePlugin
+        classpath libs.classpathDeps.gradleBuildTools
+        classpath libs.classpathDeps.kotlinGradlePlugin
+        classpath libs.classpathDeps.dokkaGradlePlugin
         //https://github.com/mannodermaus/android-junit5
-        classpath classpathDeps.junit5Plugin
-        classpath dependencyInjectionDeps.hilt
-        classpath staticAnalysisDeps.detektPlugin
-        classpath dependencyInjectionDeps.hiltPlugin
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.46.0'
+        classpath libs.classpathDeps.junit5Plugin
+        classpath libs.dependencyInjectionDeps.hilt
+        classpath libs.staticAnalysisDeps.detektPlugin
+        classpath libs.dependencyInjectionDeps.hiltPlugin
     }
 }
 
 plugins {
-    id 'com.github.ben-manes.versions' version '0.46.0'
-    id 'io.gitlab.arturbosch.detekt' version '1.23.1'
-    id 'org.jetbrains.dokka' version '1.8.20'
-    id 'com.google.devtools.ksp' version '1.9.0-1.0.12' apply false
-    id 'org.jetbrains.kotlin.android' version '1.9.0' apply false
+    alias libs.plugins.android.application apply false
+    alias libs.plugins.android.library apply false
+    alias libs.plugins.google.dagger.hilt apply false
+    alias libs.plugins.detect
+    alias libs.plugins.jetbrains.dokka
+    alias libs.plugins.google.ksp apply false
+    alias libs.plugins.jetbrains.kotlin.android apply false
+    alias(libs.plugins.compose.compiler) apply false
 }
 
 apply from: "$rootDir/detekt/detekt.gradle"
@@ -88,6 +89,8 @@ allprojects {
                 ignoreGradleMetadataRedirection()
             }
         }
+
+        google()
 
         mavenCentral()
 

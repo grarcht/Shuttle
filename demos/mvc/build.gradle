@@ -1,10 +1,10 @@
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'dagger.hilt.android.plugin'
-    id 'org.jetbrains.dokka'
-    id 'com.google.devtools.ksp'
-    id 'org.jetbrains.kotlin.android'
+    alias libs.plugins.android.application
+    alias libs.plugins.kotlin.android
+    alias libs.plugins.google.dagger.hilt
+    alias libs.plugins.jetbrains.dokka
+    alias libs.plugins.google.ksp
+    alias libs.plugins.jetbrains.kotlin.android
 }
 
 apply from: '../../detekt/detekt.gradle'
@@ -15,10 +15,11 @@ dokkaHtml {
 
 android {
     defaultConfig {
-        compileSdk versions.android.compileSdk
         applicationId "com.grarcht.shuttle.demo.mvc"
-        minSdk versions.android.minSdk
-        targetSdk versions.android.targetSdk
+
+        compileSdk libs.versions.compileSdk.get().toInteger()
+        minSdk libs.versions.minSdk.get().toInteger()
+        targetSdk libs.versions.targetSdk.get().toInteger()
         versionCode 1
         versionName "1.0"
 
@@ -33,29 +34,31 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility versions.sourceCompatibility
-        targetCompatibility versions.targetCompatibility
+        sourceCompatibility libs.versions.sourceCompatibility.get()
+        targetCompatibility libs.versions.targetCompatibility.get()
     }
 
     kotlinOptions {
-        jvmTarget = versions.jvmTarget
+        jvmTarget = libs.versions.jvmTarget.get()
     }
 
     namespace 'com.grarcht.shuttle.demo.mvc'
 }
 
 dependencies {
-    implementation jetbrainsKotlinDeps.stdlib
-    implementation jetbrainsKotlinDeps.coroutines
-    implementation androidXDeps.annotationJvm
-    implementation androidXDeps.appCompat
-    implementation androidXDeps.constraintLayout
-    implementation androidXDeps.material
-    implementation androidXDeps.lifecycle.extensions
-    implementation androidXDeps.lifecycle.viewModel
-    api dependencyInjectionDeps.hilt
-    implementation androidXDeps.coreKtx
-    ksp dependencyInjectionDeps.hiltCompiler
+    implementation libs.jetbrainsKotlinDeps.stdlib
+    implementation libs.jetbrainsKotlinDeps.coroutines
+    implementation libs.android.annotationJvm
+    implementation libs.android.appCompat
+    implementation libs.android.constraintLayout
+    implementation libs.android.material
+    implementation libs.android.lifecycle.extensions
+    implementation libs.android.lifecycle.viewModel
+    implementation libs.android.coreKtx
+
+    api libs.dependencyInjectionDeps.hilt
+    ksp libs.dependencyInjectionDeps.hiltCompiler
+
     implementation project(':demos-core-lib')
 
     // To use a single aar file dependency, do something like the following.
@@ -70,7 +73,7 @@ dependencies {
 //     implementation project(':framework-integrations-extensions-room')
 
     // To use maven dependencies, use the following:
-    implementation shuttle.framework
-    implementation shuttle.integrationsPersistence
-    implementation shuttle.integrationsExtensionsRoom
+    implementation libs.shuttle.framework
+    implementation libs.shuttle.integrationsPersistence
+    implementation libs.shuttle.integrationsExtensionsRoom
 }

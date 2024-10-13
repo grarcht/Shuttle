@@ -1,14 +1,14 @@
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
+    alias libs.plugins.android.library
+    alias libs.plugins.kotlin.android
+    alias libs.plugins.google.ksp
 }
 
 android {
     defaultConfig {
-        compileSdk versions.android.compileSdk
-        minSdk versions.android.minSdk
-        targetSdk versions.android.targetSdk
+        compileSdk libs.versions.compileSdk.get().toInteger()
+        minSdk libs.versions.minSdk.get().toInteger()
+        targetSdk libs.versions.targetSdk.get().toInteger()
         versionCode 1
         versionName "1.0"
 
@@ -24,12 +24,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility versions.sourceCompatibility
-        targetCompatibility versions.targetCompatibility
+        sourceCompatibility libs.versions.sourceCompatibility.get()
+        targetCompatibility libs.versions.targetCompatibility.get()
     }
 
     kotlinOptions {
-        jvmTarget = versions.jvmTarget
+        jvmTarget = libs.versions.jvmTarget.get()
     }
 
     buildFeatures {
@@ -40,9 +40,9 @@ android {
 }
 
 dependencies {
-    implementation jetbrainsKotlinDeps.stdlib
-    implementation androidXDeps.lifecycle.viewModel
-    implementation androidXDeps.coreKtx
+    implementation libs.jetbrainsKotlinDeps.stdlib
+    implementation libs.android.lifecycle.viewModel
+    implementation libs.android.coreKtx
     implementation project(':demos-core-lib')
 
     // To use typical module dependencies, comment out the above dependency and
@@ -50,5 +50,5 @@ dependencies {
 //    implementation project(':framework')
 
     // To use maven dependencies, use the following
-    implementation shuttle.framework
+    implementation libs.shuttle.framework
 }

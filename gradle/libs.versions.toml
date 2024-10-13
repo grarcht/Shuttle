@@ -1,0 +1,108 @@
+[versions]
+compileSdk = "34"
+minSdk = "26"
+targetSdk = "34"
+compose = "1.7.3"
+detekt = "1.23.1"
+dokka = "1.8.20"
+gradleBuildTools = "8.4.0"
+hilt = "2.50"
+junitAndroidTest = "1.3.0"
+junitJupiter = "5.10.0"
+junitPlatform = "1.10.0"
+jvmTarget = "17"
+kotlin = "2.0.21"
+kotlinCoroutines = "1.7.3"
+kotlinComposeCompilerExt = "1.5.15"
+lifecycle = "2.8.6"
+mockito = "5.7.0"
+navigation = "2.8.2"
+room = "2.6.1"
+shuttle = "3.0.0"
+sourceCompatibility = "17"
+targetCompatibility = "17"
+
+[libraries]
+android-activityKtx = { group = "androidx.activity", name = "activity-ktx", version = "1.9.2" }
+android-annotationJvm = { group = "androidx.annotation", name = "annotation-jvm", version = "1.8.2" }
+android-appCompat = { group = "androidx.appcompat", name = "appcompat", version = "1.7.0" }
+android-compose-activity = { group = "androidx.activity", name = "activity-compose", version = "1.9.2" }
+android-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "compose" }
+android-compose-foundationLayout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "compose" }
+android-compose-material = { group = "androidx.compose.material", name = "material", version.ref = "compose" }
+android-compose-materialIcons = { group = "androidx.compose.material", name = "material-icons-core", version.ref = "compose" }
+android-compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "compose" }
+android-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose" }
+android-compose-uiTooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose" }
+android-constraintLayout = { group = "androidx.constraintlayout", name = "constraintlayout", version = "2.1.4" }
+android-coreKtx = { group = "androidx.core", name = "core-ktx", version = "1.13.1" }
+android-fragmentKtx = { group = "androidx.fragment", name = "fragment-ktx", version = "1.8.4" }
+android-lifecycle-extensions = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+android-lifecycle-viewModel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+android-lifecycle-viewModelForCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+android-lifecycle-common = { group = "androidx.lifecycle", name = "lifecycle-common-java8", version.ref = "lifecycle" }
+android-material = { group = "com.google.android.material", name = "material", version = "1.12.0" }
+android-navigationFragmentKtx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
+#android-testRunner = { group = "androidx.test.runner.AndroidJUnitRunner" }
+
+classpathDeps-dokkaGradlePlugin = { group = "org.jetbrains.dokka", name = "dokka-gradle-plugin", version.ref = "dokka" }
+classpathDeps-gradleBuildTools = { group = "com.android.tools.build", name = "gradle", version.ref = "gradleBuildTools" }
+classpathDeps-kotlinGradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+classpathDeps-junit5Plugin = { group = "de.mannodermaus.gradle.plugins", name = "android-junit5", version = "1.9.3.0" }
+
+dependencyInjectionDeps-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+dependencyInjectionDeps-hiltCompiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+dependencyInjectionDeps-hiltPlugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
+
+#gradle-versions = { id = "com.github.ben-manes", name = "gradle-versions-plugin", version.ref = "0.46.0" }
+
+jetbrainsKotlinDeps-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinCoroutines" }
+jetbrainsKotlinDeps-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
+
+roomDeps-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+roomDeps-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+roomDeps-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+roomDeps-testHelpers = { group = "androidx.room", name = "room-testing", version.ref = "room" }
+
+shuttle-framework = { group = "com.grarcht.shuttle", name = "framework", version.ref = "shuttle" }
+shuttle-integrationsPersistence = { group = "com.grarcht.shuttle", name = "framework-integrations-persistence", version.ref = "shuttle" }
+shuttle-integrationsExtensionsRoom = { group = "com.grarcht.shuttle", name = "framework-integrations-extensions-room", version.ref = "shuttle" }
+shuttle-addOnsNavigationComponent = { group = "com.grarcht.shuttle", name = "framework-addons-navigation-component", version.ref = "shuttle" }
+
+staticAnalysisDeps-detektPlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
+
+testingDeps-androidTest-monitor = { group = "androidx.test", name = "monitor", version = "1.7.2" }
+testingDeps-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version = "3.6.1" }
+testingDeps-junit-ext = { group = "androidx.test.ext", name = "junit", version = "1.2.1" }
+testingDeps-junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
+testingDeps-junit-jupiterApi = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junitJupiter" }
+testingDeps-junit-jupiterEngine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junitJupiter" }
+testingDeps-junit-jupiterParams = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "junitJupiter" }
+testingDeps-junit-platformCommons = { group = "org.junit.platform", name = "junit-platform-commons", version.ref = "junitPlatform" }
+testingDeps-junit-platformSuite = { group = "org.junit.platform", name = "junit-platform-suite-api", version.ref = "junitPlatform" }
+testingDeps-junit-androidCore = { group = "androidx.arch.core", name = "core-testing", version = "2.2.0" }
+testingDeps-junit-androidTestRunner = { group = "androidx.test", name = "runner", version = "1.6.2" }
+testingDeps-junit-junit5AndroidTestCore = { group = "de.mannodermaus.junit5", name = "android-test-core", version.ref = "junitAndroidTest" }
+testingDeps-junit-junit5AndroidTestRunner = { group = "de.mannodermaus.junit5", name = "android-test-runner", version.ref = "junitAndroidTest" }
+testingDeps-kotlin-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
+testingDeps-mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+testingDeps-mockito-inline = { group = "org.mockito", name = "mockito-inline", version = "5.2.0" }
+testingDeps-mockito-junitJupiter = { group = "org.mockito", name = "mockito-junit-jupiter", version.ref = "mockito" }
+testingDeps-mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version = "5.3.1" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "gradleBuildTools" }
+android-junit5 = { id = "de.mannodermaus.android-junit5" }
+android-library = { id = "com.android.library", version.ref = "gradleBuildTools" }
+android-compose-compiler = { id = "androidx.compose.compiler", version.ref = "kotlinComposeCompilerExt" }
+ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.46.0" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+detect = { id = "io.gitlab.arturbosch.detekt", version = "1.23.1" }
+google-dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+google-ksp = { id = "com.google.devtools.ksp", version = "2.0.21-1.0.25" }
+jetbrains-dokka = { id = "org.jetbrains.dokka", version = "1.8.20" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version = "2.0.21" }
+jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version = "1.4.30" }
+kotlin-android = { id = "kotlin-android" }
+maven-publish = { id = "maven-publish" }
+signing = { id = "signing" }

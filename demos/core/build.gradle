@@ -1,10 +1,10 @@
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-    id 'org.jetbrains.dokka'
-    id 'com.google.devtools.ksp'
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.30'
-    id 'org.jetbrains.kotlin.android'
+    alias libs.plugins.android.library
+    alias libs.plugins.kotlin.android
+    alias libs.plugins.google.ksp
+    alias libs.plugins.jetbrains.dokka
+    alias libs.plugins.jetbrains.kotlin.serialization
+    alias libs.plugins.jetbrains.kotlin.android
 }
 
 apply from: '../../detekt/detekt.gradle'
@@ -15,9 +15,9 @@ dokkaHtml {
 
 android {
     defaultConfig {
-        compileSdk versions.android.compileSdk
-        minSdk versions.android.minSdk
-        targetSdk versions.android.targetSdk
+        compileSdk libs.versions.compileSdk.get().toInteger()
+        minSdk libs.versions.minSdk.get().toInteger()
+        targetSdk libs.versions.targetSdk.get().toInteger()
         versionCode 1
         versionName "1.0"
 
@@ -33,23 +33,23 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility versions.sourceCompatibility
-        targetCompatibility versions.targetCompatibility
+        sourceCompatibility libs.versions.sourceCompatibility.get()
+        targetCompatibility libs.versions.targetCompatibility.get()
     }
 
     kotlinOptions {
-        jvmTarget = versions.jvmTarget
+        jvmTarget = libs.versions.jvmTarget.get()
     }
 
     namespace 'com.grarcht.shuttle.demo.core'
 }
 
 dependencies {
-    implementation jetbrainsKotlinDeps.stdlib
-    implementation androidXDeps.annotationJvm
-    implementation androidXDeps.coreKtx
-    implementation androidXDeps.lifecycle.extensions
-    implementation androidXDeps.lifecycle.viewModel
+    implementation libs.jetbrainsKotlinDeps.stdlib
+    implementation libs.android.annotationJvm
+    implementation libs.android.coreKtx
+    implementation libs.android.lifecycle.extensions
+    implementation libs.android.lifecycle.viewModel
 
     // To use typical module dependencies, comment out the above dependency and
     // uncomment the following:
@@ -57,6 +57,6 @@ dependencies {
 //    implementation project(':framework-integrations-extensions-room')
 
     // To use maven dependencies, use the following
-    implementation shuttle.integrationsPersistence
-    implementation shuttle.integrationsExtensionsRoom
+    implementation libs.shuttle.integrationsPersistence
+    implementation libs.shuttle.integrationsExtensionsRoom
 }

@@ -1,13 +1,13 @@
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
+    alias libs.plugins.android.library
+    alias libs.plugins.kotlin.android
 }
 
 android {
     defaultConfig {
-        compileSdk versions.android.compileSdk
-        minSdk versions.android.minSdk
-        targetSdk versions.android.targetSdk
+        compileSdk libs.versions.compileSdk.get().toInteger()
+        minSdk libs.versions.minSdk.get().toInteger()
+        targetSdk libs.versions.targetSdk.get().toInteger()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -21,12 +21,12 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = versions.jvmTarget
+        jvmTarget = libs.versions.jvmTarget.get()
     }
 
     compileOptions {
-        sourceCompatibility versions.sourceCompatibility
-        targetCompatibility versions.targetCompatibility
+        sourceCompatibility libs.versions.sourceCompatibility.get()
+        targetCompatibility libs.versions.targetCompatibility.get()
     }
     namespace 'com.grarcht.shuttle.solution'
 }
@@ -40,8 +40,8 @@ configurations {
 }
 
 dependencies {
-    implementation jetbrainsKotlinDeps.stdlib
-    implementation androidXDeps.coreKtx
+    implementation libs.jetbrainsKotlinDeps.stdlib
+    implementation libs.android.coreKtx
 
     // If other integration extensions are desired, they should have corresponding
     // dependency declarations here.
@@ -50,7 +50,7 @@ dependencies {
 //    withRoom project(':framework-integrations-extensions-room')
 
     // To use maven dependencies, use the following:
-    withRoom shuttle.framework
-    withRoom shuttle.integrationsPersistence
-    withRoom shuttle.integrationsExtensionsRoom
+    withRoom libs.shuttle.framework
+    withRoom libs.shuttle.integrationsPersistence
+    withRoom libs.shuttle.integrationsExtensionsRoom
 }
