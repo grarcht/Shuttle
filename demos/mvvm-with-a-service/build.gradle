@@ -22,6 +22,8 @@ tasks.dokkaHtml.configure {
 }
 
 android {
+    namespace 'com.grarcht.shuttle.demo.mvvmwithaservice'
+
     defaultConfig {
         applicationId 'com.grarcht.shuttle.demo.mvvm_with_a_service'
         compileSdk libs.versions.compileSdk.get().toInteger()
@@ -40,7 +42,6 @@ android {
         }
     }
 
-
     compileOptions {
         sourceCompatibility libs.versions.sourceCompatibility.get()
         targetCompatibility libs.versions.targetCompatibility.get()
@@ -51,11 +52,17 @@ android {
     }
 
     buildFeatures {
-        dataBinding true
         viewBinding true
     }
 
-    namespace 'com.grarcht.shuttle.demo.mvvmwithaservice'
+    def dependenciesType = "dependenciesType"
+    flavorDimensions += dependenciesType
+
+    productFlavors {
+        artifacts { dimension dependenciesType }
+        modules { dimension dependenciesType }
+        solutionBuilder { dimension dependenciesType }
+    }
 }
 
 dependencies {
@@ -72,21 +79,17 @@ dependencies {
     implementation libs.android.annotationJvm
     ksp libs.dependencyInjectionDeps.hiltCompiler
     implementation project(':demos-core-lib')
-    implementation project(':demos-databinding-lib')
 
-    // To use a single aar file dependency, do something like the following.
-    // If another integration extension is desired, a corresponding configuration should be
-    // declared here for the "solution-builder" project.
-    // implementation project(path: ':solution-builder', configuration: 'withRoom')
+    // To use a single pom / gradle module, do something like the following.
+    solutionBuilderImplementation project(path: ':solution-builder', configuration: 'withRoom')
 
-    // To use lighter weight, independent dependencies, comment out the above dependency and
-    // uncomment the following:
-//     implementation project(':framework')
-//     implementation project(':framework-integrations-persistence')
-//     implementation project(':framework-integrations-extensions-room')
+    // Lighter weight, independent dependencies
+    modulesImplementation project(':framework')
+    modulesImplementation project(':framework-integrations-persistence')
+    modulesImplementation project(':framework-integrations-extensions-room')
 
-    // To use maven dependencies, use the following
-    implementation libs.shuttle.framework
-    implementation libs.shuttle.integrationsPersistence
-    implementation libs.shuttle.integrationsExtensionsRoom
+    // To use maven dependencies, use the following:
+    artifactsImplementation libs.shuttle.framework
+    artifactsImplementation libs.shuttle.integrationsPersistence
+    artifactsImplementation libs.shuttle.integrationsExtensionsRoom
 }

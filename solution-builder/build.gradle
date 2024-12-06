@@ -4,6 +4,8 @@ plugins {
 }
 
 android {
+    namespace 'com.grarcht.shuttle.solution'
+
     defaultConfig {
         compileSdk libs.versions.compileSdk.get().toInteger()
         minSdk libs.versions.minSdk.get().toInteger()
@@ -28,29 +30,17 @@ android {
         sourceCompatibility libs.versions.sourceCompatibility.get()
         targetCompatibility libs.versions.targetCompatibility.get()
     }
-    namespace 'com.grarcht.shuttle.solution'
 }
 
 configurations {
-    // If other integration extensions are desired, they should have corresponding
-    // configurations defined here.
-    withRoom {
-        extendsFrom api
-    }
+    withRoom { extendsFrom api }
 }
 
 dependencies {
     implementation libs.jetbrainsKotlinDeps.stdlib
     implementation libs.android.coreKtx
 
-    // If other integration extensions are desired, they should have corresponding
-    // dependency declarations here.
-//    withRoom project(':framework')
-//    withRoom project(':framework-integrations-persistence')
-//    withRoom project(':framework-integrations-extensions-room')
-
-    // To use maven dependencies, use the following:
-    withRoom libs.shuttle.framework
-    withRoom libs.shuttle.integrationsPersistence
-    withRoom libs.shuttle.integrationsExtensionsRoom
+    withRoom project(':framework')
+    withRoom project(':framework-integrations-persistence')
+    withRoom project(':framework-integrations-extensions-room')
 }

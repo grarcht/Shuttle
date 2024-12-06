@@ -2,11 +2,26 @@
 
 ## [Released]
 
+## [3.0.1] - 2024-12-05
+
+## Added
+
+- product flavors to the demo apps to control how the dependencies are referenced
+
+## Changed
+
+- dependency versions
+- updated AGP to 8.7.0 and the Gradle Wrapper to 8.11
+
+## Removed
+
+- removed databinding
+
 ## [3.0.0] - 2024-05-21
 
 ## Added
 
-- framework code to support Android services (remote and local): ```ShuttleService```, 
+- framework code to support Android services (remote and local): ```ShuttleService```,
   ```LifecycleAwareShuttleServiceConnection```, ```ShuttleServiceMessageValidator```, and more.
 - mvvm-with-a-service demo module
 - a cargo id parameter to the new states from version 2.1.0
@@ -22,13 +37,13 @@
 - organized import statements
 - dependency declaration clean up
 
-
 ## [2.1.0] - 2023-08-29
 
 ## Added
 
 - new states for the uninitialized
-  states: ```ShuttlePickupCargoResult.NotPickingUpCargoYet```,```ShuttleRemoveCargoResult.NotRemovingCargoYet```,
+  states: ```ShuttlePickupCargoResult.NotPickingUpCargoYet```,
+  ```ShuttleRemoveCargoResult.NotRemovingCargoYet```,
   and ``` ShuttleStoreCargoResult.NotStoringCargoYet``` to help solutions using ```StateFlows``` to
   have initial states for picking up, removing, or storing cargo data.
 

@@ -14,6 +14,8 @@ dokkaHtml {
 }
 
 android {
+    namespace 'com.grarcht.shuttle.demo.core'
+
     defaultConfig {
         compileSdk libs.versions.compileSdk.get().toInteger()
         minSdk libs.versions.minSdk.get().toInteger()
@@ -40,8 +42,6 @@ android {
     kotlinOptions {
         jvmTarget = libs.versions.jvmTarget.get()
     }
-
-    namespace 'com.grarcht.shuttle.demo.core'
 }
 
 dependencies {
@@ -51,12 +51,7 @@ dependencies {
     implementation libs.android.lifecycle.extensions
     implementation libs.android.lifecycle.viewModel
 
-    // To use typical module dependencies, comment out the above dependency and
-    // uncomment the following:
-//    implementation project(':framework-integrations-persistence')
-//    implementation project(':framework-integrations-extensions-room')
-
-    // To use maven dependencies, use the following
-    implementation libs.shuttle.integrationsPersistence
-    implementation libs.shuttle.integrationsExtensionsRoom
+    implementation project(':framework')
+    implementation project(':framework-integrations-persistence')
+    implementation project(':framework-integrations-extensions-room')
 }
