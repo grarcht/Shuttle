@@ -74,7 +74,7 @@ dependencies {
 
 group 'com.grarcht.shuttle'
 archivesBaseName = 'framework-addons-navigation-component'
-version = libs.versions.shuttle
+version = libs.versions.shuttle.get()
 def testPublish = true
 def isReleaseVersion = true // the opposite is snapshot
 def releaseAARFilePath = isReleaseVersion ?
