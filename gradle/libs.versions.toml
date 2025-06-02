@@ -18,7 +18,7 @@ lifecycle = "2.9.0"
 mockito = "5.7.0"
 navigation = "2.9.0"
 room = "2.7.1"
-shuttle = "3.0.1"
+shuttle = "3.0.2"
 sourceCompatibility = "17"
 targetCompatibility = "17"
 

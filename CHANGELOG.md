@@ -2,6 +2,14 @@
 
 ## [Released]
 
+## [3.0.2] - 2025-06-01
+
+## Changed
+
+- dependency versions
+- updated AGP to 8.10.1 and the Gradle Wrapper to 8.14.1
+
+
 ## [3.0.1] - 2024-12-05
 
 ## Added
