@@ -2,6 +2,13 @@
 
 ## [Released]
 
+## [3.0.3] - 2025-08-20
+
+## Changed
+
+- dependency versions
+- Gradle DSL updates for the Android Gradle Plugin in the build scripts
+
 ## [3.0.2] - 2025-06-01
 
 ## Changed
