@@ -83,7 +83,7 @@ dependencies {
     artifactsImplementation libs.shuttle.integrationsPersistence
     artifactsImplementation libs.shuttle.integrationsExtensionsRoom
     artifactsImplementation libs.shuttle.addOnsNavigationComponent
-
+    
     androidTestImplementation libs.testingDeps.junit.ext
     androidTestImplementation libs.testingDeps.espresso.core
     androidTestRuntimeOnly libs.testingDeps.junit.junit5AndroidTestRunner

@@ -1,31 +1,31 @@
 [versions]
-compileSdk = "35"
+compileSdk = "36"
 minSdk = "26"
-targetSdk = "35"
+targetSdk = "36"
 compose = "1.7.8"
-detekt = "1.23.1"
-dokka = "1.8.20"
-gradleBuildTools = "8.10.1"
-hilt = "2.56.2"
-junitAndroidTest = "1.3.0"
-junitJupiter = "5.10.0"
-junitPlatform = "1.10.0"
-jvmTarget = "17"
-kotlin = "2.0.21"
-kotlinCoroutines = "1.7.3"
+detekt = "1.23.8"
+dokka = "2.0.0"
+gradleBuildTools = "8.12.1"
+hilt = "2.57"
+junitAndroidTest = "1.8.0"
+junitJupiter = "5.13.4"
+junitPlatform = "1.13.4"
+jvmTarget = "21"
+kotlin = "2.2.10"
+kotlinCoroutines = "1.10.2"
 kotlinComposeCompilerExt = "1.5.15"
-lifecycle = "2.9.0"
-mockito = "5.7.0"
-navigation = "2.9.0"
-room = "2.7.1"
+lifecycle = "2.9.2"
+mockito = "5.19.0"
+navigation = "2.9.3"
+room = "2.7.2"
 shuttle = "3.0.2"
-sourceCompatibility = "17"
-targetCompatibility = "17"
+sourceCompatibility = "21"
+targetCompatibility = "21"
 
 [libraries]
 android-activityKtx = { group = "androidx.activity", name = "activity-ktx", version = "1.10.1" }
 android-annotationJvm = { group = "androidx.annotation", name = "annotation-jvm", version = "1.9.1" }
-android-appCompat = { group = "androidx.appcompat", name = "appcompat", version = "1.7.0" }
+android-appCompat = { group = "androidx.appcompat", name = "appcompat", version = "1.7.1" }
 android-compose-activity = { group = "androidx.activity", name = "activity-compose", version = "1.10.1" }
 android-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "compose" }
 android-compose-foundationLayout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "compose" }
@@ -36,7 +36,7 @@ android-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref =
 android-compose-uiTooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose" }
 android-constraintLayout = { group = "androidx.constraintlayout", name = "constraintlayout", version = "2.2.1" }
 android-coreKtx = { group = "androidx.core", name = "core-ktx", version = "1.16.0" }
-android-fragmentKtx = { group = "androidx.fragment", name = "fragment-ktx", version = "1.8.7" }
+android-fragmentKtx = { group = "androidx.fragment", name = "fragment-ktx", version = "1.8.9" }
 android-lifecycle-extensions = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
 android-lifecycle-viewModel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 android-material = { group = "com.google.android.material", name = "material", version = "1.12.0" }
@@ -45,12 +45,13 @@ android-navigationFragmentKtx = { group = "androidx.navigation", name = "navigat
 classpathDeps-dokkaGradlePlugin = { group = "org.jetbrains.dokka", name = "dokka-gradle-plugin", version.ref = "dokka" }
 classpathDeps-gradleBuildTools = { group = "com.android.tools.build", name = "gradle", version.ref = "gradleBuildTools" }
 classpathDeps-kotlinGradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-classpathDeps-junit5Plugin = { group = "de.mannodermaus.gradle.plugins", name = "android-junit5", version = "1.9.3.0" }
+classpathDeps-junit5Plugin = { group = "de.mannodermaus.gradle.plugins", name = "android-junit5", version = "1.13.1.0" }
 
 dependencyInjectionDeps-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 dependencyInjectionDeps-hiltCompiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 dependencyInjectionDeps-hiltPlugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
 
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 jetbrainsKotlinDeps-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinCoroutines" }
 jetbrainsKotlinDeps-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 
@@ -66,33 +67,33 @@ shuttle-addOnsNavigationComponent = { group = "com.grarcht.shuttle", name = "fra
 
 staticAnalysisDeps-detektPlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
 
-testingDeps-androidTest-monitor = { group = "androidx.test", name = "monitor", version = "1.7.2" }
-testingDeps-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version = "3.6.1" }
-testingDeps-junit-ext = { group = "androidx.test.ext", name = "junit", version = "1.2.1" }
+testingDeps-androidTest-monitor = { group = "androidx.test", name = "monitor", version = "1.8.0" }
+testingDeps-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version = "3.7.0" }
+testingDeps-junit-ext = { group = "androidx.test.ext", name = "junit", version = "1.3.0" }
 testingDeps-junit-jupiterApi = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junitJupiter" }
 testingDeps-junit-jupiterEngine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junitJupiter" }
 testingDeps-junit-jupiterParams = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "junitJupiter" }
 testingDeps-junit-platformCommons = { group = "org.junit.platform", name = "junit-platform-commons", version.ref = "junitPlatform" }
 testingDeps-junit-androidCore = { group = "androidx.arch.core", name = "core-testing", version = "2.2.0" }
-testingDeps-junit-androidTestRunner = { group = "androidx.test", name = "runner", version = "1.6.2" }
+testingDeps-junit-androidTestRunner = { group = "androidx.test", name = "runner", version = "1.7.0" }
 testingDeps-junit-junit5AndroidTestCore = { group = "de.mannodermaus.junit5", name = "android-test-core", version.ref = "junitAndroidTest" }
 testingDeps-junit-junit5AndroidTestRunner = { group = "de.mannodermaus.junit5", name = "android-test-runner", version.ref = "junitAndroidTest" }
 testingDeps-kotlin-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
 testingDeps-mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 testingDeps-mockito-inline = { group = "org.mockito", name = "mockito-inline", version = "5.2.0" }
-testingDeps-mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version = "5.3.1" }
+testingDeps-mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version = "6.0.0" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "gradleBuildTools" }
 android-junit5 = { id = "de.mannodermaus.android-junit5" }
 android-library = { id = "com.android.library", version.ref = "gradleBuildTools" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-detect = { id = "io.gitlab.arturbosch.detekt", version = "1.23.1" }
+detect = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 google-dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-google-ksp = { id = "com.google.devtools.ksp", version = "2.0.21-1.0.27" }
-jetbrains-dokka = { id = "org.jetbrains.dokka", version = "1.8.20" }
-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version = "2.0.21" }
-jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version = "1.4.30" }
+google-ksp = { id = "com.google.devtools.ksp", version = "2.2.10-2.0.2" }
+jetbrains-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-android = { id = "kotlin-android" }
 maven-publish = { id = "maven-publish" }
 signing = { id = "signing" }

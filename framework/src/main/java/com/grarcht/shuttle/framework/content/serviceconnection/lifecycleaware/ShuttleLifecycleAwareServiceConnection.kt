@@ -1,6 +1,5 @@
 package com.grarcht.shuttle.framework.content.serviceconnection.lifecycleaware
 
-import android.content.Context
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner

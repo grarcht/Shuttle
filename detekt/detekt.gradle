@@ -1,10 +1,9 @@
 apply plugin: 'io.gitlab.arturbosch.detekt'
 
-detekt {
+tasks.named("detekt").configure {
     allRules = true
     buildUponDefaultConfig = true
     def rootDirectory = rootProject.getRootDir()
-    println("Dir ${rootDirectory}")
     config = files("${rootDirectory}/detekt/detekt.yml")
     baseline = file("${rootDirectory}/detekt/baseline.xml")
     autoCorrect = true
@@ -15,10 +14,8 @@ detekt {
         txt.enabled = true
         sarif.enabled = true
     }
-
-    toolVersion = "1.23.1"
 }
 
 dependencies {
-    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1"
+    detektPlugins libs.detekt.formatting
 }

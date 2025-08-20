@@ -20,9 +20,9 @@ android {
 
     defaultConfig {
         applicationId 'com.grarcht.shuttle.mvvm_with_compose'
-        compileSdk libs.versions.compileSdk.get().toInteger()
-        minSdk libs.versions.minSdk.get().toInteger()
-        targetSdk libs.versions.targetSdk.get().toInteger()
+        compileSdkVersion libs.versions.compileSdk.get().toInteger()
+        minSdkVersion libs.versions.minSdk.get().toInteger()
+        targetSdkVersion libs.versions.targetSdk.get().toInteger()
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -39,8 +39,8 @@ android {
         }
     }
 
-    kotlinOptions {
-        jvmTarget = libs.versions.jvmTarget.get()
+    kotlin {
+        jvmToolchain(libs.versions.jvmTarget.get().toInteger())
     }
 
     compileOptions {

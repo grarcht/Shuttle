@@ -1,7 +1,8 @@
 package com.grarcht.shuttle.framework.result
 
-sealed class ShuttleRemoveCargoResult {
+import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult.Companion.ALL_CARGO
 
+sealed class ShuttleRemoveCargoResult {
     /**
      * The state for when Shuttle has failed to pick up the cargo.
      * @param cargoId for the cargo being removed.  It can be [ALL_CARGO].

@@ -17,9 +17,9 @@ android {
     namespace 'com.grarcht.shuttle.demo.core'
 
     defaultConfig {
-        compileSdk libs.versions.compileSdk.get().toInteger()
-        minSdk libs.versions.minSdk.get().toInteger()
-        targetSdk libs.versions.targetSdk.get().toInteger()
+        compileSdkVersion libs.versions.compileSdk.get().toInteger()
+        minSdkVersion libs.versions.minSdk.get().toInteger()
+        targetSdkVersion libs.versions.targetSdk.get().toInteger()
         versionCode 1
         versionName "1.0"
 
@@ -39,8 +39,8 @@ android {
         targetCompatibility libs.versions.targetCompatibility.get()
     }
 
-    kotlinOptions {
-        jvmTarget = libs.versions.jvmTarget.get()
+    kotlin {
+        jvmToolchain(libs.versions.jvmTarget.get().toInteger())
     }
 }
 
