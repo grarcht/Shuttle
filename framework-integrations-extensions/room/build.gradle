@@ -26,9 +26,7 @@ android {
     }
 
     buildTypes.release.minifyEnabled false
-    kotlinOptions {
-        jvmTarget = libs.versions.jvmTarget.get()
-    }
+    kotlin.jvmToolchain(libs.versions.jvmTarget.get().toInteger())
     testOptions.unitTests.returnDefaultValues = true
 
     compileOptions {

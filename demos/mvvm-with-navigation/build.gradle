@@ -28,9 +28,7 @@ android {
         testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
     }
 
-    kotlinOptions {
-        jvmTarget = libs.versions.jvmTarget.get()
-    }
+    kotlin.jvmToolchain(libs.versions.jvmTarget.get().toInteger())
 
     compileOptions {
         sourceCompatibility libs.versions.sourceCompatibility.get()
@@ -83,7 +81,7 @@ dependencies {
     artifactsImplementation libs.shuttle.integrationsPersistence
     artifactsImplementation libs.shuttle.integrationsExtensionsRoom
     artifactsImplementation libs.shuttle.addOnsNavigationComponent
-    
+
     androidTestImplementation libs.testingDeps.junit.ext
     androidTestImplementation libs.testingDeps.espresso.core
     androidTestRuntimeOnly libs.testingDeps.junit.junit5AndroidTestRunner

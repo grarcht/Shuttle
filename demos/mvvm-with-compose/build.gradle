@@ -39,9 +39,7 @@ android {
         }
     }
 
-    kotlin {
-        jvmToolchain(libs.versions.jvmTarget.get().toInteger())
-    }
+    kotlin.jvmToolchain(libs.versions.jvmTarget.get().toInteger())
 
     compileOptions {
         sourceCompatibility libs.versions.sourceCompatibility.get()

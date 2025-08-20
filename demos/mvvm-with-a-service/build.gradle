@@ -47,9 +47,7 @@ android {
         targetCompatibility libs.versions.targetCompatibility.get()
     }
 
-    kotlin {
-        jvmToolchain(libs.versions.jvmTarget.get().toInteger())
-    }
+    kotlin.jvmToolchain(libs.versions.jvmTarget.get().toInteger())
 
     buildFeatures {
         viewBinding true
