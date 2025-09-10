@@ -53,9 +53,9 @@ providing convenience functions to remove cargo (automatically or on-demand)
 
 <div class="datatable-begin"></div>
 
-|  Using the framework avoids app crashes.  |  Apps crash when not using the framework.  |
-|-------------------------------------------|--------------------------------------------|
-|  <img src="media/videos/loaded_image_cargo.gif" width="200" height="400"/>  |  <img src="media/videos/app_crash.gif" width="200" height="400"/>  | 
+| Using the framework avoids app crashes.                 |  Apps crash when not using the framework.  |
+|---------------------------------------------------------|--------------------------------------------|
+| <img src="media/videos/loaded_image_cargo.gif" style="width: 200px; height: 200px;"/> |  <img src="media/videos/app_crash.gif" style="width: 200px; height: 200px;"/>  | 
 
 <div class="datatable-end"></div>
 
