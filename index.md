@@ -12,8 +12,7 @@
 
 ## Overview
 
-[![Saving Android Apps From Crashes | The Shuttle Framework and Solution](media/screenshots/video_frame1.jpeg)](https://www.youtube.com/watch?v=4Nl9zlcbwU4)
-
+[![Saving Android Apps From Crashes | The Shuttle Framework and Solution](media/screenshots/video_frame1.jpeg)](https://www.youtube.com/watch?v=4Nl9zlcbwU4){:target="_blank"}
 
 Shuttle provides a modern, guarded way to pass large Serializable objects with Intent objects or save them in Bundle objects to avoid app crashes.
 
