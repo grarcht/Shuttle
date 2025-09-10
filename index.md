@@ -53,7 +53,7 @@ providing convenience functions to remove cargo (automatically or on-demand)
 ## The value of using the Shuttle Framework
 |  Using the framework avoids app crashes.  |  Apps crash when not using the framework.  |
 |-------------------------------------------|--------------------------------------------|
-|  <img src="/media/videos/loaded_image_cargo.gif" width="50%" height="50%"/>  |  <img src="/media/videos/app_crash.gif" width="50%" height="50%"/>  | 
+|  <img src="media/videos/loaded_image_cargo.gif" width="50%" height="50%"/>  |  <img src="media/videos/app_crash.gif" width="50%" height="50%"/>  | 
 
 For first-hand examples, refer to the "The Demo Apps" section below.
 
@@ -255,14 +255,14 @@ When using the demo apps, there are a couple of flows to be aware of:
 
 |  The main menu screen  |  The cargo (image) loading screen  |  The cargo (image) loaded screen  |
 |------------------------|------------------------------------|-----------------------------------|
-|  <img src="/media/screenshots/main_menu.png" width="200" height="400"/>  |  <img src="/media/screenshots/loading_image_cargo.png" width="200" height="400"/>  |  <img src="/media/screenshots/loaded_image_cargo.png" width="200" height="400"/>  |
+|  <img src="media/screenshots/main_menu.png" width="200" height="400"/>  |  <img src="media/screenshots/loading_image_cargo.png" width="200" height="400"/>  |  <img src="media/screenshots/loaded_image_cargo.png" width="200" height="400"/>  |
 
 
 2. The error flow starts from clicking on the "**Navigate Normally**" button.
 
 |  The main menu screen  |  The screen after the app crash  |
 |------------------------|----------------------------------|
-|  <img src="/media/screenshots/main_menu.png" width="200" height="400"/>  |  <img src="/media/screenshots/loading_image_cargo_failed.png" width="200" height="400"/>  | 
+|  <img src="media/screenshots/main_menu.png" width="200" height="400"/>  |  <img src="media/screenshots/loading_image_cargo_failed.png" width="200" height="400"/>  | 
 
 
 
