@@ -3,7 +3,17 @@
 
 # Shuttle
 [![License: MIT](https://img.shields.io/github/license/grarcht/shuttle?color=white&style=plastic)](https://github.com/grarcht/Shuttle/blob/main/LICENSE.md)   ![Maven Central](https://img.shields.io/maven-central/v/com.grarcht.shuttle/framework?color=teal&style=plastic)
-[![Featured in androidweekly.net](https://img.shields.io/badge/Featured%20in%20androidweekly.net-Issue%20%23455-4998C2)](https://androidweekly.net/issues/issue-455)
+
+## Featured in androidweekly.net
+
+[![V. 2.1.0 - Issue #594](https://img.shields.io/badge/Version_2.1.0-Issue_%23594-green?style=flat)](https://androidweekly.net/issues/issue-594)
+[![V. 1.0.0 - Issue #455](https://img.shields.io/badge/Version_1.0.0-Issue_%23455-blue?style=flat)](https://androidweekly.net/issues/issue-455)
+
+
+## Overview
+
+[![Saving Android Apps From Crashes | The Shuttle Framework and Solution](https://markdown-videos-api.jorgenkh.no/url?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D4Nl9zlcbwU4)](https://www.youtube.com/watch?v=4Nl9zlcbwU4)
+
 
 Shuttle provides a modern, guarded way to pass large Serializable objects with Intent objects or save them in Bundle objects to avoid app crashes.
 
