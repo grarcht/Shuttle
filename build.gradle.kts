@@ -1,5 +1,5 @@
 buildscript {
-    apply from: 'gradle/ext.gradle'
+    apply(from = "gradle/ext.gradle")
 
     repositories {
         mavenCentral()
@@ -9,7 +9,7 @@ buildscript {
         // in via the gradle module file.  Using the POM file as the source of truth fixes that
         // issue.  This is now being universally applied for all Google artifacts.
         maven {
-            url 'https://maven.google.com/'
+            url = uri("https://maven.google.com/")
             metadataSources {
                 //noinspection ForeignDelegate
                 mavenPom()
@@ -22,29 +22,29 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath libs.classpathDeps.gradleBuildTools
-        classpath libs.classpathDeps.kotlinGradlePlugin
-        classpath libs.classpathDeps.dokkaGradlePlugin
+        classpath(libs.classpathDeps.gradleBuildTools)
+        classpath(libs.classpathDeps.kotlinGradlePlugin)
+        classpath(libs.classpathDeps.dokkaGradlePlugin)
         //https://github.com/mannodermaus/android-junit5
-        classpath libs.classpathDeps.junit5Plugin
-        classpath libs.dependencyInjectionDeps.hilt
-        classpath libs.staticAnalysisDeps.detektPlugin
-        classpath libs.dependencyInjectionDeps.hiltPlugin
+        classpath(libs.classpathDeps.junit5Plugin)
+        classpath(libs.dependencyInjectionDeps.hilt)
+        classpath(libs.staticAnalysisDeps.detektPlugin)
+        classpath(libs.dependencyInjectionDeps.hiltPlugin)
     }
 }
 
 plugins {
-    alias libs.plugins.android.application apply false
-    alias libs.plugins.android.library apply false
-    alias libs.plugins.google.dagger.hilt apply false
-    alias libs.plugins.detect
-    alias libs.plugins.jetbrains.dokka
-    alias libs.plugins.google.ksp apply false
-    alias libs.plugins.jetbrains.kotlin.android apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.google.dagger.hilt) apply false
+    alias(libs.plugins.detect)
+    alias(libs.plugins.jetbrains.dokka)
+    alias(libs.plugins.google.ksp) apply false
+    alias(libs.plugins.jetbrains.kotlin.android) apply false
     alias(libs.plugins.compose.compiler) apply false
 }
 
-apply from: "$rootDir/detekt/detekt.gradle"
+apply(from = "${project.rootDir}/detekt/detekt.gradle")
 
 repositories {
     mavenCentral()
@@ -54,7 +54,7 @@ repositories {
     // in via the gradle module file.  Using the POM file as the source of truth fixes that
     // issue.  This is now being universally applied for all Google artifacts.
     maven {
-        url 'https://maven.google.com/'
+        url = uri("https://maven.google.com/")
         metadataSources {
             //noinspection ForeignDelegate
             mavenPom()
@@ -68,18 +68,18 @@ repositories {
 }
 
 
-def rootDir = projectDir.absolutePath
+val rootDir = projectDir.absolutePath
 
 allprojects {
-    apply from: "$rootDir/gradle/ext.gradle"
-    apply from: "$rootDir/detekt/detekt.gradle"
+    apply(from = "$rootDir/gradle/ext.gradle")
+    apply(from = "$rootDir/detekt/detekt.gradle")
 
     repositories {
         mavenLocal()
 
         // The Shuttle framework artifacts are hosted in Sonatype Nexus Maven Central.
         maven {
-            url 'https://repo1.maven.org/maven2/com/grarcht/shuttle/'
+            url = uri("https://repo1.maven.org/maven2/com/grarcht/shuttle/")
             metadataSources {
                 //noinspection ForeignDelegate
                 mavenPom()
@@ -99,7 +99,7 @@ allprojects {
         // in via the gradle module file.  Using the POM file as the source of truth fixes that
         // issue.  This is now being universally applied for all Google artifacts.
         maven {
-            url 'https://maven.google.com/'
+            url = uri("https://maven.google.com/")
             metadataSources {
                 //noinspection ForeignDelegate
                 mavenPom()
@@ -114,6 +114,6 @@ allprojects {
     }
 }
 
-tasks.register("clean", Delete) {
-    delete rootProject.layout.buildDirectory
+tasks.register<Delete>("clean") {
+    delete(project.layout.buildDirectory)
 }
