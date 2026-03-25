@@ -42,7 +42,6 @@ android-lifecycle-viewModel = { group = "androidx.lifecycle", name = "lifecycle-
 android-material = { group = "com.google.android.material", name = "material", version = "1.12.0" }
 android-navigationFragmentKtx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
 
-classpathDeps-dokkaGradlePlugin = { group = "org.jetbrains.dokka", name = "dokka-gradle-plugin", version.ref = "dokka" }
 classpathDeps-gradleBuildTools = { group = "com.android.tools.build", name = "gradle", version.ref = "gradleBuildTools" }
 classpathDeps-kotlinGradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 classpathDeps-junit5Plugin = { group = "de.mannodermaus.gradle.plugins", name = "android-junit5", version = "1.14.0.0" }

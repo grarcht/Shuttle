@@ -10,8 +10,13 @@ plugins {
     alias(libs.plugins.maven.publish)
 }
 
-tasks.named("dokkaHtml") {
-    (this as org.jetbrains.dokka.gradle.DokkaTask).outputDirectory.set(file("documentation/kotlin"))
+dokka {
+    dokkaPublications.html {
+        outputDirectory.set(layout.projectDirectory.dir("documentation/kotlin"))
+    }
+    dokkaSourceSets.register("main") {
+        sourceRoots.from(file("src/main/java"))
+    }
 }
 
 android {
@@ -92,7 +97,7 @@ val sourcesJarFileName = "${archivesName}-sources.jar"
 tasks.register<Jar>("javadocJar") {
     archiveClassifier.set("javadoc")
     archiveFileName.set(javadocJarFileName)
-    from(tasks.named("dokkaJavadoc"))
+    from(tasks.named("dokkaGeneratePublicationJavadoc"))
 }
 
 tasks.register<Jar>("sourcesJar") {

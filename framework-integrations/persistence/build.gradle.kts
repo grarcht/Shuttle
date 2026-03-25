@@ -12,8 +12,10 @@ plugins {
     alias(libs.plugins.android.junit5)
 }
 
-tasks.named("dokkaHtml") {
-    (this as org.jetbrains.dokka.gradle.DokkaTask).outputDirectory.set(file("documentation/kotlin"))
+dokka {
+    dokkaPublications.html {
+        outputDirectory.set(layout.projectDirectory.dir("documentation/kotlin"))
+    }
 }
 
 android {
@@ -80,7 +82,7 @@ val sourcesJarFileName = "${archivesName}-sources.jar"
 tasks.register<Jar>("javadocJar") {
     archiveClassifier.set("javadoc")
     archiveFileName.set(javadocJarFileName)
-    from(tasks.named("dokkaJavadoc"))
+    from(tasks.named("dokkaGeneratePublicationJavadoc"))
 }
 
 tasks.register<Jar>("sourcesJar") {

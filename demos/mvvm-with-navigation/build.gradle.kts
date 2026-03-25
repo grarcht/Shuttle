@@ -8,8 +8,13 @@ plugins {
 
 apply(from = "${project.rootDir}/detekt/detekt.gradle")
 
-tasks.named("dokkaHtml") {
-    (this as org.jetbrains.dokka.gradle.DokkaTask).outputDirectory.set(file("documentation/kotlin"))
+dokka {
+    dokkaPublications.html {
+        outputDirectory.set(layout.projectDirectory.dir("documentation/kotlin"))
+    }
+    dokkaSourceSets.register("main") {
+        sourceRoots.from(file("src/main/java"))
+    }
 }
 
 android {

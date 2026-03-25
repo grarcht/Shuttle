@@ -24,7 +24,6 @@ buildscript {
     dependencies {
         classpath(libs.classpathDeps.gradleBuildTools)
         classpath(libs.classpathDeps.kotlinGradlePlugin)
-        classpath(libs.classpathDeps.dokkaGradlePlugin)
         //https://github.com/mannodermaus/android-junit5
         classpath(libs.classpathDeps.junit5Plugin)
         classpath(libs.dependencyInjectionDeps.hilt)
@@ -113,6 +112,6 @@ allprojects {
     }
 }
 
-tasks.register<Delete>("clean") {
+tasks.named<Delete>("clean") {
     delete(project.layout.buildDirectory)
 }
