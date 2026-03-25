@@ -8,7 +8,6 @@
 
 <a href="https://github.com/grarcht/Shuttle/blob/main/LICENSE.md"><img src="https://img.shields.io/github/license/grarcht/shuttle?color=white&style=plastic" alt="License: MIT"/></a>
 <a href="https://search.maven.org/artifact/com.grarcht.shuttle/framework"><img src="https://img.shields.io/maven-central/v/com.grarcht.shuttle/framework?color=teal&style=plastic" alt="Maven Central"/></a>
-<a href="https://github.com/grarcht/Shuttle/actions"><img src="https://img.shields.io/github/actions/workflow/status/grarcht/Shuttle/android.yml?branch=main&style=plastic" alt="Build"/></a>
 <a href="https://developer.android.com/studio/releases/platforms"><img src="https://img.shields.io/badge/Min%20API-21-brightgreen?style=plastic" alt="Min API"/></a>
 <a href="https://kotlinlang.org/"><img src="https://img.shields.io/badge/Kotlin-2.0%2B-purple?style=plastic" alt="Kotlin"/></a>
 
