@@ -40,7 +40,7 @@ android {
         targetCompatibility = JavaVersion.toVersion(libs.versions.targetCompatibility.get())
     }
 
-    packagingOptions {
+    packaging {
         resources {
             excludes.add("META-INF/LICENSE*")
         }

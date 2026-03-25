@@ -297,7 +297,7 @@ class CargoShuttleTests {
         var storeId = ""
         var channel: Channel<ShuttlePickupCargoResult>?
         var numberOfValidSteps = 0
-        val countDownLatch = CountDownLatch(2)
+        var countDownLatch = CountDownLatch(1)
 
         cargoShuttle
             .intentCargoWith(Intent.ACTION_MEDIA_BUTTON)
@@ -342,9 +342,12 @@ class CargoShuttleTests {
             }
         }.addForDisposal(compositeDisposableHandle)
 
-        delay(1000L)
+        awaitOnLatch(countDownLatch, 500, TimeUnit.MILLISECONDS)
 
         cargoShuttle.cleanShuttleFromDeliveryFor(cargoId, removeCargoReceiverChannel)
+
+        delay(1000L)
+        countDownLatch = CountDownLatch(1)
 
         launch(Dispatchers.Main) {
             channel = cargoShuttle.pickupCargo<Cargo>(cargoId)

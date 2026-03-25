@@ -39,7 +39,9 @@ android {
         targetCompatibility = JavaVersion.toVersion(libs.versions.targetCompatibility.get())
     }
 
-    kotlin.jvmToolchain(libs.versions.jvmTarget.get().toInt())
+    kotlin {
+        jvmToolchain(libs.versions.jvmTarget.get().toInt())
+    }
 
     val dependenciesType = "dependenciesType"
     flavorDimensions.add(dependenciesType)
