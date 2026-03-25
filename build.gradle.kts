@@ -40,7 +40,6 @@ plugins {
     alias(libs.plugins.detect)
     alias(libs.plugins.jetbrains.dokka)
     alias(libs.plugins.google.ksp) apply false
-    alias(libs.plugins.jetbrains.kotlin.android) apply false
     alias(libs.plugins.compose.compiler) apply false
 }
 

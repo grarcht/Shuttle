@@ -4,12 +4,10 @@ import java.net.URI
 
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.android.junit5)
     alias(libs.plugins.jetbrains.dokka)
     alias(libs.plugins.signing)
     alias(libs.plugins.maven.publish)
-    alias(libs.plugins.jetbrains.kotlin.android)
 }
 
 tasks.named("dokkaHtml") {
@@ -106,18 +104,16 @@ tasks.register<Jar>("sourcesJar") {
 // rename the aar files
 tasks.register("renameArtifacts") {
     doLast {
-        android.libraryVariants.forEach { variant ->
-            variant.outputs.forEach { output ->
-                val debugSuffix = "debug.aar"
-                val releaseSuffix = "release.aar"
-                val outputFile = output.outputFile
-                if (outputFile.name.endsWith(debugSuffix)) {
-                    val newName = if (isReleaseVersion) "${archivesName}-$debugSuffix" else "${archivesName}-debug-SNAPSHOT.aar"
-                    outputFile.renameTo(File(outputFile.parentFile, newName))
-                } else if (outputFile.name.endsWith(releaseSuffix)) {
-                    val newName = if (isReleaseVersion) "${archivesName}-$releaseSuffix" else "${archivesName}-release-SNAPSHOT.aar"
-                    outputFile.renameTo(File(outputFile.parentFile, newName))
-                }
+        val aarsDir = file("${projectDir}/build/outputs/aar/")
+        val debugSuffix = "debug.aar"
+        val releaseSuffix = "release.aar"
+        aarsDir.listFiles()?.forEach { outputFile ->
+            if (outputFile.name.endsWith(debugSuffix)) {
+                val newName = if (isReleaseVersion) "${archivesName}-$debugSuffix" else "${archivesName}-debug-SNAPSHOT.aar"
+                outputFile.renameTo(File(outputFile.parentFile, newName))
+            } else if (outputFile.name.endsWith(releaseSuffix)) {
+                val newName = if (isReleaseVersion) "${archivesName}-$releaseSuffix" else "${archivesName}-release-SNAPSHOT.aar"
+                outputFile.renameTo(File(outputFile.parentFile, newName))
             }
         }
     }

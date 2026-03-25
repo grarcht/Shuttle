@@ -5,8 +5,8 @@ targetSdk = "36"
 compose = "1.7.8"
 detekt = "1.23.8"
 dokka = "2.0.0"
-gradleBuildTools = "8.12.1"
-hilt = "2.57"
+gradleBuildTools = "9.1.0"
+hilt = "2.59.2"
 junitAndroidTest = "1.8.0"
 junitJupiter = "5.13.4"
 junitPlatform = "1.13.4"
@@ -45,7 +45,7 @@ android-navigationFragmentKtx = { group = "androidx.navigation", name = "navigat
 classpathDeps-dokkaGradlePlugin = { group = "org.jetbrains.dokka", name = "dokka-gradle-plugin", version.ref = "dokka" }
 classpathDeps-gradleBuildTools = { group = "com.android.tools.build", name = "gradle", version.ref = "gradleBuildTools" }
 classpathDeps-kotlinGradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-classpathDeps-junit5Plugin = { group = "de.mannodermaus.gradle.plugins", name = "android-junit5", version = "1.13.1.0" }
+classpathDeps-junit5Plugin = { group = "de.mannodermaus.gradle.plugins", name = "android-junit5", version = "1.14.0.0" }
 
 dependencyInjectionDeps-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 dependencyInjectionDeps-hiltCompiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
@@ -90,10 +90,9 @@ android-library = { id = "com.android.library", version.ref = "gradleBuildTools"
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 detect = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 google-dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-google-ksp = { id = "com.google.devtools.ksp", version = "2.2.10-2.0.2" }
+google-ksp = { id = "com.google.devtools.ksp", version = "2.3.6" }
 jetbrains-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-kotlin-android = { id = "kotlin-android" }
 maven-publish = { id = "maven-publish" }
 signing = { id = "signing" }
