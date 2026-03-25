@@ -12,7 +12,7 @@
 <a href="https://developer.android.com/studio/releases/platforms"><img src="https://img.shields.io/badge/Min%20API-21-brightgreen?style=plastic" alt="Min API"/></a>
 <a href="https://kotlinlang.org/"><img src="https://img.shields.io/badge/Kotlin-1.8%2B-purple?style=plastic" alt="Kotlin"/></a>
 
-<br/><br/>
+  <br/>
 
 <a href="https://androidweekly.net/issues/issue-594"><img src="https://img.shields.io/badge/Android%20Weekly-Issue%20%23594-orange?style=flat" alt="Android Weekly #594"/></a>
 <a href="https://androidweekly.net/issues/issue-455"><img src="https://img.shields.io/badge/Android%20Weekly-Issue%20%23455-orange?style=flat" alt="Android Weekly #455"/></a>
@@ -150,23 +150,23 @@ shuttle-navigation = { group = "com.grarcht.shuttle", name = "framework-addons-n
 ```kotlin
 // Source: transport a large Serializable via Intent
 shuttle.intentCargoWith(context, DestinationActivity::class.java)
-  .transport(cargoId, myLargeSerializable)
-  .cleanShuttleOnReturnTo(SourceFragment::class.java, DestinationActivity::class.java, cargoId)
-  .deliver(context)
+    .transport(cargoId, myLargeSerializable)
+    .cleanShuttleOnReturnTo(SourceFragment::class.java, DestinationActivity::class.java, cargoId)
+    .deliver(context)
 ```
 
 ```kotlin
 // Destination: pick up the cargo
 lifecycleScope.launch {
-  getShuttleChannel()
-    .consumeAsFlow()
-    .collectLatest { result ->
-      when (result) {
-        is ShuttlePickupCargoResult.Success<*> -> render(result.data as MyModel)
-        is ShuttlePickupCargoResult.Error<*>   -> showError()
-        ShuttlePickupCargoResult.Loading        -> showLoading()
-      }
-    }
+    getShuttleChannel()
+        .consumeAsFlow()
+        .collectLatest { result ->
+            when (result) {
+                is ShuttlePickupCargoResult.Success<*> -> render(result.data as MyModel)
+                is ShuttlePickupCargoResult.Error<*>   -> showError()
+                ShuttlePickupCargoResult.Loading        -> showLoading()
+            }
+        }
 }
 ```
 
@@ -185,13 +185,13 @@ The recommended entry point is the `Shuttle` interface with `CargoShuttle` as th
 val cargoId = ImageMessageType.ImageData.value
 
 shuttle.intentCargoWith(context, MVCSecondControllerActivity::class.java)
-  .transport(cargoId, imageModel)
-  .cleanShuttleOnReturnTo(
-    MVCFirstControllerFragment::class.java,
-    MVCSecondControllerActivity::class.java,
-    cargoId
-  )
-  .deliver(context)
+    .transport(cargoId, imageModel)
+    .cleanShuttleOnReturnTo(
+        MVCFirstControllerFragment::class.java,
+        MVCSecondControllerActivity::class.java,
+        cargoId
+    )
+    .deliver(context)
 ```
 
 > ℹ️ `cleanShuttleOnReturnTo` is important. It ensures cargo is purged from the Warehouse when it's no longer needed.
@@ -203,14 +203,14 @@ shuttle.intentCargoWith(context, MVCSecondControllerActivity::class.java)
 val cargoId = ImageMessageType.ImageData.value
 
 navController.navigateWithShuttle(shuttle, R.id.MVVMNavSecondViewActivity)
-  ?.logTag(LOG_TAG)
-  ?.transport(cargoId, imageModel as Serializable)
-  ?.cleanShuttleOnReturnTo(
-    MVVMNavFirstViewFragment::class.java,
-    MVVMNavSecondViewActivity::class.java,
-    cargoId
-  )
-  ?.deliver()
+    ?.logTag(LOG_TAG)
+    ?.transport(cargoId, imageModel as Serializable)
+    ?.cleanShuttleOnReturnTo(
+        MVVMNavFirstViewFragment::class.java,
+        MVVMNavSecondViewActivity::class.java,
+        cargoId
+    )
+    ?.deliver()
 ```
 
 ### Pick Up Cargo at the Destination
@@ -218,15 +218,15 @@ navController.navigateWithShuttle(shuttle, R.id.MVVMNavSecondViewActivity)
 **In a Fragment/Activity:**
 ```kotlin
 lifecycleScope.launch {
-  getShuttleChannel()
-    .consumeAsFlow()
-    .collectLatest { result ->
-      when (result) {
-        ShuttlePickupCargoResult.Loading        -> initLoadingView(view)
-        is ShuttlePickupCargoResult.Success<*>  -> { showSuccessView(view, result.data as ImageModel); cancel() }
-        is ShuttlePickupCargoResult.Error<*>    -> { showErrorView(view); cancel() }
-      }
-    }
+    getShuttleChannel()
+        .consumeAsFlow()
+        .collectLatest { result ->
+            when (result) {
+                ShuttlePickupCargoResult.Loading        -> initLoadingView(view)
+                is ShuttlePickupCargoResult.Success<*>  -> { showSuccessView(view, result.data as ImageModel); cancel() }
+                is ShuttlePickupCargoResult.Error<*>    -> { showErrorView(view); cancel() }
+            }
+        }
 }
 ```
 
