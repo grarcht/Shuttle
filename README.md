@@ -6,17 +6,16 @@
 
   <br/>
 
-  <!-- Badges Row 1: Status -->
-[![License: MIT](https://img.shields.io/github/license/grarcht/shuttle?color=white&style=plastic)](https://github.com/grarcht/Shuttle/blob/main/LICENSE.md)
-[![Maven Central](https://img.shields.io/maven-central/v/com.grarcht.shuttle/framework?color=teal&style=plastic)](https://search.maven.org/artifact/com.grarcht.shuttle/framework)
-[![Build](https://img.shields.io/github/actions/workflow/status/grarcht/Shuttle/build.yml?branch=main&style=plastic)](https://github.com/grarcht/Shuttle/actions)
-[![Min API](https://img.shields.io/badge/Min%20API-21-brightgreen?style=plastic)](https://developer.android.com/studio/releases/platforms)
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.8%2B-purple?style=plastic)](https://kotlinlang.org/)
+<a href="https://github.com/grarcht/Shuttle/blob/main/LICENSE.md"><img src="https://img.shields.io/github/license/grarcht/shuttle?color=white&style=plastic" alt="License: MIT"/></a>
+<a href="https://search.maven.org/artifact/com.grarcht.shuttle/framework"><img src="https://img.shields.io/maven-central/v/com.grarcht.shuttle/framework?color=teal&style=plastic" alt="Maven Central"/></a>
+<a href="https://github.com/grarcht/Shuttle/actions"><img src="https://img.shields.io/github/actions/workflow/status/grarcht/Shuttle/android.yml?branch=main&style=plastic" alt="Build"/></a>
+<a href="https://developer.android.com/studio/releases/platforms"><img src="https://img.shields.io/badge/Min%20API-21-brightgreen?style=plastic" alt="Min API"/></a>
+<a href="https://kotlinlang.org/"><img src="https://img.shields.io/badge/Kotlin-1.8%2B-purple?style=plastic" alt="Kotlin"/></a>
 
-  <!-- Badges Row 2: Recognition -->
-  <br/>
-  [![Android Weekly #594](https://img.shields.io/badge/Android%20Weekly-Issue%20%23594-orange?style=flat)](https://androidweekly.net/issues/issue-594)
-  [![Android Weekly #455](https://img.shields.io/badge/Android%20Weekly-Issue%20%23455-orange?style=flat)](https://androidweekly.net/issues/issue-455)
+<br/><br/>
+
+<a href="https://androidweekly.net/issues/issue-594"><img src="https://img.shields.io/badge/Android%20Weekly-Issue%20%23594-orange?style=flat" alt="Android Weekly #594"/></a>
+<a href="https://androidweekly.net/issues/issue-455"><img src="https://img.shields.io/badge/Android%20Weekly-Issue%20%23455-orange?style=flat" alt="Android Weekly #455"/></a>
 
 </div>
 
@@ -28,15 +27,15 @@
 - [How It Works](#-how-it-works)
 - [Quick Start](#-quick-start)
 - [Usage](#-usage)
-    - [Transport with Intents](#transport-with-intents)
-    - [Transport with the Navigation Component](#transport-with-the-navigation-component)
-    - [Pick Up Cargo at the Destination](#pick-up-cargo-at-the-destination)
-    - [Cargo States (LCE Pattern)](#cargo-states-lce-pattern)
-    - [Cleaning Up](#cleaning-up)
+  - [Transport with Intents](#transport-with-intents)
+  - [Transport with the Navigation Component](#transport-with-the-navigation-component)
+  - [Pick Up Cargo at the Destination](#pick-up-cargo-at-the-destination)
+  - [Cargo States (LCE Pattern)](#cargo-states-lce-pattern)
+  - [Cleaning Up](#cleaning-up)
 - [Architecture](#️-architecture)
-    - [Context Diagram](#context-diagram)
-    - [Module Overview](#module-overview)
-    - [Module Dependency Diagram](#module-dependency-diagram)
+  - [Context Diagram](#context-diagram)
+  - [Module Overview](#module-overview)
+  - [Module Dependency Diagram](#module-dependency-diagram)
 - [Demo Apps](#-demo-apps)
 - [Heads Up: Know the Tradeoffs](#️-heads-up-know-the-tradeoffs)
 - [Contributing](#-contributing)
@@ -151,23 +150,23 @@ shuttle-navigation = { group = "com.grarcht.shuttle", name = "framework-addons-n
 ```kotlin
 // Source: transport a large Serializable via Intent
 shuttle.intentCargoWith(context, DestinationActivity::class.java)
-    .transport(cargoId, myLargeSerializable)
-    .cleanShuttleOnReturnTo(SourceFragment::class.java, DestinationActivity::class.java, cargoId)
-    .deliver(context)
+  .transport(cargoId, myLargeSerializable)
+  .cleanShuttleOnReturnTo(SourceFragment::class.java, DestinationActivity::class.java, cargoId)
+  .deliver(context)
 ```
 
 ```kotlin
 // Destination: pick up the cargo
 lifecycleScope.launch {
-    getShuttleChannel()
-        .consumeAsFlow()
-        .collectLatest { result ->
-            when (result) {
-                is ShuttlePickupCargoResult.Success<*> -> render(result.data as MyModel)
-                is ShuttlePickupCargoResult.Error<*>   -> showError()
-                ShuttlePickupCargoResult.Loading        -> showLoading()
-            }
-        }
+  getShuttleChannel()
+    .consumeAsFlow()
+    .collectLatest { result ->
+      when (result) {
+        is ShuttlePickupCargoResult.Success<*> -> render(result.data as MyModel)
+        is ShuttlePickupCargoResult.Error<*>   -> showError()
+        ShuttlePickupCargoResult.Loading        -> showLoading()
+      }
+    }
 }
 ```
 
@@ -186,13 +185,13 @@ The recommended entry point is the `Shuttle` interface with `CargoShuttle` as th
 val cargoId = ImageMessageType.ImageData.value
 
 shuttle.intentCargoWith(context, MVCSecondControllerActivity::class.java)
-    .transport(cargoId, imageModel)
-    .cleanShuttleOnReturnTo(
-        MVCFirstControllerFragment::class.java,
-        MVCSecondControllerActivity::class.java,
-        cargoId
-    )
-    .deliver(context)
+  .transport(cargoId, imageModel)
+  .cleanShuttleOnReturnTo(
+    MVCFirstControllerFragment::class.java,
+    MVCSecondControllerActivity::class.java,
+    cargoId
+  )
+  .deliver(context)
 ```
 
 > ℹ️ `cleanShuttleOnReturnTo` is important. It ensures cargo is purged from the Warehouse when it's no longer needed.
@@ -204,14 +203,14 @@ shuttle.intentCargoWith(context, MVCSecondControllerActivity::class.java)
 val cargoId = ImageMessageType.ImageData.value
 
 navController.navigateWithShuttle(shuttle, R.id.MVVMNavSecondViewActivity)
-    ?.logTag(LOG_TAG)
-    ?.transport(cargoId, imageModel as Serializable)
-    ?.cleanShuttleOnReturnTo(
-        MVVMNavFirstViewFragment::class.java,
-        MVVMNavSecondViewActivity::class.java,
-        cargoId
-    )
-    ?.deliver()
+  ?.logTag(LOG_TAG)
+  ?.transport(cargoId, imageModel as Serializable)
+  ?.cleanShuttleOnReturnTo(
+    MVVMNavFirstViewFragment::class.java,
+    MVVMNavSecondViewActivity::class.java,
+    cargoId
+  )
+  ?.deliver()
 ```
 
 ### Pick Up Cargo at the Destination
@@ -219,31 +218,31 @@ navController.navigateWithShuttle(shuttle, R.id.MVVMNavSecondViewActivity)
 **In a Fragment/Activity:**
 ```kotlin
 lifecycleScope.launch {
-    getShuttleChannel()
-        .consumeAsFlow()
-        .collectLatest { result ->
-            when (result) {
-                ShuttlePickupCargoResult.Loading        -> initLoadingView(view)
-                is ShuttlePickupCargoResult.Success<*>  -> { showSuccessView(view, result.data as ImageModel); cancel() }
-                is ShuttlePickupCargoResult.Error<*>    -> { showErrorView(view); cancel() }
-            }
-        }
+  getShuttleChannel()
+    .consumeAsFlow()
+    .collectLatest { result ->
+      when (result) {
+        ShuttlePickupCargoResult.Loading        -> initLoadingView(view)
+        is ShuttlePickupCargoResult.Success<*>  -> { showSuccessView(view, result.data as ImageModel); cancel() }
+        is ShuttlePickupCargoResult.Error<*>    -> { showErrorView(view); cancel() }
+      }
+    }
 }
 ```
 
 **In a ViewModel:**
 ```kotlin
 viewModelScope.launch {
-    shuttle.pickupCargo<Serializable>(cargoId = cargoId)
-        .consumeAsFlow()
-        .collectLatest { result ->
-            pickupCargoMutableStateFlow.value = result
-            when (result) {
-                is ShuttlePickupCargoResult.Success<*>,
-                is ShuttlePickupCargoResult.Error<*> -> cancel()
-                else -> { /* await */ }
-            }
-        }
+  shuttle.pickupCargo<Serializable>(cargoId = cargoId)
+    .consumeAsFlow()
+    .collectLatest { result ->
+      pickupCargoMutableStateFlow.value = result
+      when (result) {
+        is ShuttlePickupCargoResult.Success<*>,
+        is ShuttlePickupCargoResult.Error<*> -> cancel()
+        else -> { /* await */ }
+      }
+    }
 }
 ```
 
