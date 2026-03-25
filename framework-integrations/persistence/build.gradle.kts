@@ -16,6 +16,9 @@ dokka {
     dokkaPublications.html {
         outputDirectory.set(layout.projectDirectory.dir("documentation/kotlin"))
     }
+    dokkaSourceSets.register("main") {
+        sourceRoots.from(file("src/main/java"))
+    }
 }
 
 android {

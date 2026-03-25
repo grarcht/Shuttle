@@ -1,1 +1,1 @@
-sourceset_dependencies='{":framework-integrations-extensions-room:dokkaHtml/debug":[],":framework-integrations-extensions-room:dokkaHtml/generatedByKspDebugKotlin":[],":framework-integrations-extensions-room:dokkaHtml/generatedByKspReleaseKotlin":[],":framework-integrations-extensions-room:dokkaHtml/main":[],":framework-integrations-extensions-room:dokkaHtml/release":[]}'
+sourceset_dependencies='{":framework-integrations-extensions-room/main":[]}'
