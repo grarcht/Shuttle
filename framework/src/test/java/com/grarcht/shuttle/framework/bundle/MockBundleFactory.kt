@@ -12,6 +12,11 @@ import org.mockito.stubbing.Answer
 import java.io.Serializable
 
 class MockBundleFactory : BundleFactory {
+    // Mockito.any() returns null, but Kotlin would add a null-check for concrete casts.
+    // Using a generic function avoids that check via type erasure.
+    @Suppress("UNCHECKED_CAST")
+    private fun <T> anyArg(): T = Mockito.any() as T
+
     override fun create(): Bundle {
         return create(mutableMapOf())
     }
@@ -54,7 +59,6 @@ class MockBundleFactory : BundleFactory {
         }.`when`(bundle).clear()
         Mockito.doAnswer { invocation -> map.containsKey(invocation.arguments[0]) }.`when`(bundle)
             .containsKey(ArgumentMatchers.anyString())
-        Mockito.doAnswer { invocation -> map[invocation.arguments[0]] }.`when`(bundle)[ArgumentMatchers.anyString()]
         Mockito.doAnswer { invocation ->
             map.remove(invocation.arguments[0])
             null
@@ -187,14 +191,14 @@ class MockBundleFactory : BundleFactory {
                 Parcelable::class.java
             )
         )
-        Mockito.`when`<Any?>(bundle.getParcelable(ArgumentMatchers.anyString())).thenAnswer(get)
+        Mockito.`when`(bundle.getParcelable(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class::class.java))).thenAnswer(get)
         Mockito.doAnswer(put).`when`(bundle).putParcelableArray(
             ArgumentMatchers.anyString(),
             ArgumentMatchers.any(
                 Array<Parcelable>::class.java
             )
         )
-        Mockito.`when`(bundle.getParcelableArray(ArgumentMatchers.anyString())).thenAnswer(get)
+        Mockito.`when`(bundle.getParcelableArray(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class::class.java))).thenAnswer(get)
         @Suppress("UNCHECKED_CAST")
         Mockito.doAnswer(put).`when`(bundle).putParcelableArrayList(
             ArgumentMatchers.anyString(),
@@ -204,7 +208,8 @@ class MockBundleFactory : BundleFactory {
         )
         Mockito.`when`(
             bundle.getParcelableArrayList<Parcelable>(
-                ArgumentMatchers.anyString()
+                ArgumentMatchers.anyString(),
+                anyArg()
             )
         ).thenAnswer(get)
         @Suppress("UNCHECKED_CAST")
@@ -216,7 +221,8 @@ class MockBundleFactory : BundleFactory {
         )
         Mockito.`when`(
             bundle.getSparseParcelableArray<Parcelable>(
-                ArgumentMatchers.anyString()
+                ArgumentMatchers.anyString(),
+                anyArg()
             )
         ).thenAnswer(get)
         Mockito.doAnswer(put).`when`(bundle).putSerializable(
@@ -225,7 +231,7 @@ class MockBundleFactory : BundleFactory {
                 Serializable::class.java
             )
         )
-        Mockito.`when`(bundle.getSerializable(ArgumentMatchers.anyString())).thenAnswer(get)
+        Mockito.`when`(bundle.getSerializable<Serializable>(ArgumentMatchers.anyString(), anyArg())).thenAnswer(get)
         @Suppress("UNCHECKED_CAST")
         Mockito.doAnswer(put).`when`(bundle).putIntegerArrayList(
             ArgumentMatchers.anyString(),

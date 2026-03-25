@@ -28,7 +28,7 @@ class ShuttleNavController(
     private val shuttleScreenFacade: ShuttleFacade,
     private val navController: NavController,
     private val navDirections: NavDirections? = null,
-    @IdRes private val resId: Int? = null,
+    @param:IdRes private val resId: Int? = null,
     private val navOptions: NavOptions? = null,
     private val navigatorExtras: Navigator.Extras? = null,
     private val internalBundle: Bundle?,

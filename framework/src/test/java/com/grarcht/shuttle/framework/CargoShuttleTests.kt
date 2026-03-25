@@ -242,7 +242,7 @@ class CargoShuttleTests {
             .intentCargoWith(Intent.ACTION_MEDIA_BUTTON)
             .transport(cargoId, cargo)
         screenCallback.onActivityCreated(nextScreen)
-        nextScreen.onBackPressed()
+        nextScreen.onBackPressedDispatcher.onBackPressed()
         awaitOnLatch(countDownLatch, 1, TimeUnit.SECONDS)
 
         launch(Dispatchers.Main) {
