@@ -10,7 +10,7 @@
 <a href="https://search.maven.org/artifact/com.grarcht.shuttle/framework"><img src="https://img.shields.io/maven-central/v/com.grarcht.shuttle/framework?color=teal&style=plastic" alt="Maven Central"/></a>
 <a href="https://github.com/grarcht/Shuttle/actions"><img src="https://img.shields.io/github/actions/workflow/status/grarcht/Shuttle/android.yml?branch=main&style=plastic" alt="Build"/></a>
 <a href="https://developer.android.com/studio/releases/platforms"><img src="https://img.shields.io/badge/Min%20API-21-brightgreen?style=plastic" alt="Min API"/></a>
-<a href="https://kotlinlang.org/"><img src="https://img.shields.io/badge/Kotlin-1.8%2B-purple?style=plastic" alt="Kotlin"/></a>
+<a href="https://kotlinlang.org/"><img src="https://img.shields.io/badge/Kotlin-2.0%2B-purple?style=plastic" alt="Kotlin"/></a>
 
   <br/>
 
@@ -233,16 +233,16 @@ lifecycleScope.launch {
 **In a ViewModel:**
 ```kotlin
 viewModelScope.launch {
-  shuttle.pickupCargo<Serializable>(cargoId = cargoId)
-    .consumeAsFlow()
-    .collectLatest { result ->
-      pickupCargoMutableStateFlow.value = result
-      when (result) {
-        is ShuttlePickupCargoResult.Success<*>,
-        is ShuttlePickupCargoResult.Error<*> -> cancel()
-        else -> { /* await */ }
-      }
-    }
+    shuttle.pickupCargo<Serializable>(cargoId = cargoId)
+        .consumeAsFlow()
+        .collectLatest { result ->
+            pickupCargoMutableStateFlow.value = result
+            when (result) {
+                is ShuttlePickupCargoResult.Success<*>,
+                is ShuttlePickupCargoResult.Error<*> -> cancel()
+                else -> { /* await */ }
+            }
+        }
 }
 ```
 
@@ -311,9 +311,7 @@ The demo apps show both the crash scenario and the Shuttle solution side-by-side
 
 Two architecture patterns are covered:
 
-**MVVM:** Activities/Fragments as View, `ViewModel` as state owner and liaison, Kotlin Channels for async notification, optional Databinding integration.
-
-**MVC:** Activities/Fragments as Controllers, receiving input and driving model/view updates.
+**MVVM:** Activities/Fragments as View, `ViewModel` as state owner and liaison, Kotlin Channels for async notification.
 
 ### Flow 1: Navigate with Shuttle ✅
 Tap **"Navigate using Shuttle"** -> image loads successfully via warehouse pickup.
@@ -329,7 +327,7 @@ Tap **"Navigate Normally"** -> app crashes with `TransactionTooLargeException`.
 |---|---|
 | <img src="/media/screenshots/main_menu.png" width="200" height="400"/> | <img src="/media/screenshots/loading_image_cargo_failed.png" width="200" height="400"/> |
 
-> ℹ️ For image loading in production, use [Glide](https://github.com/bumptech/glide), [Coil](https://github.com/coil-kt/coil), or [Picasso](https://github.com/square/picasso). The demo uses raw image data intentionally to trigger the crash condition.
+> ℹ️ For image loading in production, use [Glide](https://github.com/bumptech/glide) or [Coil](https://github.com/coil-kt/coil). The demo uses raw image data intentionally to trigger the crash condition.
 
 ---
 
