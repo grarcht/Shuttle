@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.dokka)
     alias(libs.plugins.google.dagger.hilt)
     alias(libs.plugins.android.junit5)
     alias(libs.plugins.compose.compiler)
@@ -8,15 +7,6 @@ plugins {
 }
 
 apply(from = "${project.rootDir}/detekt/detekt.gradle")
-
-dokka {
-    dokkaPublications.html {
-        outputDirectory.set(layout.projectDirectory.dir("documentation/kotlin"))
-    }
-    dokkaSourceSets.register("main") {
-        sourceRoots.from(file("src/main/java"))
-    }
-}
 
 android {
     namespace = "com.grarcht.shuttle.demo.mvvmwithcompose"

@@ -95,7 +95,7 @@ val sourcesJarFileName = "${archivesName}-sources.jar"
 tasks.register<Jar>("javadocJar") {
     archiveClassifier.set("javadoc")
     archiveFileName.set(javadocJarFileName)
-    from(tasks.named("dokkaGeneratePublicationJavadoc"))
+    from(tasks.named("dokkaGeneratePublicationHtml"))
 }
 
 tasks.register<Jar>("sourcesJar") {

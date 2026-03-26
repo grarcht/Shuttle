@@ -1,20 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.google.ksp)
-    alias(libs.plugins.jetbrains.dokka)
     alias(libs.plugins.jetbrains.kotlin.serialization)
 }
 
 apply(from = "${project.rootDir}/detekt/detekt.gradle")
-
-dokka {
-    dokkaPublications.html {
-        outputDirectory.set(layout.projectDirectory.dir("documentation/kotlin"))
-    }
-    dokkaSourceSets.register("main") {
-        sourceRoots.from(file("src/main/java"))
-    }
-}
 
 android {
     namespace = "com.grarcht.shuttle.demo.core"
