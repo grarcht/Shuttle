@@ -342,11 +342,9 @@ class CargoShuttleTests {
             }
         }.addForDisposal(compositeDisposableHandle)
 
-        awaitOnLatch(countDownLatch, 500, TimeUnit.MILLISECONDS)
-
         cargoShuttle.cleanShuttleFromDeliveryFor(cargoId, removeCargoReceiverChannel)
 
-        delay(1000L)
+        awaitOnLatch(countDownLatch, 2, TimeUnit.SECONDS)
         countDownLatch = CountDownLatch(1)
 
         launch(Dispatchers.Main) {
