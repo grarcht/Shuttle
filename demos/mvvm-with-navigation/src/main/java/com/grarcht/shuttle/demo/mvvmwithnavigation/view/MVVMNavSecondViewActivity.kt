@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.navigation.fragment.NavHostFragment
 import com.grarcht.shuttle.demo.mvvmwithnavigation.R
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,6 +26,11 @@ class MVVMNavSecondViewActivity : AppCompatActivity() {
     private fun initView() {
         view = LayoutInflater.from(this).inflate(R.layout.mvvm_nav_second_view_activity, null)
         setContentView(view)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.container)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(top = systemBars.top, bottom = systemBars.bottom)
+            insets
+        }
     }
 
     private fun initFragmentContainerView() {

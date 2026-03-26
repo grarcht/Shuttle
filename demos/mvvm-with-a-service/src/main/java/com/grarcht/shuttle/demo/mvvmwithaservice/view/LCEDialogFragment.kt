@@ -71,6 +71,11 @@ class LCEDialogFragment : DialogFragment() {
         loadView()
     }
 
+    override fun onDestroyView() {
+        fadeOutViewAnimator?.cancel()
+        super.onDestroyView()
+    }
+
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         listener?.onDismiss(dialog)
@@ -117,7 +122,7 @@ class LCEDialogFragment : DialogFragment() {
     }
 
     fun fadeOutView(dismissOnFadeOut: Boolean) {
-        val loadingLayout = view?.findViewById<FrameLayout>(R.id.loadingLayout)
+        val loadingLayout = view?.findViewById<FrameLayout>(R.id.loadingLayout) ?: return
         fadeOutViewAnimator = ObjectAnimator.ofFloat(
             loadingLayout,
             View.ALPHA,

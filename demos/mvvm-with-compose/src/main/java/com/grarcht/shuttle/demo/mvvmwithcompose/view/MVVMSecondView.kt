@@ -10,6 +10,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -70,7 +71,7 @@ class MVVMSecondView(
     ) {
         extractArgsFrom(savedInstanceState, extras)
 
-        Column {
+        Column(modifier = Modifier.systemBarsPadding()) {
             val cargoId = storedCargoId ?: ""
             var stateUpdate: IOResult by remember { mutableStateOf(IOResult.Loading) }
 
@@ -81,12 +82,15 @@ class MVVMSecondView(
                         return
                     }
                 }
+
                 is IOResult.Error<*> -> {
                     ShowErrorImage()
                 }
+
                 IOResult.Loading -> {
                     ShowLoadingViews()
                 }
+
                 is IOResult.Success<*> -> {
                     @Suppress("UNCHECKED_CAST")
                     val imageModel = (stateUpdate as IOResult.Success<ImageModel>).data
@@ -119,14 +123,17 @@ class MVVMSecondView(
                         is ShuttlePickupCargoResult.Loading -> {
                             stateUpdate.invoke(IOResult.Loading)
                         }
+
                         is ShuttlePickupCargoResult.Success<*> -> {
                             stateUpdate.invoke(IOResult.Success(it.data as ImageModel))
                             cancel()
                         }
+
                         is ShuttlePickupCargoResult.Error<*> -> {
                             stateUpdate.invoke(IOResult.Error(throwable = it.throwable as Throwable))
                             cancel()
                         }
+
                         is ShuttlePickupCargoResult.NotPickingUpCargoYet -> {
                             // ignore
                         }

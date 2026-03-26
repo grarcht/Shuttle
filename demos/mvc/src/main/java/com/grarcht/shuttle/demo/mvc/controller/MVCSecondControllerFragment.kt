@@ -68,6 +68,7 @@ class MVCSecondControllerFragment : Fragment() {
 
     override fun onDestroyView() {
         deferredImageLoad?.cancel()
+        hideLoadingViewAnimator?.cancel()
         contentLoadingProgressBar.hide()
         super.onDestroyView()
     }
@@ -124,7 +125,7 @@ class MVCSecondControllerFragment : Fragment() {
     }
 
     private fun hideLoadingView(view: View?, viewToFadeIn: View?) {
-        val loadingLayout = view?.findViewById<FrameLayout>(R.id.loadingLayout)
+        val loadingLayout = view?.findViewById<FrameLayout>(R.id.loadingLayout) ?: return
         hideLoadingViewAnimator = ObjectAnimator.ofFloat(
             loadingLayout,
             View.ALPHA,

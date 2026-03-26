@@ -4,11 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -63,65 +65,67 @@ class MVVMFirstView(
             .fillMaxHeight()
             .fillMaxWidth()
 
-        Text(
-            text = title,
-            style = MaterialTheme.typography.h4,
-            textAlign = TextAlign.Center,
-            modifier = largePaddingModifier
-        )
+        Box(modifier = Modifier.systemBarsPadding()) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.h4,
+                textAlign = TextAlign.Center,
+                modifier = largePaddingModifier
+            )
 
-        Column(
-            modifier = largePaddingModifier,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Button(
-                onClick = navigateWithShuttle(),
-                enabled = buttonsEnabled,
-                contentPadding = BUTTON_CONTENT_PADDING,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(SMALL_PADDING)
+            Column(
+                modifier = largePaddingModifier,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
+                Button(
+                    onClick = navigateWithShuttle(),
+                    enabled = buttonsEnabled,
+                    contentPadding = BUTTON_CONTENT_PADDING,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(SMALL_PADDING)
+                ) {
+                    Text(
+                        context.resources.getString(R.string.navigate_using_shuttle),
+                        style = MaterialTheme.typography.h6
+                    )
+                }
+
                 Text(
-                    context.resources.getString(R.string.navigate_using_shuttle),
-                    style = MaterialTheme.typography.h6
+                    text = context.getString(R.string.the_app_will_not_crash_using_shuttle),
+                    style = MaterialTheme.typography.body1,
+                    textAlign = TextAlign.Center,
+                    color = Color(context.getColor(android.R.color.holo_green_dark)),
+                    fontFamily = FontFamily.SansSerif
+                )
+
+                Button(
+                    onClick = navigateNormally(),
+                    enabled = buttonsEnabled,
+                    contentPadding = BUTTON_CONTENT_PADDING,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = SMALL_PADDING, top = TOP_PADDING, end = SMALL_PADDING, bottom = SMALL_PADDING)
+                ) {
+                    Text(
+                        context.resources.getString(R.string.navigate_normally),
+                        style = MaterialTheme.typography.h6
+                    )
+                }
+
+                Text(
+                    text = context.getString(R.string.the_app_will_crash_without_using_shuttle),
+                    style = MaterialTheme.typography.body1,
+                    textAlign = TextAlign.Center,
+                    color = Color(context.getColor(android.R.color.holo_red_dark)),
+                    fontFamily = FontFamily.SansSerif
                 )
             }
 
-            Text(
-                text = context.getString(R.string.the_app_will_not_crash_using_shuttle),
-                style = MaterialTheme.typography.body1,
-                textAlign = TextAlign.Center,
-                color = Color(context.getColor(android.R.color.holo_green_dark)),
-                fontFamily = FontFamily.SansSerif
-            )
-
-            Button(
-                onClick = navigateNormally(),
-                enabled = buttonsEnabled,
-                contentPadding = BUTTON_CONTENT_PADDING,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = SMALL_PADDING, top = TOP_PADDING, end = SMALL_PADDING, bottom = SMALL_PADDING)
-            ) {
-                Text(
-                    context.resources.getString(R.string.navigate_normally),
-                    style = MaterialTheme.typography.h6
-                )
+            LaunchedEffect(true) {
+                getImageData(stateUpdate = { buttonsEnabled = it is IOResult.Success<*> })
             }
-
-            Text(
-                text = context.getString(R.string.the_app_will_crash_without_using_shuttle),
-                style = MaterialTheme.typography.body1,
-                textAlign = TextAlign.Center,
-                color = Color(context.getColor(android.R.color.holo_red_dark)),
-                fontFamily = FontFamily.SansSerif
-            )
-        }
-
-        LaunchedEffect(true) {
-            getImageData(stateUpdate = { buttonsEnabled = it is IOResult.Success<*> })
         }
     }
 
