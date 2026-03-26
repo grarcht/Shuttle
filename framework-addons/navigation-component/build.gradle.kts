@@ -7,6 +7,28 @@ plugins {
     alias(libs.plugins.jetbrains.dokka)
     alias(libs.plugins.signing)
     alias(libs.plugins.maven.publish)
+    alias(libs.plugins.kover)
+}
+
+kover {
+    reports {
+        filters {
+            excludes {
+                annotatedBy("dagger.Module", "dagger.hilt.InstallIn")
+                classes(
+                    "*Hilt_*",
+                    "*_HiltModules*",
+                    "*_MembersInjector",
+                    "*_Factory"
+                )
+                packages("*.dependencyinjection")
+            }
+        }
+        total {
+            html { onCheck = false }
+            xml { onCheck = false }
+        }
+    }
 }
 
 dokka {

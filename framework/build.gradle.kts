@@ -7,9 +7,31 @@ plugins {
     alias(libs.plugins.android.junit5)
     alias(libs.plugins.signing)
     alias(libs.plugins.maven.publish)
+    alias(libs.plugins.kover)
 }
 
 apply(from = "${project.rootDir}/detekt/detekt.gradle")
+
+kover {
+    reports {
+        filters {
+            excludes {
+                annotatedBy("dagger.Module", "dagger.hilt.InstallIn")
+                classes(
+                    "*Hilt_*",
+                    "*_HiltModules*",
+                    "*_MembersInjector",
+                    "*_Factory"
+                )
+                packages("*.dependencyinjection")
+            }
+        }
+        total {
+            html { onCheck = false }
+            xml { onCheck = false }
+        }
+    }
+}
 
 dokka {
     dokkaPublications.html {

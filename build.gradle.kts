@@ -39,6 +39,7 @@ plugins {
     alias(libs.plugins.google.dagger.hilt) apply false
     alias(libs.plugins.detect)
     alias(libs.plugins.jetbrains.dokka) apply false
+    alias(libs.plugins.kover)
     alias(libs.plugins.google.ksp) apply false
     alias(libs.plugins.compose.compiler) apply false
 }
@@ -115,4 +116,36 @@ allprojects {
 
 tasks.named<Delete>("clean") {
     delete(project.layout.buildDirectory)
+}
+
+// Aggregate coverage from the framework library modules only.
+dependencies {
+    kover(project(":framework"))
+    kover(project(":framework-integrations-persistence"))
+    kover(project(":framework-integrations-extensions-room"))
+    kover(project(":framework-addons-navigation-component"))
+}
+
+kover {
+    reports {
+        filters {
+            excludes {
+                // Hilt-annotated DI classes
+                annotatedBy("dagger.Module", "dagger.hilt.InstallIn")
+                // Hilt-generated class name patterns
+                classes(
+                    "*Hilt_*",
+                    "*_HiltModules*",
+                    "*_MembersInjector",
+                    "*_Factory"
+                )
+                // DI package
+                packages("*.dependencyinjection")
+            }
+        }
+        total {
+            html { onCheck = false }
+            xml { onCheck = false }
+        }
+    }
 }
