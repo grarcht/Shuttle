@@ -1,6 +1,5 @@
 import org.gradle.api.publish.maven.MavenPublication
 import java.io.File
-import java.net.URI
 
 plugins {
     alias(libs.plugins.android.library)
@@ -286,16 +285,6 @@ afterEvaluate {
         }
     }
 
-    artifacts {
-        add("archives", File("build/libs/$javadocJarFileName"))
-        add("archives", File("build/libs/$sourcesJarFileName"))
-
-        if (isReleaseVersion)
-            add("archives", File(releaseAARFilePath))
-        else
-            add("archives", File(debugAARFilePath))
-    }
-
     signing {
         setRequired(provider { !testPublish && isReleaseVersion && gradle.taskGraph.hasTask("publish") })
 
@@ -305,6 +294,7 @@ afterEvaluate {
 
         useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
 
-        sign(configurations.getByName("archives"))
+        val publicationName = if (isReleaseVersion) "release" else "debug"
+        sign(publishing.publications[publicationName])
     }
 }

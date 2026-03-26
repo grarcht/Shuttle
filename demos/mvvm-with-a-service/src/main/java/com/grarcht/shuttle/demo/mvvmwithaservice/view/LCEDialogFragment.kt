@@ -8,7 +8,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -158,24 +157,14 @@ class LCEDialogFragment : DialogFragment() {
     }
 
     private fun getWindowDimensions(dialog: Dialog): Pair<Int, Int> {
-        val displayMetrics = DisplayMetrics()
-        var screenWidth = 0
-        var screenHeight = 0
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             val bounds = dialog.window?.windowManager?.currentWindowMetrics?.bounds
-            bounds?.let {
-                screenHeight = it.height()
-                screenWidth = it.width()
+            if (bounds != null) {
+                return Pair(bounds.width(), bounds.height())
             }
-        } else {
-            @Suppress("DEPRECATION")
-            dialog.window?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
-            screenHeight = displayMetrics.heightPixels
-            screenWidth = displayMetrics.widthPixels
         }
-
-        return Pair(screenWidth, screenHeight)
+        val displayMetrics = dialog.context.resources.displayMetrics
+        return Pair(displayMetrics.widthPixels, displayMetrics.heightPixels)
     }
 
     private fun extractArguments() {
@@ -188,7 +177,7 @@ class LCEDialogFragment : DialogFragment() {
                 }
 
                 DialogType.CONTENT.typeValue -> {
-                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         imageModel = it.getSerializable(IMAGE_DATA, ImageModel::class.java)
                     } else {
                         @Suppress("DEPRECATION")

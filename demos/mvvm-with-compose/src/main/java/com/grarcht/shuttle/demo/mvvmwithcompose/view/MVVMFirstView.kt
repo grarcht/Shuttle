@@ -59,73 +59,76 @@ class MVVMFirstView(
     @Composable
     fun SetViewContent() {
         var buttonsEnabled by remember { mutableStateOf(false) }
-        val title = context.resources.getString(R.string.mvvm_first_view_title)
-        val largePaddingModifier = Modifier
-            .padding(LARGE_PADDING)
-            .fillMaxHeight()
-            .fillMaxWidth()
-
         Box(modifier = Modifier.systemBarsPadding()) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.h4,
-                textAlign = TextAlign.Center,
-                modifier = largePaddingModifier
-            )
-
-            Column(
-                modifier = largePaddingModifier,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Button(
-                    onClick = navigateWithShuttle(),
-                    enabled = buttonsEnabled,
-                    contentPadding = BUTTON_CONTENT_PADDING,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(SMALL_PADDING)
-                ) {
-                    Text(
-                        context.resources.getString(R.string.navigate_using_shuttle),
-                        style = MaterialTheme.typography.h6
-                    )
-                }
-
-                Text(
-                    text = context.getString(R.string.the_app_will_not_crash_using_shuttle),
-                    style = MaterialTheme.typography.body1,
-                    textAlign = TextAlign.Center,
-                    color = Color(context.getColor(android.R.color.holo_green_dark)),
-                    fontFamily = FontFamily.SansSerif
-                )
-
-                Button(
-                    onClick = navigateNormally(),
-                    enabled = buttonsEnabled,
-                    contentPadding = BUTTON_CONTENT_PADDING,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = SMALL_PADDING, top = TOP_PADDING, end = SMALL_PADDING, bottom = SMALL_PADDING)
-                ) {
-                    Text(
-                        context.resources.getString(R.string.navigate_normally),
-                        style = MaterialTheme.typography.h6
-                    )
-                }
-
-                Text(
-                    text = context.getString(R.string.the_app_will_crash_without_using_shuttle),
-                    style = MaterialTheme.typography.body1,
-                    textAlign = TextAlign.Center,
-                    color = Color(context.getColor(android.R.color.holo_red_dark)),
-                    fontFamily = FontFamily.SansSerif
-                )
-            }
-
+            TitleText()
+            NavigationButtonsColumn(buttonsEnabled)
             LaunchedEffect(true) {
                 getImageData(stateUpdate = { buttonsEnabled = it is IOResult.Success<*> })
             }
+        }
+    }
+
+    @Composable
+    private fun TitleText() {
+        val largePaddingModifier = Modifier.padding(LARGE_PADDING).fillMaxHeight().fillMaxWidth()
+        Text(
+            text = context.resources.getString(R.string.mvvm_first_view_title),
+            style = MaterialTheme.typography.h4,
+            textAlign = TextAlign.Center,
+            modifier = largePaddingModifier
+        )
+    }
+
+    @Composable
+    private fun NavigationButtonsColumn(buttonsEnabled: Boolean) {
+        val largePaddingModifier = Modifier.padding(LARGE_PADDING).fillMaxHeight().fillMaxWidth()
+        Column(
+            modifier = largePaddingModifier,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            ShuttleNavigationButton(buttonsEnabled)
+            Text(
+                text = context.getString(R.string.the_app_will_not_crash_using_shuttle),
+                style = MaterialTheme.typography.body1,
+                textAlign = TextAlign.Center,
+                color = Color(context.getColor(android.R.color.holo_green_dark)),
+                fontFamily = FontFamily.SansSerif
+            )
+            NormalNavigationButton(buttonsEnabled)
+            Text(
+                text = context.getString(R.string.the_app_will_crash_without_using_shuttle),
+                style = MaterialTheme.typography.body1,
+                textAlign = TextAlign.Center,
+                color = Color(context.getColor(android.R.color.holo_red_dark)),
+                fontFamily = FontFamily.SansSerif
+            )
+        }
+    }
+
+    @Composable
+    private fun ShuttleNavigationButton(buttonsEnabled: Boolean) {
+        Button(
+            onClick = navigateWithShuttle(),
+            enabled = buttonsEnabled,
+            contentPadding = BUTTON_CONTENT_PADDING,
+            modifier = Modifier.fillMaxWidth().padding(SMALL_PADDING)
+        ) {
+            Text(context.resources.getString(R.string.navigate_using_shuttle), style = MaterialTheme.typography.h6)
+        }
+    }
+
+    @Composable
+    private fun NormalNavigationButton(buttonsEnabled: Boolean) {
+        Button(
+            onClick = navigateNormally(),
+            enabled = buttonsEnabled,
+            contentPadding = BUTTON_CONTENT_PADDING,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = SMALL_PADDING, top = TOP_PADDING, end = SMALL_PADDING, bottom = SMALL_PADDING)
+        ) {
+            Text(context.resources.getString(R.string.navigate_normally), style = MaterialTheme.typography.h6)
         }
     }
 
