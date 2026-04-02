@@ -27,9 +27,12 @@ abstract class ShuttleRoomDataDb : RoomDatabase(), ShuttleDatabase {
         @Volatile
         private var INSTANCE: ShuttleRoomDataDb? = null
 
-        fun getInstance(config: ShuttleRoomDbConfig): ShuttleRoomDataDb {
+        fun getInstance(
+            config: ShuttleRoomDbConfig,
+            factory: ShuttleRoomDbFactory = ShuttleRoomDbFactory()
+        ): ShuttleRoomDataDb {
             return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: ShuttleRoomDbFactory().createDb(config).also { INSTANCE = it }
+                INSTANCE ?: factory.createDb(config).also { INSTANCE = it }
             }
         }
     }

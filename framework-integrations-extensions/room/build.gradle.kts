@@ -20,7 +20,9 @@ kover {
                     "*Hilt_*",
                     "*_HiltModules*",
                     "*_MembersInjector",
-                    "*_Factory"
+                    "*_Factory",
+                    "*_Impl",
+                    "*_Impl\$*"
                 )
                 packages("*.dependencyinjection")
             }
@@ -91,6 +93,7 @@ dependencies {
     androidTestRuntimeOnly(libs.testingDeps.junit.junit5AndroidTestRunner)
 
     testImplementation(libs.roomDeps.testHelpers)
+    testImplementation(libs.testingDeps.kotlin.coroutines)
     testImplementation(libs.testingDeps.mockito.core)
     testImplementation(libs.testingDeps.mockito.kotlin)
     testImplementation(libs.testingDeps.junit.jupiterApi)
