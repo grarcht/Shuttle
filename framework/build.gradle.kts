@@ -21,7 +21,9 @@ kover {
                     "*Hilt_*",
                     "*_HiltModules*",
                     "*_MembersInjector",
-                    "*_Factory"
+                    "*_Factory",
+                    "*_Impl",
+                    "*_Impl\$*"
                 )
                 packages("*.dependencyinjection")
             }
