@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
+private const val INSTANCE_FIELD_NAME = "INSTANCE"
+
 /**
  * A minimal concrete subclass of [ShuttleRoomDataDb] used to exercise abstract-class code
  * paths (such as the [ShuttleRoomDataDb.shuttleDataAccessObject] lazy property) without
@@ -37,7 +39,7 @@ private class TestShuttleRoomDataDb(
 class ShuttleRoomDataDbTest {
 
     private val instanceField = ShuttleRoomDataDb::class.java
-        .getDeclaredField("INSTANCE")
+        .getDeclaredField(INSTANCE_FIELD_NAME)
         .also { it.isAccessible = true }
 
     @BeforeEach
