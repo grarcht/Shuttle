@@ -101,6 +101,28 @@ class CargoShuttleTests {
     }
 
     @Test
+    fun verifyBundleCargoWithNullBundleFactoryUsesDefaultFactory() = testScope.runTest {
+        val bundle = MockBundleFactory().create()
+        val shuttleBundle = shuttle?.bundleCargoWith(bundle, bundleFactory = null)
+
+        Assertions.assertNotNull(shuttleBundle)
+    }
+
+    @Test
+    fun verifyBundleCargoWithNoArgsUsesDefaults() = testScope.runTest {
+        // Calling with no arguments exercises the default parameter bridge method
+        val shuttleBundle = shuttle?.bundleCargoWith()
+
+        Assertions.assertNotNull(shuttleBundle)
+    }
+
+    @Test
+    fun verifyCleanShuttleFromAllDeliveriesWithNoReceiverUsesNullDefault() = testScope.runTest {
+        // Calling without receiver argument exercises the default parameter bridge method
+        shuttle?.cleanShuttleFromAllDeliveries()
+    }
+
+    @Test
     fun verifyIntentCargoWithIntentReturnsAShuttleIntent() = testScope.runTest {
         val intent = Intent()
         val shuttleIntent = shuttle?.intentCargoWith(intent)

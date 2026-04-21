@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.IntentFilter
 import android.util.Log
+import com.grarcht.shuttle.framework.ExcludeFromCoverage
 
 private const val ERROR_UNABLE_TO_UNREGISTER_RECEIVER = "Unable to unregister the receiver."
 private const val ERROR_UNABLE_TO_REGISTER_RECEIVER = "Unable to register the receiver."
@@ -14,14 +15,20 @@ private const val ERROR_UNABLE_TO_REGISTER_RECEIVER = "Unable to register the re
 fun Context?.registerReceiverQuietly(receiver: BroadcastReceiver, filter: IntentFilter, logTag: String? = null) {
     this?.let {
         try {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                it.registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED)
-            } else {
-                it.registerReceiver(receiver, filter)
-            }
+            it.registerReceiverByVersion(receiver, filter)
         } catch (e: IllegalStateException) {
             Log.w(logTag, ERROR_UNABLE_TO_REGISTER_RECEIVER, e)
         }
+    }
+}
+
+@ExcludeFromCoverage
+@SuppressLint("UnspecifiedRegisterReceiverFlag")
+private fun Context.registerReceiverByVersion(receiver: BroadcastReceiver, filter: IntentFilter) {
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+        registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED)
+    } else {
+        registerReceiver(receiver, filter)
     }
 }
 

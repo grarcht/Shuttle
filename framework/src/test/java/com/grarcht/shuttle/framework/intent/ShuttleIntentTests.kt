@@ -12,9 +12,12 @@ import com.grarcht.shuttle.framework.content.ShuttleIntent
 import com.grarcht.shuttle.framework.coroutines.CompositeDisposableHandle
 import com.grarcht.shuttle.framework.coroutines.addForDisposal
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
+import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
+import com.grarcht.shuttle.framework.result.ShuttleStoreCargoResult
 import com.grarcht.shuttle.framework.screen.ShuttleFacade
 import com.grarcht.shuttle.framework.warehouse.ShuttleDataWarehouse
 import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.DisposableHandle
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -240,9 +243,111 @@ class ShuttleIntentTests {
         Assertions.assertEquals(numOfBoxes, cargo.numberOfBoxes)
     }
 
+    @Test
+    fun verifyCleanShuttleOnReturnToWithFacadeExecutesRemoval() = testScope.runTest {
+        val warehouse: ShuttleWarehouse = mock(ShuttleWarehouse::class.java)
+        val shuttleScreenFacade = mock(ShuttleFacade::class.java)
+        val firstIntent = Intent(Intent.ACTION_MEDIA_BUTTON)
+        val currentScreen = Fragment::class.java
+        val nextScreen = Fragment::class.java
+        val cargoId = "cargoId1"
+
+        ShuttleIntent
+            .with(warehouse, shuttleScreenFacade, testDispatcher)
+            .intent(firstIntent)
+            .cleanShuttleOnReturnTo(currentScreen, nextScreen, cargoId)
+
+        delay(100L)
+
+        Assertions.assertNotNull(shuttleScreenFacade)
+    }
+
+    @Test
+    fun verifyLogTagWithNullUsesDefaultTag() = testScope.runTest {
+        val warehouse: ShuttleWarehouse = mock(ShuttleWarehouse::class.java)
+        val shuttleIntent = ShuttleIntent
+            .with(warehouse)
+            .intent(Intent.ACTION_MEDIA_BUTTON)
+
+        val result = shuttleIntent.logTag(null)
+
+        Assertions.assertNotNull(result)
+        Assertions.assertSame(shuttleIntent, result)
+    }
+
+    @Test
+    fun verifyDeliverStartsActivity() = testScope.runTest {
+        val warehouse: ShuttleWarehouse = mock(ShuttleWarehouse::class.java)
+        val context = mock(Context::class.java)
+        val shuttleIntent = ShuttleIntent
+            .with(warehouse)
+            .intent(Intent.ACTION_MEDIA_BUTTON)
+
+        shuttleIntent.deliver(context)
+
+        Assertions.assertNotNull(shuttleIntent)
+    }
+
+    @Test
+    fun verifyCreateThrowsWhenIntentNotSet() = testScope.runTest {
+        val warehouse: ShuttleWarehouse = mock(ShuttleWarehouse::class.java)
+        val shuttleIntent = ShuttleIntent.with(warehouse)
+        var threw = false
+
+        try {
+            shuttleIntent.create()
+        } catch (e: IllegalStateException) {
+            threw = true
+        }
+
+        Assertions.assertTrue(threw)
+    }
+
+    @Test
+    fun verifyLogTagWithNonNullTagUsesProvidedTag() = testScope.runTest {
+        val warehouse: ShuttleWarehouse = mock(ShuttleWarehouse::class.java)
+        val shuttleIntent = ShuttleIntent
+            .with(warehouse)
+            .intent(Intent.ACTION_MEDIA_BUTTON)
+
+        val result = shuttleIntent.logTag("CustomTag")
+
+        Assertions.assertNotNull(result)
+        Assertions.assertSame(shuttleIntent, result)
+    }
+
+    @Test
+    fun verifyCleanShuttleOnReturnToWithNullFacadeDoesNotThrow() = testScope.runTest {
+        val warehouse: ShuttleWarehouse = mock(ShuttleWarehouse::class.java)
+
+        ShuttleIntent
+            .with(warehouse) // no shuttleScreenFacade → null
+            .intent(Intent.ACTION_MEDIA_BUTTON)
+            .cleanShuttleOnReturnTo(Fragment::class.java, Fragment::class.java, "cargoId")
+    }
+
+    @Test
+    fun verifyTransportLogsErrorWhenStoreCancels() = testScope.runTest {
+        val intent = Intent(Intent.ACTION_MEDIA_BUTTON)
+        // CancellationException from store() is logged via invokeOnCompletion — should not throw
+        ShuttleIntent
+            .with(CancellationThrowingWarehouse(), backgroundThreadDispatcher = Dispatchers.Unconfined)
+            .intent(intent)
+            .transport("cargoId", Cargo("cargoId", 1))
+    }
+
     @Suppress("SameParameterValue")
     private fun awaitOnLatch(countDownLatch: CountDownLatch, timeout: Long, timeUnit: TimeUnit) {
         @Suppress("BlockingMethodInNonBlockingContext", "SameParameterValue")
         countDownLatch.await(timeout, timeUnit)
+    }
+
+    private class CancellationThrowingWarehouse : ShuttleWarehouse {
+        override suspend fun <D : Serializable> pickup(id: String) = Channel<ShuttlePickupCargoResult>()
+        override suspend fun <D : Serializable> store(id: String, data: D?): Channel<ShuttleStoreCargoResult> {
+            throw CancellationException("test cancellation")
+        }
+        override suspend fun removeCargoBy(id: String) = Channel<ShuttleRemoveCargoResult>()
+        override suspend fun removeAllCargo() = Channel<ShuttleRemoveCargoResult>()
     }
 }

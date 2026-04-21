@@ -1,6 +1,3 @@
-import org.gradle.api.publish.maven.MavenPublication
-import java.io.File
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.google.ksp)

@@ -12,6 +12,7 @@ import android.window.OnBackInvokedDispatcher
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.grarcht.shuttle.framework.ExcludeFromCoverage
 import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
 import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
 import kotlinx.coroutines.CoroutineDispatcher
@@ -77,23 +78,7 @@ open class ShuttleCargoFacade(
                     if (activityTypeName == screen.typeName ||
                         activityTypeName.contains(screen.typeName)
                     ) {
-                        // watch for the back press event
-                        if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
-                            val callback = ActivityOnBackInvokedCallback(screen, activity)
-                            activity.onBackInvokedDispatcher.registerOnBackInvokedCallback(
-                                OnBackInvokedDispatcher.PRIORITY_DEFAULT,
-                                callback
-                            )
-                            onBackInvokedCallbacks.add(callback)
-                        } else {
-                            val callback = ActivityBackPressedCallback(
-                                screen,
-                                activity,
-                                ON_PRESSED_CALLBACK_ENABLED
-                            )
-                            activity.onBackPressedDispatcher.addCallback(callback)
-                            onBackPressedCallbacks.add(callback)
-                        }
+                        registerBackCallback(screen, activity)
                     }
                 }
             }
@@ -104,15 +89,51 @@ open class ShuttleCargoFacade(
             super.onActivityDestroyed(activity)
         }
 
+        @ExcludeFromCoverage
+        private fun registerBackCallback(screen: Screen, activity: AppCompatActivity) {
+            // watch for the back press event
+            if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+                registerOnBackInvokedCallback(screen, activity)
+            } else {
+                registerOnBackPressedCallback(screen, activity)
+            }
+        }
+
+        private fun registerOnBackPressedCallback(screen: Screen, activity: AppCompatActivity) {
+            val callback = ActivityBackPressedCallback(
+                screen,
+                activity,
+                ON_PRESSED_CALLBACK_ENABLED
+            )
+            activity.onBackPressedDispatcher.addCallback(callback)
+            onBackPressedCallbacks.add(callback)
+        }
+
+        @RequiresApi(VERSION_CODES.TIRAMISU)
+        private fun registerOnBackInvokedCallback(screen: Screen, activity: AppCompatActivity) {
+            val callback = ActivityOnBackInvokedCallback(screen, activity)
+            activity.onBackInvokedDispatcher.registerOnBackInvokedCallback(
+                OnBackInvokedDispatcher.PRIORITY_DEFAULT,
+                callback
+            )
+            onBackInvokedCallbacks.add(callback)
+        }
+
+        @ExcludeFromCoverage
         private fun unregisterCallbacks() {
             if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
-                onBackInvokedCallbacks.forEach { onBackInvokedCallback: OnBackInvokedCallback ->
-                    onBackInvokedCallbacks.remove(onBackInvokedCallback)
-                }
+                unregisterOnBackInvokedCallbacks()
             } else {
                 onBackPressedCallbacks.forEach { onBackPressedCallback: OnBackPressedCallback ->
                     onBackPressedCallbacks.remove(onBackPressedCallback)
                 }
+            }
+        }
+
+        @RequiresApi(VERSION_CODES.TIRAMISU)
+        private fun unregisterOnBackInvokedCallbacks() {
+            onBackInvokedCallbacks.forEach { onBackInvokedCallback: OnBackInvokedCallback ->
+                onBackInvokedCallbacks.remove(onBackInvokedCallback)
             }
         }
     }

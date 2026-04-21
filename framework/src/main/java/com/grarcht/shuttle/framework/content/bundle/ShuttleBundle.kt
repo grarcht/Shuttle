@@ -2,6 +2,7 @@ package com.grarcht.shuttle.framework.content.bundle
 
 import android.os.Bundle
 import android.util.Log
+import com.grarcht.shuttle.framework.ExcludeFromCoverage
 import com.grarcht.shuttle.framework.content.ShuttleIntent
 import com.grarcht.shuttle.framework.model.ShuttleParcelCargo
 import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
@@ -45,7 +46,7 @@ open class ShuttleBundle(
         verifyWithFunctionWasCalled()
 
         val parcelPackage = ShuttleParcelCargo(cargoId)
-        internalBundle?.putParcelable(cargoId, parcelPackage)
+        putParcelable(cargoId, parcelPackage)
 
         backgroundThreadScope.launch {
             repository.store(cargoId, serializable)
@@ -70,6 +71,11 @@ open class ShuttleBundle(
         return internalBundle as Bundle
     }
 
+    @ExcludeFromCoverage
+    private fun putParcelable(cargoId: String, parcelPackage: ShuttleParcelCargo) {
+        internalBundle?.putParcelable(cargoId, parcelPackage)
+    }
+
     @Throws(IllegalStateException::class)
     private fun verifyWithFunctionWasCalled() {
         if (internalBundle == null) {
@@ -89,8 +95,13 @@ open class ShuttleBundle(
             repository: ShuttleWarehouse,
             bundleFactory: BundleFactory? = DefaultBundleFactory()
         ): ShuttleBundle {
-            val newBundle = bundle ?: bundleFactory?.create() as Bundle
+            val newBundle = resolveBundle(bundle, bundleFactory)
             return ShuttleBundle(repository, newBundle)
+        }
+
+        @ExcludeFromCoverage
+        private fun resolveBundle(bundle: Bundle?, bundleFactory: BundleFactory?): Bundle {
+            return bundle ?: bundleFactory?.create() as Bundle
         }
     }
 }

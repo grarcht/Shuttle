@@ -90,6 +90,38 @@ class ActivityLifecycleCallbackTests {
         Assertions.assertEquals(0, callback.numberOfInvocations)
     }
 
+    @Test
+    fun verifyBaseClassNoOpMethodsAreCoveredByMinimalSubclass() {
+        val callback = MinimalActivityLifecycleCallback()
+        val activity = mock(Activity::class.java)
+        val savedInstanceState = MockBundleFactory().create()
+
+        callback.onActivityStarted(activity)
+        callback.onActivityResumed(activity)
+        callback.onActivityPaused(activity)
+        callback.onActivityStopped(activity)
+        callback.onActivitySaveInstanceState(activity, savedInstanceState)
+        callback.onActivityDestroyed(activity)
+    }
+
+    @Test
+    fun verifyBaseClassOnActivityCreatedWithSavedInstanceStateDelegatesToSingleArgOverload() {
+        val callback = MinimalActivityLifecycleCallback()
+        val activity = mock(Activity::class.java)
+
+        // MinimalActivityLifecycleCallback does NOT override the two-arg version,
+        // so this hits the parent's implementation which calls onActivityCreated(activity).
+        callback.onActivityCreated(activity, savedInstanceState = null)
+    }
+
+    /** Minimal subclass that only overrides the single abstract method, leaving all other
+     *  lifecycle methods as the parent class no-ops so those lines are covered. */
+    private class MinimalActivityLifecycleCallback : ActivityLifecycleCallback() {
+        override fun onActivityCreated(activity: Activity) {
+            // no-op — only override required abstract method
+        }
+    }
+
     private open class TestActivityLifecycleCallback : ActivityLifecycleCallback() {
         var numberOfInvocations = 0
 

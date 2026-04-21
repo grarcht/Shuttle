@@ -36,6 +36,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.mockito.Mockito
+import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.anyOrNull
@@ -1028,6 +1029,187 @@ class ShuttleWarehouseTests {
         awaitOnLatch(countDownLatch, 3L, TimeUnit.SECONDS)
         Assertions.assertEquals(2, failureStepsMet)
         Assertions.assertEquals("", removedCargoId)
+    }
+
+    @Test
+    fun verifyStoreCargoFailsWithSQLException() = testScope.runTest {
+        val dao = mock(ShuttleDataAccessObject::class.java)
+        val dataModelFactory = mock(ShuttleDataModelFactory::class.java)
+        val fileSystemGateway = mock(ShuttleFileSystemGateway::class.java)
+        val warehouse: ShuttleWarehouse = ShuttleRepository(dao, dataModelFactory, CARGO_FILE_PATH, fileSystemGateway)
+        val cargoId = "cargoId1"
+        val cargo = Cargo(cargoId, 10)
+        val countDownLatch = CountDownLatch(1)
+
+        `when`(fileSystemGateway.writeToFile("$CARGO_FILE_PATH/cargo/", cargoId, cargo))
+            .thenReturn("$CARGO_FILE_PATH/cargo/$cargoId")
+        doAnswer { throw java.sql.SQLException("db error") }.`when`(dao).insertCargo(anyOrNull())
+
+        launch(Dispatchers.Main) {
+            val channel: Channel<ShuttleStoreCargoResult> = warehouse.store(cargoId, cargo)
+            channel.consumeAsFlow().collectLatest { result ->
+                when (result) {
+                    is ShuttleStoreCargoResult.Error<*> -> { countDownLatch.countDown(); channel.cancel() }
+                    else -> { /* ignore */ }
+                }
+            }
+        }.invokeOnCompletion {
+            it?.let { println(it.message ?: "Error when getting the serializable.") }
+        }
+
+        delay(1000L)
+    }
+
+    @Test
+    fun verifyStoreCargoFailsWithGenericException() = testScope.runTest {
+        val dao = mock(ShuttleDataAccessObject::class.java)
+        val dataModelFactory = mock(ShuttleDataModelFactory::class.java)
+        val fileSystemGateway = mock(ShuttleFileSystemGateway::class.java)
+        val warehouse: ShuttleWarehouse = ShuttleRepository(dao, dataModelFactory, CARGO_FILE_PATH, fileSystemGateway)
+        val cargoId = "cargoId1"
+        val cargo = Cargo(cargoId, 10)
+
+        `when`(fileSystemGateway.writeToFile("$CARGO_FILE_PATH/cargo/", cargoId, cargo))
+            .thenReturn("$CARGO_FILE_PATH/cargo/$cargoId")
+        `when`(dao.insertCargo(anyOrNull())).thenThrow(RuntimeException("unexpected"))
+
+        launch(Dispatchers.Main) {
+            val channel: Channel<ShuttleStoreCargoResult> = warehouse.store(cargoId, cargo)
+            channel.consumeAsFlow().collectLatest { result ->
+                when (result) {
+                    is ShuttleStoreCargoResult.Error<*> -> channel.cancel()
+                    else -> { /* ignore */ }
+                }
+            }
+        }
+
+        delay(1000L)
+    }
+
+    @Test
+    fun verifyRemovingCargoByIdFailsWhenDAODeleteReturnsFailure() = testScope.runTest {
+        val dao = mock(ShuttleDataAccessObject::class.java)
+        val dataModelFactory = mock(ShuttleDataModelFactory::class.java)
+        val fileSystemGateway = mock(ShuttleFileSystemGateway::class.java)
+        val warehouse: ShuttleWarehouse = ShuttleRepository(dao, dataModelFactory, CARGO_FILE_PATH, fileSystemGateway)
+        val cargoId = "cargoId1"
+        val filePath = "$CARGO_FILE_PATH/cargo/$cargoId"
+        val countDownLatch = CountDownLatch(1)
+        var failureStepsMet = 0
+
+        `when`(fileSystemGateway.deleteFile(filePath))
+            .thenReturn(ShuttlePersistenceRemoveCargoResult.Removed)
+        `when`(dao.deleteCargoBy(cargoId))
+            .thenReturn(ShuttleDataAccessObject.REMOVE_CARGO_FAILED)
+
+        launch(Dispatchers.Main) {
+            val channel: Channel<ShuttleRemoveCargoResult> = warehouse.removeCargoBy(cargoId)
+            channel.consumeAsFlow().collectLatest { result ->
+                when (result) {
+                    is ShuttleRemoveCargoResult.UnableToRemove<*> -> {
+                        failureStepsMet++
+                        countDownLatch.countDown()
+                        channel.cancel()
+                    }
+                    else -> { /* ignore */ }
+                }
+            }
+        }
+
+        awaitOnLatch(countDownLatch, 1L, TimeUnit.SECONDS)
+        Assertions.assertEquals(1, failureStepsMet)
+    }
+
+    @Test
+    fun verifyRemovingCargoByIdHandlesSQLException() = testScope.runTest {
+        val dao = mock(ShuttleDataAccessObject::class.java)
+        val dataModelFactory = mock(ShuttleDataModelFactory::class.java)
+        val fileSystemGateway = mock(ShuttleFileSystemGateway::class.java)
+        val warehouse: ShuttleWarehouse = ShuttleRepository(dao, dataModelFactory, CARGO_FILE_PATH, fileSystemGateway)
+        val cargoId = "cargoId1"
+        val filePath = "$CARGO_FILE_PATH/cargo/$cargoId"
+
+        doAnswer { throw java.sql.SQLException("db error") }.`when`(fileSystemGateway).deleteFile(filePath)
+
+        launch(Dispatchers.Main) {
+            val channel: Channel<ShuttleRemoveCargoResult> = warehouse.removeCargoBy(cargoId)
+            channel.consumeAsFlow().collectLatest { result ->
+                when (result) {
+                    is ShuttleRemoveCargoResult.UnableToRemove<*> -> channel.cancel()
+                    else -> { /* ignore */ }
+                }
+            }
+        }
+
+        delay(1000L)
+    }
+
+    @Test
+    fun verifyRemovingCargoByIdHandlesGenericException() = testScope.runTest {
+        val dao = mock(ShuttleDataAccessObject::class.java)
+        val dataModelFactory = mock(ShuttleDataModelFactory::class.java)
+        val fileSystemGateway = mock(ShuttleFileSystemGateway::class.java)
+        val warehouse: ShuttleWarehouse = ShuttleRepository(dao, dataModelFactory, CARGO_FILE_PATH, fileSystemGateway)
+        val cargoId = "cargoId1"
+        val filePath = "$CARGO_FILE_PATH/cargo/$cargoId"
+
+        `when`(fileSystemGateway.deleteFile(filePath)).thenThrow(RuntimeException("unexpected"))
+
+        launch(Dispatchers.Main) {
+            val channel: Channel<ShuttleRemoveCargoResult> = warehouse.removeCargoBy(cargoId)
+            channel.consumeAsFlow().collectLatest { result ->
+                when (result) {
+                    is ShuttleRemoveCargoResult.UnableToRemove<*> -> channel.cancel()
+                    else -> { /* ignore */ }
+                }
+            }
+        }
+
+        delay(1000L)
+    }
+
+    @Test
+    fun verifyRemovingAllCargoHandlesSQLException() = testScope.runTest {
+        val dao = mock(ShuttleDataAccessObject::class.java)
+        val dataModelFactory = mock(ShuttleDataModelFactory::class.java)
+        val fileSystemGateway = mock(ShuttleFileSystemGateway::class.java)
+        val warehouse: ShuttleWarehouse = ShuttleRepository(dao, dataModelFactory, CARGO_FILE_PATH, fileSystemGateway)
+
+        doAnswer { throw java.sql.SQLException("db error") }.`when`(fileSystemGateway).deleteAllFilesAt(anyOrNull())
+
+        launch(Dispatchers.Main) {
+            val channel: Channel<ShuttleRemoveCargoResult> = warehouse.removeAllCargo()
+            channel.consumeAsFlow().collectLatest { result ->
+                when (result) {
+                    is ShuttleRemoveCargoResult.UnableToRemove<*> -> channel.cancel()
+                    else -> { /* ignore */ }
+                }
+            }
+        }
+
+        delay(1000L)
+    }
+
+    @Test
+    fun verifyRemovingAllCargoHandlesGenericException() = testScope.runTest {
+        val dao = mock(ShuttleDataAccessObject::class.java)
+        val dataModelFactory = mock(ShuttleDataModelFactory::class.java)
+        val fileSystemGateway = mock(ShuttleFileSystemGateway::class.java)
+        val warehouse: ShuttleWarehouse = ShuttleRepository(dao, dataModelFactory, CARGO_FILE_PATH, fileSystemGateway)
+
+        `when`(fileSystemGateway.deleteAllFilesAt(anyOrNull())).thenThrow(RuntimeException("unexpected"))
+
+        launch(Dispatchers.Main) {
+            val channel: Channel<ShuttleRemoveCargoResult> = warehouse.removeAllCargo()
+            channel.consumeAsFlow().collectLatest { result ->
+                when (result) {
+                    is ShuttleRemoveCargoResult.UnableToRemove<*> -> channel.cancel()
+                    else -> { /* ignore */ }
+                }
+            }
+        }
+
+        delay(1000L)
     }
 
     private fun storeCargo(

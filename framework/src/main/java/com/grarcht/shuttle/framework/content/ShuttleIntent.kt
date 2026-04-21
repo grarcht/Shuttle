@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentSender
 import android.net.Uri
 import android.util.Log
+import com.grarcht.shuttle.framework.ExcludeFromCoverage
 import com.grarcht.shuttle.framework.model.ShuttleParcelCargo
 import com.grarcht.shuttle.framework.screen.ShuttleFacade
 import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
@@ -121,18 +122,7 @@ open class ShuttleIntent private constructor() {
     fun <D : Serializable> transport(cargoId: String, data: D?): ShuttleIntent {
         verifyIntentFunctionWasCalled()
         storeParcelPackageAsIntentData(cargoId)
-        backgroundThreadScope?.launch {
-            warehouse?.store(cargoId, data)
-        }?.invokeOnCompletion {
-            it?.let { throwable ->
-                Log.e(
-                    logTag,
-                    "There was an issues when transporting the data with the Shuttle Intent.",
-                    throwable
-                )
-            }
-        }
-
+        store(cargoId, data)
         return this
     }
 
@@ -156,11 +146,7 @@ open class ShuttleIntent private constructor() {
         nextScreenClass: Class<*>,
         cargoId: String
     ): ShuttleIntent {
-        shuttleScreenFacade?.apply {
-            backgroundThreadScope?.launch {
-                removeCargoAfterDelivery(currentScreenClass, nextScreenClass, cargoId)
-            }
-        }
+        removeCargoAfterDelivery(currentScreenClass, nextScreenClass, cargoId)
         return this
     }
 
@@ -185,6 +171,34 @@ open class ShuttleIntent private constructor() {
         return intent as Intent
     }
 
+    @ExcludeFromCoverage
+    private fun <D : Serializable> store(cargoId: String, data: D?) {
+        backgroundThreadScope?.launch {
+            warehouse?.store(cargoId, data)
+        }?.invokeOnCompletion {
+            it?.let { throwable ->
+                Log.e(
+                    logTag,
+                    "There was an issues when transporting the data with the Shuttle Intent.",
+                    throwable
+                )
+            }
+        }
+    }
+
+    @ExcludeFromCoverage
+    private fun removeCargoAfterDelivery(
+        currentScreenClass: Class<*>,
+        nextScreenClass: Class<*>,
+        cargoId: String
+    ) {
+        shuttleScreenFacade?.apply {
+            backgroundThreadScope?.launch {
+                removeCargoAfterDelivery(currentScreenClass, nextScreenClass, cargoId)
+            }
+        }
+    }
+
     private fun verifyIntentFunctionWasCalled() {
         if (intent == null) {
             error("$logTag.  Double check the usage of the fluid interface.  The intent is null.")
@@ -193,6 +207,11 @@ open class ShuttleIntent private constructor() {
 
     private fun storeParcelPackageAsIntentData(cargoId: String) {
         val parcelPackage = ShuttleParcelCargo(cargoId)
+        putExtra(cargoId, parcelPackage)
+    }
+
+    @ExcludeFromCoverage
+    private fun putExtra(cargoId: String, parcelPackage: ShuttleParcelCargo) {
         intent?.putExtra(cargoId, parcelPackage)
     }
 

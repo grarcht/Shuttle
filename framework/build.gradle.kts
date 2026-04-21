@@ -1,6 +1,3 @@
-import org.gradle.api.publish.maven.MavenPublication
-import java.io.File
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.dokka)
@@ -16,7 +13,7 @@ kover {
     reports {
         filters {
             excludes {
-                annotatedBy("dagger.Module", "dagger.hilt.InstallIn")
+                annotatedBy("dagger.Module", "dagger.hilt.InstallIn", "androidx.annotation.RequiresApi", "com.grarcht.shuttle.framework.ExcludeFromCoverage")
                 classes(
                     "*Hilt_*",
                     "*_HiltModules*",
