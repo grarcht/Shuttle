@@ -11,8 +11,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -176,7 +176,7 @@ class MVVMSecondView(
                 .size(CIRCULAR_PROGRESS_SIZE)
                 .align(Alignment.Center)
 
-            CircularProgressIndicator(progress, modifier)
+            CircularProgressIndicator(progress = { progress }, modifier = modifier)
         }
     }
 

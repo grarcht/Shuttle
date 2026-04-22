@@ -1,12 +1,12 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryContainer">@color/colorPrimaryContainer</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
     </style>
 
-    <style name="TitleText" parent="Widget.MaterialComponents.TextView">
+    <style name="TitleText" parent="Widget.AppCompat.TextView">
         <item name="android:paddingStart">16dp</item>
         <item name="android:paddingEnd">16dp</item>
         <item name="android:paddingTop">16dp</item>
@@ -18,7 +18,7 @@
         <item name="android:gravity">center_horizontal</item>
     </style>
 
-    <style name="ErrorText" parent="Widget.MaterialComponents.TextView">
+    <style name="ErrorText" parent="Widget.AppCompat.TextView">
         <item name="android:paddingStart">16dp</item>
         <item name="android:paddingEnd">16dp</item>
         <item name="android:paddingTop">100dp</item>
@@ -41,7 +41,7 @@
         <item name="android:alpha">0.8</item>
     </style>
 
-    <style name="ContentLoadingProgress" parent="Widget.AppCompat.ProgressBar">
-        <item name="colorAccent">@android:color/white</item>
+    <style name="ContentLoadingProgress" parent="Widget.Material3.CircularProgressIndicator">
+        <item name="trackColor">@android:color/white</item>
     </style>
 </resources>

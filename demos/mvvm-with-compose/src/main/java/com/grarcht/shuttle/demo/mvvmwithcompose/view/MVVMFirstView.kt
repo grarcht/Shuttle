@@ -11,9 +11,9 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -73,7 +73,7 @@ class MVVMFirstView(
         val largePaddingModifier = Modifier.padding(LARGE_PADDING).fillMaxHeight().fillMaxWidth()
         Text(
             text = context.resources.getString(R.string.mvvm_first_view_title),
-            style = MaterialTheme.typography.h4,
+            style = MaterialTheme.typography.headlineMedium,
             textAlign = TextAlign.Center,
             modifier = largePaddingModifier
         )
@@ -90,7 +90,7 @@ class MVVMFirstView(
             ShuttleNavigationButton(buttonsEnabled)
             Text(
                 text = context.getString(R.string.the_app_will_not_crash_using_shuttle),
-                style = MaterialTheme.typography.body1,
+                style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 color = Color(context.getColor(android.R.color.holo_green_dark)),
                 fontFamily = FontFamily.SansSerif
@@ -98,7 +98,7 @@ class MVVMFirstView(
             NormalNavigationButton(buttonsEnabled)
             Text(
                 text = context.getString(R.string.the_app_will_crash_without_using_shuttle),
-                style = MaterialTheme.typography.body1,
+                style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 color = Color(context.getColor(android.R.color.holo_red_dark)),
                 fontFamily = FontFamily.SansSerif
@@ -114,7 +114,7 @@ class MVVMFirstView(
             contentPadding = BUTTON_CONTENT_PADDING,
             modifier = Modifier.fillMaxWidth().padding(SMALL_PADDING)
         ) {
-            Text(context.resources.getString(R.string.navigate_using_shuttle), style = MaterialTheme.typography.h6)
+            Text(context.resources.getString(R.string.navigate_using_shuttle), style = MaterialTheme.typography.titleLarge)
         }
     }
 
@@ -128,7 +128,7 @@ class MVVMFirstView(
                 .fillMaxWidth()
                 .padding(start = SMALL_PADDING, top = TOP_PADDING, end = SMALL_PADDING, bottom = SMALL_PADDING)
         ) {
-            Text(context.resources.getString(R.string.navigate_normally), style = MaterialTheme.typography.h6)
+            Text(context.resources.getString(R.string.navigate_normally), style = MaterialTheme.typography.titleLarge)
         }
     }
 
