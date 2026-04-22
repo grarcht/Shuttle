@@ -32,19 +32,19 @@ jobs:
 
       - name: Assemble docs output
         run: |
-          mkdir -p build/docs/framework
-          mkdir -p build/docs/framework-integrations-persistence
-          mkdir -p build/docs/framework-integrations-extensions-room
-          mkdir -p build/docs/framework-addons-navigation-component
-          cp -r framework/documentation/kotlin/.                              build/docs/framework/
-          cp -r framework-integrations/persistence/documentation/kotlin/.     build/docs/framework-integrations-persistence/
-          cp -r framework-integrations-extensions/room/documentation/kotlin/. build/docs/framework-integrations-extensions-room/
-          cp -r framework-addons/navigation-component/documentation/kotlin/.  build/docs/framework-addons-navigation-component/
+          mkdir -p docs/framework
+          mkdir -p docs/framework-integrations-persistence
+          mkdir -p docs/framework-integrations-extensions-room
+          mkdir -p docs/framework-addons-navigation-component
+          cp -r framework/documentation/kotlin/.                              docs/framework/
+          cp -r framework-integrations/persistence/documentation/kotlin/.     docs/framework-integrations-persistence/
+          cp -r framework-integrations-extensions/room/documentation/kotlin/. docs/framework-integrations-extensions-room/
+          cp -r framework-addons/navigation-component/documentation/kotlin/.  docs/framework-addons-navigation-component/
 
       - name: Deploy to gh-pages/docs
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: build/docs
+          folder: docs
           target-folder: docs
           clean: false
