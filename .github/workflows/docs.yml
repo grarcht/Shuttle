@@ -8,6 +8,8 @@ on:
 jobs:
   publish-docs:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout
@@ -40,6 +42,21 @@ jobs:
           cp -r framework-integrations/persistence/documentation/kotlin/.     build/docs/framework-integrations-persistence/
           cp -r framework-integrations-extensions/room/documentation/kotlin/. build/docs/framework-integrations-extensions-room/
           cp -r framework-addons/navigation-component/documentation/kotlin/.  build/docs/framework-addons-navigation-component/
+          cat > build/docs/index.html <<'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head><meta charset="utf-8"><title>Shuttle API Docs</title></head>
+          <body>
+          <h1>Shuttle API Documentation</h1>
+          <ul>
+            <li><a href="framework/">framework</a></li>
+            <li><a href="framework-integrations-persistence/">framework-integrations-persistence</a></li>
+            <li><a href="framework-integrations-extensions-room/">framework-integrations-extensions-room</a></li>
+            <li><a href="framework-addons-navigation-component/">framework-addons-navigation-component</a></li>
+          </ul>
+          </body>
+          </html>
+          EOF
 
       - name: Deploy to gh-pages/docs
         uses: JamesIves/github-pages-deploy-action@v4
