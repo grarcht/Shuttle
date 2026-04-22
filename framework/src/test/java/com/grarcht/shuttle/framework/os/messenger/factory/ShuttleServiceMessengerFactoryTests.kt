@@ -14,6 +14,12 @@ import org.mockito.kotlin.mock
 
 private const val SERVICE_NAME = "TestService"
 
+/**
+ * Verifies the functionality of [ShuttleServiceMessengerFactory]. This factory creates the
+ * ShuttleMessengerDecorator used by IPC-bound services to receive inter-process messages. Without
+ * it, messenger-based IPC services would have no way to construct their message-handling
+ * infrastructure.
+ */
 class ShuttleServiceMessengerFactoryTests {
 
     @Test

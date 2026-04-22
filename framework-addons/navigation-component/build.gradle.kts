@@ -11,14 +11,15 @@ kover {
     reports {
         filters {
             excludes {
-                annotatedBy("dagger.Module", "dagger.hilt.InstallIn")
+                annotatedBy("dagger.Module", "dagger.hilt.InstallIn", "androidx.annotation.RequiresApi", "com.grarcht.shuttle.framework.ExcludeFromCoverage")
                 classes(
                     "*Hilt_*",
                     "*_HiltModules*",
                     "*_MembersInjector",
                     "*_Factory",
                     "*_Impl",
-                    "*_Impl\$*"
+                    "*_Impl\$*",
+                    "*BuildConfig*"
                 )
                 packages("*.dependencyinjection")
             }

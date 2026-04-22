@@ -4,6 +4,7 @@ import android.os.Parcel
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.whenever
@@ -11,6 +12,12 @@ import org.mockito.kotlin.whenever
 private const val CARGO_ID = "cargoId1"
 private const val PARCEL_FLAGS = 0
 
+/**
+ * Verifies the functionality of [ShuttleParcelCargo]. ShuttleParcelCargo is the Parcelable model
+ * used to pass a cargo ID across process boundaries via Android's parcel mechanism. If
+ * parcelling or unparcelling the cargo ID failed, IPC-bound services would be unable to identify
+ * which warehouse entry to retrieve for a given delivery.
+ */
 class ShuttleParcelCargoTests {
 
     @Test
@@ -36,8 +43,10 @@ class ShuttleParcelCargoTests {
 
         val cargo = ShuttleParcelCargo.createFromParcel(parcel)
 
-        assertNotNull(cargo)
-        assertEquals(CARGO_ID, cargo.cargoId)
+        assertAll(
+            { assertNotNull(cargo) },
+            { assertEquals(CARGO_ID, cargo.cargoId) }
+        )
     }
 
     @Test
@@ -47,8 +56,10 @@ class ShuttleParcelCargoTests {
 
         val cargo = ShuttleParcelCargo.createFromParcel(parcel)
 
-        assertNotNull(cargo)
-        assertEquals(NO_CARGO_ID, cargo.cargoId)
+        assertAll(
+            { assertNotNull(cargo) },
+            { assertEquals(NO_CARGO_ID, cargo.cargoId) }
+        )
     }
 
     @Test
@@ -56,7 +67,9 @@ class ShuttleParcelCargoTests {
         val size = 5
         val array = ShuttleParcelCargo.newArray(size)
 
-        assertNotNull(array)
-        assertEquals(size, array.size)
+        assertAll(
+            { assertNotNull(array) },
+            { assertEquals(size, array.size) }
+        )
     }
 }

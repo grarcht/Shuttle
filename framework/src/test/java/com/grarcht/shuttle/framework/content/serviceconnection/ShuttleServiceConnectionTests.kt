@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import org.mockito.Mockito
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
@@ -31,6 +32,12 @@ private class ExposedServiceConnection<S : ShuttleService, B : ShuttleBinder<S>>
     fun readIsConnected(): Boolean = isConnected
 }
 
+/**
+ * Verifies the functionality of [ShuttleServiceConnection]. ShuttleServiceConnection manages the
+ * full lifecycle of binding to and unbinding from a ShuttleService, emitting the connected model
+ * over a channel for consumers. If it handled connection or disconnection events incorrectly,
+ * clients would receive stale service references or fail to detect disconnections.
+ */
 class ShuttleServiceConnectionTests {
 
     private fun createConfig(
@@ -66,8 +73,10 @@ class ShuttleServiceConnectionTests {
 
         connection.onServiceDisconnected(componentName)
 
-        assertNull(connection.localService)
-        assertNull(connection.ipcServiceMessenger)
+        assertAll(
+            { assertNull(connection.localService) },
+            { assertNull(connection.ipcServiceMessenger) }
+        )
     }
 
     @Test

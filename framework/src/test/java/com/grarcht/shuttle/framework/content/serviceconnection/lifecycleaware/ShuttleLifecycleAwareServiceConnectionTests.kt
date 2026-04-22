@@ -17,6 +17,12 @@ import org.mockito.kotlin.whenever
 
 private const val SERVICE_NAME = "TestService"
 
+/**
+ * Verifies the functionality of [ShuttleLifecycleAwareServiceConnection]. This connection
+ * automatically binds to a ShuttleService when the owning lifecycle starts and unbinds when it
+ * stops, preventing memory leaks and dangling service connections. If it did not respond
+ * correctly to lifecycle events, services would remain connected after destruction.
+ */
 class ShuttleLifecycleAwareServiceConnectionTests {
 
     private fun createConnection(

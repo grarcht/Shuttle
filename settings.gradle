@@ -19,6 +19,7 @@ dependencyResolutionManagement {
 }
 
 include ':framework'
+include ':framework-annotations'
 
 // Demo Modules
 include ':demos-core-lib'

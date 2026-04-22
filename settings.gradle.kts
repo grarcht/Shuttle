@@ -15,6 +15,7 @@ dependencyResolutionManagement {
     }
 }
 
+include(":framework-annotations")
 include(":framework")
 include(":solution-builder")
 

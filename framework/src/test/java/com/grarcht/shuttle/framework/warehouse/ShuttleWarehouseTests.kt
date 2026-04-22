@@ -35,6 +35,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertAll
 import org.mockito.Mockito
 import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
@@ -49,6 +50,12 @@ private const val CARGO_FILE_PATH = "/cargo"
 private const val STORE_CARGO_FAILURE = -1L
 private const val STORE_CARGO_SUCCESS = 1L
 
+/**
+ * Verifies the functionality of [ShuttleWarehouse]. ShuttleWarehouse is the persistent storage
+ * layer that stores, retrieves, and removes Serializable cargo on behalf of the Shuttle
+ * framework. Without it, large payloads could not be safely handed off between screens and all
+ * transport and pickup operations would fail.
+ */
 @ExperimentalCoroutinesApi
 @Suppress("LargeClass") // It's okay for this class.  There are just different test cases.
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -553,8 +560,10 @@ class ShuttleWarehouseTests {
         compositeDisposableHandle?.add(disposableHandle)
 
         delay(1000L)
-        Assertions.assertEquals(2, successfulStepsMet)
-        Assertions.assertEquals(cargoId, removedCargoId)
+        assertAll(
+            { Assertions.assertEquals(2, successfulStepsMet) },
+            { Assertions.assertEquals(cargoId, removedCargoId) }
+        )
     }
 
     @Test
@@ -623,8 +632,10 @@ class ShuttleWarehouseTests {
         compositeDisposableHandle?.add(disposableHandle)
 
         delay(1000L)
-        Assertions.assertEquals(2, failureStepsMet)
-        Assertions.assertEquals("", removedCargoId)
+        assertAll(
+            { Assertions.assertEquals(2, failureStepsMet) },
+            { Assertions.assertEquals("", removedCargoId) }
+        )
     }
 
     @Test
@@ -687,8 +698,10 @@ class ShuttleWarehouseTests {
         }.addForDisposal(compositeDisposableHandle)
 
         delay(1000L)
-        Assertions.assertEquals(2, failureStepsMet)
-        Assertions.assertEquals("", removedCargoId)
+        assertAll(
+            { Assertions.assertEquals(2, failureStepsMet) },
+            { Assertions.assertEquals("", removedCargoId) }
+        )
     }
 
     @Test
@@ -755,8 +768,10 @@ class ShuttleWarehouseTests {
         }.addForDisposal(compositeDisposableHandle)
 
         awaitOnLatch(countDownLatch, 1L, TimeUnit.SECONDS)
-        Assertions.assertEquals(2, failureStepsMet)
-        Assertions.assertEquals("", removedCargoId)
+        assertAll(
+            { Assertions.assertEquals(2, failureStepsMet) },
+            { Assertions.assertEquals("", removedCargoId) }
+        )
     }
 
     @Test
@@ -823,8 +838,10 @@ class ShuttleWarehouseTests {
         }.addForDisposal(compositeDisposableHandle)
 
         awaitOnLatch(countDownLatch, 3L, TimeUnit.SECONDS)
-        Assertions.assertEquals(2, successfulStepsMet)
-        Assertions.assertEquals(ShuttleRemoveCargoResult.ALL_CARGO, removedCargoId)
+        assertAll(
+            { Assertions.assertEquals(2, successfulStepsMet) },
+            { Assertions.assertEquals(ShuttleRemoveCargoResult.ALL_CARGO, removedCargoId) }
+        )
     }
 
     @Test
@@ -891,8 +908,10 @@ class ShuttleWarehouseTests {
         }.addForDisposal(compositeDisposableHandle)
 
         awaitOnLatch(countDownLatch, 3L, TimeUnit.SECONDS)
-        Assertions.assertEquals(2, successfulStepsMet)
-        Assertions.assertEquals("", removedCargoId)
+        assertAll(
+            { Assertions.assertEquals(2, successfulStepsMet) },
+            { Assertions.assertEquals("", removedCargoId) }
+        )
     }
 
     @Test
@@ -959,8 +978,10 @@ class ShuttleWarehouseTests {
         }.addForDisposal(compositeDisposableHandle)
 
         awaitOnLatch(countDownLatch, 3L, TimeUnit.SECONDS)
-        Assertions.assertEquals(2, successfulStepsMet)
-        Assertions.assertEquals("", removedCargoId)
+        assertAll(
+            { Assertions.assertEquals(2, successfulStepsMet) },
+            { Assertions.assertEquals("", removedCargoId) }
+        )
     }
 
     @Test
@@ -1027,8 +1048,10 @@ class ShuttleWarehouseTests {
         }.addForDisposal(compositeDisposableHandle)
 
         awaitOnLatch(countDownLatch, 3L, TimeUnit.SECONDS)
-        Assertions.assertEquals(2, failureStepsMet)
-        Assertions.assertEquals("", removedCargoId)
+        assertAll(
+            { Assertions.assertEquals(2, failureStepsMet) },
+            { Assertions.assertEquals("", removedCargoId) }
+        )
     }
 
     @Test

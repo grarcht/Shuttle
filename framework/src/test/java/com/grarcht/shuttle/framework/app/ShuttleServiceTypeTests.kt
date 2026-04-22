@@ -3,7 +3,15 @@ package com.grarcht.shuttle.framework.app
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 
+/**
+ * Verifies the functionality of [ShuttleServiceType]. ShuttleServiceType is the enum that
+ * classifies a service as AIDL-bound, locally-bound, messenger-bound, or non-bound started,
+ * and its extension functions drive branching logic throughout the service lifecycle. If any
+ * classification returned an incorrect result, the wrong binding strategy would be applied and
+ * the service would not initialise properly.
+ */
 class ShuttleServiceTypeTests {
 
     @Test
@@ -33,9 +41,11 @@ class ShuttleServiceTypeTests {
 
     @Test
     fun verifyIsAIDLBoundServiceReturnsFalseForOtherTypes() {
-        assertFalse(ShuttleServiceType.BOUND_LOCAL.isAIDLBoundService())
-        assertFalse(ShuttleServiceType.BOUND_MESSENGER.isAIDLBoundService())
-        assertFalse(ShuttleServiceType.NON_BOUND_STARTED.isAIDLBoundService())
+        assertAll(
+            { assertFalse(ShuttleServiceType.BOUND_LOCAL.isAIDLBoundService()) },
+            { assertFalse(ShuttleServiceType.BOUND_MESSENGER.isAIDLBoundService()) },
+            { assertFalse(ShuttleServiceType.NON_BOUND_STARTED.isAIDLBoundService()) }
+        )
     }
 
     @Test
@@ -45,9 +55,11 @@ class ShuttleServiceTypeTests {
 
     @Test
     fun verifyIsLocalBoundServiceReturnsFalseForOtherTypes() {
-        assertFalse(ShuttleServiceType.BOUND_AIDL.isLocalBoundService())
-        assertFalse(ShuttleServiceType.BOUND_MESSENGER.isLocalBoundService())
-        assertFalse(ShuttleServiceType.NON_BOUND_STARTED.isLocalBoundService())
+        assertAll(
+            { assertFalse(ShuttleServiceType.BOUND_AIDL.isLocalBoundService()) },
+            { assertFalse(ShuttleServiceType.BOUND_MESSENGER.isLocalBoundService()) },
+            { assertFalse(ShuttleServiceType.NON_BOUND_STARTED.isLocalBoundService()) }
+        )
     }
 
     @Test
@@ -57,9 +69,11 @@ class ShuttleServiceTypeTests {
 
     @Test
     fun verifyIsMessengerBoundServiceReturnsFalseForOtherTypes() {
-        assertFalse(ShuttleServiceType.BOUND_AIDL.isMessengerBoundService())
-        assertFalse(ShuttleServiceType.BOUND_LOCAL.isMessengerBoundService())
-        assertFalse(ShuttleServiceType.NON_BOUND_STARTED.isMessengerBoundService())
+        assertAll(
+            { assertFalse(ShuttleServiceType.BOUND_AIDL.isMessengerBoundService()) },
+            { assertFalse(ShuttleServiceType.BOUND_LOCAL.isMessengerBoundService()) },
+            { assertFalse(ShuttleServiceType.NON_BOUND_STARTED.isMessengerBoundService()) }
+        )
     }
 
     @Test
@@ -69,8 +83,10 @@ class ShuttleServiceTypeTests {
 
     @Test
     fun verifyIsNonBoundServiceReturnsFalseForOtherTypes() {
-        assertFalse(ShuttleServiceType.BOUND_AIDL.isNonBoundService())
-        assertFalse(ShuttleServiceType.BOUND_LOCAL.isNonBoundService())
-        assertFalse(ShuttleServiceType.BOUND_MESSENGER.isNonBoundService())
+        assertAll(
+            { assertFalse(ShuttleServiceType.BOUND_AIDL.isNonBoundService()) },
+            { assertFalse(ShuttleServiceType.BOUND_LOCAL.isNonBoundService()) },
+            { assertFalse(ShuttleServiceType.BOUND_MESSENGER.isNonBoundService()) }
+        )
     }
 }

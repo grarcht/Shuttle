@@ -9,4 +9,4 @@ package com.grarcht.shuttle.framework
  */
 @Retention(AnnotationRetention.BINARY)
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.CLASS)
-internal annotation class ExcludeFromCoverage
+annotation class ExcludeFromCoverage

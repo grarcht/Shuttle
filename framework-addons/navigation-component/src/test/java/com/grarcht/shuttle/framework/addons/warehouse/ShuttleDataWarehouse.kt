@@ -7,6 +7,11 @@ import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
 import kotlinx.coroutines.channels.Channel
 import java.io.Serializable
 
+/**
+ * An in-memory [ShuttleWarehouse] implementation used in tests to store, retrieve, and remove
+ * serializable cargo without any I/O, while also tracking the number of store and remove
+ * invocations for assertion purposes.
+ */
 @Suppress("UNCHECKED_CAST")
 open class ShuttleDataWarehouse : ShuttleWarehouse {
     var numberOfStoreInvocations: Int = 0

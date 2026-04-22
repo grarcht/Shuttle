@@ -88,6 +88,7 @@ dependencies {
     implementation(libs.android.lifecycle.extensions)
     implementation(libs.android.coreKtx)
     implementation(libs.android.annotationJvm)
+    api(project(":framework-annotations"))
     api(project(":framework-integrations-persistence"))
 
     androidTestImplementation(libs.testingDeps.junit.junit5AndroidTestCore)

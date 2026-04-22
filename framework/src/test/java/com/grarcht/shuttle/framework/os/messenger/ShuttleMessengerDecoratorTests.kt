@@ -20,6 +20,12 @@ import org.mockito.kotlin.whenever
 private const val SERVICE_NAME = "TestService"
 private const val CARGO_ID = "cargo_test_id"
 
+/**
+ * Verifies the functionality of [ShuttleMessengerDecorator]. ShuttleMessengerDecorator wraps an
+ * Android Messenger and Handler to route IPC messages from remote clients to the correct service
+ * receiver. If it failed, message-based IPC would not deliver cargo IDs to the service, breaking
+ * cross-process transport.
+ */
 class ShuttleMessengerDecoratorTests {
 
     private fun createDecorator(

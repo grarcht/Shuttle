@@ -18,7 +18,10 @@ private const val EXPECTED_DELETE_COUNT = 1
 private const val EXPECTED_DELETE_ALL_COUNT = 3
 
 /**
- * Verifies the [ShuttleRoomDao] delegation and branch behaviour.
+ * Verifies the functionality of [ShuttleRoomDao]. ShuttleRoomDao adapts the Room inner DAO to
+ * the framework's ShuttleDataAccessObject interface, delegating all CRUD operations while
+ * enforcing type safety for insert operations. Without it, the Room persistence integration would
+ * have no bridge between the framework's data-access contract and Room's generated DAO.
  */
 class ShuttleRoomDaoTest {
 

@@ -28,10 +28,15 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
+import com.grarcht.shuttle.framework.result.ShuttleStoreCargoResult
+import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
+import kotlinx.coroutines.CancellationException
 import org.mockito.Mockito.doNothing
 import org.mockito.Mockito.mock
 import java.util.concurrent.CountDownLatch
@@ -40,6 +45,12 @@ import java.util.concurrent.TimeUnit
 private const val ACTION_ID = 5000
 private val ARGUMENTS = Bundle()
 
+/**
+ * Verifies the functionality of [ShuttleNavController]. ShuttleNavController is the Navigation
+ * Component adapter that packages cargo transport and Jetpack Navigation into a single fluent
+ * API, storing payloads in the warehouse before triggering the navigation action. Without it,
+ * Navigation-driven screens would have no way to pass large data objects to their destinations.
+ */
 @ExperimentalCoroutinesApi
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(ArchtTestTaskExecutorExtension::class)
@@ -130,8 +141,10 @@ class ShuttleNavControllerTests {
         delay(1000L)
         advanceUntilIdle()
 
-        Assertions.assertEquals(cargoId, storeId)
-        Assertions.assertEquals(2, numberOfValidSteps)
+        assertAll(
+            { Assertions.assertEquals(cargoId, storeId) },
+            { Assertions.assertEquals(2, numberOfValidSteps) }
+        )
         cargoShuttle.cleanShuttleFromAllDeliveries()
     }
 
@@ -196,8 +209,242 @@ class ShuttleNavControllerTests {
 
         awaitOnLatch(countDownLatch, 1, TimeUnit.SECONDS)
 
-        Assertions.assertEquals(cargoId, storeId)
-        Assertions.assertEquals(2, numberOfValidSteps)
+        assertAll(
+            { Assertions.assertEquals(cargoId, storeId) },
+            { Assertions.assertEquals(2, numberOfValidSteps) }
+        )
+    }
+
+    @Test
+    fun verifyLogTagSetsTag() {
+        val shuttleFacade = mock(ShuttleFacade::class.java)
+        val shuttleWarehouse = ShuttleDataWarehouse()
+        val controller = ShuttleNavController.navigateWith(
+            shuttleWarehouse,
+            shuttleFacade,
+            navController,
+            resId = androidx.navigation.fragment.R.id.nav_host_fragment_container,
+            bundleFactory = MockBundleFactory(),
+            backgroundThreadDispatcher = Dispatchers.Unconfined,
+            mainThreadDispatcher = Dispatchers.Unconfined
+        )
+        val result = controller.logTag("TestTag")
+        Assertions.assertSame(controller, result)
+    }
+
+    @Test
+    fun verifyLogTagWithNullUsesDefault() {
+        val shuttleFacade = mock(ShuttleFacade::class.java)
+        val shuttleWarehouse = ShuttleDataWarehouse()
+        val controller = ShuttleNavController.navigateWith(
+            shuttleWarehouse,
+            shuttleFacade,
+            navController,
+            resId = androidx.navigation.fragment.R.id.nav_host_fragment_container,
+            bundleFactory = MockBundleFactory(),
+            backgroundThreadDispatcher = Dispatchers.Unconfined,
+            mainThreadDispatcher = Dispatchers.Unconfined
+        )
+        val result = controller.logTag(null)
+        Assertions.assertSame(controller, result)
+    }
+
+    @Test
+    fun verifyDeliverWithNullStoreJobSkipsInvokeOnCompletion() {
+        val shuttleFacade = mock(ShuttleFacade::class.java)
+        val shuttleWarehouse = ShuttleDataWarehouse()
+        val controller = ShuttleNavController.navigateWith(
+            shuttleWarehouse,
+            shuttleFacade,
+            navController,
+            resId = androidx.navigation.fragment.R.id.nav_host_fragment_container,
+            bundleFactory = MockBundleFactory(),
+            backgroundThreadDispatcher = Dispatchers.Unconfined,
+            mainThreadDispatcher = Dispatchers.Unconfined
+        )
+        // transport with null serializable: puts parcelable in bundle (so bundle is non-empty),
+        // but storeCargoJob remains null. deliver() should skip invokeOnCompletion.
+        controller.transport("cargoNullSerial", null).deliver()
+    }
+
+    @Test
+    fun verifyTransportWithNullSerializableDoesNotLaunchStoreJob() {
+        val shuttleFacade = mock(ShuttleFacade::class.java)
+        val shuttleWarehouse = ShuttleDataWarehouse()
+        val controller = ShuttleNavController.navigateWith(
+            shuttleWarehouse,
+            shuttleFacade,
+            navController,
+            resId = androidx.navigation.fragment.R.id.nav_host_fragment_container,
+            bundleFactory = MockBundleFactory(),
+            backgroundThreadDispatcher = Dispatchers.Unconfined,
+            mainThreadDispatcher = Dispatchers.Unconfined
+        )
+        val result = controller.transport("cargoNull", null)
+        Assertions.assertSame(controller, result)
+    }
+
+    @Test
+    fun verifyCleanShuttleOnReturnTo() {
+        val shuttleFacade = mock(ShuttleFacade::class.java)
+        val shuttleWarehouse = ShuttleDataWarehouse()
+        val controller = ShuttleNavController.navigateWith(
+            shuttleWarehouse,
+            shuttleFacade,
+            navController,
+            resId = androidx.navigation.fragment.R.id.nav_host_fragment_container,
+            bundleFactory = MockBundleFactory(),
+            backgroundThreadDispatcher = Dispatchers.Unconfined,
+            mainThreadDispatcher = Dispatchers.Unconfined
+        )
+        val result = controller.cleanShuttleOnReturnTo(
+            ShuttleNavControllerTests::class.java,
+            ShuttleNavControllerTests::class.java,
+            "cargoId"
+        )
+        Assertions.assertSame(controller, result)
+    }
+
+    @Test
+    fun verifyDeliverWithNullBundleLogsWarningAndSkipsNavigation() {
+        val shuttleFacade = mock(ShuttleFacade::class.java)
+        val shuttleWarehouse = ShuttleDataWarehouse()
+        val controller = ShuttleNavController(
+            shuttleWarehouse = shuttleWarehouse,
+            shuttleScreenFacade = shuttleFacade,
+            navController = navController,
+            internalBundle = null,
+            backgroundThreadDispatcher = Dispatchers.Unconfined,
+            mainThreadDispatcher = Dispatchers.Unconfined
+        )
+        // In DEBUG builds, deliver() throws when internalBundle is null; covers internalBundle?.isEmpty ?: true null branch
+        assertThrows<IllegalStateException> {
+            controller.deliver()
+        }
+    }
+
+    @Test
+    fun verifyDeliverWithNullBundleAfterTransportCoversNullBundleBranch() {
+        val shuttleFacade = mock(ShuttleFacade::class.java)
+        val shuttleWarehouse = ShuttleDataWarehouse()
+        val directions = TestNavDirections()
+        val controller = ShuttleNavController(
+            shuttleWarehouse = shuttleWarehouse,
+            shuttleScreenFacade = shuttleFacade,
+            navController = navController,
+            navDirections = directions,
+            internalBundle = null,
+            backgroundThreadDispatcher = Dispatchers.Unconfined,
+            mainThreadDispatcher = Dispatchers.Unconfined
+        )
+        val cargoId = "cargoNullBundle"
+        controller.transport(cargoId, Cargo(cargoId, 1))
+        // In DEBUG builds, deliver() throws when internalBundle is null; covers internalBundle?.isEmpty ?: true null branch
+        assertThrows<IllegalStateException> {
+            controller.deliver()
+        }
+    }
+
+    @Test
+    fun verifyNavigateWithNavDirectionsAndNavOptions() = testScope.runTest {
+        val cargoId = "cargoNavOptions"
+        val cargo = Cargo(cargoId, 10)
+        val directions = TestNavDirections()
+        val shuttleFacade = mock(ShuttleFacade::class.java)
+        val shuttleWarehouse = ShuttleDataWarehouse()
+        val navOptions = androidx.navigation.NavOptions.Builder().build()
+
+        val controller = ShuttleNavController.navigateWith(
+            shuttleWarehouse,
+            shuttleFacade,
+            navController,
+            navDirections = directions,
+            navOptions = navOptions,
+            bundleFactory = MockBundleFactory(),
+            backgroundThreadDispatcher = Dispatchers.Unconfined,
+            mainThreadDispatcher = Dispatchers.Unconfined
+        )
+        controller.transport(cargoId, cargo).deliver()
+        advanceUntilIdle()
+    }
+
+    @Test
+    fun verifyNavigateWithNavDirectionsAndNavigatorExtras() = testScope.runTest {
+        val cargoId = "cargoNavExtras"
+        val cargo = Cargo(cargoId, 20)
+        val directions = TestNavDirections()
+        val shuttleFacade = mock(ShuttleFacade::class.java)
+        val shuttleWarehouse = ShuttleDataWarehouse()
+        val navigatorExtras = mock(androidx.navigation.Navigator.Extras::class.java)
+
+        val controller = ShuttleNavController.navigateWith(
+            shuttleWarehouse,
+            shuttleFacade,
+            navController,
+            navDirections = directions,
+            navigatorExtras = navigatorExtras,
+            bundleFactory = MockBundleFactory(),
+            backgroundThreadDispatcher = Dispatchers.Unconfined,
+            mainThreadDispatcher = Dispatchers.Unconfined
+        )
+        controller.transport(cargoId, cargo).deliver()
+        advanceUntilIdle()
+    }
+
+    @Test
+    fun verifyNavigateWithNoDirectionsAndNoResId() = testScope.runTest {
+        val cargoId = "cargoNoNav"
+        val cargo = Cargo(cargoId, 30)
+        val shuttleFacade = mock(ShuttleFacade::class.java)
+        val shuttleWarehouse = ShuttleDataWarehouse()
+        val bundle = MockBundleFactory().create()
+
+        val controller = ShuttleNavController(
+            shuttleWarehouse = shuttleWarehouse,
+            shuttleScreenFacade = shuttleFacade,
+            navController = navController,
+            navDirections = null,
+            resId = null,
+            internalBundle = bundle,
+            backgroundThreadDispatcher = Dispatchers.Unconfined,
+            mainThreadDispatcher = Dispatchers.Unconfined
+        )
+        controller.transport(cargoId, cargo).deliver()
+        advanceUntilIdle()
+    }
+
+    @Test
+    fun verifyDeliverWithErrorInStoreLogsError() {
+        val shuttleFacade = mock(ShuttleFacade::class.java)
+        val warehouse = CancellationThrowingWarehouse()
+        val bundle = MockBundleFactory().create()
+        val cargoId = "cargoError"
+        val cargo = Cargo(cargoId, 40)
+
+        val controller = ShuttleNavController(
+            shuttleWarehouse = warehouse,
+            shuttleScreenFacade = shuttleFacade,
+            navController = navController,
+            internalBundle = bundle,
+            backgroundThreadDispatcher = Dispatchers.Unconfined,
+            mainThreadDispatcher = Dispatchers.Unconfined
+        )
+        controller.transport(cargoId, cargo).deliver()
+    }
+
+    @Test
+    fun verifyDefaultConstructorDispatchers() {
+        val shuttleFacade = mock(ShuttleFacade::class.java)
+        val shuttleWarehouse = ShuttleDataWarehouse()
+        val bundle = MockBundleFactory().create()
+        // Constructs using default backgroundThreadDispatcher and mainThreadDispatcher
+        val controller = ShuttleNavController(
+            shuttleWarehouse = shuttleWarehouse,
+            shuttleScreenFacade = shuttleFacade,
+            navController = navController,
+            internalBundle = bundle
+        )
+        Assertions.assertNotNull(controller)
     }
 
     @Suppress("SameParameterValue")
@@ -210,4 +457,22 @@ class ShuttleNavControllerTests {
         override val actionId: Int = ACTION_ID,
         override val arguments: Bundle = ARGUMENTS
     ) : NavDirections
+
+    private class CancellationThrowingWarehouse : ShuttleWarehouse {
+        override suspend fun <D : java.io.Serializable> pickup(cargoId: String): kotlinx.coroutines.channels.Channel<ShuttlePickupCargoResult> {
+            throw CancellationException("pickup not supported")
+        }
+
+        override suspend fun <D : java.io.Serializable> store(cargoId: String, data: D?): kotlinx.coroutines.channels.Channel<ShuttleStoreCargoResult> {
+            throw CancellationException("Simulated cancellation during store")
+        }
+
+        override suspend fun removeCargoBy(cargoId: String): kotlinx.coroutines.channels.Channel<com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult> {
+            throw CancellationException("removeCargoBy not supported")
+        }
+
+        override suspend fun removeAllCargo(): kotlinx.coroutines.channels.Channel<com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult> {
+            throw CancellationException("removeAllCargo not supported")
+        }
+    }
 }

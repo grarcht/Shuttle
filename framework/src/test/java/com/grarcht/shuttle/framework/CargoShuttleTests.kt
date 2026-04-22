@@ -38,6 +38,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito
@@ -58,6 +59,12 @@ private const val NO_CARGO = "no cargo"
 private const val INVOCATION_ERROR_MSG = "Error when getting the serializable."
 private const val TRANSPORT_DELAY_MS = 1000L
 
+/**
+ * Verifies the functionality of [CargoShuttle]. CargoShuttle is the central implementation of the
+ * Shuttle interface, responsible for transporting large Serializable payloads between screens via
+ * the warehouse rather than through Intent extras. Without it, the entire cargo transport,
+ * pickup, and cleanup pipeline would be broken.
+ */
 @ExperimentalCoroutinesApi
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(ArchtTestTaskExecutorExtension::class)
@@ -405,8 +412,10 @@ class CargoShuttleTests {
 
         awaitOnLatch(countDownLatch, 1, TimeUnit.SECONDS)
 
-        Assertions.assertEquals(NO_CARGO, storeId)
-        Assertions.assertEquals(2, numberOfValidSteps)
+        assertAll(
+            { Assertions.assertEquals(NO_CARGO, storeId) },
+            { Assertions.assertEquals(2, numberOfValidSteps) }
+        )
     }
 
     // This suppression is okay.  This test requires more functionality.
@@ -512,8 +521,10 @@ class CargoShuttleTests {
 
         awaitOnLatch(countDownLatch, 1, TimeUnit.SECONDS)
 
-        Assertions.assertEquals(NO_CARGO, storeId)
-        Assertions.assertEquals(2, numberOfValidSteps)
+        assertAll(
+            { Assertions.assertEquals(NO_CARGO, storeId) },
+            { Assertions.assertEquals(2, numberOfValidSteps) }
+        )
     }
 
     private fun runHandler(handler: Handler) {

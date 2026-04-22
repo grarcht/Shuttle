@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import org.mockito.Mockito
 import org.mockito.kotlin.any
 import org.mockito.kotlin.anyOrNull
@@ -25,6 +26,12 @@ private const val CARGO_ID = "cargoId"
 private const val CARGO_ID_1 = "cargoId1"
 private const val CARGO_DATA = "cargo"
 
+/**
+ * Verifies the functionality of [ShuttleService]. ShuttleService is the Android Service base
+ * class that underpins both local-bound and IPC messenger-bound service configurations in the
+ * Shuttle framework. Without correct binding, unbinding, and resource-release behaviour, client
+ * components would fail to communicate with the service or leak resources.
+ */
 class ShuttleServiceTests {
 
     private fun createService(bindingType: ShuttleServiceType): TestShuttleService {
@@ -122,8 +129,10 @@ class ShuttleServiceTests {
 
         service.releaseResourcesForIPCServices()
 
-        assertNull(service.ipcServiceMessengerDecorator)
-        assertNull(service.binder)
+        assertAll(
+            { assertNull(service.ipcServiceMessengerDecorator) },
+            { assertNull(service.binder) }
+        )
     }
 
     @Test
@@ -255,8 +264,10 @@ class ShuttleServiceTests {
 
         val result = service.createMessengerDecoratorForIPC()
 
-        assertNull(result)
-        assertNull(service.ipcServiceMessengerDecorator)
+        assertAll(
+            { assertNull(result) },
+            { assertNull(service.ipcServiceMessengerDecorator) }
+        )
     }
 
     @Test

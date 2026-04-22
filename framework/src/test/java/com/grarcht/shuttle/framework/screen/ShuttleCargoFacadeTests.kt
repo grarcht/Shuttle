@@ -25,6 +25,12 @@ import java.io.Serializable
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
+/**
+ * Verifies the functionality of [ShuttleCargoFacade]. ShuttleCargoFacade coordinates the
+ * automatic removal of cargo from the warehouse when the user navigates back to the originating
+ * screen. Without it, cargo would accumulate in the warehouse indefinitely and memory or storage
+ * resources would not be reclaimed after delivery.
+ */
 @ExperimentalCoroutinesApi
 @ExtendWith(ArchtTestTaskExecutorExtension::class)
 class ShuttleCargoFacadeTests {

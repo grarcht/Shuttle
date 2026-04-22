@@ -5,6 +5,12 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 
+/**
+ * Verifies the functionality of [ShuttleBinder]. ShuttleBinder is the IBinder implementation
+ * used by local bound services to expose the ShuttleService to connecting clients. If it did not
+ * correctly return the bound service, client components would be unable to obtain a reference to
+ * the service after binding.
+ */
 class ShuttleBinderTests {
 
     @Test

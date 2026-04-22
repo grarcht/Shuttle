@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
@@ -30,11 +31,10 @@ private class TestShuttleRoomDataDb(
 }
 
 /**
- * Verifies [ShuttleRoomDataDb] companion-object singleton behaviour and the
- * [ShuttleRoomDataDb.shuttleDataAccessObject] lazy property.
- *
- * Kotlin stores `@Volatile private var INSTANCE` (declared in a companion object) as a
- * private static field on the outer class, accessible via [Class.getDeclaredField].
+ * Verifies the functionality of [ShuttleRoomDataDb]. ShuttleRoomDataDb is the Room database
+ * class that provides the singleton database instance and exposes the ShuttleDataAccessObject
+ * used by the warehouse. Without correct singleton and lazy-property behaviour, multiple database
+ * instances could be created simultaneously, leading to data corruption or resource exhaustion.
  */
 class ShuttleRoomDataDbTest {
 
@@ -68,8 +68,10 @@ class ShuttleRoomDataDbTest {
 
         val result = ShuttleRoomDataDb.getInstance(config, mockFactory)
 
-        assertNotNull(result)
-        assertEquals(mockDb, result)
+        assertAll(
+            { assertNotNull(result) },
+            { assertEquals(mockDb, result) }
+        )
     }
 
     @Test
@@ -111,7 +113,9 @@ class ShuttleRoomDataDbTest {
 
         val accessObject: ShuttleDataAccessObject = db.shuttleDataAccessObject
 
-        assertNotNull(accessObject)
-        assertTrue(accessObject is ShuttleRoomDao)
+        assertAll(
+            { assertNotNull(accessObject) },
+            { assertTrue(accessObject is ShuttleRoomDao) }
+        )
     }
 }

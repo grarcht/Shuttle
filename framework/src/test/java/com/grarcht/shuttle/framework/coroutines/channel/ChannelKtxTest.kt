@@ -27,7 +27,10 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 /**
- * Tests for the [relayFlowIfAvailable] Channel extension function.
+ * Verifies the functionality of [relayFlowIfAvailable] and [closeQuietly] Channel extension
+ * functions. These extensions safely relay data between coroutine channels and close channels
+ * without propagating exceptions. If they did not handle closed-channel or cancellation scenarios
+ * correctly, cargo pickup flows would silently fail or leave channels in an inconsistent state.
  */
 @ExperimentalCoroutinesApi
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

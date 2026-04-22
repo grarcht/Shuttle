@@ -12,17 +12,26 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import org.mockito.kotlin.mock
 
 private const val SERVICE_NAME = "TestService"
 
+/**
+ * Verifies the functionality of [ShuttleConnectedServiceModel]. This model is the data container
+ * emitted over the service channel once a service connection is established, carrying either a
+ * local service reference or an IPC Messenger. If it did not correctly hold and expose these
+ * values, consumers of the service channel would receive incomplete connection data.
+ */
 class ShuttleConnectedServiceModelTests {
 
     @Test
     fun verifyShuttleConnectedServiceModelHoldsDefaultNullValues() {
         val model = ShuttleConnectedServiceModel<ShuttleService>()
-        assertNull(model.localService)
-        assertNull(model.ipcMessenger)
+        assertAll(
+            { assertNull(model.localService) },
+            { assertNull(model.ipcMessenger) }
+        )
     }
 
     @Test
@@ -31,8 +40,10 @@ class ShuttleConnectedServiceModelTests {
         val messenger = mock<Messenger>()
         val model = ShuttleConnectedServiceModel(service, messenger)
 
-        assertEquals(service, model.localService)
-        assertEquals(messenger, model.ipcMessenger)
+        assertAll(
+            { assertEquals(service, model.localService) },
+            { assertEquals(messenger, model.ipcMessenger) }
+        )
     }
 
     @Test
@@ -49,9 +60,11 @@ class ShuttleConnectedServiceModelTests {
             serviceChannel = channel
         )
 
-        assertNotNull(config)
-        assertEquals(SERVICE_NAME, config.serviceName)
-        assertEquals(false, config.useWithIPC)
+        assertAll(
+            { assertNotNull(config) },
+            { assertEquals(SERVICE_NAME, config.serviceName) },
+            { assertEquals(false, config.useWithIPC) }
+        )
     }
 
     @Test
@@ -73,8 +86,10 @@ class ShuttleConnectedServiceModelTests {
             serviceConnectionFactory = factory
         )
 
-        assertNotNull(config)
-        assertEquals(SERVICE_NAME, config.serviceName)
-        assertEquals(ShuttleService::class.java, config.serviceClazz)
+        assertAll(
+            { assertNotNull(config) },
+            { assertEquals(SERVICE_NAME, config.serviceName) },
+            { assertEquals(ShuttleService::class.java, config.serviceClazz) }
+        )
     }
 }

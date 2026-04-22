@@ -8,7 +8,10 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 /**
- * Verifies the [ShuttleRoomDbFactory] functionality.
+ * Verifies the functionality of [ShuttleRoomDbFactory]. ShuttleRoomDbFactory constructs the Room
+ * database instance that backs Shuttle's persistence layer, supporting both single-process and
+ * multi-process configurations. Without it, no database could be created and all cargo store and
+ * retrieval operations would fail at startup.
  */
 class ShuttleRoomDbFactoryTest {
     private val dbFactory = ShuttleRoomDbFactory()

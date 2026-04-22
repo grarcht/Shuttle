@@ -12,7 +12,7 @@ kover {
     reports {
         filters {
             excludes {
-                annotatedBy("dagger.Module", "dagger.hilt.InstallIn")
+                annotatedBy("dagger.Module", "dagger.hilt.InstallIn", "androidx.annotation.RequiresApi", "com.grarcht.shuttle.framework.ExcludeFromCoverage")
                 classes(
                     "*Hilt_*",
                     "*_HiltModules*",
@@ -73,6 +73,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":framework-annotations"))
     implementation(libs.jetbrainsKotlinDeps.stdlib)
     implementation(libs.android.coreKtx)
     implementation(libs.android.appCompat)

@@ -39,6 +39,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import org.junit.jupiter.api.TestInstance
 import org.mockito.MockedStatic
 import org.mockito.Mockito
@@ -48,6 +49,12 @@ import java.io.Serializable
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
+/**
+ * Verifies the functionality of [ShuttleIntent]. ShuttleIntent is the Intent-based entry point
+ * for transporting cargo, wrapping an Android Intent with the warehouse storage mechanism so that
+ * large payloads are offloaded before the Intent is delivered. If it did not correctly store and
+ * retrieve cargo, the Intent-driven navigation flow would silently lose data.
+ */
 @ExperimentalCoroutinesApi
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ShuttleIntentTests {
@@ -96,8 +103,10 @@ class ShuttleIntentTests {
             .intent(firstIntent)
         val intent = shuttleIntent.create()
 
-        Assertions.assertNotNull(shuttleIntent)
-        Assertions.assertNotNull(intent)
+        assertAll(
+            { Assertions.assertNotNull(shuttleIntent) },
+            { Assertions.assertNotNull(intent) }
+        )
     }
 
     @Test
@@ -108,8 +117,10 @@ class ShuttleIntentTests {
             .intent(Intent.ACTION_MEDIA_BUTTON)
         val intent = shuttleIntent.create()
 
-        Assertions.assertNotNull(shuttleIntent)
-        Assertions.assertNotNull(intent)
+        assertAll(
+            { Assertions.assertNotNull(shuttleIntent) },
+            { Assertions.assertNotNull(intent) }
+        )
     }
 
     @Test
@@ -121,8 +132,10 @@ class ShuttleIntentTests {
             .intent(Intent.ACTION_MEDIA_BUTTON, uri)
         val intent = shuttleIntent.create()
 
-        Assertions.assertNotNull(shuttleIntent)
-        Assertions.assertNotNull(intent)
+        assertAll(
+            { Assertions.assertNotNull(shuttleIntent) },
+            { Assertions.assertNotNull(intent) }
+        )
     }
 
     @Test
@@ -134,8 +147,10 @@ class ShuttleIntentTests {
             .intent(context, Fragment::class.java)
         val intent = shuttleIntent.create()
 
-        Assertions.assertNotNull(shuttleIntent)
-        Assertions.assertNotNull(intent)
+        assertAll(
+            { Assertions.assertNotNull(shuttleIntent) },
+            { Assertions.assertNotNull(intent) }
+        )
     }
 
     @Test
@@ -148,8 +163,10 @@ class ShuttleIntentTests {
             .intent(Intent.ACTION_MEDIA_BUTTON, uri, context, Fragment::class.java)
         val intent = shuttleIntent.create()
 
-        Assertions.assertNotNull(shuttleIntent)
-        Assertions.assertNotNull(intent)
+        assertAll(
+            { Assertions.assertNotNull(shuttleIntent) },
+            { Assertions.assertNotNull(intent) }
+        )
     }
 
     @Test
@@ -166,8 +183,10 @@ class ShuttleIntentTests {
             .intentChooser(intent, title)
         val resultIntent = shuttleIntent.create()
 
-        Assertions.assertNotNull(shuttleIntent)
-        Assertions.assertNotNull(resultIntent)
+        assertAll(
+            { Assertions.assertNotNull(shuttleIntent) },
+            { Assertions.assertNotNull(resultIntent) }
+        )
 
         intentFactory.close()
     }
@@ -187,8 +206,10 @@ class ShuttleIntentTests {
             .intentChooser(targetIntent, title, senderIntent)
         val intent = shuttleIntent.create()
 
-        Assertions.assertNotNull(shuttleIntent)
-        Assertions.assertNotNull(intent)
+        assertAll(
+            { Assertions.assertNotNull(shuttleIntent) },
+            { Assertions.assertNotNull(intent) }
+        )
 
         intentFactory.close()
     }
@@ -271,8 +292,10 @@ class ShuttleIntentTests {
 
         val result = shuttleIntent.logTag(null)
 
-        Assertions.assertNotNull(result)
-        Assertions.assertSame(shuttleIntent, result)
+        assertAll(
+            { Assertions.assertNotNull(result) },
+            { Assertions.assertSame(shuttleIntent, result) }
+        )
     }
 
     @Test
@@ -312,8 +335,10 @@ class ShuttleIntentTests {
 
         val result = shuttleIntent.logTag("CustomTag")
 
-        Assertions.assertNotNull(result)
-        Assertions.assertSame(shuttleIntent, result)
+        assertAll(
+            { Assertions.assertNotNull(result) },
+            { Assertions.assertSame(shuttleIntent, result) }
+        )
     }
 
     @Test

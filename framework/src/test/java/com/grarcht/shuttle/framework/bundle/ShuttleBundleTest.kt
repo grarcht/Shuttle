@@ -42,6 +42,12 @@ import java.io.Serializable
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
+/**
+ * Verifies the functionality of [ShuttleBundle]. ShuttleBundle wraps an Android Bundle and
+ * provides the mechanism to transport Serializable cargo through the warehouse, decoupling large
+ * payloads from the Bundle size limits. If it did not work correctly, cargo would either fail to
+ * be stored or could not be retrieved by the receiving screen.
+ */
 @ExperimentalCoroutinesApi
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ShuttleBundleTest {

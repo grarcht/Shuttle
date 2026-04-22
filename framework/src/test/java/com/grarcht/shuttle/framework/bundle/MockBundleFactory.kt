@@ -11,6 +11,11 @@ import org.mockito.Mockito
 import org.mockito.stubbing.Answer
 import java.io.Serializable
 
+/**
+ * A test factory that implements [BundleFactory] by producing Mockito-mocked [Bundle] instances
+ * backed by a plain [MutableMap], enabling bundle read/write operations in unit tests without
+ * requiring an Android runtime.
+ */
 class MockBundleFactory : BundleFactory {
     // Mockito.any() returns null, but Kotlin would add a null-check for concrete casts.
     // Using a generic function avoids that check via type erasure.

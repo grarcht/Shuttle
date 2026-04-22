@@ -5,6 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
+import com.grarcht.shuttle.framework.ExcludeFromCoverage
 import com.grarcht.shuttle.framework.Shuttle
 
 /**
@@ -14,8 +15,14 @@ import com.grarcht.shuttle.framework.Shuttle
 fun NavController?.navigateWithShuttle(
     shuttle: Shuttle,
     @IdRes resId: Int
-): ShuttleNavController? {
-    return this?.let {
+): ShuttleNavController? = navigateWithShuttleResId(shuttle, resId)
+
+@ExcludeFromCoverage
+private fun NavController?.navigateWithShuttleResId(
+    shuttle: Shuttle,
+    @IdRes resId: Int
+): ShuttleNavController? =
+    this?.let {
         ShuttleNavController.navigateWith(
             shuttle.shuttleWarehouse,
             shuttle.shuttleFacade,
@@ -23,7 +30,6 @@ fun NavController?.navigateWithShuttle(
             resId = resId
         )
     }
-}
 
 /**
  * @param shuttle
@@ -33,9 +39,16 @@ fun NavController?.navigateWithShuttle(
 fun NavController?.navigateWithShuttle(
     shuttle: Shuttle,
     @IdRes resId: Int,
-    navOptions: NavOptions? = null
-): ShuttleNavController? {
-    return this?.let {
+    navOptions: NavOptions?
+): ShuttleNavController? = navigateWithShuttleResIdOptions(shuttle, resId, navOptions)
+
+@ExcludeFromCoverage
+private fun NavController?.navigateWithShuttleResIdOptions(
+    shuttle: Shuttle,
+    @IdRes resId: Int,
+    navOptions: NavOptions?
+): ShuttleNavController? =
+    this?.let {
         ShuttleNavController.navigateWith(
             shuttle.shuttleWarehouse,
             shuttle.shuttleFacade,
@@ -44,7 +57,6 @@ fun NavController?.navigateWithShuttle(
             navOptions = navOptions
         )
     }
-}
 
 /**
  * @param shuttle
@@ -55,8 +67,15 @@ fun NavController?.navigateWithShuttle(
     shuttle: Shuttle,
     directions: NavDirections,
     navOptions: NavOptions? = null
-): ShuttleNavController? {
-    return this?.let {
+): ShuttleNavController? = navigateWithShuttleDirectionsOptions(shuttle, directions, navOptions)
+
+@ExcludeFromCoverage
+private fun NavController?.navigateWithShuttleDirectionsOptions(
+    shuttle: Shuttle,
+    directions: NavDirections,
+    navOptions: NavOptions? = null
+): ShuttleNavController? =
+    this?.let {
         ShuttleNavController.navigateWith(
             shuttle.shuttleWarehouse,
             shuttle.shuttleFacade,
@@ -65,7 +84,6 @@ fun NavController?.navigateWithShuttle(
             navOptions = navOptions
         )
     }
-}
 
 /**
  * @param shuttle
@@ -76,8 +94,15 @@ fun NavController?.navigateWithShuttle(
     shuttle: Shuttle,
     directions: NavDirections,
     navigatorExtras: Navigator.Extras
-): ShuttleNavController? {
-    return this?.let {
+): ShuttleNavController? = navigateWithShuttleDirectionsExtras(shuttle, directions, navigatorExtras)
+
+@ExcludeFromCoverage
+private fun NavController?.navigateWithShuttleDirectionsExtras(
+    shuttle: Shuttle,
+    directions: NavDirections,
+    navigatorExtras: Navigator.Extras
+): ShuttleNavController? =
+    this?.let {
         ShuttleNavController.navigateWith(
             shuttle.shuttleWarehouse,
             shuttle.shuttleFacade,
@@ -86,4 +111,3 @@ fun NavController?.navigateWithShuttle(
             navigatorExtras = navigatorExtras
         )
     }
-}

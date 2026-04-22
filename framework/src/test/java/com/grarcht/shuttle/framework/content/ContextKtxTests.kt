@@ -11,6 +11,12 @@ import org.mockito.kotlin.whenever
 
 private const val LOG_TAG = "ContextKtxTest"
 
+/**
+ * Verifies the functionality of [registerReceiverQuietly] and [unregisterReceiverQuietly] Context
+ * extension functions. These extensions safely register and unregister BroadcastReceivers without
+ * throwing exceptions on null contexts or illegal states. If they did not handle edge cases
+ * correctly, service-related receiver management would cause crashes in components that use them.
+ */
 class ContextKtxTests {
 
     @Test

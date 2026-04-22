@@ -13,11 +13,18 @@ import kotlinx.coroutines.test.TestScope
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 private const val SERVICE_NAME = "TestService"
 
+/**
+ * Verifies the functionality of [ShuttleServiceConnectionTypesFactory]. This factory is the
+ * central point for creating both standard and lifecycle-aware service connections and their
+ * configurations. Without it, components that need to bind to a ShuttleService would have no
+ * standardised way to construct the appropriate connection type.
+ */
 class ShuttleServiceConnectionTypesFactoryTests {
 
     private val factory = ShuttleServiceConnectionTypesFactory()
@@ -167,7 +174,9 @@ class ShuttleServiceConnectionTypesFactoryTests {
                 serviceChannel = channel
             )
 
-        assertNotNull(connection)
-        assertTrue(connection is ShuttleLifecycleAwareServiceConnection)
+        assertAll(
+            { assertNotNull(connection) },
+            { assertTrue(connection is ShuttleLifecycleAwareServiceConnection) }
+        )
     }
 }

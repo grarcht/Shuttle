@@ -6,6 +6,12 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 
+/**
+ * Verifies the functionality of [DefaultBundleFactory]. DefaultBundleFactory is the standard
+ * factory for creating Android Bundle instances in the Shuttle framework. If any of its creation
+ * overloads fail, ShuttleBundle and other components that rely on bundle creation would be unable
+ * to initialise correctly.
+ */
 class DefaultBundleFactoryTests {
 
     @Test

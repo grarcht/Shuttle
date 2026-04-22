@@ -13,6 +13,12 @@ import java.io.File
 private const val DIRECTORY_NAME = "testDir"
 private const val FILE_NAME = "testFile"
 
+/**
+ * Verifies the functionality of [ShuttlePersistenceFileFactory]. ShuttlePersistenceFileFactory
+ * creates the files on disk used to persist cargo payloads between screens. If file creation
+ * failed or exceptions were not handled, the persistence layer would be unable to write cargo and
+ * all store operations would silently fail.
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ShuttlePersistenceFileFactoryTests {
     private var file: File? = null

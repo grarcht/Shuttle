@@ -16,6 +16,12 @@ import kotlin.coroutines.EmptyCoroutineContext
 
 private const val SCOPE_CONTEXT = "test context"
 
+/**
+ * Verifies the functionality of [cancelScopeQuietly]. This extension function safely cancels a
+ * CoroutineScope and reports any errors through the visibility observable, preventing unhandled
+ * exceptions from propagating. If it behaved incorrectly, coroutine scopes could leak or errors
+ * could go unreported during shutdown paths.
+ */
 class ScopesKtxTests {
 
     @Test

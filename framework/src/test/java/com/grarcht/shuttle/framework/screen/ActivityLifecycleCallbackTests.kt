@@ -7,6 +7,12 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 
+/**
+ * Verifies the functionality of [ActivityLifecycleCallback]. ActivityLifecycleCallback is the
+ * abstract base class that bridges Android's Application.ActivityLifecycleCallbacks to a
+ * single-argument onActivityCreated callback, following the Law of Demeter. If its delegation
+ * logic were broken, screens would not register correctly for cargo cleanup on back-press events.
+ */
 class ActivityLifecycleCallbackTests {
 
     @Test

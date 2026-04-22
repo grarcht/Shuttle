@@ -8,6 +8,7 @@ import kotlinx.coroutines.test.TestScope
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertSame
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
@@ -15,6 +16,13 @@ import org.mockito.kotlin.verify
 private const val CONTEXT = "TestContext"
 private const val INFO_MESSAGE = "Info"
 
+/**
+ * Verifies the functionality of [ShuttleChannelVisibilityObservable]. This observable manages a
+ * collection of channels through which visibility events (errors and informational messages) are
+ * reported to registered observers. If it failed to forward observations or handle concurrent
+ * modification safely, diagnostic events would be lost and the system would provide no feedback
+ * on internal errors.
+ */
 class ShuttleChannelVisibilityObservableTests {
 
     @Test
@@ -26,8 +34,10 @@ class ShuttleChannelVisibilityObservableTests {
 
         val result = observable.add(channel)
 
-        assertNotNull(result)
-        assertSame(observable, result)
+        assertAll(
+            { assertNotNull(result) },
+            { assertSame(observable, result) }
+        )
     }
 
     @Test

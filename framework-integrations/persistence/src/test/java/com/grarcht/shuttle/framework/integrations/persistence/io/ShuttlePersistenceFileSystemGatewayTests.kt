@@ -30,6 +30,12 @@ private const val ANY_PATH = "/any/path"
 private const val SIMULATED_SECURITY_DENIAL = "simulated security denial"
 private const val TEMP_FILE_SUFFIX = ".tmp"
 
+/**
+ * Verifies the functionality of [ShuttlePersistenceFileSystemGateway]. This gateway handles all
+ * file-system I/O for the persistence integration — writing serialized cargo to disk, reading it
+ * back, and deleting individual files or entire directories. If any of these operations misbehaved,
+ * cargo would be lost, corrupted, or never cleaned up from the device's storage.
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ShuttlePersistenceFileSystemGatewayTests {
     private var filePath = ""
