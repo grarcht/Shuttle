@@ -31,7 +31,6 @@ import com.grarcht.shuttle.demo.mviwithcompose.R
 import com.grarcht.shuttle.demo.mviwithcompose.intent.CargoPickupIntent
 import com.grarcht.shuttle.demo.mviwithcompose.ui.rawPainterResource
 import com.grarcht.shuttle.demo.mviwithcompose.viewmodel.SecondViewModel
-import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.model.ShuttleParcelCargo
 
 private const val ANIMATION_TWEEN_MILLIS = 900
@@ -55,28 +54,29 @@ private val LOADING_IMAGE_ID = com.grarcht.shuttle.demo.core.R.raw.loading
  *
  * @param context the context used to access resources and string values.
  * @param viewModel the view model that processes intents and exposes the UI state.
- * @param shuttle the Shuttle instance used to retrieve cargo and persist instance state.
  */
 class MVISecondView(
     private val context: Context,
-    private val viewModel: SecondViewModel,
-    private val shuttle: Shuttle
+    private val viewModel: SecondViewModel
 ) {
     private val bitmapDecoder = BitmapDecoder()
-    private var storedCargoId: String? = null
+
+    fun extractCargoId(savedInstanceState: Bundle?, arguments: Bundle?): String {
+        val bundle: Bundle? = savedInstanceState ?: arguments
+        val cargo: ShuttleParcelCargo? = bundle?.getParcelableWith(
+            ImageMessageType.ImageData.value,
+            ShuttleParcelCargo::class.java
+        )
+        return cargo?.cargoId ?: NO_CARGO_ID
+    }
 
     @Composable
-    fun SetViewContent(
-        savedInstanceState: Bundle? = null,
-        extras: Bundle? = null
-    ) {
-        extractArgsFrom(savedInstanceState, extras)
+    fun SetViewContent(cargoId: String) {
         val uiState by viewModel.uiState.collectAsState()
-        val cargoId = storedCargoId ?: NO_CARGO_ID
 
         LaunchedEffect(cargoId) {
             if (cargoId.isNotEmpty()) {
-                viewModel.processIntent(CargoPickupIntent.LoadCargo(shuttle, cargoId))
+                viewModel.processIntent(CargoPickupIntent.LoadCargo(cargoId))
             } else {
                 Log.w(TAG, WARN_EMPTY_CARGO_ID)
             }
@@ -90,25 +90,6 @@ class MVISecondView(
             }
         }
     }
-
-    private fun extractArgsFrom(savedInstanceState: Bundle?, arguments: Bundle?) {
-        val bundle: Bundle? = savedInstanceState ?: arguments
-        bundle?.let {
-            val cargo: ShuttleParcelCargo? =
-                it.getParcelableWith(ImageMessageType.ImageData.value, ShuttleParcelCargo::class.java)
-            storedCargoId = cargo?.cargoId
-        }
-    }
-
-    fun getSavedInstanceState(shuttle: Shuttle, outState: Bundle): Bundle {
-        return shuttle
-            .bundleCargoWith(outState)
-            .logTag(TAG)
-            .transport(ImageMessageType.ImageData.value, viewModel.uiState.value.imageModel)
-            .create()
-    }
-
-    fun cleanUpViewResources() { /* lifecycle managed by viewModelScope */ }
 
     @Composable
     private fun ShowLoadingViews() {

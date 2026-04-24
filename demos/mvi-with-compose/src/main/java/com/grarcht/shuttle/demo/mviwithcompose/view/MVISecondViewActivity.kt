@@ -5,10 +5,9 @@ import android.os.PersistableBundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.material3.MaterialTheme
 import com.grarcht.shuttle.demo.mviwithcompose.viewmodel.SecondViewModel
-import com.grarcht.shuttle.framework.Shuttle
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 /**
  * The destination activity for the second view in the MVI with Compose demo. It
@@ -20,24 +19,19 @@ class MVISecondViewActivity : ComponentActivity() {
     private val viewModel: SecondViewModel by viewModels()
     private lateinit var mviSecondView: MVISecondView
 
-    @Inject
-    lateinit var shuttle: Shuttle
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mviSecondView = MVISecondView(this, viewModel, shuttle)
+        mviSecondView = MVISecondView(this, viewModel)
+        val cargoId = mviSecondView.extractCargoId(savedInstanceState, intent.extras)
         setContent {
-            mviSecondView.SetViewContent(savedInstanceState, intent.extras)
+            MaterialTheme {
+                mviSecondView.SetViewContent(cargoId)
+            }
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-        val outStateShuttleBundle = mviSecondView.getSavedInstanceState(shuttle, outState)
+        val outStateShuttleBundle = viewModel.buildSavedInstanceState(outState)
         super.onSaveInstanceState(outStateShuttleBundle, outPersistentState)
-    }
-
-    override fun onDestroy() {
-        mviSecondView.cleanUpViewResources()
-        super.onDestroy()
     }
 }

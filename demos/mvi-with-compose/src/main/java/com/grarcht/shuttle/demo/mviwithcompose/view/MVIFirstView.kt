@@ -27,6 +27,7 @@ import com.grarcht.shuttle.demo.core.image.ImageMessageType
 import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.mviwithcompose.R
 import com.grarcht.shuttle.demo.mviwithcompose.intent.CargoTransportIntent
+import com.grarcht.shuttle.demo.mviwithcompose.navigation.NavigationEvent
 import com.grarcht.shuttle.demo.mviwithcompose.viewmodel.FirstViewModel
 import com.grarcht.shuttle.framework.Shuttle
 import java.io.Serializable
@@ -44,7 +45,7 @@ private const val TAG = "MVIFirstView"
  *
  * @param context the context used to access resources and start activities.
  * @param viewModel the view model that processes intents and exposes the UI state.
- * @param shuttle the Shuttle instance used to transport cargo to the second screen.
+ * @param shuttle the Shuttle instance used to execute cargo transport during navigation.
  */
 class MVIFirstView(
     private val context: Context,
@@ -62,6 +63,15 @@ class MVIFirstView(
                     imageId = com.grarcht.shuttle.demo.core.R.raw.tower
                 )
             )
+        }
+
+        LaunchedEffect(Unit) {
+            viewModel.navigationEvent.collect { event ->
+                when (event) {
+                    is NavigationEvent.NavigateWithShuttle -> executeShuttleNavigation(event.imageModel)
+                    is NavigationEvent.NavigateNormally -> executeNormalNavigation(event.imageModel)
+                }
+            }
         }
 
         Box(modifier = Modifier.systemBarsPadding()) {
@@ -110,12 +120,9 @@ class MVIFirstView(
     }
 
     @Composable
-    private fun ShuttleNavigationButton(
-        buttonsEnabled: Boolean,
-        imageModel: ImageModel?
-    ) {
+    private fun ShuttleNavigationButton(buttonsEnabled: Boolean, imageModel: ImageModel?) {
         Button(
-            onClick = { navigateWithShuttle(imageModel) },
+            onClick = { viewModel.processIntent(CargoTransportIntent.NavigateWithShuttle(imageModel)) },
             enabled = buttonsEnabled,
             contentPadding = BUTTON_CONTENT_PADDING,
             modifier = Modifier.fillMaxWidth().padding(SMALL_PADDING)
@@ -125,12 +132,9 @@ class MVIFirstView(
     }
 
     @Composable
-    private fun NormalNavigationButton(
-        buttonsEnabled: Boolean,
-        imageModel: ImageModel?
-    ) {
+    private fun NormalNavigationButton(buttonsEnabled: Boolean, imageModel: ImageModel?) {
         Button(
-            onClick = { navigateNormally(imageModel) },
+            onClick = { viewModel.processIntent(CargoTransportIntent.NavigateNormally(imageModel)) },
             enabled = buttonsEnabled,
             contentPadding = BUTTON_CONTENT_PADDING,
             modifier = Modifier
@@ -141,22 +145,16 @@ class MVIFirstView(
         }
     }
 
-    fun cleanUpViewResources() {
-        shuttle.cleanShuttleFromAllDeliveries()
-    }
-
-    private fun navigateWithShuttle(imageModel: ImageModel?) {
+    private fun executeShuttleNavigation(imageModel: ImageModel?) {
         val cargoId = ImageMessageType.ImageData.value
-        val startClass = MVIFirstViewActivity::class.java
-        val destinationClass = MVISecondViewActivity::class.java
-        shuttle.intentCargoWith(context, destinationClass)
+        shuttle.intentCargoWith(context, MVISecondViewActivity::class.java)
             .logTag(TAG)
             .transport(cargoId, imageModel)
-            .cleanShuttleOnReturnTo(startClass, destinationClass, cargoId)
+            .cleanShuttleOnReturnTo(MVIFirstViewActivity::class.java, MVISecondViewActivity::class.java, cargoId)
             .deliver(context)
     }
 
-    private fun navigateNormally(imageModel: ImageModel?) {
+    private fun executeNormalNavigation(imageModel: ImageModel?) {
         val cargoId = ImageMessageType.ImageData.value
         val intent = Intent(context, MVISecondViewActivity::class.java)
         intent.putExtra(cargoId, imageModel as Serializable)

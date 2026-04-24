@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.material3.MaterialTheme
 import com.grarcht.shuttle.demo.mviwithcompose.viewmodel.FirstViewModel
 import com.grarcht.shuttle.framework.Shuttle
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,12 +26,14 @@ class MVIFirstViewActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         mviFirstView = MVIFirstView(this, viewModel, shuttle)
         setContent {
-            mviFirstView.SetViewContent()
+            MaterialTheme {
+                mviFirstView.SetViewContent()
+            }
         }
     }
 
     override fun onDestroy() {
-        mviFirstView.cleanUpViewResources()
+        viewModel.cleanUp()
         super.onDestroy()
     }
 }
