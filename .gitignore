@@ -8,7 +8,6 @@
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
 /.idea/androidTestResultsUserPreferences.xml
-/.idea/deploymentTargetSelector.xml
 .DS_Store
 /build
 /captures
@@ -35,6 +34,7 @@ captures/
 .idea/caches
 .idea/modules.xml
 .idea/navEditor.xml
+.idea/deploymentTargetSelector.xml
 lint/intermediates/
 lint/generated/
 lint/outputs/
