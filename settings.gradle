@@ -20,6 +20,9 @@ dependencyResolutionManagement {
 
 include ':framework'
 include ':framework-annotations'
+project(':framework-annotations').projectDir = new File(settingsDir, 'framework-annotations/annotations')
+include ':framework-annotations-processor'
+project(':framework-annotations-processor').projectDir = new File(settingsDir, 'framework-annotations/annotations-processor')
 
 // Demo Modules
 include ':demos-core-lib'

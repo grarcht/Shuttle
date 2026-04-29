@@ -1,5 +1,6 @@
 package com.grarcht.shuttle.demo.core.image
 
+import com.grarcht.shuttle.framework.ShuttleCargo
 import com.grarcht.shuttle.framework.integrations.extensions.room.ShuttleRoomData
 import java.io.Serializable
 
@@ -8,6 +9,7 @@ import java.io.Serializable
  * @param cargoId used to look up the [imageData] at a later time
  * @param imageData to store
  */
+@ShuttleCargo
 class ImageModel(
     override var cargoId: String,
     val imageData: ByteArray

@@ -114,7 +114,7 @@ class ShuttleCargoFacadeTests {
         // on the second hasNext() check), so the exception is expected here.
         try {
             facade.screenCallback.onActivityDestroyed(activity)
-        } catch (e: ConcurrentModificationException) {
+        } catch (@Suppress("SwallowedException") e: ConcurrentModificationException) {
             // Expected: the production forEach loop modifies onBackPressedCallbacks while iterating.
             // Lines 114-115 are still covered because the lambda body (remove) executes once.
         }
@@ -186,7 +186,8 @@ class ShuttleCargoFacadeTests {
         val application = mock(Application::class.java)
         val cargoId = "cargoIdCancelRemove"
         val handler = mock(Handler::class.java)
-        val facade = ShuttleCargoFacade(application, CancellationThrowingRemoveWarehouse(), handler, Dispatchers.Unconfined)
+        val facade =
+            ShuttleCargoFacade(application, CancellationThrowingRemoveWarehouse(), handler, Dispatchers.Unconfined)
         val activity = spy(TestActivity())
 
         facade.removeCargoAfterDelivery(TestActivity::class.java, TestActivity::class.java, cargoId)

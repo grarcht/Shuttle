@@ -145,7 +145,7 @@ class ShuttleBundleTest {
 
         try {
             bundle.transport("cargoId", PaintColor("red"))
-        } catch (e: IllegalStateException) {
+        } catch (@Suppress("SwallowedException") e: IllegalStateException) {
             threw = true
         }
 
@@ -160,7 +160,7 @@ class ShuttleBundleTest {
 
         try {
             bundle.create()
-        } catch (e: IllegalStateException) {
+        } catch (@Suppress("SwallowedException") e: IllegalStateException) {
             threw = true
         }
 
@@ -211,7 +211,6 @@ class ShuttleBundleTest {
 
         assertNotNull(shuttleBundle)
     }
-
 
     @Test
     fun verifyTransportLogsErrorWhenStoreCancels() {

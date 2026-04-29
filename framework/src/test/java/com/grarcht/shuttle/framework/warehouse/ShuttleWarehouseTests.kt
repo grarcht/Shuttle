@@ -1072,7 +1072,10 @@ class ShuttleWarehouseTests {
             val channel: Channel<ShuttleStoreCargoResult> = warehouse.store(cargoId, cargo)
             channel.consumeAsFlow().collectLatest { result ->
                 when (result) {
-                    is ShuttleStoreCargoResult.Error<*> -> { countDownLatch.countDown(); channel.cancel() }
+                    is ShuttleStoreCargoResult.Error<*> -> {
+                        countDownLatch.countDown()
+                        channel.cancel()
+                    }
                     else -> { /* ignore */ }
                 }
             }

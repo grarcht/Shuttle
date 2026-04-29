@@ -16,6 +16,7 @@ dependencyResolutionManagement {
 }
 
 include(":framework-annotations")
+include(":framework-annotations-processor")
 include(":framework")
 
 // Demo Modules

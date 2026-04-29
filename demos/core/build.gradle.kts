@@ -42,4 +42,5 @@ dependencies {
     implementation(project(":framework"))
     implementation(project(":framework-integrations-persistence"))
     implementation(project(":framework-integrations-extensions-room"))
+    ksp(project(":framework-annotations-processor"))
 }

@@ -13,6 +13,7 @@ junitPlatform = "1.13.4"
 jvmTarget = "21"
 kotlin = "2.2.10"
 kover = "0.9.8"
+ksp = "2.3.6"
 kotlinCoroutines = "1.10.2"
 kotlinComposeCompilerExt = "1.5.15"
 lifecycle = "2.9.2"
@@ -65,6 +66,8 @@ shuttle-integrationsPersistence = { group = "com.grarcht.shuttle", name = "frame
 shuttle-integrationsExtensionsRoom = { group = "com.grarcht.shuttle", name = "framework-integrations-extensions-room", version.ref = "shuttle" }
 shuttle-addOnsNavigationComponent = { group = "com.grarcht.shuttle", name = "framework-addons-navigation-component", version.ref = "shuttle" }
 
+kspDeps-api = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
+
 staticAnalysisDeps-detektPlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
 
 testingDeps-androidTest-monitor = { group = "androidx.test", name = "monitor", version = "1.8.0" }
@@ -90,7 +93,7 @@ android-library = { id = "com.android.library", version.ref = "gradleBuildTools"
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 detect = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 google-dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-google-ksp = { id = "com.google.devtools.ksp", version = "2.3.6" }
+google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 jetbrains-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

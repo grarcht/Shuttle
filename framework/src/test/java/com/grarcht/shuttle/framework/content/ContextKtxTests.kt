@@ -93,5 +93,4 @@ class ContextKtxTests {
         // Call without logTag to cover the default parameter path
         context.unregisterReceiverQuietly(receiver)
     }
-
 }

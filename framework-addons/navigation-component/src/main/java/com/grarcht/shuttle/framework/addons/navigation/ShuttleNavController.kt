@@ -136,6 +136,7 @@ class ShuttleNavController(
         logWarningIfBundleEmpty(isInternalBundleEmpty)
     }
 
+    @Suppress("UseCheckOrError")
     @ExcludeFromCoverage
     private fun throwIfDebugAndBundleEmpty(isInternalBundleEmpty: Boolean) {
         if (BuildConfig.DEBUG && isInternalBundleEmpty) {
