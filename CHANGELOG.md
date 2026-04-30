@@ -1,5 +1,51 @@
 # Changelog
 
+## [Unreleased]
+
+## Added
+
+- `@ShuttleCargo` annotation and a Kotlin compiler plugin that automatically injects the `ShuttleCargoData`
+  serialization contract at compile time, removing the need to manually implement `java.io.Serializable` on cargo classes.
+  Annotate a class with `@ShuttleCargo` and the plugin handles the rest:
+  ```kotlin
+  // Before
+  class ProductModel(val id: String, val data: ByteArray) : java.io.Serializable
+
+  // After
+  @ShuttleCargo
+  class ProductModel(val id: String, val data: ByteArray)
+  ```
+- `ShuttleCargoData` marker interface as the public type bound for all cargo, replacing raw `java.io.Serializable` in the public API
+- MVI with Compose demo module
+- Kover code coverage configuration across framework modules
+- GitHub Actions workflow that publishes API documentation to GitHub Pages via Dokka on every push to main
+- Code of conduct
+
+## Changed
+
+- Migrated all Gradle build files from Groovy to Kotlin DSL
+- Migrated Dokka to v2
+- Migrated from Material 2 to Material 3 in demo apps
+- Updated Gradle plugin to version 9.1.0 and migrated to Gradle toolchain
+- Enabled Gradle configuration cache
+- Test coverage increased to 100% lines of code across the framework, persistence, and room extension modules
+- `binder` and `ipcServiceMessengerDecorator` in `ShuttleService` are now `protected`, tightening encapsulation
+- Revamped README and contributing documentation
+- Added API documentation link to README
+
+## Fixed
+
+- `ShuttleRoomDao.getCargoById` returned a non-nullable `ShuttleRoomData`, causing an NPE when no record exists in the database; return type corrected to `ShuttleRoomData?`
+- `sender` parameter was silently dropped in `CargoShuttle.intentChooserCargoWith`
+- Unsafe cast operations in `ShuttleBundle` and `ShuttleNavController` replaced with safe fallbacks
+- `binder` and `ipcServiceMessengerDecorator` in `ShuttleService` visibility corrected from `public` to `protected`
+- Yoda-style comparisons in `ShuttleRepository` corrected to idiomatic Kotlin (`null == x` → `x == null`)
+- Window insets rendering in demo apps
+
+## Removed
+
+- `enableJetifier` property (no longer needed)
+
 ## [Released]
 
 ## [3.0.3] - 2025-08-20
