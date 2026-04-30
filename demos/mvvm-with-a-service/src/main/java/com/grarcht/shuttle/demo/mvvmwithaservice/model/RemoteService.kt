@@ -12,6 +12,7 @@ import com.grarcht.shuttle.demo.core.io.RawResourceGateway
 import com.grarcht.shuttle.framework.CARGO_ID_KEY
 import com.grarcht.shuttle.framework.NO_CARGO_ID
 import com.grarcht.shuttle.framework.Shuttle
+import com.grarcht.shuttle.framework.ShuttleCargoData
 import com.grarcht.shuttle.framework.app.ShuttleService
 import com.grarcht.shuttle.framework.app.ShuttleServiceConfig
 import com.grarcht.shuttle.framework.coroutines.scope.cancelScopeQuietly
@@ -22,7 +23,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import com.grarcht.shuttle.framework.ShuttleCargoData
 import javax.inject.Inject
 import javax.inject.Named
 

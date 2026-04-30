@@ -26,7 +26,6 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import java.io.Serializable
 import javax.inject.Inject
 
 private const val ANIMATION_DURATION = 750L

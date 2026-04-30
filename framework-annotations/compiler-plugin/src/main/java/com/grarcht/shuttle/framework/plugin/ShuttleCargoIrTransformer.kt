@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
+import org.jetbrains.kotlin.ir.types.classOrNull
 import org.jetbrains.kotlin.ir.types.classFqName
 import org.jetbrains.kotlin.ir.util.defaultType
 import org.jetbrains.kotlin.ir.util.hasAnnotation
@@ -28,23 +29,26 @@ private val SHUTTLE_CARGO_DATA_CLASS_ID = ClassId(
  *
  * @param pluginContext the IR plugin context used to resolve class symbols.
  */
-@OptIn(UnsafeDuringIrConstructionAPI::class)
 class ShuttleCargoIrTransformer(
     private val pluginContext: IrPluginContext
 ) : IrElementTransformerVoid() {
 
     override fun visitClass(declaration: IrClass): IrStatement {
-        if (declaration.hasAnnotation(SHUTTLE_CARGO_FQ_NAME)) {
-            val alreadyCargoData = declaration.superTypes.any {
-                it.classFqName == SHUTTLE_CARGO_DATA_FQ_NAME
-            }
-            if (!alreadyCargoData) {
-                val cargoDataSymbol = pluginContext.referenceClass(SHUTTLE_CARGO_DATA_CLASS_ID)
-                if (cargoDataSymbol != null) {
-                    declaration.superTypes = declaration.superTypes + cargoDataSymbol.owner.defaultType
-                }
+        if (declaration.hasAnnotation(SHUTTLE_CARGO_FQ_NAME) &&
+            !declaration.implementsCargoDataTransitively()
+        ) {
+            val cargoDataSymbol = pluginContext.referenceClass(SHUTTLE_CARGO_DATA_CLASS_ID)
+            if (cargoDataSymbol != null) {
+                declaration.superTypes = declaration.superTypes + cargoDataSymbol.owner.defaultType
             }
         }
         return super.visitClass(declaration)
     }
+
+    @OptIn(UnsafeDuringIrConstructionAPI::class)
+    private fun IrClass.implementsCargoDataTransitively(): Boolean =
+        superTypes.any { superType ->
+            superType.classFqName == SHUTTLE_CARGO_DATA_FQ_NAME ||
+                (superType.classOrNull?.owner?.implementsCargoDataTransitively() == true)
+        }
 }

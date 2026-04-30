@@ -137,7 +137,7 @@ open class CargoShuttle(
         title: CharSequence?,
         sender: IntentSender?
     ): ShuttleIntent {
-        return ShuttleIntent.with(shuttleWarehouse, shuttleFacade).intentChooser(target, title)
+        return ShuttleIntent.with(shuttleWarehouse, shuttleFacade).intentChooser(target, title, sender)
     }
 
     /**
