@@ -3,11 +3,11 @@ package com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grarcht.shuttle.framework.Shuttle
+import com.grarcht.shuttle.framework.ShuttleCargoData
 import com.grarcht.shuttle.framework.coroutines.channel.relayFlowIfAvailable
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
-import java.io.Serializable
 
 private const val LOAD_IMAGE_CHANNEL_CAPACITY = 2
 
@@ -20,7 +20,7 @@ class SecondViewModel : ViewModel() {
     fun loadImage(shuttle: Shuttle, cargoId: String): Channel<ShuttlePickupCargoResult> {
         viewModelScope.launch {
             shuttle
-                .pickupCargo<Serializable>(cargoId = cargoId)
+                .pickupCargo<ShuttleCargoData>(cargoId = cargoId)
                 .relayFlowIfAvailable(loadImageChannel)
         }
 

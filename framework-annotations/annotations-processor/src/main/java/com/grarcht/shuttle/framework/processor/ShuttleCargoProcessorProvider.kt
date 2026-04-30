@@ -10,5 +10,5 @@ import com.google.devtools.ksp.processing.SymbolProcessorProvider
  */
 class ShuttleCargoProcessorProvider : SymbolProcessorProvider {
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor =
-        ShuttleCargoProcessor(environment.logger)
+        ShuttleCargoProcessor()
 }

@@ -8,6 +8,7 @@ import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
 import com.grarcht.shuttle.framework.ExcludeFromCoverage
+import com.grarcht.shuttle.framework.ShuttleCargoData
 import com.grarcht.shuttle.framework.content.bundle.BundleFactory
 import com.grarcht.shuttle.framework.content.bundle.DefaultBundleFactory
 import com.grarcht.shuttle.framework.content.bundle.ShuttleBundle
@@ -19,7 +20,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.io.Serializable
 
 private const val DEFAULT_LOG_TAG = "ShuttleNavigator"
 
@@ -50,18 +50,17 @@ class ShuttleNavController(
     }
 
     /**
-     * Sets the [serializable] for transport.
+     * Sets the [cargo] for transport.
      *
      * @param cargoId the key used for shuttle the cargo to and from the [ShuttleWarehouse]
-     * @param serializable the cargo to shuttle
-     * @return the [ShuttleBundle] reference use with function chaining
+     * @param cargo the cargo to shuttle
+     * @return the [ShuttleNavController] reference use with function chaining
      */
-
-    fun transport(cargoId: String, serializable: Serializable?): ShuttleNavController {
+    fun <D : ShuttleCargoData> transport(cargoId: String, cargo: D?): ShuttleNavController {
         val parcelPackage = ShuttleParcelCargo(cargoId)
         putParcelable(cargoId, parcelPackage)
 
-        serializable?.let {
+        cargo?.let {
             storeCargoJob = backgroundThreadCoroutineScope.launch {
                 shuttleWarehouse.store(cargoId, it)
             }

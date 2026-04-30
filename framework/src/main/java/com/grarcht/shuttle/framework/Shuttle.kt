@@ -15,7 +15,6 @@ import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
 import com.grarcht.shuttle.framework.screen.ShuttleFacade
 import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
 import kotlinx.coroutines.channels.Channel
-import java.io.Serializable
 
 /**
  *  This contractual interface is used to provide a simple way to shuttle parcelable data and avoid app crashes
@@ -131,7 +130,7 @@ interface Shuttle {
      * @param cargoId used to look up the cargo in the repository
      * @return the channel with a reference to the result, a [ShuttlePickupCargoResult]
      */
-    suspend fun <D : Serializable> pickupCargo(cargoId: String): Channel<ShuttlePickupCargoResult>
+    suspend fun <D : ShuttleCargoData> pickupCargo(cargoId: String): Channel<ShuttlePickupCargoResult>
 
     /**
      * Cleans the Shuttle on returning to the [currentScreen] from the [nextScreenClass] via the [cargoId].

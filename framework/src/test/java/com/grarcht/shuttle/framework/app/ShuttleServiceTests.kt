@@ -24,7 +24,7 @@ private const val SERVICE_NAME = "TestService"
 private const val TEST_SERVICE_CLASS_NAME = "TestShuttleService"
 private const val CARGO_ID = "cargoId"
 private const val CARGO_ID_1 = "cargoId1"
-private const val CARGO_DATA = "cargo"
+private val CARGO_DATA = TestShuttleCargoData()
 
 /**
  * Verifies the functionality of [ShuttleService]. ShuttleService is the Android Service base
@@ -192,7 +192,7 @@ class ShuttleServiceTests {
     fun verifyTransportCargoWithShuttleCallsGetCargoIntentForTransport() {
         val service = Mockito.spy(createService(ShuttleServiceType.BOUND_LOCAL))
         val mockIntent = mock<Intent>()
-        Mockito.doReturn(mockIntent).`when`(service).getCargoIntentForTransport(any<String>(), anyOrNull<String>())
+        Mockito.doReturn(mockIntent).`when`(service).getCargoIntentForTransport(any<String>(), anyOrNull<TestShuttleCargoData>())
 
         service.transportCargoWithShuttle(CARGO_ID, CARGO_DATA)
 
@@ -284,5 +284,11 @@ class ShuttleServiceTests {
 
     private class TestShuttleServiceWithLooper(private val looper: Looper) : ShuttleService() {
         override fun getMainLooper(): Looper = looper
+    }
+}
+
+private class TestShuttleCargoData : com.grarcht.shuttle.framework.ShuttleCargoData {
+    companion object {
+        private const val serialVersionUID: Long = -1L
     }
 }

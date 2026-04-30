@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.io.Serializable
 import javax.inject.Inject
 
 private const val TAG = "SecondViewModel"
@@ -57,7 +56,7 @@ class SecondViewModel @Inject constructor(
     private fun loadCargo(intent: CargoPickupIntent.LoadCargo) {
         viewModelScope.launch {
             shuttle
-                .pickupCargo<Serializable>(cargoId = intent.cargoId)
+                .pickupCargo<ImageModel>(cargoId = intent.cargoId)
                 .consumeAsFlow()
                 .collectLatest { result ->
                     when (result) {

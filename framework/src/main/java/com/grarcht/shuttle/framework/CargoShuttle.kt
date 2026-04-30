@@ -20,7 +20,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
-import java.io.Serializable
 
 /**
  *  This implementation of the [Shuttle] interface that is used to provide a factory that creates
@@ -146,7 +145,7 @@ open class CargoShuttle(
      * @param cargoId used to look up the cargo in the repository
      * @return the channel with a reference to the result, a [ShuttlePickupCargoResult]
      */
-    override suspend fun <D : Serializable> pickupCargo(cargoId: String): Channel<ShuttlePickupCargoResult> {
+    override suspend fun <D : ShuttleCargoData> pickupCargo(cargoId: String): Channel<ShuttlePickupCargoResult> {
         return shuttleWarehouse.pickup<D>(cargoId)
     }
 

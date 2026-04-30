@@ -8,6 +8,7 @@ import android.content.IntentSender
 import android.net.Uri
 import android.util.Log
 import com.grarcht.shuttle.framework.ExcludeFromCoverage
+import com.grarcht.shuttle.framework.ShuttleCargoData
 import com.grarcht.shuttle.framework.model.ShuttleParcelCargo
 import com.grarcht.shuttle.framework.screen.ShuttleFacade
 import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
@@ -15,7 +16,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.Serializable
 
 private const val DEFAULT_LOG_TAG = "ShuttleIntent"
 
@@ -119,7 +119,7 @@ open class ShuttleIntent private constructor() {
      * @return the [ShuttleIntent] reference use with function chaining
      */
     @Throws(IllegalStateException::class)
-    fun <D : Serializable> transport(cargoId: String, data: D?): ShuttleIntent {
+    fun <D : ShuttleCargoData> transport(cargoId: String, data: D?): ShuttleIntent {
         verifyIntentFunctionWasCalled()
         storeParcelPackageAsIntentData(cargoId)
         store(cargoId, data)
@@ -172,7 +172,7 @@ open class ShuttleIntent private constructor() {
     }
 
     @ExcludeFromCoverage
-    private fun <D : Serializable> store(cargoId: String, data: D?) {
+    private fun <D : ShuttleCargoData> store(cargoId: String, data: D?) {
         backgroundThreadScope?.launch {
             warehouse?.store(cargoId, data)
         }?.invokeOnCompletion {

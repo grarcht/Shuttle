@@ -47,7 +47,6 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.spy
 import java.io.File
-import java.io.Serializable
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
@@ -542,7 +541,7 @@ class CargoShuttleTests {
     }
 
     private data class CargoDataModel(override val cargoId: String, override val filePath: String) : ShuttleDataModel
-    private data class Cargo(val cargoId: String, val numberOfBoxes: Int) : Serializable {
+    private data class Cargo(val cargoId: String, val numberOfBoxes: Int) : ShuttleCargoData {
         companion object {
             private const val serialVersionUID: Long = -42
         }

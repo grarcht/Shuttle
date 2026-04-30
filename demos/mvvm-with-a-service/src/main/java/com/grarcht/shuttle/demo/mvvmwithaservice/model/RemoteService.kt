@@ -22,7 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import java.io.Serializable
+import com.grarcht.shuttle.framework.ShuttleCargoData
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -63,7 +63,7 @@ class RemoteService : ShuttleService() {
      * Provides the cargo intent, used for transporting cargo with [Shuttle]. What is provided below combines the
      * default with extra information for the receiver in this demo.
      */
-    override fun <D : Serializable> getCargoIntentForTransport(
+    override fun <D : ShuttleCargoData> getCargoIntentForTransport(
         cargoId: String,
         cargo: D?
     ): Intent {

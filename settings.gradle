@@ -23,6 +23,10 @@ include ':framework-annotations'
 project(':framework-annotations').projectDir = new File(settingsDir, 'framework-annotations/annotations')
 include ':framework-annotations-processor'
 project(':framework-annotations-processor').projectDir = new File(settingsDir, 'framework-annotations/annotations-processor')
+include ':framework-annotations-compiler-plugin'
+project(':framework-annotations-compiler-plugin').projectDir = new File(settingsDir, 'framework-annotations/compiler-plugin')
+include ':framework-annotations-gradle-plugin'
+project(':framework-annotations-gradle-plugin').projectDir = new File(settingsDir, 'framework-annotations/gradle-plugin')
 
 // Demo Modules
 include ':demos-core-lib'

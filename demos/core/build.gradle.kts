@@ -43,4 +43,17 @@ dependencies {
     implementation(project(":framework-integrations-persistence"))
     implementation(project(":framework-integrations-extensions-room"))
     ksp(project(":framework-annotations-processor"))
+
+    val shuttleCompilerPlugin by configurations.creating
+    shuttleCompilerPlugin(project(":framework-annotations-compiler-plugin"))
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    val pluginConfig = configurations["shuttleCompilerPlugin"]
+    inputs.files(pluginConfig)
+    compilerOptions {
+        freeCompilerArgs.addAll(
+            provider { pluginConfig.files.map { "-Xplugin=${it.absolutePath}" } }
+        )
+    }
 }

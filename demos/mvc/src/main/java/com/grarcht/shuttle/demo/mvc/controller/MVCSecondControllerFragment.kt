@@ -16,6 +16,7 @@ import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.core.os.getParcelableWith
 import com.grarcht.shuttle.demo.mvc.R
 import com.grarcht.shuttle.framework.Shuttle
+import com.grarcht.shuttle.framework.ShuttleCargoData
 import com.grarcht.shuttle.framework.model.ShuttleParcelCargo
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import dagger.hilt.android.AndroidEntryPoint
@@ -116,7 +117,7 @@ class MVCSecondControllerFragment : Fragment() {
 
     private suspend fun getShuttleChannel(): Channel<ShuttlePickupCargoResult> {
         val cargoId = storedCargoId ?: ImageMessageType.ImageData.value
-        return shuttle.pickupCargo<Serializable>(cargoId = cargoId)
+        return shuttle.pickupCargo<ShuttleCargoData>(cargoId = cargoId)
     }
 
     private fun initLoadingView(view: View) {

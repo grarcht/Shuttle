@@ -25,7 +25,6 @@ import kotlinx.coroutines.DisposableHandle
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
-import java.io.Serializable
 import javax.inject.Inject
 
 private const val LOG_TAG = "MVVMFirstViewFragment"
@@ -154,7 +153,7 @@ class MVVMNavFirstViewFragment : Fragment() {
 
             navController.navigateWithShuttle(shuttle, R.id.MVVMNavSecondViewActivity)
                 ?.logTag(LOG_TAG)
-                ?.transport(cargoId, imageModel as Serializable)
+                ?.transport(cargoId, imageModel)
                 ?.cleanShuttleOnReturnTo(startClass, destinationClass, cargoId)
                 ?.deliver()
         }
@@ -166,7 +165,7 @@ class MVVMNavFirstViewFragment : Fragment() {
         } else if (null != context) {
             val cargoId = ImageMessageType.ImageData.value
             val args = Bundle()
-            args.putSerializable(cargoId, imageModel as Serializable)
+            args.putSerializable(cargoId, imageModel)
             navController?.navigate(R.id.MVVMNavSecondViewActivity, args)
         }
     }

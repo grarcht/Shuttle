@@ -4,6 +4,7 @@ import android.app.Application
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.grarcht.shuttle.framework.ArchtTestTaskExecutorExtension
+import com.grarcht.shuttle.framework.ShuttleCargoData
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
 import com.grarcht.shuttle.framework.result.ShuttleStoreCargoResult
@@ -21,7 +22,6 @@ import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.spy
 import org.mockito.Mockito.verify
-import java.io.Serializable
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
@@ -199,8 +199,8 @@ class ShuttleCargoFacadeTests {
     private class TestActivityExtension : TestActivity()
 
     private class NormalCompletionRemoveWarehouse(private val cargoId: String) : ShuttleWarehouse {
-        override suspend fun <D : Serializable> pickup(id: String) = Channel<ShuttlePickupCargoResult>()
-        override suspend fun <D : Serializable> store(id: String, data: D?) = Channel<ShuttleStoreCargoResult>()
+        override suspend fun <D : ShuttleCargoData> pickup(id: String) = Channel<ShuttlePickupCargoResult>()
+        override suspend fun <D : ShuttleCargoData> store(id: String, data: D?) = Channel<ShuttleStoreCargoResult>()
         override suspend fun removeCargoBy(id: String): Channel<ShuttleRemoveCargoResult> {
             val ch = Channel<ShuttleRemoveCargoResult>(Channel.UNLIMITED)
             ch.send(ShuttleRemoveCargoResult.NotRemovingCargoYet(cargoId))
@@ -211,8 +211,8 @@ class ShuttleCargoFacadeTests {
     }
 
     private class CancellationThrowingRemoveWarehouse : ShuttleWarehouse {
-        override suspend fun <D : Serializable> pickup(id: String) = Channel<ShuttlePickupCargoResult>()
-        override suspend fun <D : Serializable> store(id: String, data: D?) = Channel<ShuttleStoreCargoResult>()
+        override suspend fun <D : ShuttleCargoData> pickup(id: String) = Channel<ShuttlePickupCargoResult>()
+        override suspend fun <D : ShuttleCargoData> store(id: String, data: D?) = Channel<ShuttleStoreCargoResult>()
         override suspend fun removeCargoBy(id: String): Channel<ShuttleRemoveCargoResult> {
             throw CancellationException("test cancellation")
         }
@@ -220,8 +220,8 @@ class ShuttleCargoFacadeTests {
     }
 
     private class UnableToRemoveWarehouse(private val cargoId: String) : ShuttleWarehouse {
-        override suspend fun <D : Serializable> pickup(id: String) = Channel<ShuttlePickupCargoResult>()
-        override suspend fun <D : Serializable> store(id: String, data: D?) = Channel<ShuttleStoreCargoResult>()
+        override suspend fun <D : ShuttleCargoData> pickup(id: String) = Channel<ShuttlePickupCargoResult>()
+        override suspend fun <D : ShuttleCargoData> store(id: String, data: D?) = Channel<ShuttleStoreCargoResult>()
         override suspend fun removeCargoBy(id: String): Channel<ShuttleRemoveCargoResult> {
             val ch = Channel<ShuttleRemoveCargoResult>(Channel.UNLIMITED)
             ch.send(ShuttleRemoveCargoResult.UnableToRemove<Exception>(cargoId))

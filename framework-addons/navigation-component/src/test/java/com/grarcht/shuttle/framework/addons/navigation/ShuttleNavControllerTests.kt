@@ -459,11 +459,11 @@ class ShuttleNavControllerTests {
     ) : NavDirections
 
     private class CancellationThrowingWarehouse : ShuttleWarehouse {
-        override suspend fun <D : java.io.Serializable> pickup(cargoId: String): kotlinx.coroutines.channels.Channel<ShuttlePickupCargoResult> {
+        override suspend fun <D : com.grarcht.shuttle.framework.ShuttleCargoData> pickup(cargoId: String): kotlinx.coroutines.channels.Channel<ShuttlePickupCargoResult> {
             throw CancellationException("pickup not supported")
         }
 
-        override suspend fun <D : java.io.Serializable> store(cargoId: String, data: D?): kotlinx.coroutines.channels.Channel<ShuttleStoreCargoResult> {
+        override suspend fun <D : com.grarcht.shuttle.framework.ShuttleCargoData> store(cargoId: String, data: D?): kotlinx.coroutines.channels.Channel<ShuttleStoreCargoResult> {
             throw CancellationException("Simulated cancellation during store")
         }
 

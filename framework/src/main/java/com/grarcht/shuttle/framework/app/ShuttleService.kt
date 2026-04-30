@@ -5,10 +5,10 @@ import android.content.Intent
 import android.os.IBinder
 import android.os.Message
 import com.grarcht.shuttle.framework.Shuttle
+import com.grarcht.shuttle.framework.ShuttleCargoData
 import com.grarcht.shuttle.framework.os.ShuttleBinder
 import com.grarcht.shuttle.framework.os.messenger.ShuttleMessageReceiver
 import com.grarcht.shuttle.framework.os.messenger.ShuttleMessengerDecorator
-import java.io.Serializable
 
 /**
  * The base service class for services to leverage Shuttle to transport cargo data.
@@ -137,7 +137,7 @@ open class ShuttleService : Service(), ShuttleMessageReceiver {
      * @param cargoId of the cargo to transport
      * @param cargo to transport
      */
-    open fun <D : Serializable> transportCargoWithShuttle(
+    open fun <D : ShuttleCargoData> transportCargoWithShuttle(
         cargoId: String,
         cargo: D?
     ) {
@@ -149,7 +149,7 @@ open class ShuttleService : Service(), ShuttleMessageReceiver {
      * Override this function to provide the cargo intent, used for transporting cargo with [Shuttle]. What is
      * provided below is the default implementation.
      */
-    open fun <D : Serializable> getCargoIntentForTransport(
+    open fun <D : ShuttleCargoData> getCargoIntentForTransport(
         cargoId: String,
         cargo: D?
     ): Intent {

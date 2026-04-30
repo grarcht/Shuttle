@@ -2,6 +2,7 @@ package com.grarcht.shuttle.framework.bundle
 
 import com.grarcht.shuttle.framework.CargoShuttle
 import com.grarcht.shuttle.framework.Shuttle
+import com.grarcht.shuttle.framework.ShuttleCargoData
 import com.grarcht.shuttle.framework.content.bundle.ShuttleBundle
 import com.grarcht.shuttle.framework.coroutines.CompositeDisposableHandle
 import com.grarcht.shuttle.framework.coroutines.addForDisposal
@@ -38,7 +39,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.spy
-import java.io.Serializable
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
@@ -62,7 +62,7 @@ class ShuttleBundleTest {
     private var doesResultMatch = false
 
     @Volatile
-    private var resultSerializable: Serializable? = null
+    private var resultSerializable: ShuttleCargoData? = null
 
     @BeforeEach
     fun `run before each test`() {
@@ -109,7 +109,7 @@ class ShuttleBundleTest {
                                 /* ignore */
                             }
                             is ShuttlePickupCargoResult.Success<*> -> {
-                                resultSerializable = shuttleResult.data as Serializable
+                                resultSerializable = shuttleResult.data as ShuttleCargoData
                                 channel.cancel()
                                 countDownLatch.countDown()
                             }
@@ -230,8 +230,8 @@ class ShuttleBundleTest {
     }
 
     private class CancellationThrowingWarehouse : ShuttleWarehouse {
-        override suspend fun <D : Serializable> pickup(id: String) = Channel<ShuttlePickupCargoResult>()
-        override suspend fun <D : Serializable> store(id: String, data: D?): Channel<ShuttleStoreCargoResult> {
+        override suspend fun <D : ShuttleCargoData> pickup(id: String) = Channel<ShuttlePickupCargoResult>()
+        override suspend fun <D : ShuttleCargoData> store(id: String, data: D?): Channel<ShuttleStoreCargoResult> {
             throw CancellationException("test cancellation")
         }
         override suspend fun removeCargoBy(id: String) = Channel<ShuttleRemoveCargoResult>()

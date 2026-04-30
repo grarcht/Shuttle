@@ -66,6 +66,8 @@ shuttle-integrationsPersistence = { group = "com.grarcht.shuttle", name = "frame
 shuttle-integrationsExtensionsRoom = { group = "com.grarcht.shuttle", name = "framework-integrations-extensions-room", version.ref = "shuttle" }
 shuttle-addOnsNavigationComponent = { group = "com.grarcht.shuttle", name = "framework-addons-navigation-component", version.ref = "shuttle" }
 
+compilerDeps-kotlinCompilerEmbeddable = { group = "org.jetbrains.kotlin", name = "kotlin-compiler-embeddable", version.ref = "kotlin" }
+
 kspDeps-api = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
 
 staticAnalysisDeps-detektPlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
