@@ -68,7 +68,7 @@ open class ShuttleBundle(
      */
     fun create(): Bundle {
         verifyWithFunctionWasCalled()
-        return internalBundle as Bundle
+        return internalBundle!!
     }
 
     @ExcludeFromCoverage
@@ -101,7 +101,7 @@ open class ShuttleBundle(
 
         @ExcludeFromCoverage
         private fun resolveBundle(bundle: Bundle?, bundleFactory: BundleFactory?): Bundle {
-            return bundle ?: bundleFactory?.create() as Bundle
+            return bundle ?: bundleFactory?.create() ?: DefaultBundleFactory().create()
         }
     }
 }

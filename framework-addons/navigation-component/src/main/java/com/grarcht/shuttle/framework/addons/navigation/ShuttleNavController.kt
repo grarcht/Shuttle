@@ -220,6 +220,6 @@ class ShuttleNavController(
         }
 
         @ExcludeFromCoverage
-        private fun createBundle(bundleFactory: BundleFactory?): Bundle = bundleFactory?.create() as Bundle
+        private fun createBundle(bundleFactory: BundleFactory?): Bundle = bundleFactory?.create() ?: DefaultBundleFactory().create()
     }
 }

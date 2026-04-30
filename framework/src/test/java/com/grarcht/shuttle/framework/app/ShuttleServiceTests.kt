@@ -115,7 +115,7 @@ class ShuttleServiceTests {
 
         service.onDestroy()
 
-        assertNull(service.binder)
+        assertNull(service.testBinder)
     }
 
     @Test
@@ -123,15 +123,15 @@ class ShuttleServiceTests {
         val service = createService(ShuttleServiceType.BOUND_MESSENGER)
         val mockDecorator = mock<ShuttleMessengerDecorator>()
         whenever(mockDecorator.cargoIds).thenReturn(mutableListOf(CARGO_ID_1))
-        service.ipcServiceMessengerDecorator = mockDecorator
+        service.testMessengerDecorator = mockDecorator
         val shuttle = service.config.shuttle
         whenever(shuttle.cleanShuttleFromDeliveryFor(any(), any())).thenReturn(shuttle)
 
         service.releaseResourcesForIPCServices()
 
         assertAll(
-            { assertNull(service.ipcServiceMessengerDecorator) },
-            { assertNull(service.binder) }
+            { assertNull(service.testMessengerDecorator) },
+            { assertNull(service.testBinder) }
         )
     }
 
@@ -139,11 +139,11 @@ class ShuttleServiceTests {
     fun verifyReleaseResourcesForLocalServicesWithLocalType() {
         val service = createService(ShuttleServiceType.BOUND_LOCAL)
         service.onBind(null)
-        assertNotNull(service.binder)
+        assertNotNull(service.testBinder)
 
         service.releaseResourcesForLocalServices()
 
-        assertNull(service.binder)
+        assertNull(service.testBinder)
     }
 
     @Test
@@ -181,7 +181,7 @@ class ShuttleServiceTests {
         val service = createService(ShuttleServiceType.BOUND_MESSENGER)
         val mockDecorator = mock<ShuttleMessengerDecorator>()
         whenever(mockDecorator.getBinder()).thenReturn(null)
-        service.ipcServiceMessengerDecorator = mockDecorator
+        service.testMessengerDecorator = mockDecorator
 
         val result = service.createMessengerDecoratorForIPC()
 
@@ -239,7 +239,7 @@ class ShuttleServiceTests {
 
         service.createMessengerDecoratorForIPC()
 
-        assertEquals(mockDecorator, service.ipcServiceMessengerDecorator)
+        assertEquals(mockDecorator, service.testMessengerDecorator)
     }
 
     @Test
@@ -266,7 +266,7 @@ class ShuttleServiceTests {
 
         assertAll(
             { assertNull(result) },
-            { assertNull(service.ipcServiceMessengerDecorator) }
+            { assertNull(service.testMessengerDecorator) }
         )
     }
 
@@ -277,13 +277,19 @@ class ShuttleServiceTests {
 
         service.releaseResourcesForIPCServices()
 
-        assertNull(service.ipcServiceMessengerDecorator)
+        assertNull(service.testMessengerDecorator)
     }
 
-    private class TestShuttleService : ShuttleService()
+    private class TestShuttleService : ShuttleService() {
+        val testBinder get() = binder
+        var testMessengerDecorator: ShuttleMessengerDecorator?
+            get() = ipcServiceMessengerDecorator
+            set(value) { ipcServiceMessengerDecorator = value }
+    }
 
     private class TestShuttleServiceWithLooper(private val looper: Looper) : ShuttleService() {
         override fun getMainLooper(): Looper = looper
+        val testMessengerDecorator get() = ipcServiceMessengerDecorator
     }
 }
 

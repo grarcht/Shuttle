@@ -22,12 +22,12 @@ open class ShuttleService : Service(), ShuttleMessageReceiver {
     /**
      * Clients use this binder for bound (local & IPC) services.
      */
-    open var binder: ShuttleBinder<ShuttleService>? = null
+    protected open var binder: ShuttleBinder<ShuttleService>? = null
 
     /**
      * Clients use this messenger to send messages to this service.
      */
-    open var ipcServiceMessengerDecorator: ShuttleMessengerDecorator? = null
+    protected open var ipcServiceMessengerDecorator: ShuttleMessengerDecorator? = null
 
     /**
      * @see [Service.onStartCommand]
