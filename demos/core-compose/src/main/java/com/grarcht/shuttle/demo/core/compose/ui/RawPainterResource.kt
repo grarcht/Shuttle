@@ -1,4 +1,4 @@
-package com.grarcht.shuttle.demo.mviwithcompose.ui
+package com.grarcht.shuttle.demo.core.compose.ui
 
 import android.content.res.Resources
 import android.util.TypedValue

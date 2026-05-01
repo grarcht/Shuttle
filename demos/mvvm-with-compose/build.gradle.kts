@@ -82,6 +82,7 @@ dependencies {
     ksp(libs.dependencyInjectionDeps.hiltCompiler)
 
     implementation(project(":demos-core-lib"))
+    implementation(project(":demos-core-compose"))
 
     // Lighter weight, independent dependencies
     implementation(project(":framework"))

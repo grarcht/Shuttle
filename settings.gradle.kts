@@ -21,15 +21,16 @@ include(":framework")
 
 // Demo Modules
 include(":demos-core-lib")
+include(":demos-core-compose")
 include(":demo-mvc")
 include(":demo-mvvm")
 include(":demo-mvvm-with-a-service")
 include(":demo-mvi-with-compose")
 include(":demo-mvvm-with-compose")
 include(":demo-mvvm-with-navigation")
-include(":demo-mvi-with-compose")
 
 project(":demos-core-lib").projectDir = File(settingsDir, "demos/core")
+project(":demos-core-compose").projectDir = File(settingsDir, "demos/core-compose")
 project(":demo-mvc").projectDir = File(settingsDir, "demos/mvc")
 project(":demo-mvvm").projectDir = File(settingsDir, "demos/mvvm")
 project(":demo-mvvm-with-a-service").projectDir = File(settingsDir, "demos/mvvm-with-a-service")

@@ -15,53 +15,42 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import com.grarcht.shuttle.demo.core.compose.ui.rawPainterResource
 import com.grarcht.shuttle.demo.core.image.BitmapDecoder
 import com.grarcht.shuttle.demo.core.image.ImageMessageType
 import com.grarcht.shuttle.demo.core.image.ImageModel
-import com.grarcht.shuttle.demo.core.io.IOResult
 import com.grarcht.shuttle.demo.core.os.getParcelableWith
 import com.grarcht.shuttle.demo.mvvmwithcompose.R
-import com.grarcht.shuttle.demo.mvvmwithcompose.ui.rawPainterResource
 import com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel.SecondViewModel
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.model.ShuttleParcelCargo
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.consumeAsFlow
-import kotlinx.coroutines.launch
 
 private const val ANIMATION_TWEEN_MILLIS = 900
-private val CIRCULAR_PROGRESS_SIZE = 50.dp
+private const val ANIMATE_FLOAT_LABEL = ""
 private const val ERROR_CONTENT_DESCRIPTION = "Failure loading the image."
+private const val INFINITE_TRANSITION_LABEL = "InfiniteTransition"
 private const val INITIAL_VALUE = 0f
 private const val SUCCESS_CONTENT_DESCRIPTION = "Successfully loaded the image."
 private const val TAG = "MVVMSecondView"
 private const val TARGET_VALUE = 1.0f
+private val CIRCULAR_PROGRESS_SIZE = 50.dp
+private val ERROR_IMAGE_ID = com.grarcht.shuttle.demo.core.R.raw.broken_soccer_ball
+private val LOADING_IMAGE_ID = com.grarcht.shuttle.demo.core.R.raw.loading
 
 class MVVMSecondView(
     private val context: Context,
     private val viewModel: SecondViewModel,
-    private val shuttle: Shuttle,
-    backgroundThreadDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val shuttle: Shuttle
 ) {
-    private val backgroundThreadScope = CoroutineScope(backgroundThreadDispatcher)
     private val bitmapDecoder = BitmapDecoder()
-    private var deferredImageLoad: Deferred<Unit>? = null
-    private var imageModel: ImageModel? = null
     private var storedCargoId: String? = null
 
     @Composable
@@ -71,35 +60,23 @@ class MVVMSecondView(
     ) {
         extractArgsFrom(savedInstanceState, extras)
 
-        Column(modifier = Modifier.systemBarsPadding()) {
-            val cargoId = storedCargoId ?: ""
-            var stateUpdate: IOResult by remember { mutableStateOf(IOResult.Loading) }
+        val cargoId = storedCargoId ?: ""
+        val pickupState by viewModel.pickupCargoState.collectAsState()
 
-            when (stateUpdate) {
-                IOResult.Unknown -> {
-                    if (cargoId.isEmpty()) {
-                        ShowErrorImage()
-                        return
-                    }
-                }
-
-                is IOResult.Error<*> -> {
-                    ShowErrorImage()
-                }
-
-                IOResult.Loading -> {
-                    ShowLoadingViews()
-                }
-
-                is IOResult.Success<*> -> {
-                    @Suppress("UNCHECKED_CAST")
-                    val imageModel = (stateUpdate as IOResult.Success<ImageModel>).data
-                    ShowSuccessImage(imageModel)
-                }
+        LaunchedEffect(cargoId) {
+            if (cargoId.isNotEmpty()) {
+                viewModel.loadImage(shuttle, cargoId)
             }
+        }
 
-            LaunchedEffect(true) {
-                getCargo(cargoId, stateUpdate = { stateUpdate = it })
+        Column(modifier = Modifier.systemBarsPadding()) {
+            when {
+                cargoId.isEmpty() || pickupState is ShuttlePickupCargoResult.Error<*> -> ShowErrorImage()
+                pickupState is ShuttlePickupCargoResult.Success<*> -> {
+                    val imageModel = (pickupState as ShuttlePickupCargoResult.Success<*>).data as? ImageModel
+                    if (imageModel != null) ShowSuccessImage(imageModel) else ShowErrorImage()
+                }
+                else -> ShowLoadingViews()
             }
         }
     }
@@ -113,36 +90,9 @@ class MVVMSecondView(
         }
     }
 
-    private fun getCargo(cargoId: String, stateUpdate: (IOResult) -> Unit) {
-        backgroundThreadScope.launch {
-            viewModel
-                .loadImage(shuttle, cargoId)
-                .consumeAsFlow()
-                .collectLatest {
-                    when (it) {
-                        is ShuttlePickupCargoResult.Loading -> {
-                            stateUpdate.invoke(IOResult.Loading)
-                        }
-
-                        is ShuttlePickupCargoResult.Success<*> -> {
-                            stateUpdate.invoke(IOResult.Success(it.data as ImageModel))
-                            cancel()
-                        }
-
-                        is ShuttlePickupCargoResult.Error<*> -> {
-                            stateUpdate.invoke(IOResult.Error(throwable = it.throwable as Throwable))
-                            cancel()
-                        }
-
-                        is ShuttlePickupCargoResult.NotPickingUpCargoYet -> {
-                            // ignore
-                        }
-                    }
-                }
-        }
-    }
-
     fun getSavedInstanceState(shuttle: Shuttle, outState: Bundle): Bundle {
+        val imageModel = (viewModel.pickupCargoState.value as? ShuttlePickupCargoResult.Success<*>)
+            ?.data as? ImageModel
         return shuttle
             .bundleCargoWith(outState)
             .logTag(TAG)
@@ -151,61 +101,50 @@ class MVVMSecondView(
     }
 
     fun cleanUpViewResources() {
-        deferredImageLoad?.cancel()
+        // State is managed by the ViewModel; nothing to release here.
     }
 
     @Composable
     private fun ShowLoadingViews() {
         Box {
-            // Background loading image
-            val imageId = com.grarcht.shuttle.demo.core.R.raw.loading
             Image(
-                rawPainterResource(id = imageId),
+                rawPainterResource(id = LOADING_IMAGE_ID),
                 contentDescription = SUCCESS_CONTENT_DESCRIPTION,
                 contentScale = ContentScale.FillBounds
             )
-
-            // Circular progress loading indicator
-            val progress by rememberInfiniteTransition(label = "InfiniteTransition").animateFloat(
+            val progress by rememberInfiniteTransition(label = INFINITE_TRANSITION_LABEL).animateFloat(
                 initialValue = INITIAL_VALUE,
                 targetValue = TARGET_VALUE,
                 animationSpec = infiniteRepeatable(animation = tween(ANIMATION_TWEEN_MILLIS)),
-                label = ""
+                label = ANIMATE_FLOAT_LABEL
             )
-            val modifier = Modifier
-                .size(CIRCULAR_PROGRESS_SIZE)
-                .align(Alignment.Center)
-
-            CircularProgressIndicator(progress = { progress }, modifier = modifier)
+            CircularProgressIndicator(
+                progress = { progress },
+                modifier = Modifier.size(CIRCULAR_PROGRESS_SIZE).align(Alignment.Center)
+            )
         }
     }
 
     @Composable
     private fun ShowSuccessImage(imageModel: ImageModel) {
-        if (this.imageModel == null) {
-            this.imageModel = imageModel
-            val bitmap = bitmapDecoder.decodeBitmap(imageModel.imageData)
-            bitmap?.let {
-                Box {
-                    Image(
-                        bitmap = it.asImageBitmap(),
-                        contentDescription = SUCCESS_CONTENT_DESCRIPTION,
-                        contentScale = ContentScale.FillBounds
-                    )
-                }
+        val bitmap = bitmapDecoder.decodeBitmap(imageModel.imageData)
+        bitmap?.let {
+            Box {
+                Image(
+                    bitmap = it.asImageBitmap(),
+                    contentDescription = SUCCESS_CONTENT_DESCRIPTION,
+                    contentScale = ContentScale.FillBounds
+                )
             }
         }
     }
 
     @Composable
     private fun ShowErrorImage() {
-        val imageId = com.grarcht.shuttle.demo.core.R.raw.broken_soccer_ball
         Image(
-            painter = rawPainterResource(id = imageId),
+            painter = rawPainterResource(id = ERROR_IMAGE_ID),
             contentDescription = ERROR_CONTENT_DESCRIPTION
         )
-
-        val errorMessage = context.resources.getString(R.string.unable_to_get_image)
-        Text(text = errorMessage)
+        Text(text = context.resources.getString(R.string.unable_to_get_image))
     }
 }

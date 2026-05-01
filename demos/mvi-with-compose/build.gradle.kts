@@ -82,6 +82,7 @@ dependencies {
     ksp(libs.dependencyInjectionDeps.hiltCompiler)
 
     implementation(project(":demos-core-lib"))
+    implementation(project(":demos-core-compose"))
 
     implementation(project(":framework"))
     implementation(project(":framework-integrations-persistence"))

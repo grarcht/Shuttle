@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.google.dagger.hilt)
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.jetbrains.kotlin.serialization)
 }
@@ -35,6 +36,8 @@ android {
 dependencies {
     implementation(libs.jetbrainsKotlinDeps.stdlib)
     implementation(libs.android.annotationJvm)
+    implementation(libs.dependencyInjectionDeps.hilt)
+    ksp(libs.dependencyInjectionDeps.hiltCompiler)
     implementation(libs.android.coreKtx)
     implementation(libs.android.lifecycle.extensions)
     implementation(libs.android.lifecycle.viewModel)

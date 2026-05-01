@@ -2,7 +2,6 @@ package com.grarcht.shuttle.demo.mvvmwithcompose.view
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,10 +15,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,17 +24,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.grarcht.shuttle.demo.core.image.ImageMessageType
-import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.core.io.IOResult
 import com.grarcht.shuttle.demo.mvvmwithcompose.R
 import com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel.FirstViewModel
 import com.grarcht.shuttle.framework.Shuttle
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.DisposableHandle
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.collectLatest
 import java.io.Serializable
 
 private val SMALL_PADDING = 8.dp
@@ -45,45 +35,40 @@ private val LARGE_PADDING = 16.dp
 private val TOP_PADDING = 64.dp
 private val BUTTON_CONTENT_PADDING = PaddingValues(SMALL_PADDING)
 private const val TAG = "MVVMFirstView"
-private const val UNABLE_TO_GET_IMAGE_BYTES_ERROR_MESSAGE = "Unable to get the image byte array."
-private const val UNABLE_TO_GET_IMAGE_MODEL_ERROR_MESSAGE = "Caught when getting the image model."
 
 class MVVMFirstView(
     private val context: Context,
     private val viewModel: FirstViewModel,
     private val shuttle: Shuttle
 ) {
-    private var imageGatewayDisposableHandle: DisposableHandle? = null
-    private var imageModel: ImageModel? = null
-
     @Composable
     fun SetViewContent() {
-        var buttonsEnabled by remember { mutableStateOf(false) }
+        val uiState by viewModel.uiState.collectAsState()
+        val buttonsEnabled = uiState is IOResult.Success<*>
+
         Box(modifier = Modifier.systemBarsPadding()) {
             TitleText()
             NavigationButtonsColumn(buttonsEnabled)
-            LaunchedEffect(true) {
-                getImageData(stateUpdate = { buttonsEnabled = it is IOResult.Success<*> })
+            LaunchedEffect(Unit) {
+                viewModel.loadImage(context.resources, com.grarcht.shuttle.demo.core.R.raw.tower)
             }
         }
     }
 
     @Composable
     private fun TitleText() {
-        val largePaddingModifier = Modifier.padding(LARGE_PADDING).fillMaxHeight().fillMaxWidth()
         Text(
             text = context.resources.getString(R.string.mvvm_first_view_title),
             style = MaterialTheme.typography.headlineMedium,
             textAlign = TextAlign.Center,
-            modifier = largePaddingModifier
+            modifier = Modifier.padding(LARGE_PADDING).fillMaxHeight().fillMaxWidth()
         )
     }
 
     @Composable
     private fun NavigationButtonsColumn(buttonsEnabled: Boolean) {
-        val largePaddingModifier = Modifier.padding(LARGE_PADDING).fillMaxHeight().fillMaxWidth()
         Column(
-            modifier = largePaddingModifier,
+            modifier = Modifier.padding(LARGE_PADDING).fillMaxHeight().fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -133,60 +118,16 @@ class MVVMFirstView(
     }
 
     fun cleanUpViewResources() {
-        imageGatewayDisposableHandle?.dispose()
-        // Ensure all persisted cargo data is removed.
         shuttle.cleanShuttleFromAllDeliveries()
-    }
-
-    private fun getImageData(stateUpdate: (IOResult) -> Unit): MVVMFirstView {
-        imageGatewayDisposableHandle = MainScope().async {
-            val imageId = com.grarcht.shuttle.demo.core.R.raw.tower
-            viewModel.getImage(context.resources, imageId)
-                .collectLatest {
-                    when (it) {
-                        is IOResult.Unknown -> {
-                            stateUpdate.invoke(IOResult.Unknown)
-                        }
-
-                        is IOResult.Loading -> {
-                            stateUpdate.invoke(IOResult.Loading)
-                        }
-
-                        is IOResult.Success<*> -> {
-                            val byteArray = it.data as ByteArray
-                            imageModel = ImageModel(ImageMessageType.ImageData.value, byteArray)
-                            stateUpdate.invoke(IOResult.Success(true))
-                            cancel()
-                        }
-
-                        is IOResult.Error<*> -> {
-                            val errorMessage = it.throwable.message ?: UNABLE_TO_GET_IMAGE_BYTES_ERROR_MESSAGE
-                            Log.e(TAG, errorMessage, it.throwable)
-                            stateUpdate.invoke(IOResult.Error(throwable = it.throwable))
-                            cancel()
-                        }
-                    }
-                }
-        }.invokeOnCompletion {
-            it?.let {
-                if (it !is CancellationException) {
-                    Log.w(TAG, UNABLE_TO_GET_IMAGE_MODEL_ERROR_MESSAGE, it)
-                }
-            }
-        }
-        return this
     }
 
     private fun navigateWithShuttle(): () -> Unit {
         return {
             val cargoId = ImageMessageType.ImageData.value
-            val startClass = MVVMFirstViewActivity::class.java
-            val destinationClass = MVVMSecondViewActivity::class.java
-
-            shuttle.intentCargoWith(context, destinationClass)
+            shuttle.intentCargoWith(context, MVVMSecondViewActivity::class.java)
                 .logTag(TAG)
-                .transport(cargoId, imageModel)
-                .cleanShuttleOnReturnTo(startClass, destinationClass, cargoId)
+                .transport(cargoId, viewModel.currentImageModel())
+                .cleanShuttleOnReturnTo(MVVMFirstViewActivity::class.java, MVVMSecondViewActivity::class.java, cargoId)
                 .deliver(context)
         }
     }
@@ -194,9 +135,8 @@ class MVVMFirstView(
     private fun navigateNormally(): () -> Unit {
         return {
             val cargoId = ImageMessageType.ImageData.value
-            val destinationClass = MVVMSecondViewActivity::class.java
-            val intent = Intent(context, destinationClass.javaClass)
-            intent.putExtra(cargoId, imageModel as Serializable)
+            val intent = Intent(context, MVVMSecondViewActivity::class.java)
+            intent.putExtra(cargoId, viewModel.currentImageModel() as Serializable)
             context.startActivity(intent)
         }
     }

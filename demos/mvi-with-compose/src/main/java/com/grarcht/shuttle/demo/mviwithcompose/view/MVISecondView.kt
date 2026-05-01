@@ -23,13 +23,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import com.grarcht.shuttle.demo.core.compose.ui.rawPainterResource
 import com.grarcht.shuttle.demo.core.image.BitmapDecoder
 import com.grarcht.shuttle.demo.core.image.ImageMessageType
 import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.core.os.getParcelableWith
 import com.grarcht.shuttle.demo.mviwithcompose.R
 import com.grarcht.shuttle.demo.mviwithcompose.intent.CargoPickupIntent
-import com.grarcht.shuttle.demo.mviwithcompose.ui.rawPainterResource
 import com.grarcht.shuttle.demo.mviwithcompose.viewmodel.SecondViewModel
 import com.grarcht.shuttle.framework.model.ShuttleParcelCargo
 
