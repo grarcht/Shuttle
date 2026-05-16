@@ -24,7 +24,7 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 /**
- * Hilt module installed in every demo app that depends on :demos-core-lib. Provides the full
+ * Hilt module installed in every demo app that depends on :demos-core-foundation. Provides the full
  * Shuttle infrastructure graph — DAO, file system gateway, data model factory, warehouse, facade,
  * and the [Shuttle] singleton — each as a discrete binding so individual pieces can be swapped
  * in isolation (e.g. during testing).

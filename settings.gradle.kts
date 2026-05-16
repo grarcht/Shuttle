@@ -30,7 +30,7 @@ project(":framework-annotations-gradle-plugin").projectDir = File(settingsDir, "
 include(":framework")
 
 // Demo Modules
-include(":demos-core-lib")
+include(":demos-core-foundation")
 include(":demos-core-compose")
 include(":demos-core-di")
 include(":demo-mvc")
@@ -41,7 +41,7 @@ include(":demo-mvvm-with-compose")
 include(":demo-mvvm-with-compose-and-navigation")
 include(":demo-mvvm-with-process-death")
 
-project(":demos-core-lib").projectDir = File(settingsDir, "demos/core/lib")
+project(":demos-core-foundation").projectDir = File(settingsDir, "demos/core/foundation")
 project(":demos-core-compose").projectDir = File(settingsDir, "demos/core/compose")
 project(":demos-core-di").projectDir = File(settingsDir, "demos/core/di")
 project(":demo-mvc").projectDir = File(settingsDir, "demos/mvc")

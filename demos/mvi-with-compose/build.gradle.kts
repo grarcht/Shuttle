@@ -81,7 +81,7 @@ dependencies {
     api(libs.dependencyInjectionDeps.hilt)
     ksp(libs.dependencyInjectionDeps.hiltCompiler)
 
-    implementation(project(":demos-core-lib"))
+    implementation(project(":demos-core-foundation"))
     implementation(project(":demos-core-di"))
     implementation(project(":demos-core-compose"))
 

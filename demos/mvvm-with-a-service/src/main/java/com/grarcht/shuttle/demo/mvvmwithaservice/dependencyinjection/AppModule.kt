@@ -25,7 +25,7 @@ import javax.inject.Singleton
 
 /**
  * Provides bindings specific to the mvvm-with-a-service demo. The core Shuttle infrastructure
- * graph (DAO, warehouse, facade, [Shuttle]) is provided by ShuttleCoreModule in :demos-core-lib.
+ * graph (DAO, warehouse, facade, [Shuttle]) is provided by ShuttleCoreModule in :demos-core-foundation.
  * This module supplies the Room config (with multi-process enabled for IPC), service connection
  * factory, visibility observable, and the remote service configuration.
  */

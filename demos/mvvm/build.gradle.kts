@@ -60,7 +60,7 @@ dependencies {
     implementation(libs.android.coreKtx)
     ksp(libs.dependencyInjectionDeps.hiltCompiler)
     implementation(libs.android.annotationJvm)
-    implementation(project(":demos-core-lib"))
+    implementation(project(":demos-core-foundation"))
     implementation(project(":demos-core-di"))
 
     // Lighter weight, independent dependencies
