@@ -46,13 +46,13 @@
             style="@style/ShuttleHeroTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SHUTTLE" />
+            android:text="@string/shuttle_title" />
 
         <TextView
             style="@style/ShuttleSubtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="transport" />
+            android:text="@string/shuttle_subtitle" />
 
         <Space
             android:layout_width="0dp"
@@ -61,6 +61,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:baselineAligned="false"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:orientation="horizontal"

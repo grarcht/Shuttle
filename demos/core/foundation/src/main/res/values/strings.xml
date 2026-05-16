@@ -5,6 +5,8 @@
     <string name="navigate_normally"> </string>
     <string name="the_app_will_crash_without_using_shuttle"> </string>
     <string name="mvc_first_view_title"> </string>
+    <string name="shuttle_title">SHUTTLE</string>
+    <string name="shuttle_subtitle">transport</string>
     <string name="transport_cargo">Transport Cargo</string>
     <string name="with_shuttle">With Shuttle</string>
     <string name="without_shuttle">Without Shuttle</string>

@@ -18,12 +18,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.snackbar.Snackbar
+import com.grarcht.shuttle.demo.core.R
 import com.grarcht.shuttle.demo.core.animation.playAnimationOverlay
 import com.grarcht.shuttle.demo.core.image.IMAGE_CARGO_ID
 import com.grarcht.shuttle.demo.core.io.IOResult
 import com.grarcht.shuttle.demo.core.view.CardWithCutoutView
 import com.grarcht.shuttle.demo.core.view.applySystemBarTopInset
-import com.grarcht.shuttle.demo.core.R
 import com.grarcht.shuttle.demo.mvvm.viewmodel.FirstViewModel
 import com.grarcht.shuttle.framework.Shuttle
 import dagger.hilt.android.AndroidEntryPoint

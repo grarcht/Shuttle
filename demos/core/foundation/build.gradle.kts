@@ -42,6 +42,7 @@ dependencies {
     implementation(libs.android.coreKtx)
     implementation(libs.android.lifecycle.extensions)
     implementation(libs.android.lifecycle.viewModel)
+    implementation(libs.android.material)
 
     implementation(project(":framework"))
     implementation(project(":framework-integrations-persistence"))

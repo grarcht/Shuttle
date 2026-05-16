@@ -19,10 +19,10 @@ import com.grarcht.shuttle.demo.core.compose.ui.DemoNavCardShuttleColor
 import com.grarcht.shuttle.demo.core.compose.ui.DemoNavRiskyButtonColor
 import com.grarcht.shuttle.demo.core.compose.ui.DemoNavShuttleButtonColor
 import com.grarcht.shuttle.demo.core.image.IMAGE_CARGO_ID
-import java.io.Serializable
 import com.grarcht.shuttle.demo.core.io.IOResult
 import com.grarcht.shuttle.demo.processdeath.viewmodel.FirstViewModel
 import com.grarcht.shuttle.framework.Shuttle
+import java.io.Serializable
 import com.grarcht.shuttle.demo.core.compose.R.string as coreString
 
 private const val LOG_TAG = "FirstView"
