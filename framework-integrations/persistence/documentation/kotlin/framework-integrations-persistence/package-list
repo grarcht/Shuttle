@@ -49,4 +49,3 @@ com.grarcht.shuttle.framework.integrations.persistence.io
 com.grarcht.shuttle.framework.integrations.persistence.io.file.factory
 com.grarcht.shuttle.framework.integrations.persistence.io.file.gateway
 com.grarcht.shuttle.framework.integrations.persistence.result
-

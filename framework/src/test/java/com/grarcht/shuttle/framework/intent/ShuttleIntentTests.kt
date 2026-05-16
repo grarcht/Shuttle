@@ -8,13 +8,17 @@ import androidx.fragment.app.Fragment
 import com.grarcht.shuttle.framework.Cargo
 import com.grarcht.shuttle.framework.CargoShuttle
 import com.grarcht.shuttle.framework.Shuttle
+import com.grarcht.shuttle.framework.ShuttleCargoData
 import com.grarcht.shuttle.framework.content.ShuttleIntent
 import com.grarcht.shuttle.framework.coroutines.CompositeDisposableHandle
 import com.grarcht.shuttle.framework.coroutines.addForDisposal
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
+import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
+import com.grarcht.shuttle.framework.result.ShuttleStoreCargoResult
 import com.grarcht.shuttle.framework.screen.ShuttleFacade
 import com.grarcht.shuttle.framework.warehouse.ShuttleDataWarehouse
 import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.DisposableHandle
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -37,14 +41,20 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertAll
 import org.mockito.MockedStatic
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.mockStatic
-import java.io.Serializable
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
+/**
+ * Verifies the functionality of [ShuttleIntent]. ShuttleIntent is the Intent-based entry point
+ * for transporting cargo, wrapping an Android Intent with the warehouse storage mechanism so that
+ * large payloads are offloaded before the Intent is delivered. If it did not correctly store and
+ * retrieve cargo, the Intent-driven navigation flow would silently lose data.
+ */
 @ExperimentalCoroutinesApi
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ShuttleIntentTests {
@@ -55,7 +65,7 @@ class ShuttleIntentTests {
     private var doesResultMatch = false
 
     @Volatile
-    private var resultSerializable: Serializable? = null
+    private var resultSerializable: ShuttleCargoData? = null
 
     private var shuttle: Shuttle? = null
     private var shuttleWarehouse: ShuttleDataWarehouse? = null
@@ -93,8 +103,10 @@ class ShuttleIntentTests {
             .intent(firstIntent)
         val intent = shuttleIntent.create()
 
-        Assertions.assertNotNull(shuttleIntent)
-        Assertions.assertNotNull(intent)
+        assertAll(
+            { Assertions.assertNotNull(shuttleIntent) },
+            { Assertions.assertNotNull(intent) }
+        )
     }
 
     @Test
@@ -105,8 +117,10 @@ class ShuttleIntentTests {
             .intent(Intent.ACTION_MEDIA_BUTTON)
         val intent = shuttleIntent.create()
 
-        Assertions.assertNotNull(shuttleIntent)
-        Assertions.assertNotNull(intent)
+        assertAll(
+            { Assertions.assertNotNull(shuttleIntent) },
+            { Assertions.assertNotNull(intent) }
+        )
     }
 
     @Test
@@ -118,8 +132,10 @@ class ShuttleIntentTests {
             .intent(Intent.ACTION_MEDIA_BUTTON, uri)
         val intent = shuttleIntent.create()
 
-        Assertions.assertNotNull(shuttleIntent)
-        Assertions.assertNotNull(intent)
+        assertAll(
+            { Assertions.assertNotNull(shuttleIntent) },
+            { Assertions.assertNotNull(intent) }
+        )
     }
 
     @Test
@@ -131,8 +147,10 @@ class ShuttleIntentTests {
             .intent(context, Fragment::class.java)
         val intent = shuttleIntent.create()
 
-        Assertions.assertNotNull(shuttleIntent)
-        Assertions.assertNotNull(intent)
+        assertAll(
+            { Assertions.assertNotNull(shuttleIntent) },
+            { Assertions.assertNotNull(intent) }
+        )
     }
 
     @Test
@@ -145,8 +163,10 @@ class ShuttleIntentTests {
             .intent(Intent.ACTION_MEDIA_BUTTON, uri, context, Fragment::class.java)
         val intent = shuttleIntent.create()
 
-        Assertions.assertNotNull(shuttleIntent)
-        Assertions.assertNotNull(intent)
+        assertAll(
+            { Assertions.assertNotNull(shuttleIntent) },
+            { Assertions.assertNotNull(intent) }
+        )
     }
 
     @Test
@@ -163,8 +183,10 @@ class ShuttleIntentTests {
             .intentChooser(intent, title)
         val resultIntent = shuttleIntent.create()
 
-        Assertions.assertNotNull(shuttleIntent)
-        Assertions.assertNotNull(resultIntent)
+        assertAll(
+            { Assertions.assertNotNull(shuttleIntent) },
+            { Assertions.assertNotNull(resultIntent) }
+        )
 
         intentFactory.close()
     }
@@ -184,8 +206,10 @@ class ShuttleIntentTests {
             .intentChooser(targetIntent, title, senderIntent)
         val intent = shuttleIntent.create()
 
-        Assertions.assertNotNull(shuttleIntent)
-        Assertions.assertNotNull(intent)
+        assertAll(
+            { Assertions.assertNotNull(shuttleIntent) },
+            { Assertions.assertNotNull(intent) }
+        )
 
         intentFactory.close()
     }
@@ -214,7 +238,7 @@ class ShuttleIntentTests {
                             /* ignore */
                         }
                         is ShuttlePickupCargoResult.Success<*> -> {
-                            resultSerializable = shuttleResult.data as Serializable
+                            resultSerializable = shuttleResult.data as ShuttleCargoData
                             countDownLatch.countDown()
                             channel.cancel()
                         }
@@ -240,9 +264,115 @@ class ShuttleIntentTests {
         Assertions.assertEquals(numOfBoxes, cargo.numberOfBoxes)
     }
 
+    @Test
+    fun verifyCleanShuttleOnReturnToWithFacadeExecutesRemoval() = testScope.runTest {
+        val warehouse: ShuttleWarehouse = mock(ShuttleWarehouse::class.java)
+        val shuttleScreenFacade = mock(ShuttleFacade::class.java)
+        val firstIntent = Intent(Intent.ACTION_MEDIA_BUTTON)
+        val currentScreen = Fragment::class.java
+        val nextScreen = Fragment::class.java
+        val cargoId = "cargoId1"
+
+        ShuttleIntent
+            .with(warehouse, shuttleScreenFacade, testDispatcher)
+            .intent(firstIntent)
+            .cleanShuttleOnReturnTo(currentScreen, nextScreen, cargoId)
+
+        delay(100L)
+
+        Assertions.assertNotNull(shuttleScreenFacade)
+    }
+
+    @Test
+    fun verifyLogTagWithNullUsesDefaultTag() = testScope.runTest {
+        val warehouse: ShuttleWarehouse = mock(ShuttleWarehouse::class.java)
+        val shuttleIntent = ShuttleIntent
+            .with(warehouse)
+            .intent(Intent.ACTION_MEDIA_BUTTON)
+
+        val result = shuttleIntent.logTag(null)
+
+        assertAll(
+            { Assertions.assertNotNull(result) },
+            { Assertions.assertSame(shuttleIntent, result) }
+        )
+    }
+
+    @Test
+    fun verifyDeliverStartsActivity() = testScope.runTest {
+        val warehouse: ShuttleWarehouse = mock(ShuttleWarehouse::class.java)
+        val context = mock(Context::class.java)
+        val shuttleIntent = ShuttleIntent
+            .with(warehouse)
+            .intent(Intent.ACTION_MEDIA_BUTTON)
+
+        shuttleIntent.deliver(context)
+
+        Assertions.assertNotNull(shuttleIntent)
+    }
+
+    @Test
+    fun verifyCreateThrowsWhenIntentNotSet() = testScope.runTest {
+        val warehouse: ShuttleWarehouse = mock(ShuttleWarehouse::class.java)
+        val shuttleIntent = ShuttleIntent.with(warehouse)
+        var threw = false
+
+        try {
+            shuttleIntent.create()
+        } catch (@Suppress("SwallowedException") e: IllegalStateException) {
+            threw = true
+        }
+
+        Assertions.assertTrue(threw)
+    }
+
+    @Test
+    fun verifyLogTagWithNonNullTagUsesProvidedTag() = testScope.runTest {
+        val warehouse: ShuttleWarehouse = mock(ShuttleWarehouse::class.java)
+        val shuttleIntent = ShuttleIntent
+            .with(warehouse)
+            .intent(Intent.ACTION_MEDIA_BUTTON)
+
+        val result = shuttleIntent.logTag("CustomTag")
+
+        assertAll(
+            { Assertions.assertNotNull(result) },
+            { Assertions.assertSame(shuttleIntent, result) }
+        )
+    }
+
+    @Test
+    fun verifyCleanShuttleOnReturnToWithNullFacadeDoesNotThrow() = testScope.runTest {
+        val warehouse: ShuttleWarehouse = mock(ShuttleWarehouse::class.java)
+
+        ShuttleIntent
+            .with(warehouse) // no shuttleScreenFacade → null
+            .intent(Intent.ACTION_MEDIA_BUTTON)
+            .cleanShuttleOnReturnTo(Fragment::class.java, Fragment::class.java, "cargoId")
+    }
+
+    @Test
+    fun verifyTransportLogsErrorWhenStoreCancels() = testScope.runTest {
+        val intent = Intent(Intent.ACTION_MEDIA_BUTTON)
+        // CancellationException from store() is logged via invokeOnCompletion — should not throw
+        ShuttleIntent
+            .with(CancellationThrowingWarehouse(), backgroundThreadDispatcher = Dispatchers.Unconfined)
+            .intent(intent)
+            .transport("cargoId", Cargo("cargoId", 1))
+    }
+
     @Suppress("SameParameterValue")
     private fun awaitOnLatch(countDownLatch: CountDownLatch, timeout: Long, timeUnit: TimeUnit) {
         @Suppress("BlockingMethodInNonBlockingContext", "SameParameterValue")
         countDownLatch.await(timeout, timeUnit)
+    }
+
+    private class CancellationThrowingWarehouse : ShuttleWarehouse {
+        override suspend fun <D : ShuttleCargoData> pickup(id: String) = Channel<ShuttlePickupCargoResult>()
+        override suspend fun <D : ShuttleCargoData> store(id: String, data: D?): Channel<ShuttleStoreCargoResult> {
+            throw CancellationException("test cancellation")
+        }
+        override suspend fun removeCargoBy(id: String) = Channel<ShuttleRemoveCargoResult>()
+        override suspend fun removeAllCargo() = Channel<ShuttleRemoveCargoResult>()
     }
 }

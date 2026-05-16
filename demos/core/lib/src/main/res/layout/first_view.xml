@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/sliver_overlap_negative"
+        android:layout_marginBottom="@dimen/sliver_overlap_negative"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/shuttle_bg" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/sliver_overlap_negative"
+        android:layout_marginBottom="@dimen/sliver_overlap_negative"
+        android:background="@color/colorScrim" />
+
+    <LinearLayout
+        android:id="@+id/content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/spacing_top">
+
+        <TextView
+            android:id="@+id/first_view_title_text"
+            style="@style/ArchitecturePill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="@dimen/spacing_pill_to_title" />
+
+        <TextView
+            style="@style/ShuttleHeroTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SHUTTLE" />
+
+        <TextView
+            style="@style/ShuttleSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="transport" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="@dimen/spacing_subtitle_to_cards" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/cards_horizontal_padding"
+            android:paddingEnd="@dimen/cards_horizontal_padding">
+
+            <!-- Shuttle card container: outer FrameLayout holds card + play button -->
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/cards_horizontal_gap"
+                android:layout_weight="1"
+                android:clipChildren="false"
+                android:clipToPadding="false">
+
+                <com.grarcht.shuttle.demo.core.view.CardWithCutoutView
+                    android:id="@+id/shuttle_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/card_play_button_inset">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/card_image_height"
+                            android:layout_margin="@dimen/card_image_inset"
+                            android:contentDescription="@null"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/workingtruck"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearance.Card.Image" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="@dimen/card_content_padding">
+
+                            <TextView
+                                style="@style/CardEyebrowText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/transport_cargo" />
+
+                            <Space
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/card_text_gap_sm" />
+
+                            <TextView
+                                style="@style/CardSubtitleText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/with_shuttle" />
+
+                            <Space
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/card_text_gap_sm" />
+
+                            <TextView
+                                style="@style/CardTitleText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/avoid_crashes" />
+
+                            <Space
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/card_text_gap_lg" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/nav_with_shuttle_button"
+                                style="@style/CardButton.Shuttle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:enabled="false"
+                                android:text="@string/go" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.grarcht.shuttle.demo.core.view.CardWithCutoutView>
+
+                <!-- Play button sits on top-right cutout, outside the clipped card -->
+                <ImageView
+                    android:id="@+id/preview_shuttle_button"
+                    android:layout_width="@dimen/play_button_size"
+                    android:layout_height="@dimen/play_button_size"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="@dimen/play_button_margin_top"
+                    android:layout_marginEnd="@dimen/play_button_margin_end"
+                    android:background="@drawable/bg_play_button"
+                    android:contentDescription="@string/see_it_in_action"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_play" />
+
+            </FrameLayout>
+
+            <!-- Risky card container: outer FrameLayout holds card + play button -->
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clipChildren="false"
+                android:clipToPadding="false">
+
+                <com.grarcht.shuttle.demo.core.view.CardWithCutoutView
+                    android:id="@+id/risky_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/card_play_button_inset">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/card_image_height"
+                            android:layout_margin="@dimen/card_image_inset"
+                            android:contentDescription="@null"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/brokentruck"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearance.Card.Image" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="@dimen/card_content_padding">
+
+                            <TextView
+                                style="@style/CardEyebrowText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/transport_cargo" />
+
+                            <Space
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/card_text_gap_sm" />
+
+                            <TextView
+                                style="@style/CardSubtitleText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/without_shuttle" />
+
+                            <Space
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/card_text_gap_sm" />
+
+                            <TextView
+                                style="@style/CardTitleText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/risk_it" />
+
+                            <Space
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/card_text_gap_lg" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/nav_without_shuttle_button"
+                                style="@style/CardButton.Risky"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:enabled="false"
+                                android:text="@string/go_ahead_try_it" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.grarcht.shuttle.demo.core.view.CardWithCutoutView>
+
+                <!-- Play button sits on top-right cutout, outside the clipped card -->
+                <ImageView
+                    android:id="@+id/preview_without_shuttle_button"
+                    android:layout_width="@dimen/play_button_size"
+                    android:layout_height="@dimen/play_button_size"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="@dimen/play_button_margin_top"
+                    android:layout_marginEnd="@dimen/play_button_margin_end"
+                    android:background="@drawable/bg_play_button"
+                    android:contentDescription="@string/see_what_happens"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_play" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical">
+
+            <TextView
+                style="@style/TaglineText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/tagline_start_padding"
+                android:paddingBottom="@dimen/tagline_bottom_padding"
+                android:text="@string/tagline" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

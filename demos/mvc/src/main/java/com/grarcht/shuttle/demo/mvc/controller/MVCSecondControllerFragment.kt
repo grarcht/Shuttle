@@ -10,44 +10,40 @@ import android.widget.ImageView
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.grarcht.shuttle.demo.core.R
 import com.grarcht.shuttle.demo.core.image.BitmapDecoder
-import com.grarcht.shuttle.demo.core.image.ImageMessageType
+import com.grarcht.shuttle.demo.core.image.IMAGE_CARGO_ID
 import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.core.os.getParcelableWith
-import com.grarcht.shuttle.demo.mvc.R
+import com.grarcht.shuttle.demo.core.view.applyBiasedCrop
+import com.grarcht.shuttle.demo.core.view.applyNavBarInsetToCard
+import com.grarcht.shuttle.demo.core.view.hideLoadingView
+import com.grarcht.shuttle.demo.core.view.setImageSizeText
+import com.grarcht.shuttle.demo.core.view.showErrorView
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.model.ShuttleParcelCargo
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import java.io.Serializable
 import javax.inject.Inject
 
-private const val ANIMATION_DURATION = 750L
-private const val FADE_OUT_END_ALPHA = 0F
-private const val FADE_OUT_START_ALPHA = 1F
-private const val FADE_IN_START_ALPHA = 0F
 private const val LOG_TAG = "MVCSecondControllerFragment"
 
 @AndroidEntryPoint
 class MVCSecondControllerFragment : Fragment() {
-    private val bitmapDecoder = BitmapDecoder()
     private lateinit var contentLoadingProgressBar: ContentLoadingProgressBar
     private var hideLoadingViewAnimator: ObjectAnimator? = null
-    var imageModel: ImageModel? = null
-    var storedCargoId: String? = null
+    private var imageModel: ImageModel? = null
+    private var storedCargoId: String? = null
 
     @Inject
     lateinit var shuttle: Shuttle
-    private var deferredImageLoad: Deferred<Unit>? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.second_fragment, container, false)
+        return inflater.inflate(R.layout.second_view, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,13 +57,13 @@ class MVCSecondControllerFragment : Fragment() {
         // crash during transactions with saving and restoring states.
         val outStateShuttleBundle = shuttle.bundleCargoWith(outState)
             .logTag(LOG_TAG)
-            .transport(ImageMessageType.ImageData.value, imageModel)
+            .transport(IMAGE_CARGO_ID, imageModel)
             .create()
         super.onSaveInstanceState(outStateShuttleBundle)
     }
 
     override fun onDestroyView() {
-        deferredImageLoad?.cancel()
+        hideLoadingViewAnimator?.cancel()
         contentLoadingProgressBar.hide()
         super.onDestroyView()
     }
@@ -76,18 +72,25 @@ class MVCSecondControllerFragment : Fragment() {
         val bundle: Bundle? = savedInstanceState ?: arguments
         bundle?.let {
             val cargo: ShuttleParcelCargo? =
-                it.getParcelableWith(ImageMessageType.ImageData.value, ShuttleParcelCargo::class.java)
+                it.getParcelableWith(IMAGE_CARGO_ID, ShuttleParcelCargo::class.java)
             storedCargoId = cargo?.cargoId
         }
     }
 
     private fun loadImageModel() {
-        if (null != imageModel) {
-            showSuccessView(view, imageModel as ImageModel)
+        imageModel?.let {
+            showSuccessView(view, it)
             return
         }
-        lifecycleScope.launch {
-            getShuttleChannel()
+
+        val cargoId = storedCargoId ?: ""
+        if (cargoId.isEmpty()) {
+            hideLoadingViewAnimator = showErrorView(view)
+            return
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            shuttle.pickupCargo<ImageModel>(cargoId = cargoId)
                 .consumeAsFlow()
                 .collectLatest { shuttleResult ->
                     when (shuttleResult) {
@@ -96,12 +99,14 @@ class MVCSecondControllerFragment : Fragment() {
                         }
 
                         is ShuttlePickupCargoResult.Success<*> -> {
-                            showSuccessView(view, shuttleResult.data as ImageModel)
+                            val model = shuttleResult.data as? ImageModel ?: return@collectLatest
+                            imageModel = model
+                            showSuccessView(view, model)
                             cancel()
                         }
 
                         is ShuttlePickupCargoResult.Error<*> -> {
-                            showErrorView(view)
+                            view?.let { hideLoadingViewAnimator = showErrorView(it) }
                             cancel()
                         }
 
@@ -113,59 +118,21 @@ class MVCSecondControllerFragment : Fragment() {
         }
     }
 
-    private suspend fun getShuttleChannel(): Channel<ShuttlePickupCargoResult> {
-        val cargoId = storedCargoId ?: ImageMessageType.ImageData.value
-        return shuttle.pickupCargo<Serializable>(cargoId = cargoId)
-    }
-
     private fun initLoadingView(view: View) {
         contentLoadingProgressBar = view.findViewById(R.id.loading_indicator)
         contentLoadingProgressBar.show()
     }
 
-    private fun hideLoadingView(view: View?, viewToFadeIn: View?) {
-        val loadingLayout = view?.findViewById<FrameLayout>(R.id.loadingLayout)
-        hideLoadingViewAnimator = ObjectAnimator.ofFloat(
-            loadingLayout,
-            View.ALPHA,
-            FADE_OUT_START_ALPHA,
-            FADE_OUT_END_ALPHA
-        )
-        hideLoadingViewAnimator?.duration = ANIMATION_DURATION
-        hideLoadingViewAnimator?.addUpdateListener { animation ->
-            val animatedValue: Float = animation.animatedValue as? Float ?: FADE_OUT_END_ALPHA
-            viewToFadeIn?.alpha = FADE_OUT_START_ALPHA - animatedValue
-
-            if (animatedValue == FADE_OUT_END_ALPHA) {
-                loadingLayout?.visibility = View.GONE
-                hideLoadingViewAnimator?.removeAllUpdateListeners()
-            }
-        }
-        hideLoadingViewAnimator?.start()
-    }
-
-    private fun showErrorView(view: View?) {
-        val errorLayout = view?.findViewById<FrameLayout>(R.id.errorLayout)
-        errorLayout?.apply {
-            alpha = FADE_IN_START_ALPHA
-            visibility = View.VISIBLE
-        }
-        hideLoadingView(view, errorLayout)
-    }
-
     private fun showSuccessView(view: View?, imageModel: ImageModel) {
         this.imageModel = imageModel
-
-        val imageView = view?.findViewById<ImageView>(R.id.retrievedImage)
-        imageView?.let { image ->
-            image.alpha = FADE_IN_START_ALPHA
-            image.visibility = View.VISIBLE
-
-            val bitmap = bitmapDecoder.decodeBitmap(imageModel.imageData)
-            bitmap?.let {
-                image.setImageBitmap(it)
-                hideLoadingView(view, imageView)
-            }
-        }
+        val successLayout = view?.findViewById<FrameLayout>(R.id.successLayout) ?: return
+        val imageView = successLayout.findViewById<ImageView>(R.id.retrievedImage)
+        val bitmap = BitmapDecoder.decodeBitmap(imageModel.imageData) ?: return
+        applyBiasedCrop(imageView, bitmap)
+        setImageSizeText(successLayout, imageModel.imageData.size.toLong())
+        applyNavBarInsetToCard(successLayout)
+        successLayout.alpha = 0f
+        successLayout.visibility = View.VISIBLE
+        hideLoadingViewAnimator = hideLoadingView(view, successLayout)
     }
 }

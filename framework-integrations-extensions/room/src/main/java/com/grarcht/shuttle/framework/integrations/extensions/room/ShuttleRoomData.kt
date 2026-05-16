@@ -3,6 +3,7 @@ package com.grarcht.shuttle.framework.integrations.extensions.room
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.grarcht.shuttle.framework.ShuttleCargoData
 import com.grarcht.shuttle.framework.integrations.persistence.datamodel.ShuttleDataModel
 
 // The column for the key used to look up corresponding blobs
@@ -27,6 +28,10 @@ open class ShuttleRoomData(
 
     @ColumnInfo(name = COLUMN_FILEPATH, typeAffinity = ColumnInfo.TEXT)
     override var filePath: String = ""
-) : ShuttleDataModel {
+) : ShuttleCargoData, ShuttleDataModel {
     constructor() : this("", "")
+
+    companion object {
+        private const val serialVersionUID: Long = 5788869818072013261L
+    }
 }

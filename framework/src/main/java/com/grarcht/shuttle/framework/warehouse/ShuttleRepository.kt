@@ -3,6 +3,7 @@
 package com.grarcht.shuttle.framework.warehouse
 
 import android.os.Parcelable
+import com.grarcht.shuttle.framework.ShuttleCargoData
 import com.grarcht.shuttle.framework.integrations.persistence.ShuttleDataAccessObject
 import com.grarcht.shuttle.framework.integrations.persistence.ShuttleDataAccessObject.Companion.REMOVE_CARGO_FAILED
 import com.grarcht.shuttle.framework.integrations.persistence.ShuttleDataAccessObject.Companion.STORE_CARGO_FAILED
@@ -14,7 +15,6 @@ import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
 import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult.Companion.ALL_CARGO
 import com.grarcht.shuttle.framework.result.ShuttleStoreCargoResult
 import kotlinx.coroutines.channels.Channel
-import java.io.Serializable
 import java.sql.SQLException
 
 private const val CARGO_DIRECTORY_SEGMENT = "/cargo/"
@@ -41,19 +41,19 @@ open class ShuttleRepository(
      * @return the channel for the results
      */
     @Suppress("unused")
-    override suspend fun <D : Serializable> pickup(cargoId: String): Channel<ShuttlePickupCargoResult> {
+    override suspend fun <D : ShuttleCargoData> pickup(cargoId: String): Channel<ShuttlePickupCargoResult> {
         val pickupCargoChannel = Channel<ShuttlePickupCargoResult>(PICKUP_CARGO_CHANNEL_CAPACITY)
         pickupCargoChannel.send(ShuttlePickupCargoResult.Loading(cargoId))
 
         pickupCargoChannel.apply {
             val shuttleDataModel = shuttleDao.getCargoBy(cargoId)
-            if (null == shuttleDataModel) {
+            if (shuttleDataModel == null) {
                 val errorMessage = "Result unavailable for cargoId: $cargoId"
                 pickupCargoChannel.send(ShuttlePickupCargoResult.Error<Throwable>(cargoId, errorMessage))
             } else {
                 val blob = shuttleFileSystemGateway.readFromFile(shuttleDataModel.filePath)
 
-                if (null == blob) {
+                if (blob == null) {
                     val errorMessage = "Unable to retrieve result for cargoId: $cargoId"
                     pickupCargoChannel.send(ShuttlePickupCargoResult.Error<Throwable>(cargoId, errorMessage))
                 } else {
@@ -69,11 +69,11 @@ open class ShuttleRepository(
      * @param cargoId Used to get the cargo.
      * @param data The [Parcelable] cargo to store.
      */
-    override suspend fun <D : Serializable> store(cargoId: String, data: D?): Channel<ShuttleStoreCargoResult> {
+    override suspend fun <D : ShuttleCargoData> store(cargoId: String, data: D?): Channel<ShuttleStoreCargoResult> {
         val storeCargoChannel = Channel<ShuttleStoreCargoResult>(STORE_CARGO_CHANNEL_CAPACITY)
         storeCargoChannel.send(ShuttleStoreCargoResult.Storing(cargoId))
 
-        if (null == data) {
+        if (data == null) {
             val errorMessage = "The cargo is null."
             val result = ShuttleStoreCargoResult.Error<Throwable>(cargoId, errorMessage)
             storeCargoChannel.send(result)
@@ -82,9 +82,9 @@ open class ShuttleRepository(
 
         storeCargoChannel.apply {
             val directoryName = appFileDirectoryPath + CARGO_DIRECTORY_SEGMENT
-            val filePath = shuttleFileSystemGateway.writeToFile(directoryName, cargoId, data as Serializable)
+            val filePath = shuttleFileSystemGateway.writeToFile(directoryName, cargoId, data)
 
-            if (null == filePath) {
+            if (filePath == null) {
                 val errorMessage = "File path is null for cargoId: $cargoId."
                 val storeResult = ShuttleStoreCargoResult.Error<Throwable>(cargoId, errorMessage)
                 storeCargoChannel.send(storeResult)
@@ -94,7 +94,7 @@ open class ShuttleRepository(
                 try {
                     val insertValue = shuttleDao.insertCargo(shuttleDataModel)
 
-                    val storeResult = if (STORE_CARGO_FAILED != insertValue) {
+                    val storeResult = if (insertValue != STORE_CARGO_FAILED) {
                         ShuttleStoreCargoResult.Success(cargoId)
                     } else {
                         ShuttleStoreCargoResult.Error<Throwable>(cargoId)
@@ -138,7 +138,7 @@ open class ShuttleRepository(
                     is ShuttlePersistenceRemoveCargoResult.Removed -> {
                         val returnValue = shuttleDao.deleteCargoBy(cargoId)
 
-                        if (REMOVE_CARGO_FAILED != returnValue) {
+                        if (returnValue != REMOVE_CARGO_FAILED) {
                             val result = ShuttleRemoveCargoResult.Removed(cargoId)
                             removeCargoChannel.send(result)
                         } else {
@@ -184,7 +184,7 @@ open class ShuttleRepository(
                     is ShuttlePersistenceRemoveCargoResult.Removed -> {
                         val returnValue = shuttleDao.deleteAllCargoData()
 
-                        if (REMOVE_CARGO_FAILED != returnValue) {
+                        if (returnValue != REMOVE_CARGO_FAILED) {
                             val result = ShuttleRemoveCargoResult.Removed(ALL_CARGO)
                             removeCargoChannel.send(result)
                         } else {

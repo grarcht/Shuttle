@@ -39,6 +39,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertAll
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito
 import org.mockito.Mockito.doAnswer
@@ -46,12 +47,23 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.spy
 import java.io.File
-import java.io.Serializable
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 private const val CARGO_FILE_PATH = "/cargo"
+private const val CARGO_ID = "cargoId1"
+private const val CARGO_BOX_COUNT = 10
+private const val TEST_TITLE = "Test Title"
+private const val NO_CARGO = "no cargo"
+private const val INVOCATION_ERROR_MSG = "Error when getting the serializable."
+private const val TRANSPORT_DELAY_MS = 1000L
 
+/**
+ * Verifies the functionality of [CargoShuttle]. CargoShuttle is the central implementation of the
+ * Shuttle interface, responsible for transporting large Serializable payloads between screens via
+ * the warehouse rather than through Intent extras. Without it, the entire cargo transport,
+ * pickup, and cleanup pipeline would be broken.
+ */
 @ExperimentalCoroutinesApi
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(ArchtTestTaskExecutorExtension::class)
@@ -92,6 +104,28 @@ class CargoShuttleTests {
         val shuttleBundle = shuttle?.bundleCargoWith(bundle, bundleFactory)
 
         Assertions.assertNotNull(shuttleBundle)
+    }
+
+    @Test
+    fun verifyBundleCargoWithNullBundleFactoryUsesDefaultFactory() = testScope.runTest {
+        val bundle = MockBundleFactory().create()
+        val shuttleBundle = shuttle?.bundleCargoWith(bundle, bundleFactory = null)
+
+        Assertions.assertNotNull(shuttleBundle)
+    }
+
+    @Test
+    fun verifyBundleCargoWithNoArgsUsesDefaults() = testScope.runTest {
+        // Calling with no arguments exercises the default parameter bridge method
+        val shuttleBundle = shuttle?.bundleCargoWith()
+
+        Assertions.assertNotNull(shuttleBundle)
+    }
+
+    @Test
+    fun verifyCleanShuttleFromAllDeliveriesWithNoReceiverUsesNullDefault() = testScope.runTest {
+        // Calling without receiver argument exercises the default parameter bridge method
+        shuttle?.cleanShuttleFromAllDeliveries()
     }
 
     @Test
@@ -142,19 +176,17 @@ class CargoShuttleTests {
 
     @Test
     fun verifyIntentChooserCargoWithTargetAndTitleReturnsAShuttleIntent() = testScope.runTest {
-        val title = "Test Title"
         val intent = Intent(Intent.ACTION_MEDIA_BUTTON)
-        val shuttleIntent = shuttle?.intentChooserCargoWith(intent, title)
+        val shuttleIntent = shuttle?.intentChooserCargoWith(intent, TEST_TITLE)
 
         Assertions.assertNotNull(shuttleIntent)
     }
 
     @Test
     fun verifyIntentChooserCargoWithTargetTitleAndSenderReturnsAShuttleIntent() = testScope.runTest {
-        val title = "Test Title"
         val intent = Intent(Intent.ACTION_MEDIA_BUTTON)
         val sender = mock(IntentSender::class.java)
-        val shuttleIntent = shuttle?.intentChooserCargoWith(intent, title, sender)
+        val shuttleIntent = shuttle?.intentChooserCargoWith(intent, TEST_TITLE, sender)
 
         Assertions.assertNotNull(shuttleIntent)
     }
@@ -163,9 +195,9 @@ class CargoShuttleTests {
     fun verifyPickupCargoSucceedsWithSuccessfulStore() = testScope.runTest {
         val dao = mock(ShuttleDataAccessObject::class.java)
         val fileSystemGateway = mock(ShuttleFileSystemGateway::class.java)
-        val cargoId = "cargoId1"
-        val cargo = Cargo(cargoId, 10)
-        val filePath = "/cargo/$cargoId"
+        val cargoId = CARGO_ID
+        val cargo = Cargo(cargoId, CARGO_BOX_COUNT)
+        val filePath = "$CARGO_FILE_PATH/$cargoId"
         var storedId = ""
         val countDownLatch = CountDownLatch(1)
 
@@ -177,7 +209,7 @@ class CargoShuttleTests {
             ?.transport(cargoId, cargo)
             ?.create()
 
-        delay(1000L)
+        delay(TRANSPORT_DELAY_MS)
 
         launch(Dispatchers.Main) {
             val channel: Channel<ShuttlePickupCargoResult>? = shuttle?.pickupCargo<Cargo>(cargoId)
@@ -207,7 +239,7 @@ class CargoShuttleTests {
                 }
         }.invokeOnCompletion {
             it?.let {
-                println(it.message ?: "Error when getting the serializable.")
+                println(it.message ?: INVOCATION_ERROR_MSG)
             }
         }.addForDisposal(compositeDisposableHandle)
 
@@ -218,8 +250,8 @@ class CargoShuttleTests {
 
     @Test
     fun verifyCargoRemovalOnReturnToScreen() = testScope.runTest {
-        val cargoId = "cargoId1"
-        val cargo = Cargo(cargoId, 10)
+        val cargoId = CARGO_ID
+        val cargo = Cargo(cargoId, CARGO_BOX_COUNT)
         val firstScreenClass = TestActivity::class.java
         val nextScreen = TestActivity2()
         val nextScreenClass = nextScreen::class.java
@@ -229,7 +261,6 @@ class CargoShuttleTests {
         val facade = spy(ShuttleCargoFacade(application, warehouse, handler))
         val screenCallback = spy(facade.screenCallback)
         val cargoShuttle = CargoShuttle(facade, warehouse)
-        val noCargo = "no cargo"
         var storeId = ""
         var channel: Channel<ShuttlePickupCargoResult>?
         val countDownLatch = CountDownLatch(3)
@@ -261,7 +292,7 @@ class CargoShuttleTests {
                         }
 
                         is ShuttlePickupCargoResult.Error<*> -> {
-                            storeId = noCargo
+                            storeId = NO_CARGO
                             countDownLatch.countDown()
                             cancel()
                         }
@@ -273,27 +304,26 @@ class CargoShuttleTests {
                 }
         }.invokeOnCompletion {
             it?.let {
-                println(it.message ?: "Error when getting the serializable.")
+                println(it.message ?: INVOCATION_ERROR_MSG)
             }
         }.addForDisposal(compositeDisposableHandle)
 
         awaitOnLatch(countDownLatch, 1, TimeUnit.SECONDS)
 
-        Assertions.assertEquals(noCargo, storeId)
+        Assertions.assertEquals(NO_CARGO, storeId)
     }
 
     // This suppression is okay.  This test requires more functionality.
     @Suppress("LongMethod")
     @Test
     fun verifyCargoRemovalOnCleanShuttleFromDeliveryFor() = testScope.runTest {
-        val cargoId = "cargoId1"
-        val cargo = Cargo(cargoId, 10)
+        val cargoId = CARGO_ID
+        val cargo = Cargo(cargoId, CARGO_BOX_COUNT)
         val application = mock(Application::class.java)
         val warehouse = ShuttleDataWarehouse()
         val handler = mock(Handler::class.java)
         val facade = spy(ShuttleCargoFacade(application, warehouse, handler))
         val cargoShuttle = CargoShuttle(facade, warehouse)
-        val noCargo = "no cargo"
         var storeId = ""
         var channel: Channel<ShuttlePickupCargoResult>?
         var numberOfValidSteps = 0
@@ -302,7 +332,7 @@ class CargoShuttleTests {
         cargoShuttle
             .intentCargoWith(Intent.ACTION_MEDIA_BUTTON)
             .transport(cargoId, cargo)
-        delay(1000L)
+        delay(TRANSPORT_DELAY_MS)
         runHandler(handler)
 
         val removeCargoReceiverChannel = Channel<ShuttleRemoveCargoResult>()
@@ -338,15 +368,13 @@ class CargoShuttleTests {
                 }
         }.invokeOnCompletion {
             it?.let {
-                println(it.message ?: "Error when getting the serializable.")
+                println(it.message ?: INVOCATION_ERROR_MSG)
             }
         }.addForDisposal(compositeDisposableHandle)
 
-        awaitOnLatch(countDownLatch, 500, TimeUnit.MILLISECONDS)
-
         cargoShuttle.cleanShuttleFromDeliveryFor(cargoId, removeCargoReceiverChannel)
 
-        delay(1000L)
+        awaitOnLatch(countDownLatch, 2, TimeUnit.SECONDS)
         countDownLatch = CountDownLatch(1)
 
         launch(Dispatchers.Main) {
@@ -365,7 +393,7 @@ class CargoShuttleTests {
                         }
 
                         is ShuttlePickupCargoResult.Error<*> -> {
-                            storeId = noCargo
+                            storeId = NO_CARGO
                             countDownLatch.countDown()
                             cancel()
                         }
@@ -377,28 +405,29 @@ class CargoShuttleTests {
                 }
         }.invokeOnCompletion {
             it?.let {
-                println(it.message ?: "Error when getting the serializable.")
+                println(it.message ?: INVOCATION_ERROR_MSG)
             }
         }.addForDisposal(compositeDisposableHandle)
 
         awaitOnLatch(countDownLatch, 1, TimeUnit.SECONDS)
 
-        Assertions.assertEquals(noCargo, storeId)
-        Assertions.assertEquals(2, numberOfValidSteps)
+        assertAll(
+            { Assertions.assertEquals(NO_CARGO, storeId) },
+            { Assertions.assertEquals(2, numberOfValidSteps) }
+        )
     }
 
     // This suppression is okay.  This test requires more functionality.
     @Suppress("LongMethod")
     @Test
     fun verifyCargoRemovalOnCleanShuttleFromAllDeliveries() = testScope.runTest {
-        val cargoId = "cargoId1"
-        val cargo = Cargo(cargoId, 10)
+        val cargoId = CARGO_ID
+        val cargo = Cargo(cargoId, CARGO_BOX_COUNT)
         val application = mock(Application::class.java)
         val warehouse = ShuttleDataWarehouse()
         val handler = mock(Handler::class.java)
         val facade = spy(ShuttleCargoFacade(application, warehouse, handler))
         val cargoShuttle = CargoShuttle(facade, warehouse)
-        val noCargo = "no cargo"
         var storeId = ""
         var channel: Channel<ShuttlePickupCargoResult>?
         var numberOfValidSteps = 0
@@ -408,7 +437,7 @@ class CargoShuttleTests {
         cargoShuttle
             .intentCargoWith(Intent.ACTION_MEDIA_BUTTON)
             .transport(cargoId, cargo)
-        delay(1000L)
+        delay(TRANSPORT_DELAY_MS)
         runHandler(handler)
 
         // Remove the cargo
@@ -445,7 +474,7 @@ class CargoShuttleTests {
                 }
         }.invokeOnCompletion {
             it?.let {
-                println(it.message ?: "Error when getting the serializable.")
+                println(it.message ?: INVOCATION_ERROR_MSG)
             }
         }.addForDisposal(compositeDisposableHandle)
 
@@ -454,7 +483,7 @@ class CargoShuttleTests {
         // Remove all of the cargo
         cargoShuttle.cleanShuttleFromAllDeliveries(removeCargoReceiverChannel)
 
-        delay(1000L)
+        delay(TRANSPORT_DELAY_MS)
         countDownLatch = CountDownLatch(1)
 
         // Verify the lack of cargo by picking it up
@@ -473,7 +502,7 @@ class CargoShuttleTests {
                         }
 
                         is ShuttlePickupCargoResult.Error<*> -> {
-                            storeId = noCargo
+                            storeId = NO_CARGO
                             countDownLatch.countDown()
                             cancel()
                         }
@@ -485,14 +514,16 @@ class CargoShuttleTests {
                 }
         }.invokeOnCompletion {
             it?.let {
-                println(it.message ?: "Error when getting the serializable.")
+                println(it.message ?: INVOCATION_ERROR_MSG)
             }
         }.addForDisposal(compositeDisposableHandle)
 
         awaitOnLatch(countDownLatch, 1, TimeUnit.SECONDS)
 
-        Assertions.assertEquals(noCargo, storeId)
-        Assertions.assertEquals(2, numberOfValidSteps)
+        assertAll(
+            { Assertions.assertEquals(NO_CARGO, storeId) },
+            { Assertions.assertEquals(2, numberOfValidSteps) }
+        )
     }
 
     private fun runHandler(handler: Handler) {
@@ -510,7 +541,7 @@ class CargoShuttleTests {
     }
 
     private data class CargoDataModel(override val cargoId: String, override val filePath: String) : ShuttleDataModel
-    private data class Cargo(val cargoId: String, val numberOfBoxes: Int) : Serializable {
+    private data class Cargo(val cargoId: String, val numberOfBoxes: Int) : ShuttleCargoData {
         companion object {
             private const val serialVersionUID: Long = -42
         }

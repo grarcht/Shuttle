@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Shuttle MVVM Demo</string>
     <string name="image_retrieved">image retrieved</string>
-    <string name="mvvm_view_title">MVVM Architecture With A Service</string>
+    <string name="mvvm_view_title">MVVM + Service</string>
     <string name="get_image_normally">Get image from service without Shuttle</string>
     <string name="get_image_using_shuttle">Get image from service with Shuttle</string>
     <string name="the_app_will_crash_without_using_shuttle">The app will crash without using Shuttle.</string>

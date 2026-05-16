@@ -7,22 +7,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.grarcht.shuttle.demo.core.image.ImageMessageType
+import com.grarcht.shuttle.demo.core.animation.playAnimationOverlay
+import com.grarcht.shuttle.demo.core.image.IMAGE_CARGO_ID
 import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.core.io.IOResult
+import com.grarcht.shuttle.demo.core.view.CardWithCutoutView
+import com.grarcht.shuttle.demo.core.view.applySystemBarTopInset
 import com.grarcht.shuttle.demo.mvvmwithaservice.R
 import com.grarcht.shuttle.demo.mvvmwithaservice.viewmodel.DemoViewModel
 import com.grarcht.shuttle.framework.Shuttle
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val LOG_TAG = "MVVMViewFragment"
+private const val WARN_IMAGE_DATA_COMPLETION = "Caught when getting the image data."
+private const val WARN_UNKNOWN_IPC_RESULT = "Unknown result when getting the image using the remote Shuttle Service (IPC)."
+private const val WARN_UNKNOWN_LOCAL_RESULT = "Unknown result when getting the image using the local Shuttle Service."
 
 /**
  * Part of the view component for displaying the views and communicating
@@ -45,10 +55,29 @@ class MVVMViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.initMessaging(context, lifecycle)
-        view.findViewById<TextView>(R.id.title_text).text = view.resources.getString(R.string.mvvm_view_title)
+        viewModel.initMessaging(context?.applicationContext, lifecycle)
+        initUiAppearance(view)
+        view.applySystemBarTopInset(R.id.content_layout)
         initGetImageWithShuttleButton(view)
         initGetImageWithoutShuttleButton(view)
+        initPreviewButtons(view)
+    }
+
+    private fun initUiAppearance(view: View) {
+        view.findViewById<TextView>(R.id.title_text).text = view.resources.getString(R.string.mvvm_view_title)
+        view.findViewById<CardWithCutoutView>(R.id.shuttle_card)
+            ?.setCardColor(ContextCompat.getColor(view.context, com.grarcht.shuttle.demo.core.R.color.colorTaupe))
+        view.findViewById<CardWithCutoutView>(R.id.risky_card)
+            ?.setCardColor(ContextCompat.getColor(view.context, com.grarcht.shuttle.demo.core.R.color.colorBeige))
+    }
+
+    private fun initPreviewButtons(view: View) {
+        view.findViewById<ImageView>(R.id.preview_shuttle_button)?.setOnClickListener {
+            playAnimation(com.grarcht.shuttle.demo.core.R.raw.shuttle_delivery_success)
+        }
+        view.findViewById<ImageView>(R.id.preview_without_shuttle_button)?.setOnClickListener {
+            playAnimation(com.grarcht.shuttle.demo.core.R.raw.shuttle_delivery_fail)
+        }
     }
 
     override fun onResume() {
@@ -86,56 +115,37 @@ class MVVMViewFragment : Fragment() {
         }
     }
 
-    private fun getImageWithoutShuttle(context: Context?) {
-        if (null != context) {
-            val cargoId = ImageMessageType.ImageData.value
-
-            lifecycleScope.async {
-                val towerImageId: Int = com.grarcht.shuttle.demo.core.R.raw.tower
-                viewModel.transportImageCargoWithoutUsingShuttle(context, cargoId, towerImageId)?.collectLatest {
-                    when (it) {
-                        IOResult.Loading -> showLoadingDialog()
-                        is IOResult.Success<*> -> showSuccessContentDialog(it.data as ImageModel)
-                        is IOResult.Error<*> -> showErrorDialog(it.message, it.throwable)
-                        IOResult.Unknown -> {
-                            Log.w(LOG_TAG, "Unknown result when getting the image using the local Shuttle Service.")
+    @Suppress("TooGenericExceptionCaught")
+    private fun loadImageCargo(
+        context: Context?,
+        flowProvider: (Context, String, Int) -> Flow<IOResult>?,
+        unknownResultLogTag: String
+    ) {
+        context?.applicationContext?.let { appContext ->
+            val cargoId = IMAGE_CARGO_ID
+            val imageId = com.grarcht.shuttle.demo.core.R.raw.cargo
+            viewLifecycleOwner.lifecycleScope.launch {
+                try {
+                    flowProvider(appContext, cargoId, imageId)?.collectLatest {
+                        when (it) {
+                            IOResult.Loading -> showLoadingDialog()
+                            is IOResult.Success<*> -> showSuccessContentDialog(it.data as? ImageModel ?: return@collectLatest)
+                            is IOResult.Error<*> -> showErrorDialog(it.message, it.throwable)
+                            IOResult.Unknown -> Log.w(LOG_TAG, unknownResultLogTag)
                         }
                     }
-                }
-            }.invokeOnCompletion {
-                it?.let {
-                    Log.w(TAG, "Caught when getting the image data.", it)
+                } catch (e: Exception) {
+                    Log.w(LOG_TAG, WARN_IMAGE_DATA_COMPLETION, e)
                 }
             }
         }
     }
 
-    private fun getImageWithShuttle(context: Context?) {
-        if (null != context) {
-            val cargoId = ImageMessageType.ImageData.value
+    private fun getImageWithoutShuttle(context: Context?) =
+        loadImageCargo(context, viewModel::transportImageCargoWithoutUsingShuttle, WARN_UNKNOWN_LOCAL_RESULT)
 
-            lifecycleScope.async {
-                val towerImageId: Int = com.grarcht.shuttle.demo.core.R.raw.tower
-                viewModel.transportImageCargoUsingShuttleAndIPC(context, cargoId, towerImageId)?.collectLatest {
-                    when (it) {
-                        IOResult.Loading -> showLoadingDialog()
-                        is IOResult.Success<*> -> showSuccessContentDialog(it.data as ImageModel)
-                        is IOResult.Error<*> -> showErrorDialog(it.message, it.throwable)
-                        IOResult.Unknown -> {
-                            Log.w(
-                                LOG_TAG,
-                                "Unknown result when getting the image using the remote Shuttle Service (IPC)."
-                            )
-                        }
-                    }
-                }
-            }.invokeOnCompletion {
-                it?.let {
-                    Log.w(TAG, "Caught when getting the image data.", it)
-                }
-            }
-        }
-    }
+    private fun getImageWithShuttle(context: Context?) =
+        loadImageCargo(context, viewModel::transportImageCargoUsingShuttleAndIPC, WARN_UNKNOWN_IPC_RESULT)
 
     private fun setDialogOnDismissListener() {
         lceDialogFragment?.setOnDismissListener {
@@ -180,6 +190,16 @@ class MVVMViewFragment : Fragment() {
         setDialogOnDismissListener()
         lceDialogFragment?.show(parentFragmentManager, LCEDialogFragment.TAG_LCE_ERROR)
         previousDialogFragment?.fadeOutView(true)
+    }
+
+    private fun playAnimation(rawResId: Int) = playAnimationThenNavigate(rawResId) {}
+
+    private fun playAnimationThenNavigate(rawResId: Int, onComplete: () -> Unit) {
+        val rootView = view as? FrameLayout ?: run {
+            onComplete()
+            return
+        }
+        rootView.playAnimationOverlay(rawResId, onComplete)
     }
 
     companion object {

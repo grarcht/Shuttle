@@ -9,6 +9,12 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 
+/**
+ * Verifies the functionality of [ShuttleServiceMessageValidator]. This validator guards IPC
+ * message handling by confirming that incoming Messages carry a valid cargo ID before they are
+ * forwarded to the message receiver. Without correct validation, malformed or empty messages could
+ * cause downstream errors or security issues in the service layer.
+ */
 class ShuttleServiceMessageValidatorTests {
     private val validator = ShuttleServiceMessageValidator()
 

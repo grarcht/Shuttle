@@ -8,65 +8,61 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.snackbar.Snackbar
-import com.grarcht.shuttle.demo.core.image.ImageMessageType
-import com.grarcht.shuttle.demo.core.image.ImageModel
+import com.grarcht.shuttle.demo.core.animation.playAnimationOverlay
+import com.grarcht.shuttle.demo.core.image.IMAGE_CARGO_ID
 import com.grarcht.shuttle.demo.core.io.IOResult
-import com.grarcht.shuttle.demo.mvvm.R
+import com.grarcht.shuttle.demo.core.view.CardWithCutoutView
+import com.grarcht.shuttle.demo.core.view.applySystemBarTopInset
+import com.grarcht.shuttle.demo.core.R
 import com.grarcht.shuttle.demo.mvvm.viewmodel.FirstViewModel
 import com.grarcht.shuttle.framework.Shuttle
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.DisposableHandle
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.io.Serializable
 import javax.inject.Inject
 
+private const val ERROR_UNABLE_TO_GET_IMAGE = "Unable to get the image byte array."
 private const val LOG_TAG = "MVVMFirstViewFragment"
 
 @AndroidEntryPoint
 class MVVMFirstViewFragment : Fragment() {
-    private var imageGatewayDisposableHandle: DisposableHandle? = null
     private var navNormallyButton: Button? = null
     private var navWithShuttleButton: Button? = null
     private val viewModel by viewModels<FirstViewModel>()
 
     @Inject
     lateinit var shuttle: Shuttle
-    var imageModel: ImageModel? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        getImageData()
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val layoutId = com.grarcht.shuttle.demo.core.R.layout.first_view
+        val layoutId = R.layout.first_view
         return inflater.inflate(layoutId, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val viewId = com.grarcht.shuttle.demo.core.R.id.first_view_title_text
-        view.findViewById<TextView>(viewId).text = view.resources.getString(R.string.mvvm_first_view_title)
+        view.findViewById<TextView>(R.id.first_view_title_text).text = getString(com.grarcht.shuttle.demo.mvvm.R.string.first_view_title)
+        view.findViewById<CardWithCutoutView>(R.id.shuttle_card)?.setCardColor(ContextCompat.getColor(view.context, R.color.colorTaupe))
+        view.findViewById<CardWithCutoutView>(R.id.risky_card)?.setCardColor(ContextCompat.getColor(view.context, R.color.colorBeige))
+        view.applySystemBarTopInset(R.id.content_layout)
         initOnClickNavigateWithShuttle(view)
         initOnClickNavigateNormally(view)
-        getImageData()
+        viewModel.loadImage(resources, R.raw.cargo)
+        observeUiState()
     }
 
     override fun onResume() {
         super.onResume()
-        enableButtons(true)
-    }
-
-    override fun onDestroyView() {
-        imageGatewayDisposableHandle?.dispose()
-        super.onDestroyView()
+        enableButtons(viewModel.currentImageModel() != null)
     }
 
     private fun enableButtons(enable: Boolean) {
@@ -74,90 +70,87 @@ class MVVMFirstViewFragment : Fragment() {
         navNormallyButton?.isEnabled = enable
     }
 
-    private fun getImageData() {
-        imageGatewayDisposableHandle = MainScope().async {
-            val imageId = com.grarcht.shuttle.demo.core.R.raw.tower
-            viewModel.getImage(resources, imageId)
-                .collectLatest {
-                    when (it) {
+    private fun observeUiState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { result ->
+                    when (result) {
                         is IOResult.Unknown,
-                        is IOResult.Loading -> {
-                            enableButtons(false)
-                        }
+                        is IOResult.Loading -> enableButtons(false)
 
-                        is IOResult.Success<*> -> {
-                            val byteArray = it.data as ByteArray
-                            imageModel = ImageModel(ImageMessageType.ImageData.value, byteArray)
-                            enableButtons(true)
-                            cancel()
-                        }
+                        is IOResult.Success<*> -> enableButtons(true)
 
                         is IOResult.Error<*> -> {
-                            val errorMessage = it.throwable.message ?: "Unable to get the image byte array."
-
-                            if (null == view) {
-                                Log.e(TAG, errorMessage, it.throwable)
-                            } else {
-                                Snackbar.make(view as View, errorMessage, Snackbar.LENGTH_SHORT).show()
-                            }
-                            cancel()
+                            val msg = result.throwable.message ?: ERROR_UNABLE_TO_GET_IMAGE
+                            view?.let { Snackbar.make(it, msg, Snackbar.LENGTH_SHORT).show() }
                         }
                     }
                 }
-        }.invokeOnCompletion {
-            it?.let {
-                Log.w(TAG, "Caught when getting the image model.", it)
             }
         }
     }
 
     private fun initOnClickNavigateWithShuttle(view: View?) {
         view?.apply {
-            val buttonId = com.grarcht.shuttle.demo.core.R.id.nav_with_shuttle_button
-            navWithShuttleButton = findViewById(buttonId)
+            navWithShuttleButton = findViewById(R.id.nav_with_shuttle_button)
             navWithShuttleButton?.setOnClickListener {
                 it.isEnabled = false
                 navigateWithShuttle(context)
+            }
+            findViewById<ImageView>(R.id.preview_shuttle_button)?.setOnClickListener {
+                playAnimation(R.raw.shuttle_delivery_success)
             }
         }
     }
 
     private fun initOnClickNavigateNormally(view: View?) {
         view?.apply {
-            val buttonId = com.grarcht.shuttle.demo.core.R.id.nav_without_shuttle_button
-            navNormallyButton = findViewById(buttonId)
+            navNormallyButton = findViewById(R.id.nav_without_shuttle_button)
             navNormallyButton?.setOnClickListener {
                 it.isEnabled = false
                 navigateNormally(context)
             }
+            findViewById<ImageView>(R.id.preview_without_shuttle_button)?.setOnClickListener {
+                playAnimation(R.raw.shuttle_delivery_fail)
+            }
         }
     }
 
-    private fun navigateWithShuttle(context: Context?) {
-        if (null == imageModel) {
-            Log.d(LOG_TAG, "navigateWithShuttle -> The image model has not been instantiated yet.")
-        } else if (null != context) {
-            val cargoId = ImageMessageType.ImageData.value
-            val startClass = MVVMFirstViewFragment::class.java
-            val destinationClass = MVVMSecondViewActivity::class.java
+    private fun playAnimation(rawResId: Int) = playAnimationThenNavigate(rawResId) {}
 
-            shuttle.intentCargoWith(context, destinationClass)
+    private fun playAnimationThenNavigate(rawResId: Int, onComplete: () -> Unit) {
+        val rootView = view as? FrameLayout ?: run {
+            onComplete()
+            return
+        }
+        rootView.playAnimationOverlay(rawResId, onComplete)
+    }
+
+    private fun navigateWithShuttle(context: Context?) {
+        val (cargoId, imageModel) = viewModel.navigationCargo() ?: run {
+            Log.d(LOG_TAG, "navigateWithShuttle -> The image model has not been instantiated yet.")
+            return
+        }
+        context?.let {
+            shuttle.intentCargoWith(it, MVVMSecondViewActivity::class.java)
                 .logTag(LOG_TAG)
                 .transport(cargoId, imageModel)
-                .cleanShuttleOnReturnTo(startClass, destinationClass, cargoId)
-                .deliver(context)
+                .cleanShuttleOnReturnTo(MVVMFirstViewFragment::class.java, MVVMSecondViewActivity::class.java, cargoId)
+                .deliver(it)
         }
     }
 
     private fun navigateNormally(context: Context?) {
-        if (null == imageModel) {
+        val imageModel = viewModel.currentImageModel()
+        if (imageModel == null) {
             Log.d(LOG_TAG, "navigateNormally -> The image model has not been instantiated yet.")
-        } else if (null != context) {
-            val cargoId = ImageMessageType.ImageData.value
-            val destinationClass = MVVMSecondViewActivity::class.java
-            val intent = Intent(context, destinationClass.javaClass)
+            return
+        }
+        context?.let {
+            val cargoId = IMAGE_CARGO_ID
+            val intent = Intent(it, MVVMSecondViewActivity::class.java)
             intent.putExtra(cargoId, imageModel as Serializable)
-            context.startActivity(intent)
+            it.startActivity(intent)
         }
     }
 

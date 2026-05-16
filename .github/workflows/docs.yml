@@ -1,0 +1,67 @@
+name: Publish Dokka Docs
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish-docs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Generate Dokka HTML
+        run: |
+          ./gradlew \
+            :framework:dokkaGeneratePublicationHtml \
+            :framework-integrations-persistence:dokkaGeneratePublicationHtml \
+            :framework-integrations-extensions-room:dokkaGeneratePublicationHtml \
+            :framework-addons-navigation-component:dokkaGeneratePublicationHtml
+
+      - name: Assemble docs output
+        run: |
+          mkdir -p build/docs/framework
+          mkdir -p build/docs/framework-integrations-persistence
+          mkdir -p build/docs/framework-integrations-extensions-room
+          mkdir -p build/docs/framework-addons-navigation-component
+          cp -r framework/documentation/kotlin/.                              build/docs/framework/
+          cp -r framework-integrations/persistence/documentation/kotlin/.     build/docs/framework-integrations-persistence/
+          cp -r framework-integrations-extensions/room/documentation/kotlin/. build/docs/framework-integrations-extensions-room/
+          cp -r framework-addons/navigation-component/documentation/kotlin/.  build/docs/framework-addons-navigation-component/
+          cat > build/docs/index.html <<'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head><meta charset="utf-8"><title>Shuttle API Docs</title></head>
+          <body>
+          <h1>Shuttle API Documentation</h1>
+          <ul>
+            <li><a href="framework/">framework</a></li>
+            <li><a href="framework-integrations-persistence/">framework-integrations-persistence</a></li>
+            <li><a href="framework-integrations-extensions-room/">framework-integrations-extensions-room</a></li>
+            <li><a href="framework-addons-navigation-component/">framework-addons-navigation-component</a></li>
+          </ul>
+          </body>
+          </html>
+          EOF
+
+      - name: Deploy to gh-pages/docs
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: build/docs
+          target-folder: docs
+          clean: false

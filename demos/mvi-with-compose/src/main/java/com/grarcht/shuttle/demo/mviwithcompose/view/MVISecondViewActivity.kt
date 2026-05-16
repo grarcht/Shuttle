@@ -1,0 +1,41 @@
+package com.grarcht.shuttle.demo.mviwithcompose.view
+
+import android.os.Bundle
+import android.os.PersistableBundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.compose.material3.MaterialTheme
+import androidx.core.graphics.drawable.toDrawable
+import com.grarcht.shuttle.demo.core.activity.setupEdgeToEdge
+import com.grarcht.shuttle.demo.mviwithcompose.viewmodel.SecondViewModel
+import dagger.hilt.android.AndroidEntryPoint
+
+/**
+ * The destination activity for the second view in the MVI with Compose demo. It
+ * receives cargo from the first view, sets up the Compose content via [MVISecondView],
+ * and handles instance state persistence through Shuttle.
+ */
+@AndroidEntryPoint
+class MVISecondViewActivity : ComponentActivity() {
+    private val viewModel: SecondViewModel by viewModels()
+    private lateinit var mviSecondView: MVISecondView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setupEdgeToEdge()
+        window.setBackgroundDrawable(0xFFD1C7BD.toInt().toDrawable())
+        super.onCreate(savedInstanceState)
+        mviSecondView = MVISecondView(this, viewModel)
+        val cargoId = mviSecondView.extractCargoId(savedInstanceState, intent.extras)
+        setContent {
+            MaterialTheme {
+                mviSecondView.SetViewContent(cargoId)
+            }
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        val outStateShuttleBundle = viewModel.buildSavedInstanceState(outState)
+        super.onSaveInstanceState(outStateShuttleBundle, outPersistentState)
+    }
+}

@@ -5,13 +5,14 @@ package com.grarcht.shuttle.demo.mvvmwithaservice.model
 import android.content.Intent
 import android.os.Message
 import android.util.Log
-import com.grarcht.shuttle.demo.core.image.ImageMessageType
+import com.grarcht.shuttle.demo.core.image.IMAGE_CARGO_ID
 import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.core.io.IOResult
 import com.grarcht.shuttle.demo.core.io.RawResourceGateway
 import com.grarcht.shuttle.framework.CARGO_ID_KEY
 import com.grarcht.shuttle.framework.NO_CARGO_ID
 import com.grarcht.shuttle.framework.Shuttle
+import com.grarcht.shuttle.framework.ShuttleCargoData
 import com.grarcht.shuttle.framework.app.ShuttleService
 import com.grarcht.shuttle.framework.app.ShuttleServiceConfig
 import com.grarcht.shuttle.framework.coroutines.scope.cancelScopeQuietly
@@ -22,7 +23,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import java.io.Serializable
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -63,7 +63,7 @@ class RemoteService : ShuttleService() {
      * Provides the cargo intent, used for transporting cargo with [Shuttle]. What is provided below combines the
      * default with extra information for the receiver in this demo.
      */
-    override fun <D : Serializable> getCargoIntentForTransport(
+    override fun <D : ShuttleCargoData> getCargoIntentForTransport(
         cargoId: String,
         cargo: D?
     ): Intent {
@@ -160,7 +160,7 @@ class RemoteService : ShuttleService() {
                         // implementations will crash the app.
                         // =======================================================
                         val byteArray = ioResult.data as ByteArray
-                        val imageModel = ImageModel(ImageMessageType.ImageData.value, byteArray)
+                        val imageModel = ImageModel(IMAGE_CARGO_ID, byteArray)
                         transportCargoWithShuttle(cargoId, imageModel)
                     }
 

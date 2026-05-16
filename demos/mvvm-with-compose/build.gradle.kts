@@ -1,19 +1,12 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.jetbrains.dokka)
     alias(libs.plugins.google.dagger.hilt)
     alias(libs.plugins.android.junit5)
-    alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.google.ksp)
 }
 
 apply(from = "${project.rootDir}/detekt/detekt.gradle")
-
-tasks.named("dokkaHtml") {
-    (this as org.jetbrains.dokka.gradle.DokkaTask).outputDirectory.set(file("documentation/kotlin"))
-}
 
 android {
     namespace = "com.grarcht.shuttle.demo.mvvmwithcompose"
@@ -89,6 +82,8 @@ dependencies {
     ksp(libs.dependencyInjectionDeps.hiltCompiler)
 
     implementation(project(":demos-core-lib"))
+    implementation(project(":demos-core-di"))
+    implementation(project(":demos-core-compose"))
 
     // Lighter weight, independent dependencies
     implementation(project(":framework"))

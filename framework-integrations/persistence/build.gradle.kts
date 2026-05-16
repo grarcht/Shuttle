@@ -1,21 +1,43 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import org.gradle.api.publish.maven.MavenPublication
-import java.io.File
-import java.net.URI
-
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.jetbrains.dokka)
     alias(libs.plugins.signing)
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.android.junit5)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.kover)
 }
 
-tasks.named("dokkaHtml") {
-    (this as org.jetbrains.dokka.gradle.DokkaTask).outputDirectory.set(file("documentation/kotlin"))
+kover {
+    reports {
+        filters {
+            excludes {
+                annotatedBy("dagger.Module", "dagger.hilt.InstallIn", "androidx.annotation.RequiresApi", "com.grarcht.shuttle.framework.ExcludeFromCoverage")
+                classes(
+                    "*Hilt_*",
+                    "*_HiltModules*",
+                    "*_MembersInjector",
+                    "*_Factory",
+                    "*_Impl",
+                    "*_Impl\$*"
+                )
+                packages("*.dependencyinjection")
+            }
+        }
+        total {
+            html { onCheck = false }
+            xml { onCheck = false }
+        }
+    }
+}
+
+dokka {
+    dokkaPublications.html {
+        outputDirectory.set(layout.projectDirectory.dir("documentation/kotlin"))
+    }
+    dokkaSourceSets.register("main") {
+        sourceRoots.from(file("src/main/java"))
+    }
 }
 
 android {
@@ -45,6 +67,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":framework-annotations"))
     implementation(libs.jetbrainsKotlinDeps.stdlib)
     implementation(libs.android.coreKtx)
 
@@ -82,7 +105,7 @@ val sourcesJarFileName = "${archivesName}-sources.jar"
 tasks.register<Jar>("javadocJar") {
     archiveClassifier.set("javadoc")
     archiveFileName.set(javadocJarFileName)
-    from(tasks.named("dokkaJavadoc"))
+    from(tasks.named("dokkaGeneratePublicationHtml"))
 }
 
 tasks.register<Jar>("sourcesJar") {
@@ -94,18 +117,16 @@ tasks.register<Jar>("sourcesJar") {
 // rename the aar files
 tasks.register("renameArtifacts") {
     doLast {
-        android.libraryVariants.forEach { variant ->
-            variant.outputs.forEach { output ->
-                val debugSuffix = "debug.aar"
-                val releaseSuffix = "release.aar"
-                val outputFile = output.outputFile
-                if (outputFile.name.endsWith(debugSuffix)) {
-                    val newName = if (isReleaseVersion) "${archivesName}-$debugSuffix" else "${archivesName}-debug-SNAPSHOT.aar"
-                    outputFile.renameTo(File(outputFile.parentFile, newName))
-                } else if (outputFile.name.endsWith(releaseSuffix)) {
-                    val newName = if (isReleaseVersion) "${archivesName}-$releaseSuffix" else "${archivesName}-release-SNAPSHOT.aar"
-                    outputFile.renameTo(File(outputFile.parentFile, newName))
-                }
+        val aarsDir = file("${projectDir}/build/outputs/aar/")
+        val debugSuffix = "debug.aar"
+        val releaseSuffix = "release.aar"
+        aarsDir.listFiles()?.forEach { outputFile ->
+            if (outputFile.name.endsWith(debugSuffix)) {
+                val newName = if (isReleaseVersion) "${archivesName}-$debugSuffix" else "${archivesName}-debug-SNAPSHOT.aar"
+                outputFile.renameTo(File(outputFile.parentFile, newName))
+            } else if (outputFile.name.endsWith(releaseSuffix)) {
+                val newName = if (isReleaseVersion) "${archivesName}-$releaseSuffix" else "${archivesName}-release-SNAPSHOT.aar"
+                outputFile.renameTo(File(outputFile.parentFile, newName))
             }
         }
     }
@@ -274,16 +295,6 @@ afterEvaluate {
         }
     }
 
-    artifacts {
-        add("archives", File("build/libs/$javadocJarFileName"))
-        add("archives", File("build/libs/$sourcesJarFileName"))
-
-        if (isReleaseVersion)
-            add("archives", File(releaseAARFilePath))
-        else
-            add("archives", File(debugAARFilePath))
-    }
-
     signing {
         setRequired(provider { !testPublish && isReleaseVersion && gradle.taskGraph.hasTask("publish") })
 
@@ -293,6 +304,7 @@ afterEvaluate {
 
         useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
 
-        sign(configurations.getByName("archives"))
+        val publicationName = if (isReleaseVersion) "release" else "debug"
+        sign(publishing.publications[publicationName])
     }
 }

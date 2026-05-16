@@ -3,15 +3,19 @@ package com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel
 import android.content.res.Resources
 import androidx.annotation.RawRes
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.core.io.IOResult
-import com.grarcht.shuttle.demo.core.io.RawResourceGateway
-import kotlinx.coroutines.flow.Flow
+import com.grarcht.shuttle.demo.core.viewmodel.DefaultImageLoader
+import com.grarcht.shuttle.demo.core.viewmodel.ImageLoader
+import kotlinx.coroutines.flow.StateFlow
 
-/**
- * The MVVM ViewModel used with the First View and corresponding model.
- */
 class FirstViewModel : ViewModel() {
-    fun getImage(resources: Resources, @RawRes imageId: Int): Flow<IOResult> {
-        return RawResourceGateway.with(resources).bytesFromRawResource(imageId).create()
-    }
+
+    private val imageLoader: ImageLoader = DefaultImageLoader(viewModelScope)
+    val uiState: StateFlow<IOResult> = imageLoader.uiState
+
+    fun loadImage(resources: Resources, @RawRes imageId: Int) = imageLoader.loadImage(resources, imageId)
+
+    fun currentImageModel(): ImageModel? = imageLoader.currentImageModel()
 }

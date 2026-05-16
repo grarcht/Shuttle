@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="avoid_crashes">Avoid Crashes</string>
+    <string name="explore">Explore</string>
+    <string name="go_ahead_try_it">Go Ahead, Try It</string>
+    <string name="risk_it">Risk It</string>
+    <string name="transport_cargo">Transport Cargo</string>
+    <string name="with_shuttle">With Shuttle</string>
+    <string name="without_shuttle">Without Shuttle</string>
+    <string name="second_screen_pill">DELIVERED</string>
+    <string name="second_screen_title">Cargo\nUnloaded.</string>
+    <string name="second_screen_body">Shuttle transported this image safely.\nBundle limits respected. No crashes.</string>
+    <string name="second_screen_image_size_mb">%1$.1f MB</string>
+    <string name="second_screen_image_size_kb">%1$.1f KB</string>
+    <string name="second_screen_image_size_b">%1$d B</string>
+</resources>

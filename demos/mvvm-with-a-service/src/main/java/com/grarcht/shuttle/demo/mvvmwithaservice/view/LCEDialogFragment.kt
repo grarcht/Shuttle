@@ -5,10 +5,8 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.content.DialogInterface.OnDismissListener
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +14,8 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.DialogFragment
 import com.grarcht.shuttle.demo.core.image.BitmapDecoder
@@ -23,19 +23,20 @@ import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.mvvmwithaservice.R
 
 private const val ANIMATION_DURATION = 750L
+private const val BYTES_PER_KB = 1024.0
 private const val DIALOG_TYPE = "dialog_type"
 private const val ERROR_MESSAGE = "error_message"
 private const val FADE_OUT_END_ALPHA = 0F
 private const val FADE_OUT_START_ALPHA = 1F
 private const val HEIGHT_FACTOR = 0.75
 private const val IMAGE_DATA = "image_data"
+private const val SIZE_THRESHOLD = 1.0
 private const val WIDTH_FACTOR = 0.75
 
 /**
  * Used to display the loading, content (retrieved mage), and error views.
  */
 class LCEDialogFragment : DialogFragment() {
-    private val bitmapDecoder = BitmapDecoder()
     private var contentLoadingProgressBar: ContentLoadingProgressBar? = null
     private var errorMessage: String = ""
     private var fadeOutViewAnimator: ObjectAnimator? = null
@@ -61,7 +62,7 @@ class LCEDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
         setDialogMetrics(dialog)
         return dialog
     }
@@ -69,6 +70,11 @@ class LCEDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadView()
+    }
+
+    override fun onDestroyView() {
+        fadeOutViewAnimator?.cancel()
+        super.onDestroyView()
     }
 
     override fun onDismiss(dialog: DialogInterface) {
@@ -96,15 +102,21 @@ class LCEDialogFragment : DialogFragment() {
     }
 
     private fun showSuccessView() {
-        val imageView = view?.findViewById<ImageView>(R.id.retrievedImage)
-        imageView?.let { image ->
-            image.visibility = View.VISIBLE
+        val successLayout = view?.findViewById<FrameLayout>(R.id.successLayout) ?: return
+        successLayout.visibility = View.VISIBLE
 
-            val bitmap = bitmapDecoder.decodeBitmap(imageModel?.imageData as ByteArray)
-            bitmap?.let {
-                image.setImageBitmap(it)
-            }
+        val bitmap = imageModel?.imageData?.let { BitmapDecoder.decodeBitmap(it) }
+        view?.findViewById<ImageView>(R.id.retrievedImage)?.setImageBitmap(bitmap)
+
+        val bytes = imageModel?.imageData?.size?.toLong() ?: 0L
+        val kb = bytes / BYTES_PER_KB
+        val mb = kb / BYTES_PER_KB
+        val sizeText = when {
+            mb >= SIZE_THRESHOLD -> getString(com.grarcht.shuttle.demo.core.R.string.second_screen_image_size_mb, mb.toFloat())
+            kb >= SIZE_THRESHOLD -> getString(com.grarcht.shuttle.demo.core.R.string.second_screen_image_size_kb, kb.toFloat())
+            else -> getString(com.grarcht.shuttle.demo.core.R.string.second_screen_image_size_b, bytes)
         }
+        view?.findViewById<TextView>(R.id.imageSizeText)?.text = sizeText
     }
 
     private fun showErrorView() {
@@ -117,28 +129,27 @@ class LCEDialogFragment : DialogFragment() {
     }
 
     fun fadeOutView(dismissOnFadeOut: Boolean) {
-        val loadingLayout = view?.findViewById<FrameLayout>(R.id.loadingLayout)
-        fadeOutViewAnimator = ObjectAnimator.ofFloat(
-            loadingLayout,
-            View.ALPHA,
-            FADE_OUT_START_ALPHA,
-            FADE_OUT_END_ALPHA
-        )
+        val loadingLayout = view?.findViewById<FrameLayout>(R.id.loadingLayout) ?: return
+        fadeOutViewAnimator = buildFadeAnimator(loadingLayout)
         fadeOutViewAnimator?.let {
-            it.duration = ANIMATION_DURATION
             it.addUpdateListener { animation ->
                 val animatedValue: Float = animation.animatedValue as? Float ?: FADE_OUT_END_ALPHA
-                view?.alpha = FADE_OUT_START_ALPHA - animatedValue
-
-                if (animatedValue == FADE_OUT_END_ALPHA) {
-                    loadingLayout?.visibility = View.GONE
-                    fadeOutViewAnimator?.removeAllUpdateListeners()
-                    if (dismissOnFadeOut) {
-                        dismiss()
-                    }
-                }
+                onFadeUpdate(animatedValue, loadingLayout, dismissOnFadeOut)
             }
             it.start()
+        }
+    }
+
+    private fun buildFadeAnimator(loadingLayout: FrameLayout): ObjectAnimator =
+        ObjectAnimator.ofFloat(loadingLayout, View.ALPHA, FADE_OUT_START_ALPHA, FADE_OUT_END_ALPHA)
+            .also { it.duration = ANIMATION_DURATION }
+
+    private fun onFadeUpdate(animatedValue: Float, loadingLayout: FrameLayout, dismissOnFadeOut: Boolean) {
+        view?.alpha = FADE_OUT_START_ALPHA - animatedValue
+        if (animatedValue == FADE_OUT_END_ALPHA) {
+            loadingLayout.visibility = View.GONE
+            fadeOutViewAnimator?.removeAllUpdateListeners()
+            if (dismissOnFadeOut) dismiss()
         }
     }
 
@@ -153,24 +164,14 @@ class LCEDialogFragment : DialogFragment() {
     }
 
     private fun getWindowDimensions(dialog: Dialog): Pair<Int, Int> {
-        val displayMetrics = DisplayMetrics()
-        var screenWidth = 0
-        var screenHeight = 0
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             val bounds = dialog.window?.windowManager?.currentWindowMetrics?.bounds
-            bounds?.let {
-                screenHeight = it.height()
-                screenWidth = it.width()
+            if (bounds != null) {
+                return Pair(bounds.width(), bounds.height())
             }
-        } else {
-            @Suppress("DEPRECATION")
-            dialog.window?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
-            screenHeight = displayMetrics.heightPixels
-            screenWidth = displayMetrics.widthPixels
         }
-
-        return Pair(screenWidth, screenHeight)
+        val displayMetrics = dialog.context.resources.displayMetrics
+        return Pair(displayMetrics.widthPixels, displayMetrics.heightPixels)
     }
 
     private fun extractArguments() {
@@ -183,25 +184,25 @@ class LCEDialogFragment : DialogFragment() {
                 }
 
                 DialogType.CONTENT.typeValue -> {
-                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         imageModel = it.getSerializable(IMAGE_DATA, ImageModel::class.java)
                     } else {
                         @Suppress("DEPRECATION")
-                        imageModel = it.getSerializable(IMAGE_DATA) as ImageModel
+                        imageModel = it.getSerializable(IMAGE_DATA) as? ImageModel
                     }
                 }
 
                 DialogType.ERROR.typeValue -> {
-                    errorMessage = it.getString(ERROR_MESSAGE) as String
+                    errorMessage = it.getString(ERROR_MESSAGE) ?: ""
                 }
             }
         }
     }
 
     companion object {
-        const val TAG_LCE_LOADING = "LCEDialogFragment"
-        const val TAG_LCE_CONTENT = "LCEDialogFragment"
-        const val TAG_LCE_ERROR = "LCEDialogFragment"
+        const val TAG_LCE_LOADING = "LCEDialogFragment_Loading"
+        const val TAG_LCE_CONTENT = "LCEDialogFragment_Content"
+        const val TAG_LCE_ERROR = "LCEDialogFragment_Error"
 
         /**
          * A factory function for creating a loading dialog.

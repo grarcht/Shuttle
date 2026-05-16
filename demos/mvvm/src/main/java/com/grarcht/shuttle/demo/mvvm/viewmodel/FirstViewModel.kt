@@ -3,17 +3,25 @@ package com.grarcht.shuttle.demo.mvvm.viewmodel
 import android.content.res.Resources
 import androidx.annotation.RawRes
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.grarcht.shuttle.demo.core.image.IMAGE_CARGO_ID
+import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.core.io.IOResult
-import com.grarcht.shuttle.demo.core.io.RawResourceGateway
-import kotlinx.coroutines.flow.Flow
+import com.grarcht.shuttle.demo.core.viewmodel.DefaultImageLoader
+import com.grarcht.shuttle.demo.core.viewmodel.ImageLoader
+import kotlinx.coroutines.flow.StateFlow
 
-/**
- * The MVVM ViewModel used with the First View and corresponding model.
- */
+data class NavigationCargo(val cargoId: String, val imageModel: ImageModel)
+
 class FirstViewModel : ViewModel() {
-    // This function shows using the view model without databinding. This is one of the ways that MVVM is applied in
-    // apps.  For a demonstration with Databinding, look at the SecondViewModel class.
-    fun getImage(resources: Resources, @RawRes imageId: Int): Flow<IOResult> {
-        return RawResourceGateway.with(resources).bytesFromRawResource(imageId).create()
-    }
+
+    private val imageLoader: ImageLoader = DefaultImageLoader(viewModelScope)
+    val uiState: StateFlow<IOResult> = imageLoader.uiState
+
+    fun loadImage(resources: Resources, @RawRes imageId: Int) = imageLoader.loadImage(resources, imageId)
+
+    fun currentImageModel(): ImageModel? = imageLoader.currentImageModel()
+
+    fun navigationCargo(): NavigationCargo? =
+        currentImageModel()?.let { NavigationCargo(IMAGE_CARGO_ID, it) }
 }

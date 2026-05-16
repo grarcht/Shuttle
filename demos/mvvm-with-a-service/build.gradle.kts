@@ -1,17 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.dagger.hilt)
-    alias(libs.plugins.jetbrains.dokka)
     alias(libs.plugins.google.ksp)
-    alias(libs.plugins.jetbrains.kotlin.android)
 }
 
 apply(from = "${project.rootDir}/detekt/detekt.gradle")
-
-tasks.named("dokkaHtml") {
-    (this as org.jetbrains.dokka.gradle.DokkaTask).outputDirectory.set(file("documentation/kotlin"))
-}
 
 android {
     namespace = "com.grarcht.shuttle.demo.mvvmwithaservice"

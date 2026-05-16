@@ -7,6 +7,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
+import com.grarcht.shuttle.framework.ExcludeFromCoverage
+import com.grarcht.shuttle.framework.ShuttleCargoData
 import com.grarcht.shuttle.framework.content.bundle.BundleFactory
 import com.grarcht.shuttle.framework.content.bundle.DefaultBundleFactory
 import com.grarcht.shuttle.framework.content.bundle.ShuttleBundle
@@ -18,7 +20,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.io.Serializable
 
 private const val DEFAULT_LOG_TAG = "ShuttleNavigator"
 
@@ -49,24 +50,28 @@ class ShuttleNavController(
     }
 
     /**
-     * Sets the [serializable] for transport.
+     * Sets the [cargo] for transport.
      *
      * @param cargoId the key used for shuttle the cargo to and from the [ShuttleWarehouse]
-     * @param serializable the cargo to shuttle
-     * @return the [ShuttleBundle] reference use with function chaining
+     * @param cargo the cargo to shuttle
+     * @return the [ShuttleNavController] reference use with function chaining
      */
-
-    fun transport(cargoId: String, serializable: Serializable?): ShuttleNavController {
+    fun <D : ShuttleCargoData> transport(cargoId: String, cargo: D?): ShuttleNavController {
         val parcelPackage = ShuttleParcelCargo(cargoId)
-        internalBundle?.putParcelable(cargoId, parcelPackage)
+        putParcelable(cargoId, parcelPackage)
 
-        serializable?.let {
+        cargo?.let {
             storeCargoJob = backgroundThreadCoroutineScope.launch {
                 shuttleWarehouse.store(cargoId, it)
             }
         }
 
         return this
+    }
+
+    @ExcludeFromCoverage
+    private fun putParcelable(cargoId: String, parcelPackage: ShuttleParcelCargo) {
+        internalBundle?.putParcelable(cargoId, parcelPackage)
     }
 
     /**
@@ -104,27 +109,43 @@ class ShuttleNavController(
 
     private fun navigate() {
         mainThreadCoroutineScope.launch {
-            internalBundle?.let {
-                if (navDirections != null) {
-                    val directions = ShuttleNavDirections(navDirections.actionId, internalBundle)
-                    when {
-                        navOptions != null -> navController.navigate(directions, navOptions)
-                        navigatorExtras != null -> navController.navigate(directions, navigatorExtras)
-                        else -> navController.navigate(directions)
-                    }
-                } else if (resId != null) {
-                    navController.navigate(resId, internalBundle, navOptions, navigatorExtras)
+            navigateWithBundle(internalBundle)
+        }
+    }
+
+    @ExcludeFromCoverage
+    private fun navigateWithBundle(bundle: Bundle?) {
+        bundle?.let {
+            if (navDirections != null) {
+                val directions = ShuttleNavDirections(navDirections.actionId, bundle)
+                when {
+                    navOptions != null -> navController.navigate(directions, navOptions)
+                    navigatorExtras != null -> navController.navigate(directions, navigatorExtras)
+                    else -> navController.navigate(directions)
                 }
+            } else if (resId != null) {
+                navController.navigate(resId, bundle, navOptions, navigatorExtras)
             }
         }
     }
 
     private fun verifyWithFunctionWasCalled() {
         val isInternalBundleEmpty = internalBundle?.isEmpty ?: true
+        throwIfDebugAndBundleEmpty(isInternalBundleEmpty)
+        logWarningIfBundleEmpty(isInternalBundleEmpty)
+    }
+
+    @Suppress("UseCheckOrError")
+    @ExcludeFromCoverage
+    private fun throwIfDebugAndBundleEmpty(isInternalBundleEmpty: Boolean) {
         if (BuildConfig.DEBUG && isInternalBundleEmpty) {
-            val message = "$logTag.  ShuttleNavigator was used; however, the transport function was not called."
-            throw IllegalStateException(message)
-        } else if (isInternalBundleEmpty) {
+            throw IllegalStateException("$logTag.  ShuttleNavigator was used; however, the transport function was not called.")
+        }
+    }
+
+    @ExcludeFromCoverage
+    private fun logWarningIfBundleEmpty(isInternalBundleEmpty: Boolean) {
+        if (isInternalBundleEmpty) {
             Log.w(logTag, "ShuttleNavigator was used; however, the transport function was not called.")
         }
     }
@@ -150,7 +171,7 @@ class ShuttleNavController(
             backgroundThreadDispatcher: CoroutineDispatcher = Dispatchers.IO,
             mainThreadDispatcher: CoroutineDispatcher = Dispatchers.Main
         ): ShuttleNavController {
-            val newBundle = bundleFactory?.create() as Bundle
+            val newBundle = createBundle(bundleFactory)
             return ShuttleNavController(
                 shuttleWarehouse,
                 shuttleScreenFacade,
@@ -184,7 +205,7 @@ class ShuttleNavController(
             backgroundThreadDispatcher: CoroutineDispatcher = Dispatchers.IO,
             mainThreadDispatcher: CoroutineDispatcher = Dispatchers.Main
         ): ShuttleNavController {
-            val newBundle = bundleFactory?.create() as Bundle
+            val newBundle = createBundle(bundleFactory)
             return ShuttleNavController(
                 shuttleWarehouse,
                 shuttleScreenFacade,
@@ -197,5 +218,8 @@ class ShuttleNavController(
                 mainThreadDispatcher = mainThreadDispatcher
             )
         }
+
+        @ExcludeFromCoverage
+        private fun createBundle(bundleFactory: BundleFactory?): Bundle = bundleFactory?.create() ?: DefaultBundleFactory().create()
     }
 }
