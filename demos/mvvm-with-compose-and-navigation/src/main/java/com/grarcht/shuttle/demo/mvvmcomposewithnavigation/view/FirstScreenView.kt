@@ -19,7 +19,7 @@ import com.grarcht.shuttle.demo.core.compose.ui.DemoNavCardShuttleColor
 import com.grarcht.shuttle.demo.core.compose.ui.DemoNavRiskyButtonColor
 import com.grarcht.shuttle.demo.core.compose.ui.DemoNavShuttleButtonColor
 import com.grarcht.shuttle.demo.core.io.IOResult
-import com.grarcht.shuttle.demo.mvvmcomposewithnavigation.viewmodel.FirstViewModel
+import com.grarcht.shuttle.demo.core.viewmodel.FirstViewModel
 import com.grarcht.shuttle.demo.core.compose.R.string as coreString
 
 @Composable

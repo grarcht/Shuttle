@@ -42,6 +42,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -69,8 +70,6 @@ private val CARD_TEXT_MID = Color(0xFF72383D)
 private val CARDS_HORIZONTAL_GAP = 8.dp
 private val CARDS_HORIZONTAL_PADDING = 16.dp
 private val FULLY_ROUNDED_SHAPE = RoundedCornerShape(50)
-private const val HERO_SUBTITLE = "transport"
-private const val HERO_TITLE = "SHUTTLE"
 private val PILL_BACKGROUND_COLOR = Color(0x26AC9C8D)
 private val PILL_BORDER_COLOR = Color(0xFFAC9C8D)
 private val PILL_BORDER_WIDTH = 1.dp
@@ -103,7 +102,6 @@ private val SPACING_TOP = 8.dp
 private val SUBTITLE_COLOR = Color(0xFFD1C7BD)
 private val TAGLINE_BOTTOM_PADDING = 32.dp
 private val TAGLINE_START_PADDING = 20.dp
-private const val TAGLINE_TEXT = "Load\nand\ngo.\nWorry free."
 private val TITLE_COLOR = Color(0xFFEFE9E1)
 
 // TextStyle constants (alphabetical). Declared after Color constants above.
@@ -267,13 +265,13 @@ private fun ColumnScope.HeroHeader(architectureLabel: String) {
     ArchitecturePill(label = architectureLabel)
     Spacer(modifier = Modifier.height(SPACING_PILL_TO_TITLE))
     BasicText(
-        text = HERO_TITLE,
+        text = stringResource(R.string.shuttle_title),
         style = TITLE_STYLE,
         modifier = Modifier.fillMaxWidth()
     )
     Spacer(modifier = Modifier.height(SPACING_TITLE_TO_SUBTITLE))
     BasicText(
-        text = HERO_SUBTITLE,
+        text = stringResource(R.string.shuttle_subtitle),
         style = SUBTITLE_STYLE,
         modifier = Modifier.fillMaxWidth()
     )
@@ -423,7 +421,7 @@ private fun ColumnScope.ResponsiveTagline() {
         contentAlignment = Alignment.CenterStart
     ) {
         BasicText(
-            text = TAGLINE_TEXT,
+            text = stringResource(R.string.tagline),
             style = TAGLINE_STYLE,
             modifier = Modifier
                 .fillMaxWidth()

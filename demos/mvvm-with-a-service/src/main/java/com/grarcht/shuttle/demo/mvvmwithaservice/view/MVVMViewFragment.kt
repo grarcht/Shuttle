@@ -49,13 +49,17 @@ class MVVMViewFragment : Fragment() {
     @Inject
     lateinit var shuttle: Shuttle
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.initMessaging(context?.applicationContext, lifecycle)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.initMessaging(context?.applicationContext, lifecycle)
         initUiAppearance(view)
         view.applySystemBarTopInset(R.id.content_layout)
         initGetImageWithShuttleButton(view)

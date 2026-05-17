@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.res.stringResource
 import com.grarcht.shuttle.demo.core.compose.ui.DemoSecondScreenLayout
 import com.grarcht.shuttle.demo.core.compose.ui.rawPainterResource
 import com.grarcht.shuttle.demo.core.image.BitmapDecoder
@@ -31,7 +32,6 @@ import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-private const val ERROR_CONTENT_DESCRIPTION = "Failure loading the image."
 private const val TAG = "MVVMSecondView"
 private val ERROR_IMAGE_ID = com.grarcht.shuttle.demo.core.R.raw.broken_soccer_ball
 private val PLACEHOLDER_COLOR = Color(0xFFD1C7BD)
@@ -101,7 +101,7 @@ class MVVMSecondView(
     private fun ShowErrorImage() {
         Image(
             painter = rawPainterResource(id = ERROR_IMAGE_ID),
-            contentDescription = ERROR_CONTENT_DESCRIPTION
+            contentDescription = stringResource(R.string.failure_loading_image)
         )
         Text(text = context.resources.getString(R.string.unable_to_get_image))
     }

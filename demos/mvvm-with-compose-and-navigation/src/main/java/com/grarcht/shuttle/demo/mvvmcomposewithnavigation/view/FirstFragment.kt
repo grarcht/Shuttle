@@ -13,13 +13,14 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.grarcht.shuttle.demo.core.image.IMAGE_CARGO_ID
+import com.grarcht.shuttle.demo.core.viewmodel.FirstViewModel
 import com.grarcht.shuttle.demo.mvvmcomposewithnavigation.R
-import com.grarcht.shuttle.demo.mvvmcomposewithnavigation.viewmodel.FirstViewModel
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.addons.navigation.navigateWithShuttle
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+private const val LOG_NAV_CONTROLLER_NOT_FOUND = "NavController not found."
 private const val LOG_TAG = "FirstFragment"
 
 @AndroidEntryPoint
@@ -51,7 +52,7 @@ class FirstFragment : Fragment() {
         try {
             navController = view.findNavController()
         } catch (e: IllegalStateException) {
-            Log.e(LOG_TAG, "NavController not found.", e)
+            Log.e(LOG_TAG, LOG_NAV_CONTROLLER_NOT_FOUND, e)
         }
     }
 

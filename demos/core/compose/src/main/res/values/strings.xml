@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="avoid_crashes">Avoid Crashes</string>
+    <string name="shuttle_subtitle">transport</string>
+    <string name="shuttle_title">SHUTTLE</string>
+    <string name="tagline">Load\nand\ngo.\nWorry free.</string>
     <string name="explore">Explore</string>
     <string name="go_ahead_try_it">Go Ahead, Try It</string>
     <string name="risk_it">Risk It</string>

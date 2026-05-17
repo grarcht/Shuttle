@@ -32,6 +32,8 @@ import java.io.Serializable
 import javax.inject.Inject
 
 private const val ERROR_UNABLE_TO_GET_IMAGE = "Unable to get the image byte array."
+private const val LOG_IMAGE_MODEL_NULL_NAVIGATE_NORMALLY = "navigateNormally -> The image model has not been instantiated yet."
+private const val LOG_IMAGE_MODEL_NULL_NAVIGATE_WITH_SHUTTLE = "navigateWithShuttle -> The image model has not been instantiated yet."
 private const val LOG_TAG = "MVVMFirstViewFragment"
 
 @AndroidEntryPoint
@@ -128,7 +130,7 @@ class MVVMFirstViewFragment : Fragment() {
 
     private fun navigateWithShuttle(context: Context?) {
         val (cargoId, imageModel) = viewModel.navigationCargo() ?: run {
-            Log.d(LOG_TAG, "navigateWithShuttle -> The image model has not been instantiated yet.")
+            Log.d(LOG_TAG, LOG_IMAGE_MODEL_NULL_NAVIGATE_WITH_SHUTTLE)
             return
         }
         context?.let {
@@ -143,7 +145,7 @@ class MVVMFirstViewFragment : Fragment() {
     private fun navigateNormally(context: Context?) {
         val imageModel = viewModel.currentImageModel()
         if (imageModel == null) {
-            Log.d(LOG_TAG, "navigateNormally -> The image model has not been instantiated yet.")
+            Log.d(LOG_TAG, LOG_IMAGE_MODEL_NULL_NAVIGATE_NORMALLY)
             return
         }
         context?.let {

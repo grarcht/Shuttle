@@ -18,9 +18,13 @@ import android.widget.TextView
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import com.grarcht.shuttle.demo.core.image.BitmapDecoder
 import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.mvvmwithaservice.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 private const val ANIMATION_DURATION = 750L
 private const val BYTES_PER_KB = 1024.0
@@ -105,8 +109,12 @@ class LCEDialogFragment : DialogFragment() {
         val successLayout = view?.findViewById<FrameLayout>(R.id.successLayout) ?: return
         successLayout.visibility = View.VISIBLE
 
-        val bitmap = imageModel?.imageData?.let { BitmapDecoder.decodeBitmap(it) }
-        view?.findViewById<ImageView>(R.id.retrievedImage)?.setImageBitmap(bitmap)
+        val imageData = imageModel?.imageData
+        val imageView = view?.findViewById<ImageView>(R.id.retrievedImage)
+        viewLifecycleOwner.lifecycleScope.launch {
+            val bitmap = withContext(Dispatchers.IO) { imageData?.let { BitmapDecoder.decodeBitmap(it) } }
+            imageView?.setImageBitmap(bitmap)
+        }
 
         val bytes = imageModel?.imageData?.size?.toLong() ?: 0L
         val kb = bytes / BYTES_PER_KB

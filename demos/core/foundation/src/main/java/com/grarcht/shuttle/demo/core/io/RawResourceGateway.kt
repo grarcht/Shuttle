@@ -13,6 +13,7 @@ import java.io.InputStream
 
 private const val DEFAULT_LOG_TAG = "ImageGateway"
 private const val ERROR_CREATE_CALLED_BEFORE_BYTES = "bytesFromRawResource was not called before create()"
+private const val ERROR_UNABLE_TO_LOAD_BYTE_ARRAY = "Unable to load byte array"
 
 /**
  * This class is responsible for getting the bytes for a raw resources using the Gateway and
@@ -54,10 +55,10 @@ class RawResourceGateway(private var resources: Resources) {
                     emit(IOResult.Success(byteArray))
                 }
             } catch (rnfe: NotFoundException) {
-                Log.e(logTag, "Unable to load byte array", rnfe)
+                Log.e(logTag, ERROR_UNABLE_TO_LOAD_BYTE_ARRAY, rnfe)
                 emit(IOResult.Error(throwable = rnfe))
             } catch (ioe: IOException) {
-                Log.e(logTag, "Unable to load byte array", ioe)
+                Log.e(logTag, ERROR_UNABLE_TO_LOAD_BYTE_ARRAY, ioe)
                 emit(IOResult.Error(throwable = ioe))
             } finally {
                 bufferedInputStream.closeQuietly()

@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
 import com.grarcht.shuttle.demo.core.activity.setupEdgeToEdge
-import com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel.FirstViewModel
+import com.grarcht.shuttle.demo.core.viewmodel.FirstViewModel
 import com.grarcht.shuttle.framework.Shuttle
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

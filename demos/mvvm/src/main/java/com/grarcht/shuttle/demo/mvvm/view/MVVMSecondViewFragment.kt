@@ -102,7 +102,7 @@ class MVVMSecondViewFragment : Fragment() {
                         is ShuttlePickupCargoResult.Success<*> -> {
                             val model = shuttleResult.data as? ImageModel ?: return@collectLatest
                             imageModel = model
-                            view?.let { showSuccessView(view, model) }
+                            showSuccessView(view, model)
                             cancel()
                         }
 

@@ -1,4 +1,4 @@
-package com.grarcht.shuttle.demo.mvvmcomposewithnavigation.viewmodel
+package com.grarcht.shuttle.demo.core.viewmodel
 
 import android.content.res.Resources
 import androidx.annotation.RawRes
@@ -6,8 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.core.io.IOResult
-import com.grarcht.shuttle.demo.core.viewmodel.DefaultImageLoader
-import com.grarcht.shuttle.demo.core.viewmodel.ImageLoader
 import kotlinx.coroutines.flow.StateFlow
 
 class FirstViewModel : ViewModel() {

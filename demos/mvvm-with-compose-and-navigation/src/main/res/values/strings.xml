@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Shuttle MVVM + Compose + Nav Demo</string>
+    <string name="failure_loading_image">Failure loading the image.</string>
     <string name="unable_to_get_image">The image could not be retrieved. Please double check the changes.</string>
 </resources>
