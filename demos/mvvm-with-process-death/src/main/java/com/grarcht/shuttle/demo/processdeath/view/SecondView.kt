@@ -45,7 +45,7 @@ import kotlinx.coroutines.withContext
 
 private const val ERROR_CONTENT_DESCRIPTION = "Failure loading the image."
 private const val LOG_TAG = "SecondView"
-private val ERROR_IMAGE_ID = com.grarcht.shuttle.demo.core.R.raw.broken_soccer_ball
+private val ERROR_IMAGE_ID = com.grarcht.shuttle.demo.core.R.raw.breakdown
 private val PLACEHOLDER_COLOR = Color(0xFFD1C7BD)
 private val KILL_BUTTON_COLOR = DemoNavRiskyButtonColor
 private val KILL_BUTTON_SHAPE = RoundedCornerShape(50)

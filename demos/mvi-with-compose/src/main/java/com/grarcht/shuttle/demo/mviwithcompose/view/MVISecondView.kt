@@ -30,7 +30,7 @@ private const val ERROR_CONTENT_DESCRIPTION = "Failure loading the image."
 private const val NO_CARGO_ID = ""
 private const val TAG = "MVISecondView"
 private const val WARN_EMPTY_CARGO_ID = "Cargo ID is empty; skipping cargo pickup."
-private val ERROR_IMAGE_ID = com.grarcht.shuttle.demo.core.R.raw.broken_soccer_ball
+private val ERROR_IMAGE_ID = com.grarcht.shuttle.demo.core.R.raw.breakdown
 private val PLACEHOLDER_COLOR = Color(0xFFD1C7BD)
 
 /**

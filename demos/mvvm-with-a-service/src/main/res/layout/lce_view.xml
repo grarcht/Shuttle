@@ -117,16 +117,50 @@
         <ImageView
             android:id="@+id/errorImage"
             style="@style/ErrorImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:contentDescription="@string/unable_to_get_image"
-            android:src="@raw/broken_soccer_ball" />
+            android:src="@raw/breakdown" />
 
-        <TextView
-            style="@style/ErrorText"
+        <LinearLayout
+            android:id="@+id/errorCardOverlay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/unable_to_get_image" />
+            android:layout_gravity="bottom"
+            android:background="@drawable/bg_second_screen_card"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/second_screen_card_padding_h"
+            android:paddingEnd="@dimen/second_screen_card_padding_h"
+            android:paddingTop="@dimen/second_screen_card_padding_v"
+            android:paddingBottom="@dimen/second_screen_card_padding_v">
+
+            <TextView
+                style="@style/SecondScreenPill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/error_screen_pill" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="12dp" />
+
+            <TextView
+                style="@style/SecondScreenTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/error_screen_title" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="8dp" />
+
+            <TextView
+                style="@style/SecondScreenBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/error_screen_body" />
+
+        </LinearLayout>
     </FrameLayout>
 
 </FrameLayout>

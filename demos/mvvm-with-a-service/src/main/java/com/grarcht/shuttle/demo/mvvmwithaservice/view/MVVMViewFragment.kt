@@ -13,7 +13,11 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import com.grarcht.shuttle.demo.core.R.color
+import com.grarcht.shuttle.demo.core.R.raw
 import com.grarcht.shuttle.demo.core.animation.playAnimationOverlay
 import com.grarcht.shuttle.demo.core.image.IMAGE_CARGO_ID
 import com.grarcht.shuttle.demo.core.image.ImageModel
@@ -70,17 +74,17 @@ class MVVMViewFragment : Fragment() {
     private fun initUiAppearance(view: View) {
         view.findViewById<TextView>(R.id.title_text).text = view.resources.getString(R.string.mvvm_view_title)
         view.findViewById<CardWithCutoutView>(R.id.shuttle_card)
-            ?.setCardColor(ContextCompat.getColor(view.context, com.grarcht.shuttle.demo.core.R.color.colorTaupe))
+            ?.setCardColor(ContextCompat.getColor(view.context, color.colorTaupe))
         view.findViewById<CardWithCutoutView>(R.id.risky_card)
-            ?.setCardColor(ContextCompat.getColor(view.context, com.grarcht.shuttle.demo.core.R.color.colorBeige))
+            ?.setCardColor(ContextCompat.getColor(view.context, color.colorBeige))
     }
 
     private fun initPreviewButtons(view: View) {
         view.findViewById<ImageView>(R.id.preview_shuttle_button)?.setOnClickListener {
-            playAnimation(com.grarcht.shuttle.demo.core.R.raw.shuttle_delivery_success)
+            playAnimation(raw.shuttle_delivery_success)
         }
         view.findViewById<ImageView>(R.id.preview_without_shuttle_button)?.setOnClickListener {
-            playAnimation(com.grarcht.shuttle.demo.core.R.raw.shuttle_delivery_fail)
+            playAnimation(raw.shuttle_delivery_fail)
         }
     }
 
@@ -127,7 +131,7 @@ class MVVMViewFragment : Fragment() {
     ) {
         context?.applicationContext?.let { appContext ->
             val cargoId = IMAGE_CARGO_ID
-            val imageId = com.grarcht.shuttle.demo.core.R.raw.cargo
+            val imageId = raw.cargo
             viewLifecycleOwner.lifecycleScope.launch {
                 try {
                     flowProvider(appContext, cargoId, imageId)?.collectLatest {
@@ -151,11 +155,14 @@ class MVVMViewFragment : Fragment() {
     private fun getImageWithShuttle(context: Context?) =
         loadImageCargo(context, viewModel::transportImageCargoUsingShuttleAndIPC, WARN_UNKNOWN_IPC_RESULT)
 
-    private fun setDialogOnDismissListener() {
-        lceDialogFragment?.setOnDismissListener {
-            enableButtons(true)
-            lceDialogFragment?.setOnDismissListener(null)
-        }
+    private fun observeDialogDismissal() {
+        val dialog = lceDialogFragment ?: return
+        dialog.lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onDestroy(owner: LifecycleOwner) {
+                enableButtons(true)
+                owner.lifecycle.removeObserver(this)
+            }
+        })
     }
 
     private fun showLoadingDialog() {
@@ -164,7 +171,6 @@ class MVVMViewFragment : Fragment() {
         }
 
         lceDialogFragment = LCEDialogFragment.createLoadingDialogWith()
-        setDialogOnDismissListener()
         lceDialogFragment?.show(parentFragmentManager, LCEDialogFragment.TAG_LCE_LOADING)
     }
 
@@ -175,7 +181,7 @@ class MVVMViewFragment : Fragment() {
 
         val previousDialogFragment = lceDialogFragment
         lceDialogFragment = LCEDialogFragment.createContentDialogWith(imageModel)
-        setDialogOnDismissListener()
+        observeDialogDismissal()
         lceDialogFragment?.show(parentFragmentManager, LCEDialogFragment.TAG_LCE_CONTENT)
         previousDialogFragment?.fadeOutView(true)
     }
@@ -191,7 +197,7 @@ class MVVMViewFragment : Fragment() {
         val thrown = throwable?.message ?: ""
         val message = "$errorMessage. $thrown"
         lceDialogFragment = LCEDialogFragment.createErrorDialogWith(message)
-        setDialogOnDismissListener()
+        observeDialogDismissal()
         lceDialogFragment?.show(parentFragmentManager, LCEDialogFragment.TAG_LCE_ERROR)
         previousDialogFragment?.fadeOutView(true)
     }

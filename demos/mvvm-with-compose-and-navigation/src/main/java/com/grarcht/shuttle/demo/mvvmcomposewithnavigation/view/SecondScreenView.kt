@@ -23,7 +23,7 @@ import com.grarcht.shuttle.demo.mvvmcomposewithnavigation.viewmodel.SecondViewMo
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 
-private val ERROR_IMAGE_ID = com.grarcht.shuttle.demo.core.R.raw.broken_soccer_ball
+private val ERROR_IMAGE_ID = com.grarcht.shuttle.demo.core.R.raw.breakdown
 private val PLACEHOLDER_COLOR = Color(0xFFD1C7BD)
 
 @Composable

@@ -12,7 +12,6 @@ import com.grarcht.shuttle.framework.CARGO_ID_KEY
 import com.grarcht.shuttle.framework.NO_CARGO_ID
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.content.unregisterReceiverQuietly
-import com.grarcht.shuttle.framework.coroutines.channel.closeQuietly
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import com.grarcht.shuttle.framework.visibility.error.ShuttleDefaultError
 import com.grarcht.shuttle.framework.visibility.observation.ShuttleVisibilityObservable
@@ -48,7 +47,7 @@ class Receiver(
     private val handleNoResponseReceived: Boolean = false
 ) : BroadcastReceiver() {
     private var context: Context? = null
-    private val channel = Channel<IOResult>()
+    private val channel = Channel<IOResult>(Channel.BUFFERED)
     private var responseReceived = false
 
     val flow: Flow<IOResult> = channel.consumeAsFlow()
@@ -163,7 +162,7 @@ class Receiver(
      * Releases the resources.
      */
     fun releaseResources() {
-        channel.closeQuietly(scope, logTag = LOG_TAG)
+        channel.close()
         context?.unregisterReceiverQuietly(this, LOG_TAG)
     }
 

@@ -89,7 +89,7 @@ class DemoViewModel @Inject constructor(
     }
 
     private fun initReceiver(context: Context?, handleNoResponseReceived: Boolean = false) {
-        ipcServiceReceiver?.unregisterReceiverQuietly()
+        ipcServiceReceiver?.releaseResources()
         ipcServiceReceiver = Receiver(shuttle, viewModelScope, visibilityObservable, handleNoResponseReceived)
         ipcServiceReceiver?.register(context)
     }

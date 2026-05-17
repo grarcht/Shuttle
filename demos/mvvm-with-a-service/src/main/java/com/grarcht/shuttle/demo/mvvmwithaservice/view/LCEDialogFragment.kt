@@ -2,20 +2,21 @@ package com.grarcht.shuttle.demo.mvvmwithaservice.view
 
 import android.animation.ObjectAnimator
 import android.app.Dialog
-import android.content.DialogInterface
-import android.content.DialogInterface.OnDismissListener
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
+import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.graphics.drawable.toDrawable
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
@@ -32,10 +33,8 @@ private const val DIALOG_TYPE = "dialog_type"
 private const val ERROR_MESSAGE = "error_message"
 private const val FADE_OUT_END_ALPHA = 0F
 private const val FADE_OUT_START_ALPHA = 1F
-private const val HEIGHT_FACTOR = 0.75
 private const val IMAGE_DATA = "image_data"
 private const val SIZE_THRESHOLD = 1.0
-private const val WIDTH_FACTOR = 0.75
 
 /**
  * Used to display the loading, content (retrieved mage), and error views.
@@ -45,13 +44,13 @@ class LCEDialogFragment : DialogFragment() {
     private var errorMessage: String = ""
     private var fadeOutViewAnimator: ObjectAnimator? = null
     private var imageModel: ImageModel? = null
-    private var listener: OnDismissListener? = null
 
     var dialogType: DialogType = DialogType.LOADING
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         isCancelable = true
+        setStyle(STYLE_NO_FRAME, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
         extractArguments()
     }
 
@@ -65,37 +64,30 @@ class LCEDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
-        setDialogMetrics(dialog)
         return dialog
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loadView()
-    }
-
-    override fun onDestroyView() {
-        fadeOutViewAnimator?.cancel()
-        super.onDestroyView()
-    }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        listener?.onDismiss(dialog)
-    }
-
-    fun setOnDismissListener(listener: OnDismissListener?) {
-        this.listener = listener
-    }
-
-    private fun loadView() {
         when (dialogType) {
             DialogType.LOADING -> initLoadingView()
             DialogType.CONTENT -> showSuccessView()
             DialogType.ERROR -> showErrorView()
         }
+    }
+
+    override fun onDestroyView() {
+        fadeOutViewAnimator?.cancel()
+        super.onDestroyView()
     }
 
     private fun initLoadingView() {
@@ -106,18 +98,26 @@ class LCEDialogFragment : DialogFragment() {
     }
 
     private fun showSuccessView() {
-        view?.findViewById<FrameLayout>(R.id.loadingLayout)?.visibility = View.GONE
-        val successLayout = view?.findViewById<FrameLayout>(R.id.successLayout) ?: return
-        successLayout.visibility = View.VISIBLE
+        showSuccessLayout()
+        loadAndDisplayImage(view?.findViewById(R.id.retrievedImage), imageModel?.imageData)
+        displayImageSize(imageModel?.imageData?.size?.toLong() ?: 0L)
+        val card = view?.findViewById<LinearLayout>(R.id.cardOverlay) ?: return
+        applyNavBarInset(card)
+    }
 
-        val imageData = imageModel?.imageData
-        val imageView = view?.findViewById<ImageView>(R.id.retrievedImage)
+    private fun showSuccessLayout() {
+        view?.findViewById<FrameLayout>(R.id.loadingLayout)?.visibility = View.GONE
+        view?.findViewById<FrameLayout>(R.id.successLayout)?.visibility = View.VISIBLE
+    }
+
+    private fun loadAndDisplayImage(imageView: ImageView?, imageData: ByteArray?) {
         viewLifecycleOwner.lifecycleScope.launch {
             val bitmap = withContext(Dispatchers.IO) { imageData?.let { BitmapDecoder.decodeBitmap(it) } }
             imageView?.setImageBitmap(bitmap)
         }
+    }
 
-        val bytes = imageModel?.imageData?.size?.toLong() ?: 0L
+    private fun displayImageSize(bytes: Long) {
         val kb = bytes / BYTES_PER_KB
         val mb = kb / BYTES_PER_KB
         val sizeText = when {
@@ -128,13 +128,25 @@ class LCEDialogFragment : DialogFragment() {
         view?.findViewById<TextView>(R.id.imageSizeText)?.text = sizeText
     }
 
+    private fun applyNavBarInset(card: LinearLayout) {
+        val basePaddingV = resources.getDimensionPixelSize(com.grarcht.shuttle.demo.core.R.dimen.second_screen_card_padding_v)
+        ViewCompat.setOnApplyWindowInsetsListener(card) { v, insets ->
+            val navBar = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            v.updatePadding(bottom = basePaddingV + navBar.bottom)
+            insets
+        }
+    }
+
     private fun showErrorView() {
-        view?.let {
-            it.findViewById<FrameLayout>(R.id.loadingLayout)?.visibility = View.GONE
-            val errorLayout = it.findViewById<FrameLayout>(R.id.errorLayout)
-            errorLayout?.apply {
-                visibility = View.VISIBLE
-            }
+        showErrorLayout()
+        val card = view?.findViewById<LinearLayout>(R.id.errorCardOverlay) ?: return
+        applyNavBarInset(card)
+    }
+
+    private fun showErrorLayout() {
+        view?.apply {
+            findViewById<FrameLayout>(R.id.loadingLayout)?.visibility = View.GONE
+            findViewById<FrameLayout>(R.id.errorLayout)?.visibility = View.VISIBLE
         }
     }
 
@@ -163,88 +175,49 @@ class LCEDialogFragment : DialogFragment() {
         }
     }
 
-    private fun setDialogMetrics(dialog: Dialog) {
-        val dimensions = getWindowDimensions(dialog)
-        val width: Int = (dimensions.first * WIDTH_FACTOR).toInt()
-        val height: Int = (dimensions.second * HEIGHT_FACTOR).toInt()
-        dialog.window?.let {
-            it.setLayout(width, height)
-            it.setGravity(Gravity.CENTER)
-        }
-    }
-
-    private fun getWindowDimensions(dialog: Dialog): Pair<Int, Int> {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            val bounds = dialog.window?.windowManager?.currentWindowMetrics?.bounds
-            if (bounds != null) {
-                return Pair(bounds.width(), bounds.height())
-            }
-        }
-        val displayMetrics = dialog.context.resources.displayMetrics
-        return Pair(displayMetrics.widthPixels, displayMetrics.heightPixels)
-    }
-
     private fun extractArguments() {
         arguments?.let {
             val dialogTypeValue = it.getInt(DIALOG_TYPE, DialogType.LOADING.typeValue)
             dialogType = DialogType.toDialogType(dialogTypeValue)
-
             when (dialogTypeValue) {
-                DialogType.LOADING.typeValue -> {
-                }
-
-                DialogType.CONTENT.typeValue -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        imageModel = it.getSerializable(IMAGE_DATA, ImageModel::class.java)
-                    } else {
-                        @Suppress("DEPRECATION")
-                        imageModel = it.getSerializable(IMAGE_DATA) as? ImageModel
-                    }
-                }
-
-                DialogType.ERROR.typeValue -> {
-                    errorMessage = it.getString(ERROR_MESSAGE) ?: ""
-                }
+                DialogType.CONTENT.typeValue -> imageModel = extractImageModel(it)
+                DialogType.ERROR.typeValue -> errorMessage = it.getString(ERROR_MESSAGE) ?: ""
             }
         }
     }
+
+    private fun extractImageModel(args: Bundle): ImageModel? =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            args.getSerializable(IMAGE_DATA, ImageModel::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            args.getSerializable(IMAGE_DATA) as? ImageModel
+        }
 
     companion object {
         const val TAG_LCE_LOADING = "LCEDialogFragment_Loading"
         const val TAG_LCE_CONTENT = "LCEDialogFragment_Content"
         const val TAG_LCE_ERROR = "LCEDialogFragment_Error"
 
-        /**
-         * A factory function for creating a loading dialog.
-         */
-        fun createLoadingDialogWith(): LCEDialogFragment {
-            val fragment = LCEDialogFragment()
-            val args = Bundle()
-            args.putInt(DIALOG_TYPE, DialogType.LOADING.typeValue)
-            fragment.arguments = args
-            return fragment
-        }
+        fun createLoadingDialogWith(): LCEDialogFragment =
+            createFragmentWith { it.putInt(DIALOG_TYPE, DialogType.LOADING.typeValue) }
 
-        /**
-         * A factory function for creating a content dialog to show the retrieved image cargo.
-         */
-        fun createContentDialogWith(imageModel: ImageModel): LCEDialogFragment {
-            val fragment = LCEDialogFragment()
-            val args = Bundle()
-            args.putInt(DIALOG_TYPE, DialogType.CONTENT.typeValue)
-            args.putSerializable(IMAGE_DATA, imageModel)
-            fragment.arguments = args
-            return fragment
-        }
+        fun createContentDialogWith(imageModel: ImageModel): LCEDialogFragment =
+            createFragmentWith {
+                it.putInt(DIALOG_TYPE, DialogType.CONTENT.typeValue)
+                it.putSerializable(IMAGE_DATA, imageModel)
+            }
 
-        /**
-         * A factory function for creating an error dialog.
-         */
-        fun createErrorDialogWith(errorMessage: String): LCEDialogFragment {
+        fun createErrorDialogWith(errorMessage: String): LCEDialogFragment =
+            createFragmentWith {
+                it.putInt(DIALOG_TYPE, DialogType.ERROR.typeValue)
+                it.putString(ERROR_MESSAGE, errorMessage)
+            }
+
+        private fun createFragmentWith(configure: (Bundle) -> Unit): LCEDialogFragment {
             val fragment = LCEDialogFragment()
             val args = Bundle()
-            args.putInt(DIALOG_TYPE, DialogType.ERROR.typeValue)
-            args.putString(ERROR_MESSAGE, errorMessage)
+            configure(args)
             fragment.arguments = args
             return fragment
         }

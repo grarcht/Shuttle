@@ -110,7 +110,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/unable_to_get_image"
-            android:src="@raw/broken_soccer_ball" />
+            android:src="@raw/breakdown" />
 
         <TextView
             style="@style/ErrorText"

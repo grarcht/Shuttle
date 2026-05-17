@@ -33,7 +33,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 private const val TAG = "MVVMSecondView"
-private val ERROR_IMAGE_ID = com.grarcht.shuttle.demo.core.R.raw.broken_soccer_ball
+private val ERROR_IMAGE_ID = com.grarcht.shuttle.demo.core.R.raw.breakdown
 private val PLACEHOLDER_COLOR = Color(0xFFD1C7BD)
 
 class MVVMSecondView(
