@@ -34,11 +34,8 @@
         <item name="android:gravity">center_horizontal</item>
     </style>
 
-    <style name="Image">
+    <style name="ErrorImage">
         <item name="android:scaleType">centerCrop</item>
-    </style>
-
-    <style name="ErrorImage" parent="Image">
         <item name="android:alpha">0.8</item>
     </style>
 

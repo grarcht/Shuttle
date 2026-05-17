@@ -106,6 +106,7 @@ class LCEDialogFragment : DialogFragment() {
     }
 
     private fun showSuccessView() {
+        view?.findViewById<FrameLayout>(R.id.loadingLayout)?.visibility = View.GONE
         val successLayout = view?.findViewById<FrameLayout>(R.id.successLayout) ?: return
         successLayout.visibility = View.VISIBLE
 
@@ -129,6 +130,7 @@ class LCEDialogFragment : DialogFragment() {
 
     private fun showErrorView() {
         view?.let {
+            it.findViewById<FrameLayout>(R.id.loadingLayout)?.visibility = View.GONE
             val errorLayout = it.findViewById<FrameLayout>(R.id.errorLayout)
             errorLayout?.apply {
                 visibility = View.VISIBLE
