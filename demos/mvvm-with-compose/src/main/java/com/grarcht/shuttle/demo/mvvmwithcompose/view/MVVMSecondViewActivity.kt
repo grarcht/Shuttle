@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import com.grarcht.shuttle.demo.core.activity.setupEdgeToEdge
 import com.grarcht.shuttle.demo.mvvmwithcompose.viewmodel.SecondViewModel
@@ -23,7 +24,7 @@ class MVVMSecondViewActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setupEdgeToEdge()
-        window.setBackgroundDrawable(0xFFD1C7BD.toInt().toDrawable())
+        window.setBackgroundDrawable(ContextCompat.getColor(this, com.grarcht.shuttle.demo.core.R.color.colorBeige).toDrawable())
         super.onCreate(savedInstanceState)
         mvvmSecondView = MVVMSecondView(this, viewModel, shuttle)
         setContent {

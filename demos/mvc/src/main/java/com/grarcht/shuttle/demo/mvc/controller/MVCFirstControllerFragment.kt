@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -114,7 +113,7 @@ class MVCFirstControllerFragment : Fragment() {
                 navigateWithShuttle(context)
             }
             findViewById<ImageView>(R.id.preview_shuttle_button)?.setOnClickListener {
-                playAnimation(R.raw.shuttle_delivery_success)
+                playAnimationOverlay(R.raw.shuttle_delivery_success)
             }
         }
     }
@@ -127,19 +126,9 @@ class MVCFirstControllerFragment : Fragment() {
                 navigateNormally(context)
             }
             findViewById<ImageView>(R.id.preview_without_shuttle_button)?.setOnClickListener {
-                playAnimation(R.raw.shuttle_delivery_fail)
+                playAnimationOverlay(R.raw.shuttle_delivery_fail)
             }
         }
-    }
-
-    private fun playAnimation(rawResId: Int) = playAnimationThenNavigate(rawResId) {}
-
-    private fun playAnimationThenNavigate(rawResId: Int, onComplete: () -> Unit) {
-        val rootView = view as? FrameLayout ?: run {
-            onComplete()
-            return
-        }
-        rootView.playAnimationOverlay(rawResId, onComplete)
     }
 
     private fun navigateWithShuttle(context: Context?) {

@@ -14,7 +14,7 @@ import androidx.core.view.updatePadding
 import com.grarcht.shuttle.demo.core.R
 
 private const val ANIMATION_DURATION = 750L
-private const val BYTES_PER_KB = 1024.0
+const val BYTES_PER_KB = 1024.0
 private const val FADE_IN_START_ALPHA = 0F
 private const val FADE_OUT_END_ALPHA = 0F
 private const val FADE_OUT_START_ALPHA = 1F

@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -81,10 +80,10 @@ class MVVMViewFragment : Fragment() {
 
     private fun initPreviewButtons(view: View) {
         view.findViewById<ImageView>(R.id.preview_shuttle_button)?.setOnClickListener {
-            playAnimation(raw.shuttle_delivery_success)
+            playAnimationOverlay(raw.shuttle_delivery_success)
         }
         view.findViewById<ImageView>(R.id.preview_without_shuttle_button)?.setOnClickListener {
-            playAnimation(raw.shuttle_delivery_fail)
+            playAnimationOverlay(raw.shuttle_delivery_fail)
         }
     }
 
@@ -200,16 +199,6 @@ class MVVMViewFragment : Fragment() {
         observeDialogDismissal()
         lceDialogFragment?.show(parentFragmentManager, LCEDialogFragment.TAG_LCE_ERROR)
         previousDialogFragment?.fadeOutView(true)
-    }
-
-    private fun playAnimation(rawResId: Int) = playAnimationThenNavigate(rawResId) {}
-
-    private fun playAnimationThenNavigate(rawResId: Int, onComplete: () -> Unit) {
-        val rootView = view as? FrameLayout ?: run {
-            onComplete()
-            return
-        }
-        rootView.playAnimationOverlay(rawResId, onComplete)
     }
 
     companion object {

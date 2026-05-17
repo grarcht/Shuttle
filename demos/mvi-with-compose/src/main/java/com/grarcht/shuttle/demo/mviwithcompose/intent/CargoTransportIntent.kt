@@ -17,7 +17,7 @@ sealed class CargoTransportIntent {
      * @property resources the app resources used to read the raw image data.
      * @property imageId the raw resource ID of the image to load.
      */
-    data class LoadImage(val resources: Resources, @RawRes val imageId: Int) : CargoTransportIntent()
+    data class LoadImage(val resources: Resources, @param:RawRes val imageId: Int) : CargoTransportIntent()
 
     /**
      * Requests navigation to the second view by transporting the image model safely
