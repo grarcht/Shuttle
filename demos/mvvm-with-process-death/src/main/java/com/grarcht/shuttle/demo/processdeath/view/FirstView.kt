@@ -21,8 +21,9 @@ import com.grarcht.shuttle.demo.core.compose.ui.DemoNavShuttleButtonColor
 import com.grarcht.shuttle.demo.core.image.IMAGE_CARGO_ID
 import com.grarcht.shuttle.demo.core.io.IOResult
 import com.grarcht.shuttle.demo.core.viewmodel.FirstViewModel
+import com.grarcht.shuttle.demo.processdeath.EXTRA_USE_MEMORY_CACHE
+import com.grarcht.shuttle.demo.processdeath.model.ImageCache
 import com.grarcht.shuttle.framework.Shuttle
-import java.io.Serializable
 import com.grarcht.shuttle.demo.core.compose.R.string as coreString
 
 private const val LOG_TAG = "FirstView"
@@ -100,8 +101,9 @@ class FirstView(
 
     private fun navigateWithMemoryCache() {
         val imageModel = viewModel.currentImageModel() ?: return
+        ImageCache.imageModel = imageModel
         val intent = Intent(context, SecondActivity::class.java)
-        intent.putExtra(IMAGE_CARGO_ID, imageModel as Serializable)
+        intent.putExtra(EXTRA_USE_MEMORY_CACHE, true)
         context.startActivity(intent)
     }
 }

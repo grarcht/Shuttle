@@ -43,10 +43,6 @@ class SecondActivity : ComponentActivity() {
         super.onSaveInstanceState(outStateShuttleBundle)
     }
 
-    companion object {
-        const val EXTRA_USE_MEMORY_CACHE = "extra_use_memory_cache"
-    }
-
     fun killAppAfterBackgrounding() {
         // Delegate the kill to AppProcessKillerReceiver running in the :kill process. Android only
         // preserves the task back stack when the kill originates externally; a self-kill clears

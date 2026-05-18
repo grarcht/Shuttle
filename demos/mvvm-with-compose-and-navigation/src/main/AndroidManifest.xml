@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- hardwareAccelerated="false": CardWithCutoutView uses a non-convex clipping path which
+         is unsupported by the GPU renderer. Software rendering is required app-wide because
+         the card appears in the navigation graph and cannot be isolated to a single View. -->
     <application
         android:name=".DemoApplication"
         android:hardwareAccelerated="false"

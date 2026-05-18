@@ -12,9 +12,9 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.core.widget.ContentLoadingProgressBar
@@ -22,19 +22,18 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.grarcht.shuttle.demo.core.image.BitmapDecoder
 import com.grarcht.shuttle.demo.core.image.ImageModel
+import com.grarcht.shuttle.demo.core.view.setImageSizeText
 import com.grarcht.shuttle.demo.mvvmwithaservice.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 private const val ANIMATION_DURATION = 750L
-private const val BYTES_PER_KB = 1024.0
 private const val DIALOG_TYPE = "dialog_type"
 private const val ERROR_MESSAGE = "error_message"
 private const val FADE_OUT_END_ALPHA = 0F
 private const val FADE_OUT_START_ALPHA = 1F
 private const val IMAGE_DATA = "image_data"
-private const val SIZE_THRESHOLD = 1.0
 
 /**
  * Used to display the loading, content (retrieved mage), and error views.
@@ -70,10 +69,19 @@ class LCEDialogFragment : DialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        dialog?.window?.setLayout(
-            WindowManager.LayoutParams.MATCH_PARENT,
-            WindowManager.LayoutParams.MATCH_PARENT
-        )
+        dialog?.window?.let { window ->
+            window.setLayout(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT
+            )
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+            WindowCompat.setDecorFitsSystemWindows(window, false)
+            window.navigationBarColor = Color.TRANSPARENT
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                window.isNavigationBarContrastEnforced = false
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -100,7 +108,7 @@ class LCEDialogFragment : DialogFragment() {
     private fun showSuccessView() {
         showSuccessLayout()
         loadAndDisplayImage(view?.findViewById(R.id.retrievedImage), imageModel?.imageData)
-        displayImageSize(imageModel?.imageData?.size?.toLong() ?: 0L)
+        view?.let { setImageSizeText(it, imageModel?.imageData?.size?.toLong() ?: 0L) }
         val card = view?.findViewById<LinearLayout>(R.id.cardOverlay) ?: return
         applyNavBarInset(card)
     }
@@ -115,17 +123,6 @@ class LCEDialogFragment : DialogFragment() {
             val bitmap = withContext(Dispatchers.IO) { imageData?.let { BitmapDecoder.decodeBitmap(it) } }
             imageView?.setImageBitmap(bitmap)
         }
-    }
-
-    private fun displayImageSize(bytes: Long) {
-        val kb = bytes / BYTES_PER_KB
-        val mb = kb / BYTES_PER_KB
-        val sizeText = when {
-            mb >= SIZE_THRESHOLD -> getString(com.grarcht.shuttle.demo.core.R.string.second_screen_image_size_mb, mb.toFloat())
-            kb >= SIZE_THRESHOLD -> getString(com.grarcht.shuttle.demo.core.R.string.second_screen_image_size_kb, kb.toFloat())
-            else -> getString(com.grarcht.shuttle.demo.core.R.string.second_screen_image_size_b, bytes)
-        }
-        view?.findViewById<TextView>(R.id.imageSizeText)?.text = sizeText
     }
 
     private fun applyNavBarInset(card: LinearLayout) {

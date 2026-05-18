@@ -43,7 +43,7 @@ import androidx.compose.ui.unit.sp
 import com.grarcht.shuttle.demo.core.compose.R
 
 private const val BYTES_PER_KB = 1024.0
-private const val HORIZONTAL_BIAS = 0.4f
+const val HORIZONTAL_BIAS = 0.4f
 private const val CROSSFADE_DURATION_MILLIS = 700
 private const val CROSSFADE_LABEL = "secondScreenCrossfade"
 

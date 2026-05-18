@@ -1,9 +1,7 @@
 package com.grarcht.shuttle.demo.mvvm.view
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,11 +17,11 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.snackbar.Snackbar
 import com.grarcht.shuttle.demo.core.R
 import com.grarcht.shuttle.demo.core.animation.playAnimationOverlay
-import com.grarcht.shuttle.demo.core.image.IMAGE_CARGO_ID
 import com.grarcht.shuttle.demo.core.io.IOResult
 import com.grarcht.shuttle.demo.core.view.CardWithCutoutView
 import com.grarcht.shuttle.demo.core.view.applySystemBarTopInset
 import com.grarcht.shuttle.demo.mvvm.viewmodel.FirstViewModel
+import com.grarcht.shuttle.demo.mvvm.viewmodel.NavigationEvent
 import com.grarcht.shuttle.framework.Shuttle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -31,8 +29,6 @@ import java.io.Serializable
 import javax.inject.Inject
 
 private const val ERROR_UNABLE_TO_GET_IMAGE = "Unable to get the image byte array."
-private const val LOG_IMAGE_MODEL_NULL_NAVIGATE_NORMALLY = "navigateNormally -> The image model has not been instantiated yet."
-private const val LOG_IMAGE_MODEL_NULL_NAVIGATE_WITH_SHUTTLE = "navigateWithShuttle -> The image model has not been instantiated yet."
 private const val LOG_TAG = "MVVMFirstViewFragment"
 
 @AndroidEntryPoint
@@ -59,6 +55,7 @@ class MVVMFirstViewFragment : Fragment() {
         initOnClickNavigateNormally(view)
         viewModel.loadImage(resources, R.raw.cargo)
         observeUiState()
+        observeNavigation()
     }
 
     override fun onResume() {
@@ -96,7 +93,7 @@ class MVVMFirstViewFragment : Fragment() {
             navWithShuttleButton = findViewById(R.id.nav_with_shuttle_button)
             navWithShuttleButton?.setOnClickListener {
                 it.isEnabled = false
-                navigateWithShuttle(context)
+                viewModel.onNavigateWithShuttle()
             }
             findViewById<ImageView>(R.id.preview_shuttle_button)?.setOnClickListener {
                 playAnimationOverlay(R.raw.shuttle_delivery_success)
@@ -109,7 +106,7 @@ class MVVMFirstViewFragment : Fragment() {
             navNormallyButton = findViewById(R.id.nav_without_shuttle_button)
             navNormallyButton?.setOnClickListener {
                 it.isEnabled = false
-                navigateNormally(context)
+                viewModel.onNavigateNormally()
             }
             findViewById<ImageView>(R.id.preview_without_shuttle_button)?.setOnClickListener {
                 playAnimationOverlay(R.raw.shuttle_delivery_fail)
@@ -117,31 +114,27 @@ class MVVMFirstViewFragment : Fragment() {
         }
     }
 
-    private fun navigateWithShuttle(context: Context?) {
-        val (cargoId, imageModel) = viewModel.navigationCargo() ?: run {
-            Log.d(LOG_TAG, LOG_IMAGE_MODEL_NULL_NAVIGATE_WITH_SHUTTLE)
-            return
-        }
-        context?.let {
-            shuttle.intentCargoWith(it, MVVMSecondViewActivity::class.java)
-                .logTag(LOG_TAG)
-                .transport(cargoId, imageModel)
-                .cleanShuttleOnReturnTo(MVVMFirstViewFragment::class.java, MVVMSecondViewActivity::class.java, cargoId)
-                .deliver(it)
-        }
-    }
-
-    private fun navigateNormally(context: Context?) {
-        val imageModel = viewModel.currentImageModel()
-        if (imageModel == null) {
-            Log.d(LOG_TAG, LOG_IMAGE_MODEL_NULL_NAVIGATE_NORMALLY)
-            return
-        }
-        context?.let {
-            val cargoId = IMAGE_CARGO_ID
-            val intent = Intent(it, MVVMSecondViewActivity::class.java)
-            intent.putExtra(cargoId, imageModel as Serializable)
-            it.startActivity(intent)
+    private fun observeNavigation() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.navigationEvent.collect { event ->
+                    val ctx = context ?: return@collect
+                    when (event) {
+                        is NavigationEvent.WithShuttle -> {
+                            shuttle.intentCargoWith(ctx, MVVMSecondViewActivity::class.java)
+                                .logTag(LOG_TAG)
+                                .transport(event.cargo.cargoId, event.cargo.imageModel)
+                                .cleanShuttleOnReturnTo(MVVMFirstViewFragment::class.java, MVVMSecondViewActivity::class.java, event.cargo.cargoId)
+                                .deliver(ctx)
+                        }
+                        is NavigationEvent.Normally -> {
+                            val intent = Intent(ctx, MVVMSecondViewActivity::class.java)
+                            intent.putExtra(event.cargo.cargoId, event.cargo.imageModel as Serializable)
+                            ctx.startActivity(intent)
+                        }
+                    }
+                }
+            }
         }
     }
 

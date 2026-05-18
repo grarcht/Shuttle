@@ -35,6 +35,7 @@ import com.grarcht.shuttle.demo.core.image.BitmapDecoder
 import com.grarcht.shuttle.demo.core.image.IMAGE_CARGO_ID
 import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.core.os.getParcelableWith
+import com.grarcht.shuttle.demo.processdeath.EXTRA_USE_MEMORY_CACHE
 import com.grarcht.shuttle.demo.processdeath.R
 import com.grarcht.shuttle.demo.processdeath.viewmodel.SecondImageState
 import com.grarcht.shuttle.demo.processdeath.viewmodel.SecondViewModel
@@ -111,7 +112,7 @@ class SecondView(
 
     @Suppress("UnusedParameter")
     private fun extractArgsFrom(savedInstanceState: Bundle?, extras: Bundle?) {
-        useMemoryCache = extras?.getBoolean(SecondActivity.EXTRA_USE_MEMORY_CACHE, false) ?: false
+        useMemoryCache = extras?.getBoolean(EXTRA_USE_MEMORY_CACHE, false) ?: false
         if (useMemoryCache.not()) {
             val cargo: ShuttleParcelCargo? = extras?.getParcelableWith(
                 IMAGE_CARGO_ID,

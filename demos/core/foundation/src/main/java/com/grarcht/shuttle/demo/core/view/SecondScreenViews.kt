@@ -18,6 +18,8 @@ const val BYTES_PER_KB = 1024.0
 private const val FADE_IN_START_ALPHA = 0F
 private const val FADE_OUT_END_ALPHA = 0F
 private const val FADE_OUT_START_ALPHA = 1F
+
+// Must stay in sync with HORIZONTAL_BIAS in DemoSecondScreenLayout (demos/core/compose)
 private const val HORIZONTAL_BIAS = 0.4f
 
 fun hideLoadingView(view: View?, viewToFadeIn: View?): ObjectAnimator? {
