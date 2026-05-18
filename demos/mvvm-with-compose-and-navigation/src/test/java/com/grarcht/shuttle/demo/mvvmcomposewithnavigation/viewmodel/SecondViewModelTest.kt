@@ -5,7 +5,6 @@ import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertAll
 
 private const val TEST_CARGO_ID = "test-cargo-id"
 private val TEST_IMAGE_DATA = byteArrayOf(1, 2, 3)
