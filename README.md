@@ -77,14 +77,14 @@ Why keep spending more time and money on governance through code reviews? Why no
 
 When envisioning, designing, and creating the architecture, quality attributes and best practices were kept in mind. These attributes include usability, readability, recognizability, reusability, maintainability, and more.
 
-| Without Shuttle | With Shuttle |
-|---|---|
-| Large `Serializable` passed in `Intent`/`Bundle` | Object stored in a warehouse; only a small identifier is passed |
-| Silent in dev, catastrophic in production | Binder transaction stays within safe size limits, everywhere |
-| Time and money spent on crash investigation, fixes, QA, and hotfixes | Crash class is structurally impossible |
-| Requires constant code review governance | Ship with confidence |
-| Engineers manually manage object lifecycles | Automatic or on-demand cargo cleanup built in |
-| <img src="/media/videos/without_shuttle.gif" width="100%"/> | <img src="/media/videos/with_shuttle.gif" width="100%"/> |
+| Without Shuttle                                                      | With Shuttle                                                    |
+|----------------------------------------------------------------------|-----------------------------------------------------------------|
+| Large `Serializable` passed in `Intent`/`Bundle`                     | Object stored in a warehouse; only a small identifier is passed |
+| Silent in dev, catastrophic in production                            | Binder transaction stays within safe size limits, everywhere    |
+| Time and money spent on crash investigation, fixes, QA, and hotfixes | Crash class is structurally impossible                          |
+| Requires constant code review governance                             | Ship with confidence                                            |
+| Engineers manually manage object lifecycles                          | Automatic or on-demand cargo cleanup built in                   |
+| <img src="/media/videos/without_shuttle.gif" width="50%"/>           | <img src="/media/videos/with_shuttle.gif" width="50%"/>         |
 
 ---
 
