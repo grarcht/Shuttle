@@ -84,7 +84,7 @@ When envisioning, designing, and creating the architecture, quality attributes a
 | Time and money spent on crash investigation, fixes, QA, and hotfixes | Crash class is structurally impossible                          |
 | Requires constant code review governance                             | Ship with confidence                                            |
 | Engineers manually manage object lifecycles                          | Automatic or on-demand cargo cleanup built in                   |
-| <img src="/media/videos/without_shuttle.gif" width="50%"/>           | <img src="/media/videos/with_shuttle.gif" width="50%"/>         |
+| <img src="/media/videos/without_shuttle.gif" width="75%"/>           | <img src="/media/videos/with_shuttle.gif" width="75%"/>         |
 
 ---
 
