@@ -20,6 +20,7 @@
   class ProductModel(val id: String, val data: ByteArray)
   ```
 - `ShuttleCargoData` marker interface as the public type bound for all cargo, replacing raw `java.io.Serializable` in the public API
+- Bill of Materials (BOM) module to manage Shuttle dependency versions
 - MVI with Compose demo module
 - Kover code coverage configuration across framework modules
 - GitHub Actions workflow that publishes API documentation to GitHub Pages via Dokka on every push to main

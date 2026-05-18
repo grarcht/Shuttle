@@ -61,6 +61,7 @@ roomDeps-compiler = { group = "androidx.room", name = "room-compiler", version.r
 roomDeps-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 roomDeps-testHelpers = { group = "androidx.room", name = "room-testing", version.ref = "room" }
 
+shuttle-bom = { module = "com.grarcht.shuttle:framework-bom", version.ref = "shuttle" }
 shuttle-framework = { group = "com.grarcht.shuttle", name = "framework", version.ref = "shuttle" }
 shuttle-integrationsPersistence = { group = "com.grarcht.shuttle", name = "framework-integrations-persistence", version.ref = "shuttle" }
 shuttle-integrationsExtensionsRoom = { group = "com.grarcht.shuttle", name = "framework-integrations-extensions-room", version.ref = "shuttle" }

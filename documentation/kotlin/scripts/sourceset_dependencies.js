@@ -1,0 +1,1 @@
+sourceset_dependencies = '{":framework-annotations/main":[],":framework-integrations-persistence/main":[],":framework/main":[],":framework-annotations-gradle-plugin/main":[],":framework-annotations-processor/main":[],":framework-annotations-compiler-plugin/main":[],":framework-integrations-extensions-room/main":[],":framework-addons-navigation-component/main":[]}'

@@ -69,10 +69,18 @@ dependencies {
     implementation(project(":demos-core-di"))
     implementation(project(":demos-core-compose"))
 
-    implementation(project(":framework"))
-    implementation(project(":framework-integrations-persistence"))
-    implementation(project(":framework-integrations-extensions-room"))
-    implementation(project(":framework-addons-navigation-component"))
+    // Lighter weight, independent dependencies
+    // implementation(project(":framework"))
+    // implementation(project(":framework-integrations-persistence"))
+    // implementation(project(":framework-integrations-extensions-room"))
+    // implementation(project(":framework-addons-navigation-component"))
+
+    // To use maven dependencies, use the following:
+    implementation(platform(libs.shuttle.bom))
+    implementation(libs.shuttle.framework)
+    implementation(libs.shuttle.integrationsPersistence)
+    implementation(libs.shuttle.integrationsExtensionsRoom)
+    implementation(libs.shuttle.addOnsNavigationComponent)
 
     androidTestImplementation(libs.testingDeps.junit.ext)
     androidTestImplementation(libs.testingDeps.espresso.core)

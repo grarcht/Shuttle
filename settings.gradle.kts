@@ -14,11 +14,13 @@ rootProject.name = "Shuttle"
 
 dependencyResolutionManagement {
     repositories {
+        mavenLocal()
         mavenCentral()
         google()
     }
 }
 
+include(":bom")
 include(":framework-annotations")
 project(":framework-annotations").projectDir = File(settingsDir, "framework-annotations/annotations")
 include(":framework-annotations-processor")

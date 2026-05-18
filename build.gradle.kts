@@ -38,7 +38,7 @@ plugins {
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.google.dagger.hilt) apply false
     alias(libs.plugins.detect)
-    alias(libs.plugins.jetbrains.dokka) apply false
+    alias(libs.plugins.jetbrains.dokka)
     alias(libs.plugins.kover)
     alias(libs.plugins.google.ksp) apply false
     alias(libs.plugins.compose.compiler) apply false
@@ -118,12 +118,28 @@ tasks.named<Delete>("clean") {
     delete(project.layout.buildDirectory)
 }
 
-// Aggregate coverage from the framework library modules only.
+dokka {
+    dokkaPublications.html {
+        outputDirectory.set(layout.projectDirectory.dir("documentation/kotlin"))
+    }
+}
+
 dependencies {
+    // Aggregate coverage from the framework library modules only.
     kover(project(":framework"))
     kover(project(":framework-integrations-persistence"))
     kover(project(":framework-integrations-extensions-room"))
     kover(project(":framework-addons-navigation-component"))
+
+    // Aggregate Dokka docs from all published modules.
+    dokka(project(":framework"))
+    dokka(project(":framework-integrations-persistence"))
+    dokka(project(":framework-integrations-extensions-room"))
+    dokka(project(":framework-addons-navigation-component"))
+    dokka(project(":framework-annotations"))
+    dokka(project(":framework-annotations-processor"))
+    dokka(project(":framework-annotations-compiler-plugin"))
+    dokka(project(":framework-annotations-gradle-plugin"))
 }
 
 kover {

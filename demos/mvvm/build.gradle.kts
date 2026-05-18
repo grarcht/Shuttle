@@ -65,14 +65,15 @@ dependencies {
     implementation(project(":demos-core-di"))
 
     // Lighter weight, independent dependencies
-    implementation(project(":framework"))
-    implementation(project(":framework-integrations-persistence"))
-    implementation(project(":framework-integrations-extensions-room"))
+    // implementation(project(":framework"))
+    // implementation(project(":framework-integrations-persistence"))
+    // implementation(project(":framework-integrations-extensions-room"))
 
     // To use maven dependencies, use the following:
-    // implementation(libs.shuttle.framework)
-    // implementation(libs.shuttle.integrationsPersistence)
-    // implementation(libs.shuttle.integrationsExtensionsRoom)
+    implementation(platform(libs.shuttle.bom))
+    implementation(libs.shuttle.framework)
+    implementation(libs.shuttle.integrationsPersistence)
+    implementation(libs.shuttle.integrationsExtensionsRoom)
 
     testImplementation(libs.testingDeps.junit.jupiterApi)
     testImplementation(libs.testingDeps.kotlin.coroutines)
