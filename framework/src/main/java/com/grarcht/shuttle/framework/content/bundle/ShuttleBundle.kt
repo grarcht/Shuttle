@@ -2,6 +2,8 @@ package com.grarcht.shuttle.framework.content.bundle
 
 import android.os.Bundle
 import android.util.Log
+import com.grarcht.shuttle.framework.ExcludeFromCoverage
+import com.grarcht.shuttle.framework.ShuttleCargoData
 import com.grarcht.shuttle.framework.content.ShuttleIntent
 import com.grarcht.shuttle.framework.model.ShuttleParcelCargo
 import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
@@ -9,7 +11,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.Serializable
 
 private const val DEFAULT_LOG_TAG = "ShuttleBundle"
 
@@ -36,19 +37,19 @@ open class ShuttleBundle(
     }
 
     /**
-     * Sets the [serializable] for transport.
+     * Sets the [cargo] for transport.
      * @param cargoId the key used for shuttle the cargo to and from the [ShuttleWarehouse]
-     * @param serializable the cargo to shuttle
+     * @param cargo the cargo to shuttle
      * @return the [ShuttleBundle] reference use with function chaining
      */
-    fun transport(cargoId: String, serializable: Serializable?): ShuttleBundle {
+    fun <D : ShuttleCargoData> transport(cargoId: String, cargo: D?): ShuttleBundle {
         verifyWithFunctionWasCalled()
 
         val parcelPackage = ShuttleParcelCargo(cargoId)
-        internalBundle?.putParcelable(cargoId, parcelPackage)
+        putParcelable(cargoId, parcelPackage)
 
         backgroundThreadScope.launch {
-            repository.store(cargoId, serializable)
+            repository.store(cargoId, cargo)
         }.invokeOnCompletion {
             it?.let { throwable ->
                 Log.e(
@@ -67,7 +68,12 @@ open class ShuttleBundle(
      */
     fun create(): Bundle {
         verifyWithFunctionWasCalled()
-        return internalBundle as Bundle
+        return internalBundle!!
+    }
+
+    @ExcludeFromCoverage
+    private fun putParcelable(cargoId: String, parcelPackage: ShuttleParcelCargo) {
+        internalBundle?.putParcelable(cargoId, parcelPackage)
     }
 
     @Throws(IllegalStateException::class)
@@ -89,8 +95,13 @@ open class ShuttleBundle(
             repository: ShuttleWarehouse,
             bundleFactory: BundleFactory? = DefaultBundleFactory()
         ): ShuttleBundle {
-            val newBundle = bundle ?: bundleFactory?.create() as Bundle
+            val newBundle = resolveBundle(bundle, bundleFactory)
             return ShuttleBundle(repository, newBundle)
+        }
+
+        @ExcludeFromCoverage
+        private fun resolveBundle(bundle: Bundle?, bundleFactory: BundleFactory?): Bundle {
+            return bundle ?: bundleFactory?.create() ?: DefaultBundleFactory().create()
         }
     }
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/colorSecondScreenCard" />
+    <corners
+        android:topLeftRadius="@dimen/second_screen_card_corner_radius"
+        android:topRightRadius="@dimen/second_screen_card_corner_radius" />
+</shape>

@@ -11,7 +11,9 @@ private const val LOG_TAG = "FileFactory"
  * <a href="https://www.tutorialspoint.com/design_pattern/factory_pattern.htm">
  *     Factory Design Pattern</a>
  */
-class ShuttlePersistenceFileFactory : ShuttleFileFactory {
+class ShuttlePersistenceFileFactory(
+    private val fileProvider: (String) -> File = { path -> File(path) }
+) : ShuttleFileFactory {
 
     /**
      * Creates a new file.
@@ -22,11 +24,11 @@ class ShuttlePersistenceFileFactory : ShuttleFileFactory {
     override fun createFile(directoryName: String, fileName: String): File? {
         var createdFile: File? = null
         try {
-            val directory = File(directoryName)
+            val directory = fileProvider(directoryName)
             if (directory.exists().not()) {
                 directory.mkdir()
             }
-            createdFile = File("${directory.absolutePath}$fileName")
+            createdFile = fileProvider("${directory.absolutePath}$fileName")
         } catch (se: SecurityException) {
             Log.wtf(LOG_TAG, " Caught when creating a file.", se)
         }

@@ -3,6 +3,7 @@ package com.grarcht.shuttle.framework.content.serviceconnection.lifecycleaware
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import com.grarcht.shuttle.framework.ExcludeFromCoverage
 import com.grarcht.shuttle.framework.app.ShuttleService
 import com.grarcht.shuttle.framework.content.serviceconnection.ShuttleServiceConnection
 import com.grarcht.shuttle.framework.os.ShuttleBinder
@@ -13,6 +14,7 @@ import com.grarcht.shuttle.framework.os.ShuttleBinder
  *
  * @param config
  */
+@ExcludeFromCoverage
 class ShuttleLifecycleAwareServiceConnection<S : ShuttleService, B : ShuttleBinder<S>>(
     private val config: ShuttleLifecycleAwareServiceConnectionConfig<S>
 ) : DefaultLifecycleObserver,

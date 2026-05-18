@@ -1,20 +1,43 @@
-import org.gradle.api.publish.maven.MavenPublication
-import java.io.File
-import java.net.URI
-
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.jetbrains.dokka)
     alias(libs.plugins.signing)
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.android.junit5)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.kover)
 }
 
-tasks.named("dokkaHtml") {
-    (this as org.jetbrains.dokka.gradle.DokkaTask).outputDirectory.set(file("documentation/kotlin"))
+kover {
+    reports {
+        filters {
+            excludes {
+                annotatedBy("dagger.Module", "dagger.hilt.InstallIn", "androidx.annotation.RequiresApi", "com.grarcht.shuttle.framework.ExcludeFromCoverage")
+                classes(
+                    "*Hilt_*",
+                    "*_HiltModules*",
+                    "*_MembersInjector",
+                    "*_Factory",
+                    "*_Impl",
+                    "*_Impl\$*"
+                )
+                packages("*.dependencyinjection")
+            }
+        }
+        total {
+            html { onCheck = false }
+            xml { onCheck = false }
+        }
+    }
+}
+
+dokka {
+    dokkaPublications.html {
+        outputDirectory.set(layout.projectDirectory.dir("documentation/kotlin"))
+    }
+    dokkaSourceSets.register("main") {
+        sourceRoots.from(file("src/main/java"))
+    }
 }
 
 android {
@@ -27,9 +50,7 @@ android {
     }
 
     buildTypes {
-        release {
-            isMinifyEnabled = false
-        }
+        create("distribution")
     }
 
     kotlin.jvmToolchain(libs.versions.jvmTarget.get().toInt())
@@ -50,6 +71,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":framework-annotations"))
     implementation(libs.jetbrainsKotlinDeps.stdlib)
     implementation(libs.android.coreKtx)
     implementation(libs.android.appCompat)
@@ -67,6 +89,7 @@ dependencies {
     androidTestRuntimeOnly(libs.testingDeps.junit.junit5AndroidTestRunner)
 
     testImplementation(libs.roomDeps.testHelpers)
+    testImplementation(libs.testingDeps.kotlin.coroutines)
     testImplementation(libs.testingDeps.mockito.core)
     testImplementation(libs.testingDeps.mockito.kotlin)
     testImplementation(libs.testingDeps.junit.jupiterApi)
@@ -79,21 +102,15 @@ group = "com.grarcht.shuttle"
 val archivesName = "framework-integrations-extensions-room"
 extensions.getByType<BasePluginExtension>().archivesName.set(archivesName)
 version = libs.versions.shuttle.get()
-val testPublish = true
-val isReleaseVersion = true // the opposite is snapshot
-val releaseAARFilePath = if (isReleaseVersion)
-    "${projectDir}/build/outputs/aar/${archivesName}-release.aar" else
-    "${projectDir}/build/outputs/aar/${archivesName}-release-SNAPSHOT.aar"
-val debugAARFilePath = if (isReleaseVersion)
-    "${projectDir}/build/outputs/aar/${archivesName}-debug.aar" else
-    "${projectDir}/build/outputs/aar/${archivesName}-debug-SNAPSHOT.aar"
+val publishToBuildLocal = true
+val distributionAARFilePath = "${projectDir}/build/outputs/aar/${archivesName}.aar"
 val javadocJarFileName = "${archivesName}-javadoc.jar"
 val sourcesJarFileName = "${archivesName}-sources.jar"
 
 tasks.register<Jar>("javadocJar") {
     archiveClassifier.set("javadoc")
     archiveFileName.set(javadocJarFileName)
-    from(tasks.named("dokkaJavadoc"))
+    from(tasks.named("dokkaGeneratePublicationHtml"))
 }
 
 tasks.register<Jar>("sourcesJar") {
@@ -105,18 +122,10 @@ tasks.register<Jar>("sourcesJar") {
 // rename the aar files
 tasks.register("renameArtifacts") {
     doLast {
-        android.libraryVariants.forEach { variant ->
-            variant.outputs.forEach { output ->
-                val debugSuffix = "debug.aar"
-                val releaseSuffix = "release.aar"
-                val outputFile = output.outputFile
-                if (outputFile.name.endsWith(debugSuffix)) {
-                    val newName = if (isReleaseVersion) "${archivesName}-$debugSuffix" else "${archivesName}-debug-SNAPSHOT.aar"
-                    outputFile.renameTo(File(outputFile.parentFile, newName))
-                } else if (outputFile.name.endsWith(releaseSuffix)) {
-                    val newName = if (isReleaseVersion) "${archivesName}-$releaseSuffix" else "${archivesName}-release-SNAPSHOT.aar"
-                    outputFile.renameTo(File(outputFile.parentFile, newName))
-                }
+        val aarsDir = file("${projectDir}/build/outputs/aar/")
+        aarsDir.listFiles()?.forEach { outputFile ->
+            if (outputFile.name.endsWith("distribution.aar")) {
+                outputFile.renameTo(File(outputFile.parentFile, "${archivesName}.aar"))
             }
         }
     }
@@ -173,109 +182,66 @@ afterEvaluate {
         dependsOn(tasks.named("assemble"))
     }
 
+    tasks.withType<AbstractPublishToMaven>().configureEach {
+        if (name.contains("distribution", ignoreCase = true)) {
+            dependsOn("renameArtifacts")
+        }
+    }
+
     publishing {
         publications {
-            if (isReleaseVersion) {
-                create<MavenPublication>("release") {
-                    artifactId = archivesName
-                    artifact(tasks.named("sourcesJar")) {
-                        classifier = "sources"
-                    }
-                    artifact(tasks.named("javadocJar")) {
-                        classifier = "javadoc"
-                    }
-                    artifact(releaseAARFilePath)
-
-                    pom {
-                        name.set("Shuttle")
-                        packaging = "aar"
-                        description.set("Shuttle provides a modern, guarded way to pass large Serializable objects with Intents or saving them in Bundle objects to avoid app crashes from TransactionTooLargeExceptions.")
-                        url.set("https://github.com/grarcht/Shuttle")
-
-                        scm {
-                            connection.set("scm:git@github.com:grarcht/Shuttle.git")
-                            developerConnection.set("scm:git@github.com:grarcht/Shuttle.git")
-                            url.set("https://github.com/grarcht/Shuttle")
-                        }
-
-                        licenses {
-                            license {
-                                name.set("The MIT License")
-                                url.set("https://github.com/grarcht/Shuttle/blob/main/LICENSE.md")
-                            }
-                        }
-
-                        developers {
-                            developer {
-                                id.set(System.getenv("developerId"))
-                                name.set(System.getenv("developerName"))
-                                email.set(System.getenv("developerEmail"))
-                            }
-                        }
-                    }
-                    updatePomWithDependencies(pom)
-                    updatePomWithPlugins(pom)
+            create<MavenPublication>("distribution") {
+                artifactId = archivesName
+                artifact(tasks.named("sourcesJar")) {
+                    classifier = "sources"
                 }
-            } else {
-                create<MavenPublication>("debug") {
-                    artifactId = "${archivesName}-debug"
-                    artifact(tasks.named("sourcesJar")) {
-                        classifier = "sources"
-                    }
-                    artifact(tasks.named("javadocJar")) {
-                        classifier = "javadoc"
-                    }
-                    artifact(debugAARFilePath) {
-                        classifier = "debug"
-                    }
-
-                    pom {
-                        name.set("Shuttle")
-                        packaging = "aar"
-                        description.set("Shuttle provides a modern, guarded way to pass large Serializable objects with Intents or saving them in Bundle objects to avoid app crashes from TransactionTooLargeExceptions.")
-                        url.set("https://github.com/grarcht/Shuttle")
-
-                        scm {
-                            connection.set("scm:git@github.com:grarcht/Shuttle.git")
-                            developerConnection.set("scm:git@github.com:grarcht/Shuttle.git")
-                            url.set("https://github.com/grarcht/Shuttle")
-                        }
-
-                        licenses {
-                            license {
-                                name.set("The MIT License")
-                                url.set("https://github.com/grarcht/Shuttle/blob/main/LICENSE.md")
-                            }
-                        }
-
-                        developers {
-                            developer {
-                                id.set(System.getenv("developerId"))
-                                name.set(System.getenv("developerName"))
-                                email.set(System.getenv("developerEmail"))
-                            }
-                        }
-                    }
-                    updatePomWithDependencies(pom)
-                    updatePomWithPlugins(pom)
+                artifact(tasks.named("javadocJar")) {
+                    classifier = "javadoc"
                 }
+                artifact(distributionAARFilePath)
+
+                pom {
+                    name.set("Shuttle")
+                    packaging = "aar"
+                    description.set("Shuttle provides a modern, guarded way to pass large Serializable objects with Intents or saving them in Bundle objects to avoid app crashes from TransactionTooLargeExceptions.")
+                    url.set("https://github.com/grarcht/Shuttle")
+
+                    scm {
+                        connection.set("scm:git@github.com:grarcht/Shuttle.git")
+                        developerConnection.set("scm:git@github.com:grarcht/Shuttle.git")
+                        url.set("https://github.com/grarcht/Shuttle")
+                    }
+
+                    licenses {
+                        license {
+                            name.set("The MIT License")
+                            url.set("https://github.com/grarcht/Shuttle/blob/main/LICENSE.md")
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id.set(System.getenv("developerId"))
+                            name.set(System.getenv("developerName"))
+                            email.set(System.getenv("developerEmail"))
+                        }
+                    }
+                }
+                updatePomWithDependencies(pom)
+                updatePomWithPlugins(pom)
             }
         }
         repositories {
             maven {
                 name = "mavencentral"
 
-                url = if (testPublish) {
-                    val releasesRepoUrl = "${layout.buildDirectory.get()}/repos/releases"
-                    val snapshotsRepoUrl = "${layout.buildDirectory.get()}/repos/snapshots"
-                    uri(if (isReleaseVersion) releasesRepoUrl else snapshotsRepoUrl)
+                url = if (publishToBuildLocal) {
+                    uri("${layout.buildDirectory.get()}/repos/distribution")
                 } else {
-                    val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-                    val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-                    uri(if (isReleaseVersion) releasesRepoUrl else snapshotsRepoUrl)
+                    uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
                 }
 
-                if (!testPublish) {
+                if (!publishToBuildLocal) {
                     credentials {
                         username = System.getenv("ossrhUsername")
                         password = System.getenv("ossrhPassword")
@@ -285,18 +251,8 @@ afterEvaluate {
         }
     }
 
-    artifacts {
-        add("archives", File("build/libs/$javadocJarFileName"))
-        add("archives", File("build/libs/$sourcesJarFileName"))
-
-        if (isReleaseVersion)
-            add("archives", File(releaseAARFilePath))
-        else
-            add("archives", File(debugAARFilePath))
-    }
-
     signing {
-        setRequired(provider { !testPublish && isReleaseVersion && gradle.taskGraph.hasTask("publish") })
+        setRequired(provider { !publishToBuildLocal && gradle.taskGraph.hasTask("publish") })
 
         val signingKeyId = System.getenv("signingKeyId")
         val signingKey = System.getenv("signingSecretKeyRingFile")
@@ -304,6 +260,7 @@ afterEvaluate {
 
         useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
 
-        sign(configurations.getByName("archives"))
+        sign(publishing.publications["distribution"])
     }
 }
+

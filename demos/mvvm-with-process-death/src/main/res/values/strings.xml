@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Shuttle Process Death Demo</string>
+    <string name="first_screen_title">Process Death Scenario</string>
+    <string name="navigate_with_shuttle">Navigate with Shuttle</string>
+    <string name="navigate_with_memory_cache">Navigate with In-Memory Cache</string>
+    <string name="shuttle_survives_process_death">Cargo is persisted to the database. The image survives process death.</string>
+    <string name="memory_cache_lost_on_process_death">Data lives only in memory. The image is lost when the process is killed.</string>
+    <string name="kill_process">Kill Process — then reopen from Recents</string>
+    <string name="data_lost_to_process_death">Data was lost.\nThe process was killed and the in-memory cache was cleared.</string>
+</resources>

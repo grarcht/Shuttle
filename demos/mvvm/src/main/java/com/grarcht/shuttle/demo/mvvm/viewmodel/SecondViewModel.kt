@@ -2,6 +2,7 @@ package com.grarcht.shuttle.demo.mvvm.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult.NotPickingUpCargoYet
@@ -11,7 +12,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import java.io.Serializable
 
 /**
  * The MVVM ViewModel used with the Second View and corresponding model.
@@ -22,19 +22,14 @@ class SecondViewModel : ViewModel() {
 
     fun loadImage(shuttle: Shuttle, cargoId: String): StateFlow<ShuttlePickupCargoResult> {
         viewModelScope.launch {
-            shuttle.pickupCargo<Serializable>(cargoId = cargoId)
+            shuttle.pickupCargo<ImageModel>(cargoId = cargoId)
                 .consumeAsFlow()
                 .collectLatest { shuttleResult ->
                     pickupCargoMutableStateFlow.value = shuttleResult
-
                     when (shuttleResult) {
                         is ShuttlePickupCargoResult.Success<*>,
-                        is ShuttlePickupCargoResult.Error<*> -> {
-                            cancel()
-                        }
-                        else -> {
-                            // ignore
-                        }
+                        is ShuttlePickupCargoResult.Error<*> -> cancel()
+                        else -> { /* ignore */ }
                     }
                 }
         }

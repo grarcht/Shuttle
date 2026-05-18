@@ -22,7 +22,8 @@ private const val LOG_TAG = "FileSystemGateway"
  *     Gateway Design Pattern</a>
  */
 class ShuttlePersistenceFileSystemGateway(
-    private val fileFactory: ShuttleFileFactory
+    private val fileFactory: ShuttleFileFactory,
+    private val fileProvider: (String) -> File = { path -> File(path) }
 ) : ShuttleFileSystemGateway {
 
     /**
@@ -31,7 +32,7 @@ class ShuttlePersistenceFileSystemGateway(
      * @return the byte array of read bytes or null if they could not be retrieved.
      */
     override fun readFromFile(filePath: String): Serializable? {
-        val file = File(filePath)
+        val file = fileProvider(filePath)
 
         if (file.exists().not()) {
             return null
@@ -68,7 +69,7 @@ class ShuttlePersistenceFileSystemGateway(
         fileName: String,
         serializable: Serializable
     ): String? {
-        var file: File? = File("$directoryName/$fileName")
+        var file: File? = fileProvider("$directoryName/$fileName")
 
         // DO NOT REMOVE
         // This condition guards against modifying the data underneath the hood.  If it is modified, resulting parcels
@@ -106,7 +107,7 @@ class ShuttlePersistenceFileSystemGateway(
         var result: ShuttlePersistenceRemoveCargoResult = ShuttlePersistenceRemoveCargoResult.UnableToRemove
         @Suppress("SwallowedException")
         try {
-            val file = File(directoryPath)
+            val file = fileProvider(directoryPath)
             result = if (file.exists().not()) {
                 ShuttlePersistenceRemoveCargoResult.DoesNotExist
             } else {
@@ -133,7 +134,7 @@ class ShuttlePersistenceFileSystemGateway(
         var result: ShuttlePersistenceRemoveCargoResult = ShuttlePersistenceRemoveCargoResult.UnableToRemove
         @Suppress("SwallowedException")
         try {
-            val file = File(filePath)
+            val file = fileProvider(filePath)
             result = if (file.exists().not()) {
                 ShuttlePersistenceRemoveCargoResult.DoesNotExist
             } else {

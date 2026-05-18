@@ -1,17 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.ksp)
-    alias(libs.plugins.jetbrains.dokka)
     alias(libs.plugins.jetbrains.kotlin.serialization)
-    alias(libs.plugins.jetbrains.kotlin.android)
 }
 
 apply(from = "${project.rootDir}/detekt/detekt.gradle")
-
-tasks.named("dokkaHtml") {
-    (this as org.jetbrains.dokka.gradle.DokkaTask).outputDirectory.set(file("documentation/kotlin"))
-}
 
 android {
     namespace = "com.grarcht.shuttle.demo.core"
@@ -49,4 +42,18 @@ dependencies {
     implementation(project(":framework"))
     implementation(project(":framework-integrations-persistence"))
     implementation(project(":framework-integrations-extensions-room"))
+    ksp(project(":framework-annotations-processor"))
+
+    val shuttleCompilerPlugin by configurations.creating
+    shuttleCompilerPlugin(project(":framework-annotations-compiler-plugin"))
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    val pluginConfig = configurations["shuttleCompilerPlugin"]
+    inputs.files(pluginConfig)
+    compilerOptions {
+        freeCompilerArgs.addAll(
+            provider { pluginConfig.files.map { "-Xplugin=${it.absolutePath}" } }
+        )
+    }
 }

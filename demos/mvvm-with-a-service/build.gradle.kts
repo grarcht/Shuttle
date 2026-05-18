@@ -1,17 +1,11 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.dagger.hilt)
-    alias(libs.plugins.jetbrains.dokka)
+    alias(libs.plugins.android.junit5)
     alias(libs.plugins.google.ksp)
-    alias(libs.plugins.jetbrains.kotlin.android)
 }
 
 apply(from = "${project.rootDir}/detekt/detekt.gradle")
-
-tasks.named("dokkaHtml") {
-    (this as org.jetbrains.dokka.gradle.DokkaTask).outputDirectory.set(file("documentation/kotlin"))
-}
 
 android {
     namespace = "com.grarcht.shuttle.demo.mvvmwithaservice"
@@ -67,15 +61,20 @@ dependencies {
     implementation(libs.android.coreKtx)
     implementation(libs.android.annotationJvm)
     ksp(libs.dependencyInjectionDeps.hiltCompiler)
-    implementation(project(":demos-core-lib"))
+    implementation(project(":demos-core-foundation"))
 
     // Lighter weight, independent dependencies
-    implementation(project(":framework"))
-    implementation(project(":framework-integrations-persistence"))
-    implementation(project(":framework-integrations-extensions-room"))
+    // implementation(project(":framework"))
+    // implementation(project(":framework-integrations-persistence"))
+    // implementation(project(":framework-integrations-extensions-room"))
 
     // To use maven dependencies, use the following:
-    // implementation(libs.shuttle.framework)
-    // implementation(libs.shuttle.integrationsPersistence)
-    // implementation(libs.shuttle.integrationsExtensionsRoom)
+    implementation(platform(libs.shuttle.bom))
+    implementation(libs.shuttle.framework)
+    implementation(libs.shuttle.integrationsPersistence)
+    implementation(libs.shuttle.integrationsExtensionsRoom)
+
+    testImplementation(libs.testingDeps.junit.jupiterApi)
+    testRuntimeOnly(libs.testingDeps.junit.jupiterEngine)
+    testRuntimeOnly(libs.testingDeps.junit.platformCommons)
 }

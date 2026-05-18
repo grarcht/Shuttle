@@ -1,21 +1,26 @@
 package com.grarcht.shuttle.framework.warehouse
 
+import com.grarcht.shuttle.framework.ShuttleCargoData
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
 import com.grarcht.shuttle.framework.result.ShuttleStoreCargoResult
 import kotlinx.coroutines.channels.Channel
-import java.io.Serializable
 
+/**
+ * An in-memory [ShuttleWarehouse] implementation used in tests to store, retrieve, and remove
+ * serializable cargo without any I/O, while also tracking the number of store and remove
+ * invocations for assertion purposes.
+ */
 @Suppress("UNCHECKED_CAST")
 open class ShuttleDataWarehouse : ShuttleWarehouse {
     var numberOfStoreInvocations: Int = 0
     var numberOfRemoveInvocations: Int = 0
-    private val cache: MutableMap<String, Serializable> = mutableMapOf()
+    private val cache: MutableMap<String, ShuttleCargoData> = mutableMapOf()
     private val pickupCargoChannel = Channel<ShuttlePickupCargoResult>(3)
     private val storeCargoChannel = Channel<ShuttleStoreCargoResult>(3)
     private val removeCargoChannel = Channel<ShuttleRemoveCargoResult>(4)
 
-    override suspend fun <D : Serializable> pickup(cargoId: String): Channel<ShuttlePickupCargoResult> {
+    override suspend fun <D : ShuttleCargoData> pickup(cargoId: String): Channel<ShuttlePickupCargoResult> {
         pickupCargoChannel.send(ShuttlePickupCargoResult.Loading(cargoId))
 
         val cargo = cache[cargoId]
@@ -28,9 +33,9 @@ open class ShuttleDataWarehouse : ShuttleWarehouse {
         return pickupCargoChannel
     }
 
-    override suspend fun <D : Serializable> store(cargoId: String, data: D?): Channel<ShuttleStoreCargoResult> {
+    override suspend fun <D : ShuttleCargoData> store(cargoId: String, data: D?): Channel<ShuttleStoreCargoResult> {
         storeCargoChannel.send(ShuttleStoreCargoResult.Storing(cargoId))
-        cache[cargoId] = data as Serializable
+        cache[cargoId] = data as ShuttleCargoData
         storeCargoChannel.send(ShuttleStoreCargoResult.Success(cargoId))
         numberOfStoreInvocations++
         return storeCargoChannel

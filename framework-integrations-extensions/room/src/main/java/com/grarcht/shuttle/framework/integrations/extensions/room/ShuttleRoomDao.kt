@@ -1,6 +1,5 @@
 package com.grarcht.shuttle.framework.integrations.extensions.room
 
-import androidx.lifecycle.LiveData
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -83,7 +82,7 @@ open class ShuttleRoomDao(private var dao: Dao) : ShuttleDataAccessObject {
          * @return the [LiveData] used to get the [ShuttleRoomData] corresponding to the [cargoId].
          */
         @Query("SELECT * FROM $TABLE_NAME WHERE $COLUMN_CARGO_ID = :cargoId")
-        suspend fun getCargoById(cargoId: String): ShuttleRoomData
+        suspend fun getCargoById(cargoId: String): ShuttleRoomData?
 
         /**
          * Inserts a [ShuttleRoomData] object into the database.

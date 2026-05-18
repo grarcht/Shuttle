@@ -12,21 +12,21 @@ import com.grarcht.shuttle.framework.CARGO_ID_KEY
 import com.grarcht.shuttle.framework.NO_CARGO_ID
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.content.unregisterReceiverQuietly
-import com.grarcht.shuttle.framework.coroutines.channel.closeQuietly
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import com.grarcht.shuttle.framework.visibility.error.ShuttleDefaultError
 import com.grarcht.shuttle.framework.visibility.observation.ShuttleVisibilityObservable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import java.util.Timer
-import java.util.TimerTask
 import kotlin.system.exitProcess
 
 private const val CONTEXT = "Cargo Receiver"
+private const val ERROR_REMOTE_PROCESS_NO_RESPONSE = "Unable to retrieve image. Exception thrown in remote process."
+private const val ERROR_UNEXPECTED_DATA_TYPE = "Unexpected data type received."
 private const val LOG_TAG = "CargoBroadcastReceiver"
 private const val TIMER_DELAY = 5000L
 private const val UNABLE_TO_RECEIVE_CARGO = "Unable to receive the cargo."
@@ -47,7 +47,7 @@ class Receiver(
     private val handleNoResponseReceived: Boolean = false
 ) : BroadcastReceiver() {
     private var context: Context? = null
-    private val channel = Channel<IOResult>()
+    private val channel = Channel<IOResult>(Channel.BUFFERED)
     private var responseReceived = false
 
     val flow: Flow<IOResult> = channel.consumeAsFlow()
@@ -94,7 +94,11 @@ class Receiver(
                                 }
 
                                 is ShuttlePickupCargoResult.Success<*> -> {
-                                    val imageModel = it.data as ImageModel
+                                    val imageModel = it.data as? ImageModel
+                                        ?: run {
+                                            channel.send(IOResult.Error(throwable = Throwable(ERROR_UNEXPECTED_DATA_TYPE)))
+                                            return@collectLatest
+                                        }
                                     channel.send(IOResult.Success(imageModel))
                                 }
 
@@ -158,32 +162,20 @@ class Receiver(
      * Releases the resources.
      */
     fun releaseResources() {
-        channel.closeQuietly(scope, logTag = LOG_TAG)
+        channel.close()
         context?.unregisterReceiverQuietly(this, LOG_TAG)
     }
 
     private fun sendErrorForResponseNotReceived() {
-        // Sometimes, after the transaction too large exception is thrown on the emulator,
-        // the app crashes and sometimes only the remote process stops responding. To improve
-        // the experience with the demo app when the remote service stops responding and the
-        // app keeps showing the loading screen, if a response is not received after 5 seconds,
-        // the process is exited.
-        val timer = Timer()
-        timer.schedule(
-            object : TimerTask() {
-                override fun run() {
-                    if (!responseReceived) {
-                        scope.launch {
-                            val msg = "Unable to retrieve image. Exception thrown in remote process."
-                            Log.e(LOG_TAG, msg)
-                            exitProcess(0)
-                        }
-                    }
-                    cancel()
-                    timer.cancel()
-                }
-            },
-            TIMER_DELAY
-        )
+        // If a response is not received after the delay window, exit the process. This handles
+        // the case where the remote process stops responding after a TransactionTooLargeException
+        // and the loading screen would otherwise spin indefinitely.
+        scope.launch {
+            delay(TIMER_DELAY)
+            if (!responseReceived) {
+                Log.e(LOG_TAG, ERROR_REMOTE_PROCESS_NO_RESPONSE)
+                exitProcess(0)
+            }
+        }
     }
 }

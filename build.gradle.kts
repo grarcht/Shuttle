@@ -24,7 +24,6 @@ buildscript {
     dependencies {
         classpath(libs.classpathDeps.gradleBuildTools)
         classpath(libs.classpathDeps.kotlinGradlePlugin)
-        classpath(libs.classpathDeps.dokkaGradlePlugin)
         //https://github.com/mannodermaus/android-junit5
         classpath(libs.classpathDeps.junit5Plugin)
         classpath(libs.dependencyInjectionDeps.hilt)
@@ -34,13 +33,14 @@ buildscript {
 }
 
 plugins {
+    base
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.google.dagger.hilt) apply false
     alias(libs.plugins.detect)
     alias(libs.plugins.jetbrains.dokka)
+    alias(libs.plugins.kover)
     alias(libs.plugins.google.ksp) apply false
-    alias(libs.plugins.jetbrains.kotlin.android) apply false
     alias(libs.plugins.compose.compiler) apply false
 }
 
@@ -114,6 +114,56 @@ allprojects {
     }
 }
 
-tasks.register<Delete>("clean") {
+tasks.named<Delete>("clean") {
     delete(project.layout.buildDirectory)
+}
+
+dokka {
+    dokkaPublications.html {
+        outputDirectory.set(layout.projectDirectory.dir("documentation/kotlin"))
+    }
+}
+
+dependencies {
+    // Aggregate coverage from the framework library modules only.
+    kover(project(":framework"))
+    kover(project(":framework-integrations-persistence"))
+    kover(project(":framework-integrations-extensions-room"))
+    kover(project(":framework-addons-navigation-component"))
+
+    // Aggregate Dokka docs from all published modules.
+    dokka(project(":framework"))
+    dokka(project(":framework-integrations-persistence"))
+    dokka(project(":framework-integrations-extensions-room"))
+    dokka(project(":framework-addons-navigation-component"))
+    dokka(project(":framework-annotations"))
+    dokka(project(":framework-annotations-processor"))
+    dokka(project(":framework-annotations-compiler-plugin"))
+    dokka(project(":framework-annotations-gradle-plugin"))
+}
+
+kover {
+    reports {
+        filters {
+            excludes {
+                // Hilt-annotated DI classes
+                annotatedBy("dagger.Module", "dagger.hilt.InstallIn")
+                // Hilt-generated class name patterns
+                classes(
+                    "*Hilt_*",
+                    "*_HiltModules*",
+                    "*_MembersInjector",
+                    "*_Factory",
+                    "*_Impl",
+                    "*_Impl\$*"
+                )
+                // DI package
+                packages("*.dependencyinjection")
+            }
+        }
+        total {
+            html { onCheck = false }
+            xml { onCheck = false }
+        }
+    }
 }

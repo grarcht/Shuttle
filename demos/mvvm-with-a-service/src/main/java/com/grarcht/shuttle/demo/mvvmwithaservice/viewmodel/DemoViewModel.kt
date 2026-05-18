@@ -52,8 +52,11 @@ class DemoViewModel @Inject constructor(
     private var ipcServiceConnection: ShuttleServiceConnection<RemoteService, ShuttleBinder<RemoteService>>? = null
     private var ipcServiceReceiver: Receiver? = null
     private var ipcMessenger: Messenger? = null
+    private var messagingInitialized = false
 
     fun initMessaging(context: Context?, lifecycle: Lifecycle) {
+        if (messagingInitialized) return
+        messagingInitialized = true
         initMessenger()
         initServiceConnection(context, lifecycle)
     }
@@ -86,7 +89,7 @@ class DemoViewModel @Inject constructor(
     }
 
     private fun initReceiver(context: Context?, handleNoResponseReceived: Boolean = false) {
-        ipcServiceReceiver?.unregisterReceiverQuietly()
+        ipcServiceReceiver?.releaseResources()
         ipcServiceReceiver = Receiver(shuttle, viewModelScope, visibilityObservable, handleNoResponseReceived)
         ipcServiceReceiver?.register(context)
     }
@@ -120,7 +123,7 @@ class DemoViewModel @Inject constructor(
                 visibilityObservable.observe(error)
             }
 
-            return ipcServiceReceiver?.flow as Flow<IOResult>
+            return ipcServiceReceiver?.flow
         } else {
             null
         }
@@ -159,7 +162,7 @@ class DemoViewModel @Inject constructor(
                 visibilityObservable.observe(error)
             }
 
-            return ipcServiceReceiver?.flow as Flow<IOResult>
+            return ipcServiceReceiver?.flow
         } else {
             null
         }
