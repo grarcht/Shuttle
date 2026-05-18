@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.dagger.hilt)
+    alias(libs.plugins.android.junit5)
     alias(libs.plugins.google.ksp)
 }
 
@@ -72,4 +73,11 @@ dependencies {
     // implementation(libs.shuttle.framework)
     // implementation(libs.shuttle.integrationsPersistence)
     // implementation(libs.shuttle.integrationsExtensionsRoom)
+
+    testImplementation(libs.testingDeps.junit.jupiterApi)
+    testImplementation(libs.testingDeps.kotlin.coroutines)
+    testImplementation(libs.testingDeps.mockito.core)
+    testImplementation(libs.testingDeps.mockito.kotlin)
+    testRuntimeOnly(libs.testingDeps.junit.jupiterEngine)
+    testRuntimeOnly(libs.testingDeps.junit.platformCommons)
 }

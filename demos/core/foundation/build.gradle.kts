@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.google.dagger.hilt)
+    alias(libs.plugins.android.junit5)
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.jetbrains.kotlin.serialization)
 }
@@ -55,6 +56,13 @@ dependencies {
     // module cannot simultaneously be a regular subproject and a pluginManagement includeBuild.
     val shuttleCompilerPlugin by configurations.creating
     shuttleCompilerPlugin(project(":framework-annotations-compiler-plugin"))
+
+    testImplementation(libs.testingDeps.junit.jupiterApi)
+    testImplementation(libs.testingDeps.kotlin.coroutines)
+    testImplementation(libs.testingDeps.mockito.core)
+    testImplementation(libs.testingDeps.mockito.kotlin)
+    testRuntimeOnly(libs.testingDeps.junit.jupiterEngine)
+    testRuntimeOnly(libs.testingDeps.junit.platformCommons)
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {

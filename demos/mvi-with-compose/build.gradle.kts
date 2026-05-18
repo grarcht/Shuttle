@@ -94,4 +94,5 @@ dependencies {
     androidTestRuntimeOnly(libs.testingDeps.junit.junit5AndroidTestRunner)
     testImplementation(libs.testingDeps.junit.jupiterApi)
     testRuntimeOnly(libs.testingDeps.junit.jupiterEngine)
+    testRuntimeOnly(libs.testingDeps.junit.platformCommons)
 }
