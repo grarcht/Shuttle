@@ -9,8 +9,13 @@ import com.grarcht.shuttle.framework.ExcludeFromCoverage
 import com.grarcht.shuttle.framework.Shuttle
 
 /**
- * @param shuttle
- * @param resId
+ * Navigates to the destination identified by [resId] using Shuttle's warehouse and facade to
+ * safely carry cargo across the navigation boundary. Returns null if this [NavController] is null.
+ *
+ * @param shuttle The [Shuttle] instance that provides the warehouse and facade for cargo transport.
+ * @param resId The resource ID of the destination to navigate to.
+ * @return A [ShuttleNavController] for chaining transport and cleanup calls, or null if this
+ * [NavController] is null.
  */
 fun NavController?.navigateWithShuttle(
     shuttle: Shuttle,
@@ -32,9 +37,16 @@ private fun NavController?.navigateWithShuttleResId(
     }
 
 /**
- * @param shuttle
- * @param resId
- * @param navOptions
+ * Navigates to the destination identified by [resId] using Shuttle's warehouse and facade to
+ * safely carry cargo across the navigation boundary, applying the given [NavOptions]. Returns
+ * null if this [NavController] is null.
+ *
+ * @param shuttle The [Shuttle] instance that provides the warehouse and facade for cargo transport.
+ * @param resId The resource ID of the destination to navigate to.
+ * @param navOptions Options that control how the navigation is performed, such as animations and
+ * back stack behavior. Pass null to use the default options.
+ * @return A [ShuttleNavController] for chaining transport and cleanup calls, or null if this
+ * [NavController] is null.
  */
 fun NavController?.navigateWithShuttle(
     shuttle: Shuttle,
@@ -59,9 +71,16 @@ private fun NavController?.navigateWithShuttleResIdOptions(
     }
 
 /**
- * @param shuttle
- * @param directions
- * @param navOptions
+ * Navigates to the destination described by [directions] using Shuttle's warehouse and facade to
+ * safely carry cargo across the navigation boundary, optionally applying [NavOptions]. Returns
+ * null if this [NavController] is null.
+ *
+ * @param shuttle The [Shuttle] instance that provides the warehouse and facade for cargo transport.
+ * @param directions The [NavDirections] that identify the destination and any associated arguments.
+ * @param navOptions Options that control how the navigation is performed, such as animations and
+ * back stack behavior. Pass null to use the default options.
+ * @return A [ShuttleNavController] for chaining transport and cleanup calls, or null if this
+ * [NavController] is null.
  */
 fun NavController?.navigateWithShuttle(
     shuttle: Shuttle,
@@ -86,9 +105,16 @@ private fun NavController?.navigateWithShuttleDirectionsOptions(
     }
 
 /**
- * @param shuttle
- * @param directions
- * @param navigatorExtras
+ * Navigates to the destination described by [directions] using Shuttle's warehouse and facade to
+ * safely carry cargo across the navigation boundary, forwarding [navigatorExtras] to the
+ * underlying [Navigator]. Returns null if this [NavController] is null.
+ *
+ * @param shuttle The [Shuttle] instance that provides the warehouse and facade for cargo transport.
+ * @param directions The [NavDirections] that identify the destination and any associated arguments.
+ * @param navigatorExtras Additional extras to pass to the [Navigator] responsible for performing
+ * the navigation, such as shared element transition data.
+ * @return A [ShuttleNavController] for chaining transport and cleanup calls, or null if this
+ * [NavController] is null.
  */
 fun NavController?.navigateWithShuttle(
     shuttle: Shuttle,

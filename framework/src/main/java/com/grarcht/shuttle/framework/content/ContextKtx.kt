@@ -10,6 +10,16 @@ import com.grarcht.shuttle.framework.ExcludeFromCoverage
 private const val ERROR_UNABLE_TO_UNREGISTER_RECEIVER = "Unable to unregister the receiver."
 private const val ERROR_UNABLE_TO_REGISTER_RECEIVER = "Unable to register the receiver."
 
+/**
+ * Registers a [BroadcastReceiver] with this [Context], suppressing any [IllegalStateException]
+ * that may be thrown if the receiver cannot be registered at the time of the call. On Android
+ * TIRAMISU (API 33) and above, the receiver is registered as exported so it can receive broadcasts
+ * from other applications.
+ *
+ * @param receiver The [BroadcastReceiver] to register.
+ * @param filter The [IntentFilter] that describes the broadcasts the receiver should listen for.
+ * @param logTag An optional tag used when logging a warning if registration fails.
+ */
 @Suppress("unused")
 @SuppressLint("UnspecifiedRegisterReceiverFlag")
 fun Context?.registerReceiverQuietly(receiver: BroadcastReceiver, filter: IntentFilter, logTag: String? = null) {
@@ -32,6 +42,13 @@ private fun Context.registerReceiverByVersion(receiver: BroadcastReceiver, filte
     }
 }
 
+/**
+ * Unregisters a [BroadcastReceiver] from this [Context], suppressing any [IllegalStateException]
+ * that may be thrown if the receiver was never registered or has already been unregistered.
+ *
+ * @param receiver The [BroadcastReceiver] to unregister.
+ * @param logTag An optional tag used when logging a warning if unregistration fails.
+ */
 fun Context?.unregisterReceiverQuietly(receiver: BroadcastReceiver, logTag: String? = null) {
     this?.let {
         try {
