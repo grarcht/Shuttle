@@ -317,8 +317,8 @@ Two architecture patterns are covered:
 ### Flow 1: Navigate with Shuttle ✅
 Tap **"Navigate using Shuttle"** -> image loads successfully via warehouse pickup.
 
-| Main Menu | Loaded |
-|---|---|
+| Main Menu | Cargo Unloaded |
+|---|-----------------------------------------------------------------------------|
 | <img src="/media/screenshots/main_menu.png" width="200" height="400"/> | <img src="/media/screenshots/cargo_unloaded.png" width="200" height="400"/> |
 
 ### Flow 2: Navigate Normally ❌
