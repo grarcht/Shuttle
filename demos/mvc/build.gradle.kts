@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.dagger.hilt)
     alias(libs.plugins.google.ksp)
+    alias(libs.plugins.jetbrains.dokka)
 }
 
 apply(from = "${project.rootDir}/detekt/detekt.gradle")

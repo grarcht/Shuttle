@@ -140,6 +140,18 @@ dependencies {
     dokka(project(":framework-annotations-processor"))
     dokka(project(":framework-annotations-compiler-plugin"))
     dokka(project(":framework-annotations-gradle-plugin"))
+
+    // Aggregate Dokka docs from all demo modules.
+    dokka(project(":demos-core-foundation"))
+    dokka(project(":demos-core-compose"))
+    dokka(project(":demos-core-di"))
+    dokka(project(":demo-mvc"))
+    dokka(project(":demo-mvvm"))
+    dokka(project(":demo-mvi-with-compose"))
+    dokka(project(":demo-mvvm-with-a-service"))
+    dokka(project(":demo-mvvm-with-compose"))
+    dokka(project(":demo-mvvm-with-compose-and-navigation"))
+    dokka(project(":demo-mvvm-with-process-death"))
 }
 
 kover {
