@@ -50,6 +50,7 @@ class Receiver(
     private val channel = Channel<IOResult>(Channel.BUFFERED)
     private var responseReceived = false
 
+    /** A cold [Flow] of [IOResult] values emitted as broadcasts are received from the service. */
     val flow: Flow<IOResult> = channel.consumeAsFlow()
 
     /**

@@ -11,6 +11,11 @@ import com.grarcht.shuttle.framework.Shuttle
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+/**
+ * The entry point activity for the MVVM with Process Death demo. Sets up the Compose content
+ * via [FirstView], loads the image cargo, and cleans up Shuttle cargo when the activity is
+ * destroyed.
+ */
 @AndroidEntryPoint
 class FirstActivity : ComponentActivity() {
     private val viewModel: FirstViewModel by viewModels()

@@ -33,23 +33,31 @@ import javax.inject.Singleton
 @Module
 object AppModule {
 
+    /**
+     * Provides the [ShuttleRoomDbConfig] with multi-process mode enabled so the Room database
+     * is accessible from both the main process and the remote service process.
+     */
     @Provides
     @Singleton
     fun provideShuttleRoomDbConfig(@ApplicationContext context: Context): ShuttleRoomDbConfig =
         ShuttleRoomDbConfig(context, multiprocess = true)
 
+    /** Provides the factory used to create lifecycle-aware service connections. */
     @Provides
     fun provideShuttleServiceConnectionFactory(): ShuttleServiceConnectionFactory =
         ShuttleServiceConnectionTypesFactory()
 
+    /** Provides a [kotlinx.coroutines.CoroutineScope] tied to the main dispatcher. */
     @Named("MainScope")
     @Provides
     fun provideMainScope(): CoroutineScope = MainScope()
 
+    /** Provides the [ShuttleVisibilityReporter] that logs Shuttle events via [android.util.Log]. */
     @Provides
     fun provideVisibilityReporter(): ShuttleVisibilityReporter =
         DefaultLoggerVisibilityReporter()
 
+    /** Provides the [ShuttleVisibilityObservable] that routes visibility events to the reporter. */
     @Provides
     fun provideShuttleVisibilityObservable(
         reporter: ShuttleVisibilityReporter,
@@ -57,6 +65,10 @@ object AppModule {
     ): ShuttleVisibilityObservable =
         ShuttleChannelVisibilityObservable(reporter, mainScope)
 
+    /**
+     * Provides the [ShuttleServiceConfig] for [com.grarcht.shuttle.demo.mvvmwithaservice.model.RemoteService],
+     * configured for IPC messenger binding with automatic rebind on unbind.
+     */
     @Provides
     @Named("RemoteServiceConfig")
     fun provideRemoteServiceConfig(

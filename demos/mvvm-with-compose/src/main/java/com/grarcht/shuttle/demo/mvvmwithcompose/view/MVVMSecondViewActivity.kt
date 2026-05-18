@@ -14,6 +14,11 @@ import com.grarcht.shuttle.framework.Shuttle
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+/**
+ * The destination activity for the second screen in the MVVM with Compose demo. Receives cargo
+ * from the first screen and sets up the Compose content via [MVVMSecondView]. Instance state
+ * is preserved through Shuttle on configuration change.
+ */
 @AndroidEntryPoint
 class MVVMSecondViewActivity : ComponentActivity() {
     private val viewModel: SecondViewModel by viewModels()

@@ -9,7 +9,10 @@ enum class DialogType(val typeValue: Int) {
     companion object {
 
         /**
-         * Maps the type value to the [DIALOG_TYPE] and is used for UI flow.
+         * Maps [value] to the corresponding [DialogType], defaulting to [LOADING] for
+         * unrecognized values.
+         *
+         * @param value the raw integer type value to map.
          */
         fun toDialogType(value: Int): DialogType {
             return when (value) {

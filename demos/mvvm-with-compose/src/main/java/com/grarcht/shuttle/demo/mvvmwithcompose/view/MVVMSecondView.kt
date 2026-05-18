@@ -36,6 +36,15 @@ private const val TAG = "MVVMSecondView"
 private val ERROR_IMAGE_ID = com.grarcht.shuttle.demo.core.R.raw.breakdown
 private val PLACEHOLDER_COLOR = Color(0xFFD1C7BD)
 
+/**
+ * The Composable view for the second screen in the MVVM with Compose demo. Retrieves cargo from
+ * the [com.grarcht.shuttle.framework.Shuttle] warehouse using the cargo ID extracted from the
+ * saved instance state or intent extras, and displays the resulting image or an error state.
+ *
+ * @param context the context used to access resources and string values.
+ * @param viewModel the view model that manages cargo pickup state.
+ * @param shuttle the Shuttle instance used for cargo pickup and instance state bundling.
+ */
 class MVVMSecondView(
     private val context: Context,
     private val viewModel: SecondViewModel,
@@ -43,6 +52,13 @@ class MVVMSecondView(
 ) {
     private var storedCargoId: String? = null
 
+    /**
+     * Renders the second screen, extracting the cargo ID from [savedInstanceState] or [extras]
+     * and triggering cargo pickup via [SecondViewModel].
+     *
+     * @param savedInstanceState the saved instance state bundle, used on configuration change.
+     * @param extras the intent extras bundle, used on first launch.
+     */
     @Composable
     fun SetViewContent(
         savedInstanceState: Bundle? = null,
@@ -83,6 +99,14 @@ class MVVMSecondView(
         }
     }
 
+    /**
+     * Bundles the currently retrieved image model into [outState] using Shuttle so it can be
+     * restored safely after a configuration change.
+     *
+     * @param shuttle the Shuttle instance used to bundle the cargo.
+     * @param outState the bundle to write the cargo into.
+     * @return the bundle with the cargo added.
+     */
     fun getSavedInstanceState(shuttle: Shuttle, outState: Bundle): Bundle {
         val imageModel = (viewModel.pickupCargoState.value as? ShuttlePickupCargoResult.Success<*>)
             ?.data as? ImageModel
@@ -93,6 +117,10 @@ class MVVMSecondView(
             .create()
     }
 
+    /**
+     * Releases view-held resources. State is managed by the ViewModel so this is a no-op in
+     * this implementation, but is provided for symmetry with other view classes in the demos.
+     */
     fun cleanUpViewResources() {
         // State is managed by the ViewModel; nothing to release here.
     }

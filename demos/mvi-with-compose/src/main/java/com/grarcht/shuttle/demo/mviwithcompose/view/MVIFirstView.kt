@@ -32,11 +32,24 @@ import com.grarcht.shuttle.demo.core.compose.R.string as coreString
 
 private const val TAG = "MVIFirstView"
 
+/**
+ * The Composable view for the first screen in the MVI with Compose demo. Dispatches intents to
+ * [FirstViewModel] and observes the resulting [com.grarcht.shuttle.demo.mviwithcompose.state.CargoTransportUiState]
+ * to enable navigation buttons when the image is loaded. Navigation side effects arrive as
+ * [com.grarcht.shuttle.demo.mviwithcompose.navigation.NavigationEvent]s that this view executes.
+ *
+ * @param context the context used to access resources and start activities.
+ * @param viewModel the MVI view model that processes intents and exposes UI state.
+ * @param shuttle the Shuttle instance used for safe cargo transport.
+ */
 class MVIFirstView(
     private val context: Context,
     private val viewModel: FirstViewModel,
     private val shuttle: Shuttle
 ) {
+    /**
+     * Renders the first screen layout with navigation cards and a preview animation overlay.
+     */
     @Composable
     fun SetViewContent() {
         val uiState by viewModel.uiState.collectAsState()

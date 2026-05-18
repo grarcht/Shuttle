@@ -26,6 +26,15 @@ import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 private val ERROR_IMAGE_ID = com.grarcht.shuttle.demo.core.R.raw.breakdown
 private val PLACEHOLDER_COLOR = Color(0xFFD1C7BD)
 
+/**
+ * Renders the second screen for the MVVM with Compose and Navigation demo. Triggers cargo
+ * pickup via [SecondViewModel] when [cargoId] is non-empty, and displays the retrieved image or
+ * an error state accordingly.
+ *
+ * @param viewModel the view model that manages cargo pickup state.
+ * @param shuttle the Shuttle instance passed for cargo pickup initiation.
+ * @param cargoId the identifier of the cargo to retrieve from the warehouse.
+ */
 @Composable
 fun SecondScreen(
     viewModel: SecondViewModel,

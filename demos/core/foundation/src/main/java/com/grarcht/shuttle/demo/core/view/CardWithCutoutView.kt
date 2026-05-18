@@ -14,6 +14,11 @@ import com.grarcht.shuttle.demo.core.R
 private const val ARC_ANGLE_HALF = 180f
 private const val ARC_ANGLE_QUARTER = 90f
 
+/**
+ * A custom [android.widget.FrameLayout] that draws a rounded-rectangle card with an arc-shaped
+ * cutout at the top edge. Child views are clipped to the card shape. A software rendering layer
+ * is required because non-convex path clipping is unsupported by the GPU renderer on older APIs.
+ */
 class CardWithCutoutView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -42,6 +47,12 @@ class CardWithCutoutView @JvmOverloads constructor(
         setLayerType(LAYER_TYPE_SOFTWARE, null)
     }
 
+    /**
+     * Sets the fill and stroke color of the card and invalidates the view so it redraws
+     * with the new color.
+     *
+     * @param color the color to apply, as a packed [androidx.annotation.ColorInt] value.
+     */
     fun setCardColor(@ColorInt color: Int) {
         backgroundPaint.color = color
         strokePaint.color = color

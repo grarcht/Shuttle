@@ -8,6 +8,11 @@ import dagger.hilt.android.AndroidEntryPoint
 
 private const val NAV_HOST_TAG = "nav host"
 
+/**
+ * The destination activity for the second screen in the MVVM with Compose and Navigation demo.
+ * Hosts a secondary Navigation component graph with [SecondFragment] as the start destination,
+ * passing the incoming [android.content.Intent] extras as navigation arguments.
+ */
 @AndroidEntryPoint
 class SecondActivity : AppCompatActivity() {
 

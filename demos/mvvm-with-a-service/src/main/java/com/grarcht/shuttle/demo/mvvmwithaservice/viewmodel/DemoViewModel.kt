@@ -54,6 +54,14 @@ class DemoViewModel @Inject constructor(
     private var ipcMessenger: Messenger? = null
     private var messagingInitialized = false
 
+    /**
+     * Initializes the IPC messenger and binds the lifecycle-aware service connection to
+     * [RemoteService]. Subsequent calls are no-ops so it is safe to call from
+     * [androidx.fragment.app.Fragment.onCreate].
+     *
+     * @param context the application context used to bind the service.
+     * @param lifecycle the lifecycle used to bind and unbind the service automatically.
+     */
     fun initMessaging(context: Context?, lifecycle: Lifecycle) {
         if (messagingInitialized) return
         messagingInitialized = true

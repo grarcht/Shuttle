@@ -29,11 +29,25 @@ import com.grarcht.shuttle.demo.core.compose.R.string as coreString
 
 private const val TAG = "MVVMFirstView"
 
+/**
+ * The Composable view for the first screen in the MVVM with Compose demo. Observes
+ * [com.grarcht.shuttle.demo.core.viewmodel.FirstViewModel] to enable navigation buttons when the
+ * image cargo is loaded, and initiates navigation to [MVVMSecondViewActivity] either via
+ * [com.grarcht.shuttle.framework.Shuttle] or directly through an
+ * [android.content.Intent] to demonstrate the crash scenario.
+ *
+ * @param context the context used to access resources and start activities.
+ * @param viewModel the view model that loads the image and exposes the UI state.
+ * @param shuttle the Shuttle instance used for safe cargo transport.
+ */
 class MVVMFirstView(
     private val context: Context,
     private val viewModel: FirstViewModel,
     private val shuttle: Shuttle
 ) {
+    /**
+     * Renders the first screen layout with navigation cards and a preview animation overlay.
+     */
     @Composable
     fun SetViewContent() {
         val uiState by viewModel.uiState.collectAsState()
@@ -94,6 +108,10 @@ class MVVMFirstView(
         )
     }
 
+    /**
+     * Cleans up all cargo delivered by Shuttle from the warehouse. Call this when the view is
+     * no longer needed, such as in [android.app.Activity.onDestroy].
+     */
     fun cleanUpViewResources() {
         shuttle.cleanShuttleFromAllDeliveries()
     }

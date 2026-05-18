@@ -19,6 +19,12 @@ import javax.inject.Inject
 
 private const val LOG_TAG = "SecondFragment"
 
+/**
+ * The host fragment for the second screen in the MVVM with Compose and Navigation demo. Extracts
+ * the cargo ID from the saved instance state or navigation arguments and passes it to the
+ * [SecondScreen] composable for cargo pickup. Instance state is preserved through Shuttle on
+ * configuration change.
+ */
 @AndroidEntryPoint
 class SecondFragment : Fragment() {
     private val viewModel by viewModels<SecondViewModel>()

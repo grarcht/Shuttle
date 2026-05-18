@@ -22,6 +22,15 @@ import com.grarcht.shuttle.demo.core.io.IOResult
 import com.grarcht.shuttle.demo.core.viewmodel.FirstViewModel
 import com.grarcht.shuttle.demo.core.compose.R.string as coreString
 
+/**
+ * Renders the first screen layout for the MVVM with Compose and Navigation demo. Navigation
+ * buttons are enabled when the image is loaded, and each button delegates to the provided
+ * navigation callbacks so the host fragment retains control of the Navigation component.
+ *
+ * @param viewModel the view model that exposes the image loading state.
+ * @param onNavigateWithShuttle called when the user chooses to navigate via Shuttle.
+ * @param onNavigateNormally called when the user chooses to navigate without Shuttle.
+ */
 @Composable
 fun FirstScreen(
     viewModel: FirstViewModel,

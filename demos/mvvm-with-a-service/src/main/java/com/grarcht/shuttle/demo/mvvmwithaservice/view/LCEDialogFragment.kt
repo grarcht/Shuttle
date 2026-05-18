@@ -147,6 +147,13 @@ class LCEDialogFragment : DialogFragment() {
         }
     }
 
+    /**
+     * Fades out the loading layout and, when the fade completes, optionally dismisses this
+     * dialog fragment. Used to transition smoothly from the loading state to a content or error
+     * state without an abrupt visual jump.
+     *
+     * @param dismissOnFadeOut true to dismiss this fragment when the fade animation completes.
+     */
     fun fadeOutView(dismissOnFadeOut: Boolean) {
         val loadingLayout = view?.findViewById<FrameLayout>(R.id.loadingLayout) ?: return
         fadeOutViewAnimator = buildFadeAnimator(loadingLayout)

@@ -27,8 +27,19 @@ private const val ANIMATION_SCRIM_RED = 0x32
 private const val LOG_PLAYBACK_FAILED = "Animation playback failed"
 private const val LOG_TAG = "AnimationOverlayPlayer"
 
-// TextureView renders within the View hierarchy so clipToOutline rounded corners work,
-// unlike VideoView/SurfaceView which punches through to its own window overlay.
+/**
+ * Plays a fullscreen animation overlay on top of this [FrameLayout] by rendering a raw video
+ * resource through a [android.view.TextureView] backed by a [android.media.MediaPlayer]. The
+ * overlay includes a semi-transparent scrim and rounded corners, and is dismissed when playback
+ * completes or the user taps the scrim. [onComplete] is invoked when the overlay is removed.
+ *
+ * Note: [android.view.TextureView] is used instead of [android.view.SurfaceView] because it
+ * renders within the [android.view.View] hierarchy, allowing the rounded corner outline clip to
+ * work correctly.
+ *
+ * @param rawResId the raw resource ID of the video file to play.
+ * @param onComplete called when the overlay has been dismissed.
+ */
 fun FrameLayout.playAnimationOverlay(rawResId: Int, onComplete: () -> Unit) {
     val ctx = context
     val cornerRadiusPx = cornerRadiusPx(ctx)

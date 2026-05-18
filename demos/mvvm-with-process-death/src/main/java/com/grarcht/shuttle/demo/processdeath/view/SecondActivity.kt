@@ -16,6 +16,12 @@ import com.grarcht.shuttle.framework.Shuttle
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+/**
+ * The destination activity for the second screen in the MVVM with Process Death demo. Receives
+ * cargo from the first screen, sets up the Compose content via [SecondView], and provides a
+ * mechanism to simulate process death by delegating a kill to the separate
+ * [com.grarcht.shuttle.demo.processdeath.receiver.AppProcessKillerReceiver] process.
+ */
 @AndroidEntryPoint
 class SecondActivity : ComponentActivity() {
     private val viewModel: SecondViewModel by viewModels()
@@ -43,6 +49,13 @@ class SecondActivity : ComponentActivity() {
         super.onSaveInstanceState(outStateShuttleBundle)
     }
 
+    /**
+     * Moves the task to the back and then sends a broadcast to
+     * [com.grarcht.shuttle.demo.processdeath.receiver.AppProcessKillerReceiver] running in the
+     * separate [":kill"] process to terminate the main app process after a short delay. Delegating
+     * the kill to an external process causes Android to preserve the task back stack in recents,
+     * which is required to demonstrate the process death restoration flow.
+     */
     fun killAppAfterBackgrounding() {
         // Delegate the kill to AppProcessKillerReceiver running in the :kill process. Android only
         // preserves the task back stack when the kill originates externally; a self-kill clears

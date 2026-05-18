@@ -46,6 +46,15 @@ class MVISecondView(
     private val viewModel: SecondViewModel
 ) {
 
+    /**
+     * Extracts the cargo ID from the [savedInstanceState] or [arguments] bundle by reading the
+     * [com.grarcht.shuttle.framework.model.ShuttleParcelCargo] parcelable stored at the image
+     * cargo key.
+     *
+     * @param savedInstanceState the saved instance state bundle, used on configuration change.
+     * @param arguments the intent extras bundle, used on first launch.
+     * @return the cargo ID string, or an empty string if no cargo reference is found.
+     */
     fun extractCargoId(savedInstanceState: Bundle?, arguments: Bundle?): String {
         val bundle: Bundle? = savedInstanceState ?: arguments
         val cargo: ShuttleParcelCargo? = bundle?.getParcelableWith(

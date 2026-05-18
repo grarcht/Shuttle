@@ -7,13 +7,21 @@ import com.grarcht.shuttle.framework.Shuttle
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+/**
+ * Abstract base activity for the first screen in each demo. Handles edge-to-edge setup, fragment
+ * hosting, and [Shuttle] cleanup on destroy. Subclasses supply the [Fragment] to display and its
+ * back stack tag.
+ */
 @AndroidEntryPoint
 abstract class DemoFirstScreenActivity : FragmentActivity() {
 
     @Inject
     lateinit var shuttle: Shuttle
 
+    /** The [Fragment] to attach to the main container when the activity is first created. */
     protected abstract val demoFragment: Fragment
+
+    /** The tag used to identify [demoFragment] in the fragment back stack. */
     protected abstract val fragmentTag: String
 
     override fun onCreate(savedInstanceState: android.os.Bundle?) {

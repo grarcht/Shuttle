@@ -39,6 +39,13 @@ class FirstViewModel @Inject constructor(
     private val _navigationEvent = Channel<NavigationEvent>(Channel.BUFFERED)
     val navigationEvent: Flow<NavigationEvent> = _navigationEvent.receiveAsFlow()
 
+    /**
+     * Processes the given [intent] and updates [uiState] or emits a [NavigationEvent] as
+     * appropriate. This is the single entry point for all user and system actions on the first
+     * view.
+     *
+     * @param intent the action to process.
+     */
     fun processIntent(intent: CargoTransportIntent) {
         when (intent) {
             is CargoTransportIntent.LoadImage -> loadImage(intent)
@@ -82,6 +89,10 @@ class FirstViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Cleans up all cargo delivered by Shuttle from the warehouse. Call this when the view is
+     * no longer needed.
+     */
     fun cleanUp() {
         shuttle.cleanShuttleFromAllDeliveries()
     }

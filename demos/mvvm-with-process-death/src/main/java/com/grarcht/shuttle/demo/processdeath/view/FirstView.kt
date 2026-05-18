@@ -27,11 +27,23 @@ import com.grarcht.shuttle.demo.core.compose.R.string as coreString
 
 private const val LOG_TAG = "FirstView"
 
+/**
+ * The Composable view for the first screen in the MVVM with Process Death demo. Presents two
+ * navigation options: using [com.grarcht.shuttle.framework.Shuttle] to transport cargo safely,
+ * or passing the image directly via [android.content.Intent] to demonstrate the crash scenario.
+ *
+ * @param context the context used to access resources and start activities.
+ * @param viewModel the view model that loads the image and exposes the UI state.
+ * @param shuttle the Shuttle instance used for safe cargo transport.
+ */
 class FirstView(
     private val context: Context,
     private val viewModel: FirstViewModel,
     private val shuttle: Shuttle
 ) {
+    /**
+     * Renders the first screen layout with navigation cards and a preview animation overlay.
+     */
     @Composable
     fun SetViewContent() {
         val uiState by viewModel.uiState.collectAsState()
@@ -84,6 +96,10 @@ class FirstView(
         )
     }
 
+    /**
+     * Cleans up all cargo delivered by Shuttle from the warehouse. Call this when the view is
+     * no longer needed, such as in [android.app.Activity.onDestroy].
+     */
     fun cleanUpViewResources() {
         shuttle.cleanShuttleFromAllDeliveries()
     }

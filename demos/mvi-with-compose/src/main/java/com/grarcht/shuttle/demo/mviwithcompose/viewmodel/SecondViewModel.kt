@@ -38,12 +38,25 @@ class SecondViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(CargoPickupUiState())
     val uiState: StateFlow<CargoPickupUiState> = _uiState.asStateFlow()
 
+    /**
+     * Processes the given [intent] and updates [uiState] with the cargo pickup result. This is
+     * the single entry point for all actions on the second view.
+     *
+     * @param intent the action to process.
+     */
     fun processIntent(intent: CargoPickupIntent) {
         when (intent) {
             is CargoPickupIntent.LoadCargo -> loadCargo(intent)
         }
     }
 
+    /**
+     * Bundles the currently retrieved image model into [outState] using Shuttle so it can be
+     * restored safely after a configuration change.
+     *
+     * @param outState the bundle to write the cargo into.
+     * @return the bundle with the cargo added.
+     */
     fun buildSavedInstanceState(outState: Bundle): Bundle {
         return shuttle
             .bundleCargoWith(outState)

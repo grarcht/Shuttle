@@ -31,6 +31,12 @@ import javax.inject.Inject
 private const val ERROR_UNABLE_TO_GET_IMAGE = "Unable to get the image byte array."
 private const val LOG_TAG = "MVVMFirstViewFragment"
 
+/**
+ * The view fragment for the first screen in the MVVM demo. Observes [FirstViewModel] to enable
+ * navigation buttons when the image cargo is loaded, and initiates navigation to
+ * [MVVMSecondViewActivity] either via [com.grarcht.shuttle.framework.Shuttle] or directly
+ * through an [android.content.Intent] to demonstrate the crash scenario.
+ */
 @AndroidEntryPoint
 class MVVMFirstViewFragment : Fragment() {
     private var navNormallyButton: Button? = null

@@ -12,6 +12,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+/**
+ * Default implementation of [ImageLoader] that reads image bytes from a raw resource using
+ * [com.grarcht.shuttle.demo.core.io.RawResourceGateway] and wraps the result in an [ImageModel].
+ * Calls to [loadImage] are ignored once a successful result has been received.
+ *
+ * @param scope the coroutine scope in which image loading is performed.
+ */
 class DefaultImageLoader(private val scope: CoroutineScope) : ImageLoader {
 
     private val _uiState = MutableStateFlow<IOResult>(IOResult.Loading)

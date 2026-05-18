@@ -33,6 +33,12 @@ private const val LOG_IMAGE_MODEL_NULL_NAVIGATE_NORMALLY = "navigateNormally -> 
 private const val LOG_IMAGE_MODEL_NULL_NAVIGATE_WITH_SHUTTLE = "navigateWithShuttle -> The image model has not been instantiated yet."
 private const val LOG_TAG = "MVCFirstFragment"
 
+/**
+ * The controller fragment for the first screen in the MVC demo. Loads the image cargo from a raw
+ * resource, enables the navigation buttons when the image is ready, and handles navigation to
+ * [MVCSecondControllerActivity] either via [com.grarcht.shuttle.framework.Shuttle] or directly
+ * through an [android.content.Intent] to demonstrate the crash scenario.
+ */
 @AndroidEntryPoint
 class MVCFirstControllerFragment : Fragment() {
     @Inject

@@ -58,6 +58,17 @@ private val KILL_BUTTON_TEXT_STYLE = TextStyle(
 )
 private val PADDING = 16.dp
 
+/**
+ * The Composable view for the second screen in the MVVM with Process Death demo. Loads cargo
+ * either from the [com.grarcht.shuttle.framework.Shuttle] warehouse or from an in-memory cache
+ * depending on how the screen was launched, and displays the image or an appropriate error state.
+ * A "Kill Process" button allows the user to simulate process death to observe Shuttle's
+ * recovery behavior.
+ *
+ * @param context the context used to access resources and string values.
+ * @param viewModel the view model that manages image loading and state.
+ * @param shuttle the Shuttle instance used for cargo pickup and instance state bundling.
+ */
 class SecondView(
     private val context: Context,
     private val viewModel: SecondViewModel,
@@ -66,6 +77,14 @@ class SecondView(
     private var storedCargoId: String? = null
     private var useMemoryCache = false
 
+    /**
+     * Renders the second screen, extracting arguments from [savedInstanceState] or [extras] to
+     * determine whether to load cargo from Shuttle or from the in-memory cache.
+     *
+     * @param savedInstanceState the saved instance state bundle, used on configuration change.
+     * @param extras the intent extras bundle, used on first launch.
+     * @param onKillAppProcess called when the user taps the "Kill Process" button.
+     */
     @Composable
     fun SetViewContent(
         savedInstanceState: Bundle? = null,
@@ -101,6 +120,13 @@ class SecondView(
         }
     }
 
+    /**
+     * Bundles the currently retrieved image model into [outState] using Shuttle so it can be
+     * restored safely after a configuration change.
+     *
+     * @param outState the bundle to write the cargo into.
+     * @return the bundle with the cargo added.
+     */
     fun getSavedInstanceState(outState: Bundle): Bundle {
         val imageModel = (viewModel.imageState.value as? SecondImageState.Success)?.imageModel
         return shuttle

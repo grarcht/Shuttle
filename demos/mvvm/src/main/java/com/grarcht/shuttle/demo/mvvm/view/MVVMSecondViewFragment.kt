@@ -32,6 +32,12 @@ import javax.inject.Inject
 
 private const val LOG_TAG = "MVVMSecondViewFragment"
 
+/**
+ * The view fragment for the second screen in the MVVM demo. Picks up the image cargo from the
+ * [com.grarcht.shuttle.framework.Shuttle] warehouse using the cargo ID extracted from the saved
+ * instance state or fragment arguments, and displays the retrieved image. If cargo pickup fails
+ * or no cargo ID is present, an error view is shown instead.
+ */
 @AndroidEntryPoint
 class MVVMSecondViewFragment : Fragment() {
 

@@ -23,6 +23,12 @@ import javax.inject.Inject
 private const val LOG_NAV_CONTROLLER_NOT_FOUND = "NavController not found."
 private const val LOG_TAG = "FirstFragment"
 
+/**
+ * The host fragment for the first screen in the MVVM with Compose and Navigation demo. Loads the
+ * image cargo and navigates to [SecondActivity] via the Navigation component, using
+ * [com.grarcht.shuttle.framework.addons.navigation.navigateWithShuttle] for safe transport or a
+ * standard navigation action to demonstrate the crash scenario.
+ */
 @AndroidEntryPoint
 class FirstFragment : Fragment() {
     private val viewModel by viewModels<FirstViewModel>()

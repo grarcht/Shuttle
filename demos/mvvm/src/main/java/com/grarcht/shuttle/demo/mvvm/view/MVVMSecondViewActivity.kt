@@ -8,6 +8,11 @@ import com.grarcht.shuttle.demo.core.activity.setupEdgeToEdge
 import com.grarcht.shuttle.demo.mvvm.R
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * The destination activity for the second screen in the MVVM demo. Hosts [MVVMSecondViewFragment]
+ * and passes the incoming [android.content.Intent] extras as arguments so the fragment can
+ * retrieve or pick up the cargo.
+ */
 @AndroidEntryPoint
 class MVVMSecondViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

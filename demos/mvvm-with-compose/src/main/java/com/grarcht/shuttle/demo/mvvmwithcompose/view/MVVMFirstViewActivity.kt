@@ -11,6 +11,10 @@ import com.grarcht.shuttle.framework.Shuttle
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+/**
+ * The entry point activity for the MVVM with Compose demo. Sets up the Compose content via
+ * [MVVMFirstView] and releases view resources when the activity is destroyed.
+ */
 @AndroidEntryPoint
 class MVVMFirstViewActivity : ComponentActivity() {
     private val viewModel: FirstViewModel by viewModels()

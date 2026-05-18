@@ -8,6 +8,11 @@ import com.grarcht.shuttle.demo.core.activity.setupEdgeToEdge
 import com.grarcht.shuttle.demo.mvc.R
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * The destination activity for the second screen in the MVC demo. Hosts
+ * [MVCSecondControllerFragment] and passes the incoming [android.content.Intent] extras as
+ * arguments so the fragment can retrieve or pick up the cargo.
+ */
 @AndroidEntryPoint
 class MVCSecondControllerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

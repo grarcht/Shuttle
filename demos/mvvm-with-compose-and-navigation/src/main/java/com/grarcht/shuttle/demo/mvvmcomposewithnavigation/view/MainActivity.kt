@@ -27,6 +27,12 @@ private const val LOG_REMOVING_ALL_CARGO = "Removing all cargo."
 private const val LOG_REMOVED_ALL_CARGO = "Removed all cargo."
 private const val LOG_FAILED_TO_REMOVE_CARGO = "Failed to remove cargo."
 
+/**
+ * The entry point activity for the MVVM with Compose and Navigation demo. Hosts the Navigation
+ * component graph with [FirstFragment] as the start destination, and cleans up all Shuttle cargo
+ * using a standalone coroutine scope on destroy so the cleanup is not cancelled by the activity
+ * lifecycle scope.
+ */
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
 
