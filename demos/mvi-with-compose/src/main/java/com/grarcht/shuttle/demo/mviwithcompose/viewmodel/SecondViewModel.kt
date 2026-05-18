@@ -4,23 +4,22 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.grarcht.shuttle.demo.core.image.ImageMessageType
+import com.grarcht.shuttle.demo.core.image.IMAGE_CARGO_ID
 import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.mviwithcompose.intent.CargoPickupIntent
 import com.grarcht.shuttle.demo.mviwithcompose.state.CargoPickupUiState
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val ERROR_UNKNOWN = "Unknown error"
 private const val TAG = "SecondViewModel"
 private const val WARN_EMPTY_CARGO = "Cargo is empty; no data was received for the given cargo ID."
 private const val WARN_UNEXPECTED_CARGO_TYPE = "Cargo data is not an ImageModel; the type is unexpected."
@@ -49,7 +48,7 @@ class SecondViewModel @Inject constructor(
         return shuttle
             .bundleCargoWith(outState)
             .logTag(TAG)
-            .transport(ImageMessageType.ImageData.value, uiState.value.imageModel)
+            .transport(IMAGE_CARGO_ID, uiState.value.imageModel)
             .create()
     }
 
@@ -58,7 +57,7 @@ class SecondViewModel @Inject constructor(
             shuttle
                 .pickupCargo<ImageModel>(cargoId = intent.cargoId)
                 .consumeAsFlow()
-                .collectLatest { result ->
+                .collect { result ->
                     when (result) {
                         is ShuttlePickupCargoResult.Loading -> {
                             _uiState.update { it.copy(isLoading = true) }
@@ -70,13 +69,11 @@ class SecondViewModel @Inject constructor(
                                 imageModel == null -> Log.w(TAG, WARN_UNEXPECTED_CARGO_TYPE)
                             }
                             _uiState.update { it.copy(isLoading = false, imageModel = imageModel) }
-                            cancel()
                         }
                         is ShuttlePickupCargoResult.Error<*> -> {
                             _uiState.update {
-                                it.copy(isLoading = false, error = result.throwable as Throwable)
+                                it.copy(isLoading = false, error = result.throwable ?: Throwable(ERROR_UNKNOWN))
                             }
-                            cancel()
                         }
                         is ShuttlePickupCargoResult.NotPickingUpCargoYet -> { /* ignore */ }
                     }

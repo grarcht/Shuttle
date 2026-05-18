@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.dagger.hilt)
+    alias(libs.plugins.android.junit5)
     alias(libs.plugins.google.ksp)
 }
 
@@ -60,7 +61,7 @@ dependencies {
     implementation(libs.android.coreKtx)
     implementation(libs.android.annotationJvm)
     ksp(libs.dependencyInjectionDeps.hiltCompiler)
-    implementation(project(":demos-core-lib"))
+    implementation(project(":demos-core-foundation"))
 
     // Lighter weight, independent dependencies
     implementation(project(":framework"))
@@ -71,4 +72,8 @@ dependencies {
     // implementation(libs.shuttle.framework)
     // implementation(libs.shuttle.integrationsPersistence)
     // implementation(libs.shuttle.integrationsExtensionsRoom)
+
+    testImplementation(libs.testingDeps.junit.jupiterApi)
+    testRuntimeOnly(libs.testingDeps.junit.jupiterEngine)
+    testRuntimeOnly(libs.testingDeps.junit.platformCommons)
 }

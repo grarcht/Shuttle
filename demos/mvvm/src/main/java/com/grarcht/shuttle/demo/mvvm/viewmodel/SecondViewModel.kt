@@ -26,15 +26,10 @@ class SecondViewModel : ViewModel() {
                 .consumeAsFlow()
                 .collectLatest { shuttleResult ->
                     pickupCargoMutableStateFlow.value = shuttleResult
-
                     when (shuttleResult) {
                         is ShuttlePickupCargoResult.Success<*>,
-                        is ShuttlePickupCargoResult.Error<*> -> {
-                            cancel()
-                        }
-                        else -> {
-                            // ignore
-                        }
+                        is ShuttlePickupCargoResult.Error<*> -> cancel()
+                        else -> { /* ignore */ }
                     }
                 }
         }

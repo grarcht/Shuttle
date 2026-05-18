@@ -5,7 +5,7 @@ package com.grarcht.shuttle.demo.mvvmwithaservice.model
 import android.content.Intent
 import android.os.Message
 import android.util.Log
-import com.grarcht.shuttle.demo.core.image.ImageMessageType
+import com.grarcht.shuttle.demo.core.image.IMAGE_CARGO_ID
 import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.core.io.IOResult
 import com.grarcht.shuttle.demo.core.io.RawResourceGateway
@@ -28,6 +28,11 @@ import javax.inject.Named
 
 // private to avoid overhead with extra objects created when component objects are created
 private const val ERROR_UNABLE_TO_GET_IMAGE = "Unable to get image."
+private const val LOG_ON_RECEIVE_MESSAGE = "onReceiveMessage"
+private const val LOG_ON_RECEIVE_MESSAGE_WITH_SHUTTLE = "onReceiveMessage -> TRANSPORT_IMAGE_CARGO_WITH_SHUTTLE"
+private const val LOG_ON_RECEIVE_MESSAGE_WITHOUT_SHUTTLE = "onReceiveMessage -> TRANSPORT_IMAGE_CARGO_WITHOUT_SHUTTLE"
+private const val LOG_SENDING_BROADCAST_WITH_SHUTTLE = "sending broadcast with image WITH shuttle -> cargoId: "
+private const val LOG_SENDING_BROADCAST_WITHOUT_SHUTTLE = "sending broadcast with image WITHOUT shuttle -> cargoId: "
 private const val UNSUPPORTED_MESSAGING_ACTION = "Unsupported messaging action. Action:"
 
 /**
@@ -83,16 +88,16 @@ class RemoteService : ShuttleService() {
      *  @param msg see [Message]
      */
     override fun onReceiveMessage(messageWhat: Int, msg: Message) {
-        Log.v(SERVICE_NAME, "onReceiveMessage")
+        Log.v(SERVICE_NAME, LOG_ON_RECEIVE_MESSAGE)
 
         when (MessagingAction.getActionWith(messageWhat)) {
             MessagingAction.TRANSPORT_IMAGE_CARGO_WITH_SHUTTLE -> {
-                Log.v(SERVICE_NAME, "onReceiveMessage -> TRANSPORT_IMAGE_CARGO_WITH_SHUTTLE")
+                Log.v(SERVICE_NAME, LOG_ON_RECEIVE_MESSAGE_WITH_SHUTTLE)
                 transportImageBytesUsingShuttle(msg)
             }
 
             MessagingAction.TRANSPORT_IMAGE_CARGO_WITHOUT_SHUTTLE -> {
-                Log.v(SERVICE_NAME, "onReceiveMessage -> TRANSPORT_IMAGE_CARGO_WITHOUT_SHUTTLE")
+                Log.v(SERVICE_NAME, LOG_ON_RECEIVE_MESSAGE_WITHOUT_SHUTTLE)
                 transportImageBytesWithoutShuttle(msg)
             }
 
@@ -141,7 +146,7 @@ class RemoteService : ShuttleService() {
                     }
 
                     is IOResult.Success<*> -> {
-                        Log.v(SERVICE_NAME, "sending broadcast with image WITH shuttle -> cargoId: $cargoId")
+                        Log.v(SERVICE_NAME, "$LOG_SENDING_BROADCAST_WITH_SHUTTLE$cargoId")
                         // ========================================================
                         //           No Transaction Too Large Exception
                         // ========================================================
@@ -160,7 +165,7 @@ class RemoteService : ShuttleService() {
                         // implementations will crash the app.
                         // =======================================================
                         val byteArray = ioResult.data as ByteArray
-                        val imageModel = ImageModel(ImageMessageType.ImageData.value, byteArray)
+                        val imageModel = ImageModel(IMAGE_CARGO_ID, byteArray)
                         transportCargoWithShuttle(cargoId, imageModel)
                     }
 
@@ -211,7 +216,7 @@ class RemoteService : ShuttleService() {
                         val imageModel = ImageModel(cargoId, imageData)
                         intent.putExtra(KEY_IMAGE_DATA, imageModel)
 
-                        Log.v(SERVICE_NAME, "sending broadcast with image WITHOUT shuttle -> cargoId: $cargoId")
+                        Log.v(SERVICE_NAME, "$LOG_SENDING_BROADCAST_WITHOUT_SHUTTLE$cargoId")
 
                         // =======================================================
                         //             Transaction Too Large Exception

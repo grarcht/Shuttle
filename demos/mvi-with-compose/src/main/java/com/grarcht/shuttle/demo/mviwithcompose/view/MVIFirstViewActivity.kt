@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
+import com.grarcht.shuttle.demo.core.activity.setupEdgeToEdge
 import com.grarcht.shuttle.demo.mviwithcompose.viewmodel.FirstViewModel
 import com.grarcht.shuttle.framework.Shuttle
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,6 +24,7 @@ class MVIFirstViewActivity : ComponentActivity() {
     lateinit var shuttle: Shuttle
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setupEdgeToEdge()
         super.onCreate(savedInstanceState)
         mviFirstView = MVIFirstView(this, viewModel, shuttle)
         setContent {

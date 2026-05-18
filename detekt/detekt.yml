@@ -216,7 +216,9 @@ empty-blocks:
     active: true
   EmptyFunctionBlock:
     active: true
-    ignoreOverridden: false
+    # Interface overrides (e.g. TextureView.SurfaceTextureListener stubs) must implement all
+    # members; empty bodies there are intentional, not omissions.
+    ignoreOverridden: true
   EmptyIfBlock:
     active: true
   EmptyInitBlock:
@@ -577,7 +579,9 @@ style:
       - '1'
       - '2'
     ignoreHashCodeFunction: true
-    ignorePropertyDeclaration: false
+    # Named private val properties (e.g. Color hex literals) are already documented by their
+    # identifier, so the literal inside is not truly "magic".
+    ignorePropertyDeclaration: true
     ignoreLocalVariableDeclaration: false
     ignoreConstantDeclaration: true
     ignoreCompanionObjectPropertyDeclaration: true

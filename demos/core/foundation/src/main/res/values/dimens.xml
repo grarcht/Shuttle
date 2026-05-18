@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="card_button_corner_radius">50dp</dimen>
+    <dimen name="card_button_padding_h">16dp</dimen>
+    <dimen name="card_button_padding_v">8dp</dimen>
+    <dimen name="card_content_padding">12dp</dimen>
+    <dimen name="card_corner_radius">16dp</dimen>
+    <dimen name="card_image_corner_radius">12dp</dimen>
+    <dimen name="card_image_height">90dp</dimen>
+    <dimen name="card_image_inset">4dp</dimen>
+    <dimen name="card_text_gap_lg">10dp</dimen>
+    <dimen name="card_text_gap_sm">2dp</dimen>
+    <dimen name="cards_horizontal_gap">8dp</dimen>
+    <dimen name="cards_horizontal_padding">16dp</dimen>
+    <dimen name="margin_buttons_large">64dp</dimen>
+    <dimen name="sliver_overlap_negative">-4dp</dimen>
+    <dimen name="margin_buttons_small">8dp</dimen>
+    <dimen name="spacing_pill_to_title">12dp</dimen>
+    <dimen name="spacing_subtitle_to_cards">24dp</dimen>
+    <dimen name="spacing_title_to_subtitle">8dp</dimen>
+    <dimen name="spacing_top">8dp</dimen>
+    <dimen name="tagline_bottom_padding">32dp</dimen>
+    <dimen name="tagline_start_padding">20dp</dimen>
+    <dimen name="second_screen_card_corner_radius">28dp</dimen>
+    <dimen name="second_screen_card_padding_h">20dp</dimen>
+    <dimen name="second_screen_card_padding_v">24dp</dimen>
+    <dimen name="cutout_radius">28dp</dimen>
+    <dimen name="cutout_center_x_from_right">46dp</dimen>
+    <dimen name="play_button_size">36dp</dimen>
+    <dimen name="play_button_icon_size">16dp</dimen>
+    <dimen name="play_button_margin_end">28dp</dimen>
+    <dimen name="play_button_margin_top">0dp</dimen>
+    <dimen name="card_play_button_inset">18dp</dimen>
+</resources>

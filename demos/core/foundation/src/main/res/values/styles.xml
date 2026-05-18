@@ -1,0 +1,183 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryContainer">@color/colorPrimaryContainer</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+    </style>
+
+    <style name="ArchitecturePill" parent="Widget.AppCompat.TextView">
+        <item name="android:background">@drawable/bg_architecture_pill</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:textColor">@color/colorTaupe</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:fontWeight">500</item>
+        <item name="android:letterSpacing">0.1</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="CardButton" parent="Widget.Material3.Button">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/colorCream</item>
+        <item name="android:fontWeight">500</item>
+        <item name="android:letterSpacing">0.04</item>
+        <item name="cornerRadius">@dimen/card_button_corner_radius</item>
+        <item name="android:paddingStart">@dimen/card_button_padding_h</item>
+        <item name="android:paddingEnd">@dimen/card_button_padding_h</item>
+        <item name="android:paddingTop">@dimen/card_button_padding_v</item>
+        <item name="android:paddingBottom">@dimen/card_button_padding_v</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:elevation">0dp</item>
+    </style>
+
+    <style name="CardButton.Risky">
+        <item name="backgroundTint">@color/colorBurgundy</item>
+    </style>
+
+    <style name="CardButton.Shuttle">
+        <item name="backgroundTint">@color/colorDarkBrown</item>
+    </style>
+
+    <style name="CardPreviewText" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/colorDarkBrown</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:fontWeight">400</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="CardEyebrowText" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/colorDarkBrown</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontWeight">400</item>
+        <item name="android:letterSpacing">0.04</item>
+    </style>
+
+    <style name="CardSubtitleText" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/colorBurgundy</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontWeight">500</item>
+        <item name="android:letterSpacing">0.02</item>
+    </style>
+
+    <style name="CardTitleText" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/colorDarkBrown</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontWeight">700</item>
+    </style>
+
+    <!-- Retained for backward compatibility with second screens -->
+    <style name="ContentLoadingProgress" parent="Widget.Material3.CircularProgressIndicator">
+        <item name="trackColor">@android:color/white</item>
+    </style>
+
+    <!-- Retained for backward compatibility with second screens -->
+    <style name="ErrorImage" parent="Image">
+        <item name="android:alpha">0.8</item>
+    </style>
+
+    <!-- Retained for backward compatibility with second screens -->
+    <style name="ErrorText" parent="Widget.AppCompat.TextView">
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">100dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@android:color/holo_orange_dark</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">@android:color/black</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">2</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="Image">
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <style name="ShapeAppearance.Card.Image" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/card_image_corner_radius</item>
+    </style>
+
+    <style name="ShuttleHeroTitle" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/colorCream</item>
+        <item name="android:textSize">56sp</item>
+        <item name="android:fontWeight">900</item>
+        <item name="android:letterSpacing">0.2</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="ShuttleSubtitle" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/colorBeige</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontWeight">300</item>
+        <item name="android:letterSpacing">0.35</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
+    <style name="TaglineText" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/colorCream</item>
+        <item name="android:textSize">64sp</item>
+        <item name="android:fontWeight">600</item>
+        <item name="android:lineSpacingExtra">4sp</item>
+    </style>
+
+    <style name="SecondScreenPill" parent="Widget.AppCompat.TextView">
+        <item name="android:background">@drawable/bg_architecture_pill</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:textColor">@color/colorTaupe</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:fontWeight">500</item>
+        <item name="android:letterSpacing">0.15</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="SecondScreenTitle" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/colorCream</item>
+        <item name="android:textSize">52sp</item>
+        <item name="android:fontWeight">600</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:lineSpacingExtra">4sp</item>
+    </style>
+
+    <style name="SecondScreenBody" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/colorBeige</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:fontWeight">300</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:lineSpacingExtra">6sp</item>
+    </style>
+
+    <style name="SecondScreenSize" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/colorTaupe</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:fontWeight">400</item>
+        <item name="android:letterSpacing">0.04</item>
+    </style>
+
+    <!-- Retained for backward compatibility with second screens -->
+    <style name="TitleText" parent="Widget.AppCompat.TextView">
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">32dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+</resources>

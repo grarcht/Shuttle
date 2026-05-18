@@ -81,7 +81,9 @@ dependencies {
     api(libs.dependencyInjectionDeps.hilt)
     ksp(libs.dependencyInjectionDeps.hiltCompiler)
 
-    implementation(project(":demos-core-lib"))
+    implementation(project(":demos-core-foundation"))
+    implementation(project(":demos-core-di"))
+    implementation(project(":demos-core-compose"))
 
     implementation(project(":framework"))
     implementation(project(":framework-integrations-persistence"))
@@ -92,4 +94,5 @@ dependencies {
     androidTestRuntimeOnly(libs.testingDeps.junit.junit5AndroidTestRunner)
     testImplementation(libs.testingDeps.junit.jupiterApi)
     testRuntimeOnly(libs.testingDeps.junit.jupiterEngine)
+    testRuntimeOnly(libs.testingDeps.junit.platformCommons)
 }

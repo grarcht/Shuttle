@@ -81,7 +81,9 @@ dependencies {
     api(libs.dependencyInjectionDeps.hilt)
     ksp(libs.dependencyInjectionDeps.hiltCompiler)
 
-    implementation(project(":demos-core-lib"))
+    implementation(project(":demos-core-foundation"))
+    implementation(project(":demos-core-di"))
+    implementation(project(":demos-core-compose"))
 
     // Lighter weight, independent dependencies
     implementation(project(":framework"))
@@ -97,5 +99,9 @@ dependencies {
     androidTestImplementation(libs.testingDeps.espresso.core)
     androidTestRuntimeOnly(libs.testingDeps.junit.junit5AndroidTestRunner)
     testImplementation(libs.testingDeps.junit.jupiterApi)
+    testImplementation(libs.testingDeps.kotlin.coroutines)
+    testImplementation(libs.testingDeps.mockito.core)
+    testImplementation(libs.testingDeps.mockito.kotlin)
     testRuntimeOnly(libs.testingDeps.junit.jupiterEngine)
+    testRuntimeOnly(libs.testingDeps.junit.platformCommons)
 }

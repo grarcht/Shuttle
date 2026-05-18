@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#00796B</color>
+    <color name="colorPrimaryContainer">#004D40</color>
+    <color name="colorSecondary">#AC9C8D</color>
+    <color name="colorDarkBrown">#322D29</color>
+    <color name="colorBurgundy">#72383D</color>
+    <color name="colorTaupe">#AC9C8D</color>
+    <color name="colorBeige">#D1C7BD</color>
+    <color name="colorCream">#EFE9E1</color>
+    <color name="colorShuttleTeal">#00796B</color>
+    <color name="colorScrim">#8C322D29</color>
+    <color name="colorSecondScreenCard">#F0322D29</color>
+</resources>

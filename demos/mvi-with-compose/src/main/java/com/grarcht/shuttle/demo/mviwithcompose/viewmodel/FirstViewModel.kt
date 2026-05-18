@@ -2,7 +2,7 @@ package com.grarcht.shuttle.demo.mviwithcompose.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.grarcht.shuttle.demo.core.image.ImageMessageType
+import com.grarcht.shuttle.demo.core.image.IMAGE_CARGO_ID
 import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.core.io.IOResult
 import com.grarcht.shuttle.demo.core.io.RawResourceGateway
@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -58,12 +57,12 @@ class FirstViewModel @Inject constructor(
             RawResourceGateway.with(intent.resources)
                 .bytesFromRawResource(intent.imageId)
                 .create()
-                .collectLatest { result ->
+                .collect { result ->
                     when (result) {
                         is IOResult.Loading -> _uiState.update { it.copy(isLoading = true) }
                         is IOResult.Success<*> -> {
                             val bytes = result.data as ByteArray
-                            val model = ImageModel(ImageMessageType.ImageData.value, bytes)
+                            val model = ImageModel(IMAGE_CARGO_ID, bytes)
                             _uiState.update { it.copy(isLoading = false, imageModel = model) }
                         }
                         is IOResult.Error<*> -> {

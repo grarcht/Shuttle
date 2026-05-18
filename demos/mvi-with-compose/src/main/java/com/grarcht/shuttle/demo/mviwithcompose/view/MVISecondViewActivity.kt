@@ -6,6 +6,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toDrawable
+import com.grarcht.shuttle.demo.core.activity.setupEdgeToEdge
 import com.grarcht.shuttle.demo.mviwithcompose.viewmodel.SecondViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,6 +23,8 @@ class MVISecondViewActivity : ComponentActivity() {
     private lateinit var mviSecondView: MVISecondView
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setupEdgeToEdge()
+        window.setBackgroundDrawable(ContextCompat.getColor(this, com.grarcht.shuttle.demo.core.R.color.colorBeige).toDrawable())
         super.onCreate(savedInstanceState)
         mviSecondView = MVISecondView(this, viewModel)
         val cargoId = mviSecondView.extractCargoId(savedInstanceState, intent.extras)
