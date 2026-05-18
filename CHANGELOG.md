@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [Released]
+
+## [4.0.0] - 2026-05-17
+
 ## Added
 
 - `@ShuttleCargo` annotation and a Kotlin compiler plugin that automatically injects the `ShuttleCargoData`
@@ -45,8 +49,6 @@
 ## Removed
 
 - `enableJetifier` property (no longer needed)
-
-## [Released]
 
 ## [3.0.3] - 2025-08-20
 
