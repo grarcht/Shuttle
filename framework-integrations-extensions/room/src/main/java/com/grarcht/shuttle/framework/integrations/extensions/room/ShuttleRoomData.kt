@@ -11,6 +11,8 @@ const val COLUMN_CARGO_ID = "cargo_id"
 
 const val COLUMN_FILEPATH = "file_path"
 
+const val COLUMN_CREATED_AT = "created_at"
+
 // The name of the table for storing data blobs
 const val TABLE_NAME = "shuttle"
 
@@ -29,7 +31,13 @@ open class ShuttleRoomData(
     @ColumnInfo(name = COLUMN_FILEPATH, typeAffinity = ColumnInfo.TEXT)
     override var filePath: String = ""
 ) : ShuttleCargoData, ShuttleDataModel {
-    constructor() : this("", "")
+
+    @ColumnInfo(name = COLUMN_CREATED_AT, typeAffinity = ColumnInfo.INTEGER, defaultValue = "0")
+    var createdAt: Long = System.currentTimeMillis()
+
+    constructor() : this("", "") {
+        createdAt = 0L
+    }
 
     companion object {
         private const val serialVersionUID: Long = 5788869818072013261L

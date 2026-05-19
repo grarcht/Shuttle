@@ -33,13 +33,14 @@ class ShuttleCargoIrTransformer(
     private val pluginContext: IrPluginContext
 ) : IrElementTransformerVoid() {
 
+    @OptIn(UnsafeDuringIrConstructionAPI::class)
     override fun visitClass(declaration: IrClass): IrStatement {
         if (declaration.hasAnnotation(SHUTTLE_CARGO_FQ_NAME) &&
             !declaration.implementsCargoDataTransitively()
         ) {
             val cargoDataSymbol = pluginContext.referenceClass(SHUTTLE_CARGO_DATA_CLASS_ID)
             if (cargoDataSymbol != null) {
-                declaration.superTypes = declaration.superTypes + cargoDataSymbol.owner.defaultType
+                declaration.superTypes += cargoDataSymbol.owner.defaultType
             }
         }
         return super.visitClass(declaration)

@@ -43,5 +43,6 @@ sealed class ShuttleRemoveCargoResult {
 
     companion object {
         const val ALL_CARGO = "All Cargo"
+        const val ORPHANED_CARGO = "Orphaned Cargo"
     }
 }

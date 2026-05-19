@@ -199,9 +199,9 @@ class ShuttleCargoFacadeTests {
     private class TestActivityExtension : TestActivity()
 
     private class NormalCompletionRemoveWarehouse(private val cargoId: String) : ShuttleWarehouse {
-        override suspend fun <D : ShuttleCargoData> pickup(id: String) = Channel<ShuttlePickupCargoResult>()
-        override suspend fun <D : ShuttleCargoData> store(id: String, data: D?) = Channel<ShuttleStoreCargoResult>()
-        override suspend fun removeCargoBy(id: String): Channel<ShuttleRemoveCargoResult> {
+        override suspend fun <D : ShuttleCargoData> pickup(cargoId: String) = Channel<ShuttlePickupCargoResult>()
+        override suspend fun <D : ShuttleCargoData> store(cargoId: String, data: D?) = Channel<ShuttleStoreCargoResult>()
+        override suspend fun removeCargoBy(cargoId: String): Channel<ShuttleRemoveCargoResult> {
             val ch = Channel<ShuttleRemoveCargoResult>(Channel.UNLIMITED)
             ch.send(ShuttleRemoveCargoResult.NotRemovingCargoYet(cargoId))
             ch.close() // normal close — no cancel() triggered → null throwable in invokeOnCompletion
@@ -211,18 +211,18 @@ class ShuttleCargoFacadeTests {
     }
 
     private class CancellationThrowingRemoveWarehouse : ShuttleWarehouse {
-        override suspend fun <D : ShuttleCargoData> pickup(id: String) = Channel<ShuttlePickupCargoResult>()
-        override suspend fun <D : ShuttleCargoData> store(id: String, data: D?) = Channel<ShuttleStoreCargoResult>()
-        override suspend fun removeCargoBy(id: String): Channel<ShuttleRemoveCargoResult> {
+        override suspend fun <D : ShuttleCargoData> pickup(cargoId: String) = Channel<ShuttlePickupCargoResult>()
+        override suspend fun <D : ShuttleCargoData> store(cargoId: String, data: D?) = Channel<ShuttleStoreCargoResult>()
+        override suspend fun removeCargoBy(cargoId: String): Channel<ShuttleRemoveCargoResult> {
             throw CancellationException("test cancellation")
         }
         override suspend fun removeAllCargo() = Channel<ShuttleRemoveCargoResult>()
     }
 
     private class UnableToRemoveWarehouse(private val cargoId: String) : ShuttleWarehouse {
-        override suspend fun <D : ShuttleCargoData> pickup(id: String) = Channel<ShuttlePickupCargoResult>()
-        override suspend fun <D : ShuttleCargoData> store(id: String, data: D?) = Channel<ShuttleStoreCargoResult>()
-        override suspend fun removeCargoBy(id: String): Channel<ShuttleRemoveCargoResult> {
+        override suspend fun <D : ShuttleCargoData> pickup(cargoId: String) = Channel<ShuttlePickupCargoResult>()
+        override suspend fun <D : ShuttleCargoData> store(cargoId: String, data: D?) = Channel<ShuttleStoreCargoResult>()
+        override suspend fun removeCargoBy(cargoId: String): Channel<ShuttleRemoveCargoResult> {
             val ch = Channel<ShuttleRemoveCargoResult>(Channel.UNLIMITED)
             ch.send(ShuttleRemoveCargoResult.UnableToRemove<Exception>(cargoId))
             ch.close()

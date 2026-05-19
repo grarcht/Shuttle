@@ -2,6 +2,7 @@ package com.grarcht.shuttle.framework.coroutines.scope
 
 import com.grarcht.shuttle.framework.visibility.observation.ShuttleVisibilityObservable
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -33,6 +34,7 @@ class ScopesKtxTests {
         verify(errorObservable, never()).observe(any())
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun verifyCancelScopeQuietlyCancelsNonNullScope() {
         val errorObservable = mock<ShuttleVisibilityObservable>()

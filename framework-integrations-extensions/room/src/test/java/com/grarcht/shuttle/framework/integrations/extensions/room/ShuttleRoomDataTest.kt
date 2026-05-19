@@ -2,6 +2,7 @@ package com.grarcht.shuttle.framework.integrations.extensions.room
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 
@@ -28,12 +29,24 @@ class ShuttleRoomDataTest {
     }
 
     @Test
+    fun verifyPrimaryConstructorDefaultsCreatedAtToCurrentTime() {
+        val before = System.currentTimeMillis()
+        val data = ShuttleRoomData(CARGO_ID, FILE_PATH)
+        val after = System.currentTimeMillis()
+        assertAll(
+            { assertNotNull(data) },
+            { assertTrue(data.createdAt in before..after) }
+        )
+    }
+
+    @Test
     fun verifyNoArgConstructorCreatesDataWithEmptyFields() {
         val data = ShuttleRoomData()
         assertAll(
             { assertNotNull(data) },
             { assertEquals(EMPTY_STRING, data.cargoId) },
-            { assertEquals(EMPTY_STRING, data.filePath) }
+            { assertEquals(EMPTY_STRING, data.filePath) },
+            { assertEquals(0L, data.createdAt) }
         )
     }
 

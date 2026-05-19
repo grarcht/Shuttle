@@ -166,13 +166,10 @@ open class CargoShuttle(
         val channel = Channel<ShuttlePickupCargoResult>(PICKUP_WITH_TIMEOUT_CHANNEL_CAPACITY)
         try {
             withTimeout(timeoutMs) {
-                shuttleWarehouse.pickup<D>(cargoId).consumeAsFlow()
-                    .takeWhile { result ->
-                        channel.send(result)
-                        result !is ShuttlePickupCargoResult.Success<*> &&
-                            result !is ShuttlePickupCargoResult.Error<*>
-                    }
-                    .collect {}
+                shuttleWarehouse.pickup<D>(cargoId).consumeAsFlow().takeWhile { result ->
+                    channel.send(result)
+                    result !is ShuttlePickupCargoResult.Success<*> && result !is ShuttlePickupCargoResult.Error<*>
+                }.collect {}
             }
         } catch (e: TimeoutCancellationException) {
             val errorMessage = "Pickup of cargo for cargoId: $cargoId timed out after ${timeoutMs}ms."
@@ -218,8 +215,13 @@ open class CargoShuttle(
                     when (result) {
                         is ShuttleRemoveCargoResult.Removed,
                         is ShuttleRemoveCargoResult.UnableToRemove<*>,
-                        is ShuttleRemoveCargoResult.DoesNotExist -> break
-                        else -> { /* await next result */ }
+                        is ShuttleRemoveCargoResult.DoesNotExist -> {
+                            break
+                        }
+
+                        else -> {
+                            /* await next result */
+                        }
                     }
                 }
             } finally {
@@ -245,8 +247,13 @@ open class CargoShuttle(
                     when (result) {
                         is ShuttleRemoveCargoResult.Removed,
                         is ShuttleRemoveCargoResult.UnableToRemove<*>,
-                        is ShuttleRemoveCargoResult.DoesNotExist -> break
-                        else -> { /* await next result */ }
+                        is ShuttleRemoveCargoResult.DoesNotExist -> {
+                            break
+                        }
+
+                        else -> {
+                            /* await next result */
+                        }
                     }
                 }
             } finally {

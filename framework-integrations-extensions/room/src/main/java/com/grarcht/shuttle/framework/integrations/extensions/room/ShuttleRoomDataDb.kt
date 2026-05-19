@@ -2,13 +2,15 @@ package com.grarcht.shuttle.framework.integrations.extensions.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.grarcht.shuttle.framework.integrations.persistence.ShuttleDataAccessObject
 import com.grarcht.shuttle.framework.integrations.persistence.ShuttleDatabase
 
 /**
  * This class is used to create and access the Shuttle database.
  */
-@Database(entities = [ShuttleRoomData::class], version = 1, exportSchema = false)
+@Database(entities = [ShuttleRoomData::class], version = 2, exportSchema = false)
 abstract class ShuttleRoomDataDb : RoomDatabase(), ShuttleDatabase {
     /**
      * The Data Access Object (DAO) reference for the DAO used to access the Shuttle database.
@@ -26,6 +28,14 @@ abstract class ShuttleRoomDataDb : RoomDatabase(), ShuttleDatabase {
     companion object {
         @Volatile
         private var INSTANCE: ShuttleRoomDataDb? = null
+
+        val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "ALTER TABLE $TABLE_NAME ADD COLUMN $COLUMN_CREATED_AT INTEGER NOT NULL DEFAULT 0"
+                )
+            }
+        }
 
         fun getInstance(
             config: ShuttleRoomDbConfig,

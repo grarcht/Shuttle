@@ -21,14 +21,16 @@ open class ShuttleRoomDbFactory {
                 config.context.applicationContext,
                 ShuttleRoomDataDb::class.java,
                 DB_NAME
-            ).enableMultiInstanceInvalidation()
+            ).addMigrations(ShuttleRoomDataDb.MIGRATION_1_2)
+                .enableMultiInstanceInvalidation()
                 .build()
         } else {
             Room.databaseBuilder(
                 config.context.applicationContext,
                 ShuttleRoomDataDb::class.java,
                 DB_NAME
-            ).build()
+            ).addMigrations(ShuttleRoomDataDb.MIGRATION_1_2)
+                .build()
         }
     }
 }

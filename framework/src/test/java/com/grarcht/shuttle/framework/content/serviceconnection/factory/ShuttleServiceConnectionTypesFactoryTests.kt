@@ -11,9 +11,7 @@ import com.grarcht.shuttle.framework.visibility.observation.ShuttleVisibilityObs
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.test.TestScope
 import org.junit.jupiter.api.Assertions.assertNotNull
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertAll
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
@@ -174,9 +172,6 @@ class ShuttleServiceConnectionTypesFactoryTests {
                 serviceChannel = channel
             )
 
-        assertAll(
-            { assertNotNull(connection) },
-            { assertTrue(connection is ShuttleLifecycleAwareServiceConnection) }
-        )
+        assertNotNull(connection)
     }
 }

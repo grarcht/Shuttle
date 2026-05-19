@@ -65,6 +65,20 @@ open class ShuttleRoomDao(private var dao: Dao) : ShuttleDataAccessObject {
     }
 
     /**
+     * Returns all cargo entries created before [timestamp] (epoch milliseconds).
+     */
+    override suspend fun getCargoOlderThan(timestamp: Long): List<ShuttleDataModel> {
+        return dao.getCargoOlderThan(timestamp)
+    }
+
+    /**
+     * Deletes all cargo entries created before [timestamp] (epoch milliseconds).
+     */
+    override fun deleteCargoOlderThan(timestamp: Long): Int {
+        return dao.deleteCargoOlderThan(timestamp)
+    }
+
+    /**
      * The Room database interface for the data access object to generate.
      */
     @androidx.room.Dao
@@ -104,5 +118,17 @@ open class ShuttleRoomDao(private var dao: Dao) : ShuttleDataAccessObject {
          */
         @Query("DELETE FROM $TABLE_NAME")
         fun deleteAllCargoData(): Int
+
+        /**
+         * Returns all cargo entries created before [timestamp] (epoch milliseconds).
+         */
+        @Query("SELECT * FROM $TABLE_NAME WHERE $COLUMN_CREATED_AT < :timestamp AND $COLUMN_CREATED_AT > 0")
+        suspend fun getCargoOlderThan(timestamp: Long): List<ShuttleRoomData>
+
+        /**
+         * Deletes all cargo entries created before [timestamp] (epoch milliseconds).
+         */
+        @Query("DELETE FROM $TABLE_NAME WHERE $COLUMN_CREATED_AT < :timestamp AND $COLUMN_CREATED_AT > 0")
+        fun deleteCargoOlderThan(timestamp: Long): Int
     }
 }

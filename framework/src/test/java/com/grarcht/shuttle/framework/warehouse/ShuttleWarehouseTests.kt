@@ -1238,6 +1238,180 @@ class ShuttleWarehouseTests {
         delay(1000L)
     }
 
+    @Test
+    fun verifyRemovingOrphanedCargoSucceedsWhenDaoRemovalSucceeds() = testScope.runTest {
+        val dao = mock(ShuttleDataAccessObject::class.java)
+        val dataModelFactory = mock(ShuttleDataModelFactory::class.java)
+        val fileSystemGateway = mock(ShuttleFileSystemGateway::class.java)
+        val repository = ShuttleRepository(dao, dataModelFactory, CARGO_FILE_PATH, fileSystemGateway)
+        val cargoId = "cargoId1"
+        val filePath = "$CARGO_FILE_PATH/cargo/$cargoId"
+        val ttlMs = 86_400_000L
+        val countDownLatch = CountDownLatch(2)
+        var successfulStepsMet = 0
+        var removedCargoId = ""
+
+        `when`(dao.getCargoOlderThan(anyOrNull())).thenReturn(listOf(TestShuttleDataModel(cargoId, filePath)))
+        `when`(fileSystemGateway.deleteFile(filePath)).thenReturn(ShuttlePersistenceRemoveCargoResult.Removed)
+        `when`(dao.deleteCargoOlderThan(anyOrNull())).thenReturn(1)
+
+        launch(Dispatchers.Main) {
+            val channel: Channel<ShuttleRemoveCargoResult> = repository.removeOrphanedCargo(ttlMs)
+            channel.consumeAsFlow()
+                .collectLatest { shuttleResult ->
+                    when (shuttleResult) {
+                        is ShuttleRemoveCargoResult.Removing -> {
+                            successfulStepsMet++
+                        }
+                        is ShuttleRemoveCargoResult.Removed -> {
+                            successfulStepsMet++
+                            removedCargoId = shuttleResult.cargoId
+                            countDownLatch.countDown()
+                            channel.cancel()
+                        }
+                        is ShuttleRemoveCargoResult.UnableToRemove<*>,
+                        is ShuttleRemoveCargoResult.DoesNotExist -> {
+                            countDownLatch.countDown()
+                            channel.cancel()
+                        }
+                        else -> { /* ignore */ }
+                    }
+                }
+        }.invokeOnCompletion {
+            it?.let { println(it.message ?: "Error when purging orphaned cargo.") }
+        }.addForDisposal(compositeDisposableHandle)
+
+        awaitOnLatch(countDownLatch, 3L, TimeUnit.SECONDS)
+        assertAll(
+            { Assertions.assertEquals(2, successfulStepsMet) },
+            { Assertions.assertEquals(ShuttleRemoveCargoResult.ORPHANED_CARGO, removedCargoId) }
+        )
+    }
+
+    @Test
+    fun verifyRemovingOrphanedCargoSucceedsWhenThereAreNoOrphans() = testScope.runTest {
+        val dao = mock(ShuttleDataAccessObject::class.java)
+        val dataModelFactory = mock(ShuttleDataModelFactory::class.java)
+        val fileSystemGateway = mock(ShuttleFileSystemGateway::class.java)
+        val repository = ShuttleRepository(dao, dataModelFactory, CARGO_FILE_PATH, fileSystemGateway)
+        val ttlMs = 86_400_000L
+        val countDownLatch = CountDownLatch(2)
+        var successfulStepsMet = 0
+
+        `when`(dao.getCargoOlderThan(anyOrNull())).thenReturn(emptyList())
+        `when`(dao.deleteCargoOlderThan(anyOrNull())).thenReturn(0)
+
+        launch(Dispatchers.Main) {
+            val channel: Channel<ShuttleRemoveCargoResult> = repository.removeOrphanedCargo(ttlMs)
+            channel.consumeAsFlow()
+                .collectLatest { shuttleResult ->
+                    when (shuttleResult) {
+                        is ShuttleRemoveCargoResult.Removing -> {
+                            successfulStepsMet++
+                        }
+                        is ShuttleRemoveCargoResult.Removed -> {
+                            successfulStepsMet++
+                            countDownLatch.countDown()
+                            channel.cancel()
+                        }
+                        is ShuttleRemoveCargoResult.UnableToRemove<*>,
+                        is ShuttleRemoveCargoResult.DoesNotExist -> {
+                            countDownLatch.countDown()
+                            channel.cancel()
+                        }
+                        else -> { /* ignore */ }
+                    }
+                }
+        }.invokeOnCompletion {
+            it?.let { println(it.message ?: "Error when purging orphaned cargo.") }
+        }.addForDisposal(compositeDisposableHandle)
+
+        awaitOnLatch(countDownLatch, 3L, TimeUnit.SECONDS)
+        Assertions.assertEquals(2, successfulStepsMet)
+    }
+
+    @Test
+    fun verifyRemovingOrphanedCargoFailsWhenDaoDeleteReturnsFailure() = testScope.runTest {
+        val dao = mock(ShuttleDataAccessObject::class.java)
+        val dataModelFactory = mock(ShuttleDataModelFactory::class.java)
+        val fileSystemGateway = mock(ShuttleFileSystemGateway::class.java)
+        val repository = ShuttleRepository(dao, dataModelFactory, CARGO_FILE_PATH, fileSystemGateway)
+        val ttlMs = 86_400_000L
+        val countDownLatch = CountDownLatch(1)
+        var failureStepsMet = 0
+
+        `when`(dao.getCargoOlderThan(anyOrNull())).thenReturn(emptyList())
+        `when`(dao.deleteCargoOlderThan(anyOrNull())).thenReturn(ShuttleDataAccessObject.REMOVE_CARGO_FAILED)
+
+        launch(Dispatchers.Main) {
+            val channel: Channel<ShuttleRemoveCargoResult> = repository.removeOrphanedCargo(ttlMs)
+            channel.consumeAsFlow()
+                .collectLatest { shuttleResult ->
+                    when (shuttleResult) {
+                        is ShuttleRemoveCargoResult.UnableToRemove<*> -> {
+                            failureStepsMet++
+                            countDownLatch.countDown()
+                            channel.cancel()
+                        }
+                        else -> { /* ignore */ }
+                    }
+                }
+        }.invokeOnCompletion {
+            it?.let { println(it.message ?: "Error when purging orphaned cargo.") }
+        }.addForDisposal(compositeDisposableHandle)
+
+        awaitOnLatch(countDownLatch, 3L, TimeUnit.SECONDS)
+        Assertions.assertEquals(1, failureStepsMet)
+    }
+
+    @Test
+    fun verifyRemovingOrphanedCargoHandlesSQLException() = testScope.runTest {
+        val dao = mock(ShuttleDataAccessObject::class.java)
+        val dataModelFactory = mock(ShuttleDataModelFactory::class.java)
+        val fileSystemGateway = mock(ShuttleFileSystemGateway::class.java)
+        val repository = ShuttleRepository(dao, dataModelFactory, CARGO_FILE_PATH, fileSystemGateway)
+        val ttlMs = 86_400_000L
+
+        `when`(dao.getCargoOlderThan(anyOrNull())).thenReturn(emptyList())
+        doAnswer { throw java.sql.SQLException("db error") }.`when`(dao).deleteCargoOlderThan(anyOrNull())
+
+        launch(Dispatchers.Main) {
+            val channel: Channel<ShuttleRemoveCargoResult> = repository.removeOrphanedCargo(ttlMs)
+            channel.consumeAsFlow().collectLatest { result ->
+                when (result) {
+                    is ShuttleRemoveCargoResult.UnableToRemove<*> -> channel.cancel()
+                    else -> { /* ignore */ }
+                }
+            }
+        }
+
+        delay(1000L)
+    }
+
+    @Test
+    fun verifyRemovingOrphanedCargoHandlesGenericException() = testScope.runTest {
+        val dao = mock(ShuttleDataAccessObject::class.java)
+        val dataModelFactory = mock(ShuttleDataModelFactory::class.java)
+        val fileSystemGateway = mock(ShuttleFileSystemGateway::class.java)
+        val repository = ShuttleRepository(dao, dataModelFactory, CARGO_FILE_PATH, fileSystemGateway)
+        val ttlMs = 86_400_000L
+
+        `when`(dao.getCargoOlderThan(anyOrNull())).thenReturn(emptyList())
+        `when`(dao.deleteCargoOlderThan(anyOrNull())).thenThrow(RuntimeException("unexpected"))
+
+        launch(Dispatchers.Main) {
+            val channel: Channel<ShuttleRemoveCargoResult> = repository.removeOrphanedCargo(ttlMs)
+            channel.consumeAsFlow().collectLatest { result ->
+                when (result) {
+                    is ShuttleRemoveCargoResult.UnableToRemove<*> -> channel.cancel()
+                    else -> { /* ignore */ }
+                }
+            }
+        }
+
+        delay(1000L)
+    }
+
     private fun storeCargo(
         cargo: Cargo,
         warehouse: ShuttleWarehouse

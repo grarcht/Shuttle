@@ -16,6 +16,9 @@ private const val EXPECTED_ITEM_COUNT = 5
 private const val EXPECTED_INSERT_ROW_ID = 1L
 private const val EXPECTED_DELETE_COUNT = 1
 private const val EXPECTED_DELETE_ALL_COUNT = 3
+private const val EXPECTED_ORPHAN_DELETE_COUNT = 2
+private const val OLD_TIMESTAMP = 1_000L
+private const val FUTURE_TIMESTAMP = Long.MAX_VALUE
 
 /**
  * Verifies the functionality of [ShuttleRoomDao]. ShuttleRoomDao adapts the Room inner DAO to
@@ -83,5 +86,27 @@ class ShuttleRoomDaoTest {
         whenever(mockInnerDao.deleteAllCargoData()).thenReturn(EXPECTED_DELETE_ALL_COUNT)
         val result = shuttleRoomDao.deleteAllCargoData()
         assertEquals(EXPECTED_DELETE_ALL_COUNT, result)
+    }
+
+    @Test
+    fun verifyGetCargoOlderThanReturnsMatchingItems() = runTest {
+        val oldItem = ShuttleRoomData(CARGO_ID, FILE_PATH)
+        whenever(mockInnerDao.getCargoOlderThan(FUTURE_TIMESTAMP)).thenReturn(listOf(oldItem))
+        val result = shuttleRoomDao.getCargoOlderThan(FUTURE_TIMESTAMP)
+        assertEquals(listOf(oldItem), result)
+    }
+
+    @Test
+    fun verifyGetCargoOlderThanReturnsEmptyListWhenNoneMatch() = runTest {
+        whenever(mockInnerDao.getCargoOlderThan(OLD_TIMESTAMP)).thenReturn(emptyList())
+        val result = shuttleRoomDao.getCargoOlderThan(OLD_TIMESTAMP)
+        assertEquals(emptyList<ShuttleRoomData>(), result)
+    }
+
+    @Test
+    fun verifyDeleteCargoOlderThanDelegatesToDao() {
+        whenever(mockInnerDao.deleteCargoOlderThan(FUTURE_TIMESTAMP)).thenReturn(EXPECTED_ORPHAN_DELETE_COUNT)
+        val result = shuttleRoomDao.deleteCargoOlderThan(FUTURE_TIMESTAMP)
+        assertEquals(EXPECTED_ORPHAN_DELETE_COUNT, result)
     }
 }

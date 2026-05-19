@@ -1,5 +1,6 @@
 package com.grarcht.shuttle.framework.integrations.persistence
 
+import com.grarcht.shuttle.framework.integrations.persistence.ShuttleDataAccessObject.Companion.REMOVE_CARGO_FAILED
 import com.grarcht.shuttle.framework.integrations.persistence.datamodel.ShuttleDataModel
 
 /**
@@ -32,6 +33,17 @@ interface ShuttleDataAccessObject {
      * Removes all cargo from the DB.
      */
     fun deleteAllCargoData(): Int
+
+    /**
+     * Returns all cargo entries created before [timestamp] (epoch milliseconds).
+     */
+    suspend fun getCargoOlderThan(timestamp: Long): List<ShuttleDataModel>
+
+    /**
+     * Deletes all cargo entries created before [timestamp] (epoch milliseconds).
+     * @return the number of rows deleted, or [REMOVE_CARGO_FAILED] on error
+     */
+    fun deleteCargoOlderThan(timestamp: Long): Int
 
     companion object {
         const val STORE_CARGO_FAILED = -1L

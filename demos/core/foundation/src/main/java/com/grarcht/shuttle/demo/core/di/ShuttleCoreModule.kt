@@ -2,6 +2,7 @@ package com.grarcht.shuttle.demo.core.di
 
 import android.app.Application
 import android.content.Context
+import com.grarcht.shuttle.demo.core.shuttle.CARGO_ORPHAN_TTL_MS
 import com.grarcht.shuttle.framework.CargoShuttle
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.integrations.extensions.room.ShuttleRoomDataDb
@@ -59,7 +60,7 @@ object ShuttleCoreModule {
         @ApplicationContext context: Context,
         fileSystemGateway: ShuttleFileSystemGateway
     ): ShuttleWarehouse =
-        ShuttleRepository(dao, dataModelFactory, context.filesDir.absolutePath, fileSystemGateway)
+        ShuttleRepository(dao, dataModelFactory, context.filesDir.absolutePath, fileSystemGateway, CARGO_ORPHAN_TTL_MS)
 
     @Provides
     @Singleton

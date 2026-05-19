@@ -13,11 +13,17 @@ import com.grarcht.shuttle.framework.integrations.persistence.result.ShuttlePers
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
 import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult.Companion.ALL_CARGO
+import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult.Companion.ORPHANED_CARGO
 import com.grarcht.shuttle.framework.result.ShuttleStoreCargoResult
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
 import java.sql.SQLException
 
 private const val CARGO_DIRECTORY_SEGMENT = "/cargo/"
+private const val NO_ORPHAN_TTL = 0L
 private const val PICKUP_CARGO_CHANNEL_CAPACITY = 2
 private const val REMOVE_CARGO_CHANNEL_CAPACITY = 2
 private const val STORE_CARGO_CHANNEL_CAPACITY = 2
@@ -27,13 +33,20 @@ private const val STORE_CARGO_CHANNEL_CAPACITY = 2
  * Repository Design Pattern.  For more information on this design pattern, refer to:
  * <a href="https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design">The Repository pattern</a>
  * <a href="https://martinfowler.com/eaaCatalog/repository.html">Repository</a>
+ *
+ * @param orphanTtlMs when greater than zero, cargo older than this many milliseconds is
+ *   automatically purged in the background whenever cargo is stored or picked up. Pass zero
+ *   (the default) to disable orphan detection.
  */
 open class ShuttleRepository(
     private val shuttleDao: ShuttleDataAccessObject,
     private val shuttleDataModelFactory: ShuttleDataModelFactory,
     private val appFileDirectoryPath: String,
-    private val shuttleFileSystemGateway: ShuttleFileSystemGateway
+    private val shuttleFileSystemGateway: ShuttleFileSystemGateway,
+    private val orphanTtlMs: Long = NO_ORPHAN_TTL
 ) : ShuttleWarehouse {
+
+    private val backgroundScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     /**
      * Obtains the cargo as [ShuttlePickupCargoResult] using a [cargoId].
@@ -61,6 +74,8 @@ open class ShuttleRepository(
                 }
             }
         }
+
+        purgeOrphansInBackground()
         return pickupCargoChannel
     }
 
@@ -111,6 +126,8 @@ open class ShuttleRepository(
                 }
             }
         }
+
+        purgeOrphansInBackground()
         return storeCargoChannel
     }
 
@@ -204,5 +221,48 @@ open class ShuttleRepository(
             }
         }
         return removeCargoChannel
+    }
+
+    internal suspend fun removeOrphanedCargo(ttlMs: Long): Channel<ShuttleRemoveCargoResult> {
+        val removeCargoChannel = Channel<ShuttleRemoveCargoResult>(REMOVE_CARGO_CHANNEL_CAPACITY)
+        removeCargoChannel.send(ShuttleRemoveCargoResult.Removing(ORPHANED_CARGO))
+
+        removeCargoChannel.apply {
+            try {
+                val timestamp = System.currentTimeMillis() - ttlMs
+                val orphanedItems = shuttleDao.getCargoOlderThan(timestamp)
+
+                for (item in orphanedItems) {
+                    shuttleFileSystemGateway.deleteFile(item.filePath)
+                }
+
+                val deletedCount = shuttleDao.deleteCargoOlderThan(timestamp)
+
+                if (deletedCount != REMOVE_CARGO_FAILED) {
+                    removeCargoChannel.send(ShuttleRemoveCargoResult.Removed(ORPHANED_CARGO))
+                } else {
+                    val errorMessage = "Unable to delete orphaned cargo from the database."
+                    removeCargoChannel.send(
+                        ShuttleRemoveCargoResult.UnableToRemove<Throwable>(cargoId = ORPHANED_CARGO, message = errorMessage)
+                    )
+                }
+            } catch (e: SQLException) {
+                val errorMessage = "Caught when purging orphaned cargo."
+                val result = ShuttleRemoveCargoResult.UnableToRemove(ORPHANED_CARGO, errorMessage, throwable = e)
+                removeCargoChannel.send(result)
+            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                val errorMessage = "Caught when purging orphaned cargo."
+                val result = ShuttleRemoveCargoResult.UnableToRemove(ORPHANED_CARGO, errorMessage, throwable = e)
+                removeCargoChannel.send(result)
+            }
+        }
+        return removeCargoChannel
+    }
+
+    private fun purgeOrphansInBackground() {
+        if (orphanTtlMs <= NO_ORPHAN_TTL) return
+        backgroundScope.launch {
+            removeOrphanedCargo(orphanTtlMs)
+        }
     }
 }

@@ -368,11 +368,11 @@ class ShuttleIntentTests {
     }
 
     private class CancellationThrowingWarehouse : ShuttleWarehouse {
-        override suspend fun <D : ShuttleCargoData> pickup(id: String) = Channel<ShuttlePickupCargoResult>()
-        override suspend fun <D : ShuttleCargoData> store(id: String, data: D?): Channel<ShuttleStoreCargoResult> {
+        override suspend fun <D : ShuttleCargoData> pickup(cargoId: String) = Channel<ShuttlePickupCargoResult>()
+        override suspend fun <D : ShuttleCargoData> store(cargoId: String, data: D?): Channel<ShuttleStoreCargoResult> {
             throw CancellationException("test cancellation")
         }
-        override suspend fun removeCargoBy(id: String) = Channel<ShuttleRemoveCargoResult>()
+        override suspend fun removeCargoBy(cargoId: String) = Channel<ShuttleRemoveCargoResult>()
         override suspend fun removeAllCargo() = Channel<ShuttleRemoveCargoResult>()
     }
 }
