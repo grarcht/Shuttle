@@ -7,6 +7,12 @@ plugins {
 
 apply(from = "${project.rootDir}/detekt/detekt.gradle")
 
+dokka {
+    dokkaSourceSets.configureEach {
+        suppress.set(name != "modulesRelease")
+    }
+}
+
 android {
     namespace = "com.grarcht.shuttle.demo.core.di"
 
