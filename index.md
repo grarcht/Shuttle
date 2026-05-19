@@ -8,6 +8,7 @@
 
   <a href="https://github.com/grarcht/Shuttle/blob/main/LICENSE.md"><img src="https://img.shields.io/github/license/grarcht/shuttle?color=white&style=plastic" alt="License: MIT"/></a>
   <a href="https://search.maven.org/artifact/com.grarcht.shuttle/framework"><img src="https://img.shields.io/maven-central/v/com.grarcht.shuttle/framework?color=teal&style=plastic" alt="Maven Central"/></a>
+  <a href="https://grarcht.github.io/Shuttle/documentation/"><img src="https://img.shields.io/badge/API%20Docs-Dokka-blueviolet?style=plastic" alt="API Docs"/></a>
   <a href="https://developer.android.com/studio/releases/platforms"><img src="https://img.shields.io/badge/Min%20API-21-brightgreen?style=plastic" alt="Min API"/></a>
   <a href="https://kotlinlang.org/"><img src="https://img.shields.io/badge/Kotlin-2.0%2B-purple?style=plastic" alt="Kotlin"/></a>
 
@@ -22,14 +23,17 @@
 
 ## Get To It Quick
 
+- [API Documentation](https://grarcht.github.io/Shuttle/documentation/)
 - [Why Shuttle?](#-why-shuttle)
 - [How It Works](#-how-it-works)
+- [Requirements](#requirements)
 - [Quick Start](#-quick-start)
 - [Usage](#-usage)
   - [Transport with Intents](#transport-with-intents)
   - [Transport with the Navigation Component](#transport-with-the-navigation-component)
   - [Pick Up Cargo at the Destination](#pick-up-cargo-at-the-destination)
   - [Cargo States (LCE Pattern)](#cargo-states-lce-pattern)
+  - [Using @ShuttleCargo](#using-shuttlecargo)
   - [Cleaning Up](#cleaning-up)
 - [Architecture](#️-architecture)
   - [Context Diagram](#context-diagram)
@@ -75,14 +79,14 @@ Why keep spending more time and money on governance through code reviews? Why no
 
 When envisioning, designing, and creating the architecture, quality attributes and best practices were kept in mind. These attributes include usability, readability, recognizability, reusability, maintainability, and more.
 
-| Without Shuttle | With Shuttle |
-|---|---|
-| Large `Serializable` passed in `Intent`/`Bundle` | Object stored in a warehouse; only a small identifier is passed |
-| Silent in dev, catastrophic in production | Binder transaction stays within safe size limits, everywhere |
-| Time and money spent on crash investigation, fixes, QA, and hotfixes | Crash class is structurally impossible |
-| Requires constant code review governance | Ship with confidence |
-| Engineers manually manage object lifecycles | Automatic or on-demand cargo cleanup built in |
-| <img src="https://github.com/grarcht/Shuttle/raw/main/media/videos/app_crash.gif" width="100%"/> | <img src="https://github.com/grarcht/Shuttle/raw/main/media/videos/loaded_image_cargo.gif" width="100%"/> |
+| Without Shuttle                                                      | With Shuttle                                                    |
+|----------------------------------------------------------------------|-----------------------------------------------------------------|
+| Large `Serializable` passed in `Intent`/`Bundle`                     | Object stored in a warehouse; only a small identifier is passed |
+| Silent in dev, catastrophic in production                            | Binder transaction stays within safe size limits, everywhere    |
+| Time and money spent on crash investigation, fixes, QA, and hotfixes | Crash class is structurally impossible                          |
+| Requires constant code review governance                             | Ship with confidence                                            |
+| Engineers manually manage object lifecycles                          | Automatic or on-demand cargo cleanup built in                   |
+| <img src="/media/videos/app_crash.gif" width="75%"/>                 | <img src="/media/videos/loaded_image_cargo.gif" width="75%"/>   |
 
 ---
 
@@ -120,31 +124,99 @@ Shuttle applies this same logic to Android's binder transaction limit:
 
 ---
 
+## Requirements
+
+| Requirement | Minimum |
+|---|---|
+| Android min SDK | 26 |
+| Kotlin | 2.0+ |
+| AGP (Android Gradle Plugin) | 8.0+ |
+| KSP | Required only when using `@ShuttleCargo` |
+| Java | 21 |
+
+---
+
 ## 🚀 Quick Start
 
 ### 1. Add Dependencies
 
-**Kotlin DSL (`build.gradle.kts`):**
+**`settings.gradle.kts`** — apply the Shuttle Gradle plugin so the `@ShuttleCargo` annotation processor is wired into your build:
+
+`@ShuttleCargo` annotates the cargo class you want to transport between screens. At build time, the annotation processor generates the serialization code Shuttle needs to store and retrieve cargo, without any manual `Serializable` boilerplate.
 ```kotlin
-implementation("com.grarcht.shuttle:framework:3.0.3")
-implementation("com.grarcht.shuttle:framework-integrations-persistence:3.0.3")
-implementation("com.grarcht.shuttle:framework-integrations-extensions-room:3.0.3")
-implementation("com.grarcht.shuttle:framework-addons-navigation-component:3.0.3") // Optional
+pluginManagement {
+    plugins {
+        id("com.grarcht.shuttle.cargo") version "4.0.0"
+    }
+}
+```
+
+The Shuttle Cargo Gradle plugin configures KSP and registers the Shuttle compiler plugin automatically. Without it, `@ShuttleCargo`-annotated classes will not generate the required serialization glue code.
+
+**`build.gradle.kts`:**
+```kotlin
+plugins {
+    id("com.grarcht.shuttle.cargo")
+}
+
+dependencies {
+    implementation(platform("com.grarcht.shuttle:shuttle-bom:4.0.0"))
+    implementation("com.grarcht.shuttle:framework")
+    implementation("com.grarcht.shuttle:framework-integrations-persistence")
+    implementation("com.grarcht.shuttle:framework-integrations-extensions-room")
+    implementation("com.grarcht.shuttle:framework-addons-navigation-component") // Optional
+
+    // Annotation-based API — use @ShuttleCargo to own the serialization contract
+    implementation("com.grarcht.shuttle:framework-annotations")
+    ksp("com.grarcht.shuttle:framework-annotations-processor")
+}
 ```
 
 **Version Catalog (`libs.versions.toml`):**
 ```toml
 [versions]
-shuttle = "3.0.3"
+shuttle = "4.0.0"
+
+[plugins]
+shuttle-cargo = { id = "com.grarcht.shuttle.cargo", version.ref = "shuttle" }
 
 [libraries]
-shuttle-framework = { group = "com.grarcht.shuttle", name = "framework", version.ref = "shuttle" }
-shuttle-persistence = { group = "com.grarcht.shuttle", name = "framework-integrations-persistence", version.ref = "shuttle" }
-shuttle-room = { group = "com.grarcht.shuttle", name = "framework-integrations-extensions-room", version.ref = "shuttle" }
-shuttle-navigation = { group = "com.grarcht.shuttle", name = "framework-addons-navigation-component", version.ref = "shuttle" }
+shuttle-bom = { group = "com.grarcht.shuttle", name = "shuttle-bom", version.ref = "shuttle" }
+shuttle-framework = { group = "com.grarcht.shuttle", name = "framework" }
+shuttle-persistence = { group = "com.grarcht.shuttle", name = "framework-integrations-persistence" }
+shuttle-room = { group = "com.grarcht.shuttle", name = "framework-integrations-extensions-room" }
+shuttle-navigation = { group = "com.grarcht.shuttle", name = "framework-addons-navigation-component" }
+shuttle-annotations = { group = "com.grarcht.shuttle", name = "framework-annotations" }
+shuttle-annotations-processor = { group = "com.grarcht.shuttle", name = "framework-annotations-processor" }
 ```
 
-### 2. Ship Your First Cargo
+### 2. Initialize Shuttle
+
+Wire `CargoShuttle` once as a singleton. With Hilt:
+
+```kotlin
+@Provides @Singleton
+fun provideShuttle(facade: ShuttleFacade, warehouse: ShuttleWarehouse): Shuttle =
+    CargoShuttle(facade, warehouse)
+
+@Provides @Singleton
+fun provideShuttleFacade(
+    @ApplicationContext context: Context,
+    warehouse: ShuttleWarehouse
+): ShuttleFacade = ShuttleCargoFacade(context as Application, warehouse)
+
+@Provides @Singleton
+fun provideShuttleWarehouse(
+    dao: ShuttleDataAccessObject,
+    factory: ShuttleDataModelFactory,
+    @ApplicationContext context: Context,
+    gateway: ShuttleFileSystemGateway
+): ShuttleWarehouse = ShuttleRepository(dao, factory, context.filesDir.absolutePath, gateway)
+```
+
+The `ShuttleDataAccessObject` comes from `ShuttleRoomDataDb.getInstance(ShuttleRoomDbConfig(context)).shuttleDataAccessObject`. Inject `Shuttle` wherever you need to transport data.
+
+### 3. Ship Your First Cargo
 
 ```kotlin
 // Source: transport a large Serializable via Intent
@@ -255,6 +327,27 @@ Shuttle returns sealed class results that promote the **Loading-Content-Error (L
 | Pick up cargo | `Channel<ShuttlePickupCargoResult>` | `Loading`, `Success`, `Error` |
 | Remove cargo | `Channel<ShuttleRemoveCargoResult>` | `Removing`, `Success`, `Error` |
 
+### Using @ShuttleCargo
+
+Annotate any data class you want to transport through Shuttle. The annotation processor generates the serialization code at build time so you never write it by hand:
+
+```kotlin
+@ShuttleCargo
+data class ImageModel(
+    val id: String,
+    val title: String,
+    val byteArray: ByteArray
+)
+```
+
+That's the entire declaration. No `Serializable` implementation, no custom read/write methods. Then transport it the same way as any other object:
+
+```kotlin
+shuttle.intentCargoWith(context, DestinationActivity::class.java)
+    .transport(cargoId, imageModel)
+    .deliver(context)
+```
+
 ### Cleaning Up
 
 Cargo is automatically removed when using `cleanShuttleOnReturnTo`. For manual control:
@@ -281,6 +374,9 @@ Shuttle is a layered **Solution Building Block (SBB)** framework. Each layer has
 | `framework-integrations-persistence` | Persistence abstraction/interfaces | ✅ Yes |
 | `framework-integrations-extensions-room` | Room implementation of persistence interfaces | ⚡ Default (swappable) |
 | `framework-addons-navigation-component` | Navigation Component integration | ➕ Optional |
+| `framework-annotations` | `@ShuttleCargo` annotation for marking data classes as transportable | ➕ Optional |
+| `framework-annotations-processor` | KSP processor that generates serialization code at build time | ➕ Optional |
+| `framework-annotations-gradle-plugin` | Gradle plugin that wires KSP and the compiler plugin automatically | ➕ Optional |
 
 ### Context Diagram
 
@@ -308,21 +404,23 @@ Shuttle avoids bundling large reactive libraries. Asynchronous communication run
 
 The demo apps show both the crash scenario and the Shuttle solution side-by-side, using image data transport. Image data is one of the most common real-world contributors to `TransactionTooLargeException`.
 
+Two architecture patterns are covered:
+
 **MVVM:** Activities/Fragments as View, `ViewModel` as state owner and liaison, Kotlin Channels for async notification.
 
 ### Flow 1: Navigate with Shuttle ✅
 Tap **"Navigate using Shuttle"** -> image loads successfully via warehouse pickup.
 
-| Main Menu | Loading | Loaded |
-|---|---|---|
-| <img src="https://github.com/grarcht/Shuttle/raw/main/media/screenshots/main_menu.png" width="200" height="400"/> | <img src="https://github.com/grarcht/Shuttle/raw/main/media/screenshots/loading_image_cargo.png" width="200" height="400"/> | <img src="https://github.com/grarcht/Shuttle/raw/main/media/screenshots/loaded_image_cargo.png" width="200" height="400"/> |
+| Main Menu | Loaded |
+|---|---|
+| <img src="/media/screenshots/main_menu.png" width="200" height="400"/> | <img src="/media/screenshots/loaded_image_cargo.png" width="200" height="400"/> |
 
 ### Flow 2: Navigate Normally ❌
 Tap **"Navigate Normally"** -> app crashes with `TransactionTooLargeException`.
 
 | Main Menu | After Crash |
 |---|---|
-| <img src="https://github.com/grarcht/Shuttle/raw/main/media/screenshots/main_menu.png" width="200" height="400"/> | <img src="https://github.com/grarcht/Shuttle/raw/main/media/screenshots/loading_image_cargo_failed.png" width="200" height="400"/> |
+| <img src="/media/screenshots/main_menu.png" width="200" height="400"/> | <img src="/media/screenshots/loading_image_cargo_failed.png" width="200" height="400"/> |
 
 > ℹ️ For image loading in production, use [Glide](https://github.com/bumptech/glide) or [Coil](https://github.com/coil-kt/coil). The demo uses raw image data intentionally to trigger the crash condition.
 
