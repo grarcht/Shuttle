@@ -37,7 +37,7 @@ plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.google.dagger.hilt) apply false
-    alias(libs.plugins.detect)
+    alias(libs.plugins.detekt)
     alias(libs.plugins.jetbrains.dokka)
     alias(libs.plugins.kover)
     alias(libs.plugins.google.ksp) apply false

@@ -83,7 +83,7 @@ dependencies {
     implementation(libs.jetbrainsKotlinDeps.stdlib)
     implementation(libs.jetbrainsKotlinDeps.coroutines)
     implementation(libs.android.appCompat)
-    implementation(libs.android.lifecycle.extensions)
+    implementation(libs.android.lifecycle.runtimeKtx)
     implementation(libs.android.coreKtx)
     implementation(libs.android.annotationJvm)
     api(project(":framework-annotations"))

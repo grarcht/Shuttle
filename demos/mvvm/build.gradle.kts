@@ -56,7 +56,7 @@ dependencies {
     implementation(libs.android.constraintLayout)
     implementation(libs.android.material)
     implementation(libs.android.fragmentKtx)
-    implementation(libs.android.lifecycle.extensions)
+    implementation(libs.android.lifecycle.runtimeKtx)
     implementation(libs.android.lifecycle.viewModel)
     implementation(libs.dependencyInjectionDeps.hilt)
     implementation(libs.android.coreKtx)

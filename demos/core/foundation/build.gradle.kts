@@ -42,7 +42,7 @@ dependencies {
     ksp(libs.dependencyInjectionDeps.hiltCompiler)
     implementation(libs.android.activityKtx)
     implementation(libs.android.coreKtx)
-    implementation(libs.android.lifecycle.extensions)
+    implementation(libs.android.lifecycle.runtimeKtx)
     implementation(libs.android.lifecycle.viewModel)
     implementation(libs.android.material)
 

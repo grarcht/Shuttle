@@ -36,7 +36,7 @@ dependencies {
     implementation(libs.jetbrainsKotlinDeps.stdlib)
     implementation(libs.android.annotationJvm)
     implementation(libs.android.coreKtx)
-    implementation(libs.android.lifecycle.extensions)
+    implementation(libs.android.lifecycle.runtimeKtx)
     implementation(libs.android.lifecycle.viewModel)
 
     implementation(project(":framework"))

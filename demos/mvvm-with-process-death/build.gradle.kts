@@ -57,7 +57,7 @@ dependencies {
     implementation(libs.android.compose.ui)
     implementation(libs.android.compose.uiTooling)
     implementation(libs.android.coreKtx)
-    implementation(libs.android.lifecycle.extensions)
+    implementation(libs.android.lifecycle.runtimeKtx)
     implementation(libs.android.lifecycle.viewModel)
     implementation(libs.android.material)
 

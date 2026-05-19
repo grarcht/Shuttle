@@ -45,10 +45,6 @@ android {
         viewBinding = true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.kotlinComposeCompilerExt.get()
-    }
-
     val dependenciesType = "dependenciesType"
     flavorDimensions.add(dependenciesType)
 
@@ -75,7 +71,7 @@ dependencies {
     implementation(libs.android.compose.uiTooling)
     implementation(libs.android.constraintLayout)
     implementation(libs.android.coreKtx)
-    implementation(libs.android.lifecycle.extensions)
+    implementation(libs.android.lifecycle.runtimeKtx)
     implementation(libs.android.lifecycle.viewModel)
     implementation(libs.android.material)
 

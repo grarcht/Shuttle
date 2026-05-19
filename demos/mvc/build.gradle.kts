@@ -53,7 +53,7 @@ dependencies {
     implementation(libs.android.appCompat)
     implementation(libs.android.constraintLayout)
     implementation(libs.android.material)
-    implementation(libs.android.lifecycle.extensions)
+    implementation(libs.android.lifecycle.runtimeKtx)
     implementation(libs.android.lifecycle.viewModel)
     implementation(libs.android.coreKtx)
 

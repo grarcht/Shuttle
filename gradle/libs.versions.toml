@@ -13,9 +13,8 @@ junitPlatform = "1.13.4"
 jvmTarget = "21"
 kotlin = "2.2.10"
 kover = "0.9.8"
-ksp = "2.3.6"
+ksp = "2.2.10-2.0.2"
 kotlinCoroutines = "1.10.2"
-kotlinComposeCompilerExt = "1.5.15"
 lifecycle = "2.9.2"
 mockito = "5.19.0"
 navigation = "2.9.3"
@@ -39,7 +38,7 @@ android-compose-uiTooling = { group = "androidx.compose.ui", name = "ui-tooling"
 android-constraintLayout = { group = "androidx.constraintlayout", name = "constraintlayout", version = "2.2.1" }
 android-coreKtx = { group = "androidx.core", name = "core-ktx", version = "1.16.0" }
 android-fragmentKtx = { group = "androidx.fragment", name = "fragment-ktx", version = "1.8.9" }
-android-lifecycle-extensions = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+android-lifecycle-runtimeKtx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
 android-lifecycle-viewModel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 android-material = { group = "com.google.android.material", name = "material", version = "1.12.0" }
 android-navigationFragmentKtx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
@@ -94,7 +93,7 @@ android-application = { id = "com.android.application", version.ref = "gradleBui
 android-junit5 = { id = "de.mannodermaus.android-junit5" }
 android-library = { id = "com.android.library", version.ref = "gradleBuildTools" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-detect = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 google-dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 jetbrains-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
