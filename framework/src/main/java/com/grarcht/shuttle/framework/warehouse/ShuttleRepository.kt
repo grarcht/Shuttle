@@ -21,8 +21,10 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import java.sql.SQLException
+import java.util.concurrent.atomic.AtomicLong
 
 private const val CARGO_DIRECTORY_SEGMENT = "/cargo/"
+private const val DEFAULT_PURGE_INTERVAL_MS = 86_400_000L // 24 hours / 1440 minutes / 86400 seconds
 private const val NO_ORPHAN_TTL = 0L
 private const val PICKUP_CARGO_CHANNEL_CAPACITY = 2
 private const val REMOVE_CARGO_CHANNEL_CAPACITY = 2
@@ -34,19 +36,24 @@ private const val STORE_CARGO_CHANNEL_CAPACITY = 2
  * <a href="https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design">The Repository pattern</a>
  * <a href="https://martinfowler.com/eaaCatalog/repository.html">Repository</a>
  *
- * @param orphanTtlMs when greater than zero, cargo older than this many milliseconds is
- *   automatically purged in the background whenever cargo is stored or picked up. Pass zero
- *   (the default) to disable orphan detection.
+ * @param orphanTtlMs when greater than zero, cargo older than this many milliseconds is automatically
+ *   purged in the background on store, at most once per [purgeIntervalMs]. Pass zero (the default)
+ *   to disable orphan detection.
+ * @param purgeIntervalMs minimum time between successive purge runs (default 24 hours). Ignored
+ *   when [orphanTtlMs] is zero.
  */
 open class ShuttleRepository(
     private val shuttleDao: ShuttleDataAccessObject,
     private val shuttleDataModelFactory: ShuttleDataModelFactory,
     private val appFileDirectoryPath: String,
     private val shuttleFileSystemGateway: ShuttleFileSystemGateway,
-    private val orphanTtlMs: Long = NO_ORPHAN_TTL
+    private val orphanTtlMs: Long = NO_ORPHAN_TTL,
+    private val purgeIntervalMs: Long = DEFAULT_PURGE_INTERVAL_MS
 ) : ShuttleWarehouse {
 
     private val backgroundScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private val lastPurgeMs = AtomicLong(0L)
+    internal var clock: () -> Long = System::currentTimeMillis
 
     /**
      * Obtains the cargo as [ShuttlePickupCargoResult] using a [cargoId].
@@ -75,7 +82,6 @@ open class ShuttleRepository(
             }
         }
 
-        purgeOrphansInBackground()
         return pickupCargoChannel
     }
 
@@ -261,6 +267,9 @@ open class ShuttleRepository(
 
     private fun purgeOrphansInBackground() {
         if (orphanTtlMs <= NO_ORPHAN_TTL) return
+        val now = clock()
+        val last = lastPurgeMs.get()
+        if (now - last < purgeIntervalMs || !lastPurgeMs.compareAndSet(last, now)) return
         backgroundScope.launch {
             removeOrphanedCargo(orphanTtlMs)
         }

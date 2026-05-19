@@ -1076,7 +1076,9 @@ class ShuttleWarehouseTests {
                         countDownLatch.countDown()
                         channel.cancel()
                     }
-                    else -> { /* ignore */ }
+
+                    else -> { /* ignore */
+                    }
                 }
             }
         }.invokeOnCompletion {
@@ -1104,7 +1106,8 @@ class ShuttleWarehouseTests {
             channel.consumeAsFlow().collectLatest { result ->
                 when (result) {
                     is ShuttleStoreCargoResult.Error<*> -> channel.cancel()
-                    else -> { /* ignore */ }
+                    else -> { /* ignore */
+                    }
                 }
             }
         }
@@ -1137,7 +1140,9 @@ class ShuttleWarehouseTests {
                         countDownLatch.countDown()
                         channel.cancel()
                     }
-                    else -> { /* ignore */ }
+
+                    else -> { /* ignore */
+                    }
                 }
             }
         }
@@ -1162,7 +1167,8 @@ class ShuttleWarehouseTests {
             channel.consumeAsFlow().collectLatest { result ->
                 when (result) {
                     is ShuttleRemoveCargoResult.UnableToRemove<*> -> channel.cancel()
-                    else -> { /* ignore */ }
+                    else -> { /* ignore */
+                    }
                 }
             }
         }
@@ -1186,7 +1192,8 @@ class ShuttleWarehouseTests {
             channel.consumeAsFlow().collectLatest { result ->
                 when (result) {
                     is ShuttleRemoveCargoResult.UnableToRemove<*> -> channel.cancel()
-                    else -> { /* ignore */ }
+                    else -> { /* ignore */
+                    }
                 }
             }
         }
@@ -1208,7 +1215,8 @@ class ShuttleWarehouseTests {
             channel.consumeAsFlow().collectLatest { result ->
                 when (result) {
                     is ShuttleRemoveCargoResult.UnableToRemove<*> -> channel.cancel()
-                    else -> { /* ignore */ }
+                    else -> { /* ignore */
+                    }
                 }
             }
         }
@@ -1230,7 +1238,8 @@ class ShuttleWarehouseTests {
             channel.consumeAsFlow().collectLatest { result ->
                 when (result) {
                     is ShuttleRemoveCargoResult.UnableToRemove<*> -> channel.cancel()
-                    else -> { /* ignore */ }
+                    else -> { /* ignore */
+                    }
                 }
             }
         }
@@ -1263,18 +1272,22 @@ class ShuttleWarehouseTests {
                         is ShuttleRemoveCargoResult.Removing -> {
                             successfulStepsMet++
                         }
+
                         is ShuttleRemoveCargoResult.Removed -> {
                             successfulStepsMet++
                             removedCargoId = shuttleResult.cargoId
                             countDownLatch.countDown()
                             channel.cancel()
                         }
+
                         is ShuttleRemoveCargoResult.UnableToRemove<*>,
                         is ShuttleRemoveCargoResult.DoesNotExist -> {
                             countDownLatch.countDown()
                             channel.cancel()
                         }
-                        else -> { /* ignore */ }
+
+                        else -> { /* ignore */
+                        }
                     }
                 }
         }.invokeOnCompletion {
@@ -1309,17 +1322,21 @@ class ShuttleWarehouseTests {
                         is ShuttleRemoveCargoResult.Removing -> {
                             successfulStepsMet++
                         }
+
                         is ShuttleRemoveCargoResult.Removed -> {
                             successfulStepsMet++
                             countDownLatch.countDown()
                             channel.cancel()
                         }
+
                         is ShuttleRemoveCargoResult.UnableToRemove<*>,
                         is ShuttleRemoveCargoResult.DoesNotExist -> {
                             countDownLatch.countDown()
                             channel.cancel()
                         }
-                        else -> { /* ignore */ }
+
+                        else -> { /* ignore */
+                        }
                     }
                 }
         }.invokeOnCompletion {
@@ -1353,7 +1370,9 @@ class ShuttleWarehouseTests {
                             countDownLatch.countDown()
                             channel.cancel()
                         }
-                        else -> { /* ignore */ }
+
+                        else -> { /* ignore */
+                        }
                     }
                 }
         }.invokeOnCompletion {
@@ -1380,7 +1399,8 @@ class ShuttleWarehouseTests {
             channel.consumeAsFlow().collectLatest { result ->
                 when (result) {
                     is ShuttleRemoveCargoResult.UnableToRemove<*> -> channel.cancel()
-                    else -> { /* ignore */ }
+                    else -> { /* ignore */
+                    }
                 }
             }
         }
@@ -1404,12 +1424,165 @@ class ShuttleWarehouseTests {
             channel.consumeAsFlow().collectLatest { result ->
                 when (result) {
                     is ShuttleRemoveCargoResult.UnableToRemove<*> -> channel.cancel()
-                    else -> { /* ignore */ }
+                    else -> { /* ignore */
+                    }
                 }
             }
         }
 
         delay(1000L)
+    }
+
+    @Test
+    fun verifyPurgeOrphansIsNotTriggeredOnPickup() = testScope.runTest {
+        val dao = mock(ShuttleDataAccessObject::class.java)
+        val dataModelFactory = mock(ShuttleDataModelFactory::class.java)
+        val fileSystemGateway = mock(ShuttleFileSystemGateway::class.java)
+        val cargoId = "cargoId1"
+        val filePath = "$CARGO_FILE_PATH/cargo/$cargoId"
+        val cargo = Cargo(cargoId, 10)
+        val repository: ShuttleWarehouse = ShuttleRepository(
+            dao, dataModelFactory, CARGO_FILE_PATH, fileSystemGateway,
+            orphanTtlMs = 86_400_000L
+        )
+
+        `when`(dao.getCargoBy(anyOrNull())).thenReturn(TestShuttleDataModel(cargoId, filePath))
+        `when`(fileSystemGateway.readFromFile(filePath)).thenReturn(cargo)
+
+        launch(Dispatchers.Unconfined) {
+            val channel = repository.pickup<Cargo>(cargoId)
+            channel.consumeAsFlow().collectLatest { result ->
+                when (result) {
+                    is ShuttlePickupCargoResult.Success<*>,
+                    is ShuttlePickupCargoResult.Error<*> -> channel.cancel()
+
+                    else -> { /* ignore */
+                    }
+                }
+            }
+        }.invokeOnCompletion {
+            it?.let { println(it.message ?: "Error on pickup.") }
+        }.addForDisposal(compositeDisposableHandle)
+
+        delay(1000L)
+        Mockito.verify(dao, Mockito.never()).getCargoOlderThan(anyOrNull())
+    }
+
+    @Test
+    fun verifyPurgeOrphansIsThrottledBetweenConsecutiveStores() = testScope.runTest {
+        val dao = mock(ShuttleDataAccessObject::class.java)
+        val dataModelFactory = mock(ShuttleDataModelFactory::class.java)
+        val fileSystemGateway = mock(ShuttleFileSystemGateway::class.java)
+        val cargoId = "cargoId1"
+        val cargo = Cargo(cargoId, 10)
+        val filePath = "$CARGO_FILE_PATH/cargo/$cargoId"
+        val purgeIntervalMs = 60_000L
+        var fakeNow = 1_000_000L
+        val repository = ShuttleRepository(
+            dao, dataModelFactory, CARGO_FILE_PATH, fileSystemGateway,
+            orphanTtlMs = 86_400_000L,
+            purgeIntervalMs = purgeIntervalMs
+        )
+        repository.clock = { fakeNow }
+
+        `when`(fileSystemGateway.writeToFile(anyOrNull(), anyOrNull(), anyOrNull())).thenReturn(filePath)
+        `when`(dao.insertCargo(anyOrNull())).thenReturn(STORE_CARGO_SUCCESS)
+        `when`(dao.getCargoOlderThan(anyOrNull())).thenReturn(emptyList())
+        `when`(dao.deleteCargoOlderThan(anyOrNull())).thenReturn(0)
+
+        launch(Dispatchers.Unconfined) {
+            val channel = repository.store(cargoId, cargo)
+            channel.consumeAsFlow().collectLatest { result ->
+                when (result) {
+                    is ShuttleStoreCargoResult.Success,
+                    is ShuttleStoreCargoResult.Error<*> -> channel.cancel()
+
+                    else -> { /* ignore */
+                    }
+                }
+            }
+        }.invokeOnCompletion {
+            it?.let { println(it.message ?: "Error on first store.") }
+        }.addForDisposal(compositeDisposableHandle)
+
+        delay(500L)
+
+        launch(Dispatchers.Unconfined) {
+            val channel = repository.store(cargoId, cargo)
+            channel.consumeAsFlow().collectLatest { result ->
+                when (result) {
+                    is ShuttleStoreCargoResult.Success,
+                    is ShuttleStoreCargoResult.Error<*> -> channel.cancel()
+
+                    else -> { /* ignore */
+                    }
+                }
+            }
+        }.invokeOnCompletion {
+            it?.let { println(it.message ?: "Error on second store.") }
+        }.addForDisposal(compositeDisposableHandle)
+
+        delay(500L)
+        Mockito.verify(dao, Mockito.times(1)).getCargoOlderThan(anyOrNull())
+    }
+
+    @Test
+    fun verifyPurgeOrphansFiresAgainAfterIntervalElapses() = testScope.runTest {
+        val dao = mock(ShuttleDataAccessObject::class.java)
+        val dataModelFactory = mock(ShuttleDataModelFactory::class.java)
+        val fileSystemGateway = mock(ShuttleFileSystemGateway::class.java)
+        val cargoId = "cargoId1"
+        val cargo = Cargo(cargoId, 10)
+        val filePath = "$CARGO_FILE_PATH/cargo/$cargoId"
+        val purgeIntervalMs = 60_000L
+        var fakeNow = 1_000_000L
+        val repository = ShuttleRepository(
+            dao, dataModelFactory, CARGO_FILE_PATH, fileSystemGateway,
+            orphanTtlMs = 86_400_000L,
+            purgeIntervalMs = purgeIntervalMs
+        )
+        repository.clock = { fakeNow }
+
+        `when`(fileSystemGateway.writeToFile(anyOrNull(), anyOrNull(), anyOrNull())).thenReturn(filePath)
+        `when`(dao.insertCargo(anyOrNull())).thenReturn(STORE_CARGO_SUCCESS)
+        `when`(dao.getCargoOlderThan(anyOrNull())).thenReturn(emptyList())
+        `when`(dao.deleteCargoOlderThan(anyOrNull())).thenReturn(0)
+
+        launch(Dispatchers.Unconfined) {
+            val channel = repository.store(cargoId, cargo)
+            channel.consumeAsFlow().collectLatest { result ->
+                when (result) {
+                    is ShuttleStoreCargoResult.Success,
+                    is ShuttleStoreCargoResult.Error<*> -> channel.cancel()
+
+                    else -> { /* ignore */
+                    }
+                }
+            }
+        }.invokeOnCompletion {
+            it?.let { println(it.message ?: "Error on first store.") }
+        }.addForDisposal(compositeDisposableHandle)
+
+        delay(500L)
+        fakeNow += purgeIntervalMs + 1
+
+        launch(Dispatchers.Unconfined) {
+            val channel = repository.store(cargoId, cargo)
+            channel.consumeAsFlow().collectLatest { result ->
+                when (result) {
+                    is ShuttleStoreCargoResult.Success,
+                    is ShuttleStoreCargoResult.Error<*> -> channel.cancel()
+
+                    else -> { /* ignore */
+                    }
+                }
+            }
+        }.invokeOnCompletion {
+            it?.let { println(it.message ?: "Error on second store.") }
+        }.addForDisposal(compositeDisposableHandle)
+
+        delay(500L)
+        Mockito.verify(dao, Mockito.times(2)).getCargoOlderThan(anyOrNull())
     }
 
     private fun storeCargo(
