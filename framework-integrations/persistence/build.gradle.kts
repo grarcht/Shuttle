@@ -35,9 +35,6 @@ dokka {
     dokkaPublications.html {
         outputDirectory.set(layout.projectDirectory.dir("documentation/kotlin"))
     }
-    dokkaSourceSets.register("main") {
-        sourceRoots.from(file("src/main/java"))
-    }
 }
 
 android {
@@ -106,26 +103,40 @@ tasks.register<Jar>("sourcesJar") {
     from(android.sourceSets.getByName("main").java.srcDirs)
 }
 
-// rename the aar files
-tasks.register("renameArtifacts") {
-    doLast {
-        val aarsDir = file("${projectDir}/build/outputs/aar/")
-        aarsDir.listFiles()?.forEach { outputFile ->
+abstract class RenameArtifactsTask : DefaultTask() {
+    @get:InputDirectory
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val aarsDir: DirectoryProperty
+
+    @get:Input
+    abstract val artifactName: Property<String>
+
+    @TaskAction
+    fun rename() {
+        val dir = aarsDir.get().asFile
+        dir.listFiles()?.forEach { outputFile ->
             if (outputFile.name.endsWith("distribution.aar")) {
-                outputFile.renameTo(File(outputFile.parentFile, "${archivesName}.aar"))
+                outputFile.renameTo(File(outputFile.parentFile, "${artifactName.get()}.aar"))
             }
         }
     }
 }
 
+tasks.register<RenameArtifactsTask>("renameArtifacts") {
+    aarsDir.set(layout.buildDirectory.dir("outputs/aar/"))
+    artifactName.set(archivesName)
+}
+
 fun updatePomWithDependencies(pom: MavenPom) {
+    val deps = configurations.getByName("implementation").allDependencies
+        .map { Triple(it.group, it.name, it.version) }
     pom.withXml {
-        val dependencies = asNode().appendNode("dependencies")
-        configurations.getByName("implementation").allDependencies.forEach {
-            val dependency = dependencies.appendNode("dependency")
-            dependency.appendNode("groupId", it.group)
-            dependency.appendNode("artifactId", it.name)
-            dependency.appendNode("version", it.version)
+        val dependenciesNode = asNode().appendNode("dependencies")
+        deps.forEach { (group, name, version) ->
+            val dependency = dependenciesNode.appendNode("dependency")
+            dependency.appendNode("groupId", group)
+            dependency.appendNode("artifactId", name)
+            dependency.appendNode("version", version)
         }
     }
 }
