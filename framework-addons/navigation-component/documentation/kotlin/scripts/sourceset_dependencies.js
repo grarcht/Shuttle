@@ -1,1 +1,0 @@
-sourceset_dependencies='{":framework-addons-navigation-component/main":[]}'

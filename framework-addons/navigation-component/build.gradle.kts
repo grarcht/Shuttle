@@ -35,6 +35,9 @@ dokka {
     dokkaPublications.html {
         outputDirectory.set(layout.projectDirectory.dir("documentation/kotlin"))
     }
+    dokkaSourceSets.configureEach {
+        suppress.set(name != "modulesRelease")
+    }
 }
 
 android {
