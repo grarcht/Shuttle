@@ -7,8 +7,10 @@ import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.content.ShuttleIntent
 import com.grarcht.shuttle.framework.os.messenger.ShuttleMessengerDecorator
 import com.grarcht.shuttle.framework.os.messenger.factory.ShuttleMessengerFactory
+import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
 import com.grarcht.shuttle.framework.validator.ShuttleServiceMessageValidator
 import com.grarcht.shuttle.framework.visibility.observation.ShuttleVisibilityObservable
+import kotlinx.coroutines.channels.Channel
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertNull
@@ -125,7 +127,7 @@ class ShuttleServiceTests {
         whenever(mockDecorator.cargoIds).thenReturn(mutableListOf(CARGO_ID_1))
         service.testMessengerDecorator = mockDecorator
         val shuttle = service.config.shuttle
-        whenever(shuttle.cleanShuttleFromDeliveryFor(any(), any())).thenReturn(shuttle)
+        whenever(shuttle.cleanShuttleFromDeliveryFor(any())).thenReturn(Channel<ShuttleRemoveCargoResult>())
 
         service.releaseResourcesForIPCServices()
 

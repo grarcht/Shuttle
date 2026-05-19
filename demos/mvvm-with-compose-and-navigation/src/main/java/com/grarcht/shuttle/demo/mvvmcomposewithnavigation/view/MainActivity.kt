@@ -14,13 +14,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val CHANNEL_CAPACITY = 4
 private const val LOG_TAG = "MainActivity"
 private const val NAV_HOST_TAG = "nav host"
 private const val LOG_REMOVING_ALL_CARGO = "Removing all cargo."
@@ -66,14 +64,12 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun cleanShuttleFromAllDeliveries() {
-        val channel = Channel<ShuttleRemoveCargoResult>(CHANNEL_CAPACITY)
-        shuttle.cleanShuttleFromAllDeliveries(channel)
         // A standalone scope is used here instead of lifecycleScope because the activity's
         // lifecycle scope is cancelled during onDestroy, creating a race condition. This scope
         // is self-cancelling: it is cancelled as soon as the terminal result is received.
         val cleanupScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
         cleanupScope.launch {
-            channel.consumeAsFlow().collectLatest {
+            shuttle.cleanShuttleFromAllDeliveries().consumeAsFlow().collectLatest {
                 when (it) {
                     is ShuttleRemoveCargoResult.Removing -> Log.d(LOG_TAG, LOG_REMOVING_ALL_CARGO)
                     is ShuttleRemoveCargoResult.Removed -> {

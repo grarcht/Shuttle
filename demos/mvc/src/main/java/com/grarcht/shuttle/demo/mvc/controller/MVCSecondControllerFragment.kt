@@ -15,6 +15,7 @@ import com.grarcht.shuttle.demo.core.image.BitmapDecoder
 import com.grarcht.shuttle.demo.core.image.IMAGE_CARGO_ID
 import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.core.os.getParcelableWith
+import com.grarcht.shuttle.demo.core.shuttle.CARGO_PICKUP_TIMEOUT_MS
 import com.grarcht.shuttle.demo.core.view.applyBiasedCrop
 import com.grarcht.shuttle.demo.core.view.applyNavBarInsetToCard
 import com.grarcht.shuttle.demo.core.view.hideLoadingView
@@ -96,7 +97,7 @@ class MVCSecondControllerFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            shuttle.pickupCargo<ImageModel>(cargoId = cargoId)
+            shuttle.pickupCargo<ImageModel>(cargoId = cargoId, timeoutMs = CARGO_PICKUP_TIMEOUT_MS)
                 .consumeAsFlow()
                 .collectLatest { shuttleResult ->
                     when (shuttleResult) {

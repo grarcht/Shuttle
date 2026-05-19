@@ -4,7 +4,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.grarcht.shuttle.demo.core.R
 import com.grarcht.shuttle.framework.Shuttle
+import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -33,8 +41,22 @@ abstract class DemoFirstScreenActivity : FragmentActivity() {
     }
 
     override fun onDestroy() {
-        shuttle.cleanShuttleFromAllDeliveries()
+        cleanShuttleFromAllDeliveries()
         super.onDestroy()
+    }
+
+    private fun cleanShuttleFromAllDeliveries() {
+        val cleanupScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+        cleanupScope.launch {
+            shuttle.cleanShuttleFromAllDeliveries().consumeAsFlow().collectLatest {
+                when (it) {
+                    is ShuttleRemoveCargoResult.Removed,
+                    is ShuttleRemoveCargoResult.UnableToRemove<*>,
+                    is ShuttleRemoveCargoResult.DoesNotExist -> cleanupScope.cancel()
+                    else -> { /* await next result */ }
+                }
+            }
+        }
     }
 
     private fun addMainFragmentToContainer() {

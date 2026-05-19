@@ -335,21 +335,20 @@ class CargoShuttleTests {
         delay(TRANSPORT_DELAY_MS)
         runHandler(handler)
 
-        val removeCargoReceiverChannel = Channel<ShuttleRemoveCargoResult>()
+        // Obtain the observable channel from cleanShuttleFromDeliveryFor and collect results.
+        val removeCargoChannel = cargoShuttle.cleanShuttleFromDeliveryFor(cargoId)
         launch(Dispatchers.Main) {
-            removeCargoReceiverChannel
+            removeCargoChannel
                 .consumeAsFlow()
                 .collectLatest { shuttleResult ->
                     when (shuttleResult) {
                         is ShuttleRemoveCargoResult.DoesNotExist -> {
                             countDownLatch.countDown()
-                            cancel()
                         }
 
                         is ShuttleRemoveCargoResult.Removed -> {
                             numberOfValidSteps++
                             countDownLatch.countDown()
-                            cancel()
                         }
 
                         is ShuttleRemoveCargoResult.Removing -> {
@@ -358,7 +357,6 @@ class CargoShuttleTests {
 
                         is ShuttleRemoveCargoResult.UnableToRemove<*> -> {
                             countDownLatch.countDown()
-                            cancel()
                         }
 
                         else -> {
@@ -371,8 +369,6 @@ class CargoShuttleTests {
                 println(it.message ?: INVOCATION_ERROR_MSG)
             }
         }.addForDisposal(compositeDisposableHandle)
-
-        cargoShuttle.cleanShuttleFromDeliveryFor(cargoId, removeCargoReceiverChannel)
 
         awaitOnLatch(countDownLatch, 2, TimeUnit.SECONDS)
         countDownLatch = CountDownLatch(1)
@@ -440,22 +436,20 @@ class CargoShuttleTests {
         delay(TRANSPORT_DELAY_MS)
         runHandler(handler)
 
-        // Remove the cargo
-        val removeCargoReceiverChannel = Channel<ShuttleRemoveCargoResult>()
+        // Obtain the observable channel from cleanShuttleFromAllDeliveries and collect results.
+        val removeCargoChannel = cargoShuttle.cleanShuttleFromAllDeliveries()
         launch(Dispatchers.Main) {
-            removeCargoReceiverChannel
+            removeCargoChannel
                 .consumeAsFlow()
                 .collectLatest { shuttleResult ->
                     when (shuttleResult) {
                         is ShuttleRemoveCargoResult.DoesNotExist -> {
                             countDownLatch.countDown()
-                            cancel()
                         }
 
                         is ShuttleRemoveCargoResult.Removed -> {
                             numberOfValidSteps++
                             countDownLatch.countDown()
-                            cancel()
                         }
 
                         is ShuttleRemoveCargoResult.Removing -> {
@@ -464,7 +458,6 @@ class CargoShuttleTests {
 
                         is ShuttleRemoveCargoResult.UnableToRemove<*> -> {
                             countDownLatch.countDown()
-                            cancel()
                         }
 
                         else -> {
@@ -478,12 +471,8 @@ class CargoShuttleTests {
             }
         }.addForDisposal(compositeDisposableHandle)
 
-        awaitOnLatch(countDownLatch, 500, TimeUnit.MILLISECONDS)
-
-        // Remove all of the cargo
-        cargoShuttle.cleanShuttleFromAllDeliveries(removeCargoReceiverChannel)
-
         delay(TRANSPORT_DELAY_MS)
+        awaitOnLatch(countDownLatch, 2, TimeUnit.SECONDS)
         countDownLatch = CountDownLatch(1)
 
         // Verify the lack of cargo by picking it up
@@ -547,6 +536,102 @@ class CargoShuttleTests {
         }
     }
 
+    /**
+     * A [ShuttleDataWarehouse] that introduces a virtual-time [delay] before each [pickup] so that
+     * a [Shuttle.pickupCargo] call with a short [timeoutMs] fires [ShuttlePickupCargoResult.Error].
+     */
+    private class DelayedPickupWarehouse(private val pickupDelayMs: Long) : ShuttleDataWarehouse() {
+        override suspend fun <D : ShuttleCargoData> pickup(cargoId: String): Channel<ShuttlePickupCargoResult> {
+            delay(pickupDelayMs)
+            return super.pickup<D>(cargoId)
+        }
+    }
+
     private class TestActivity : AppCompatActivity()
     private class TestActivity2 : AppCompatActivity()
+
+    @Test
+    fun verifyPickupCargoTimesOutWhenTimeoutIsExceeded() = testScope.runTest {
+        val cargoId = CARGO_ID
+        val cargo = Cargo(cargoId, CARGO_BOX_COUNT)
+        val application = mock(Application::class.java)
+        val delayedWarehouse = DelayedPickupWarehouse(pickupDelayMs = 5_000L)
+        val handler = mock(Handler::class.java)
+        val facade = spy(ShuttleCargoFacade(application, delayedWarehouse, handler))
+        val cargoShuttle = CargoShuttle(facade, delayedWarehouse)
+        var receivedError = false
+
+        // Store cargo so the warehouse has something to return (after the delay).
+        cargoShuttle
+            .intentCargoWith(Intent.ACTION_MEDIA_BUTTON)
+            .transport(cargoId, cargo)
+        delay(TRANSPORT_DELAY_MS)
+        runHandler(handler)
+
+        val countDownLatch = CountDownLatch(1)
+        launch(Dispatchers.Unconfined) {
+            cargoShuttle.pickupCargo<Cargo>(cargoId, timeoutMs = 100L)
+                .consumeAsFlow()
+                .collectLatest { result ->
+                    when (result) {
+                        is ShuttlePickupCargoResult.Error<*> -> {
+                            receivedError = true
+                            countDownLatch.countDown()
+                            cancel()
+                        }
+                        else -> { /* await */ }
+                    }
+                }
+        }.invokeOnCompletion {
+            it?.let { println(it.message ?: INVOCATION_ERROR_MSG) }
+        }.addForDisposal(compositeDisposableHandle)
+
+        awaitOnLatch(countDownLatch, 3, TimeUnit.SECONDS)
+
+        Assertions.assertTrue(receivedError)
+    }
+
+    @Test
+    fun verifyPickupCargoSucceedsWhenCompletedWithinTimeout() = testScope.runTest {
+        val cargoId = CARGO_ID
+        val cargo = Cargo(cargoId, CARGO_BOX_COUNT)
+        val application = mock(Application::class.java)
+        val warehouse = ShuttleDataWarehouse()
+        val handler = mock(Handler::class.java)
+        val facade = spy(ShuttleCargoFacade(application, warehouse, handler))
+        val cargoShuttle = CargoShuttle(facade, warehouse)
+        var receivedSuccess = false
+
+        cargoShuttle
+            .intentCargoWith(Intent.ACTION_MEDIA_BUTTON)
+            .transport(cargoId, cargo)
+        delay(TRANSPORT_DELAY_MS)
+        runHandler(handler)
+
+        val countDownLatch = CountDownLatch(1)
+        launch(Dispatchers.Unconfined) {
+            cargoShuttle.pickupCargo<Cargo>(cargoId, timeoutMs = 30_000L)
+                .consumeAsFlow()
+                .collectLatest { result ->
+                    when (result) {
+                        is ShuttlePickupCargoResult.Success<*> -> {
+                            receivedSuccess = true
+                            countDownLatch.countDown()
+                            cancel()
+                        }
+                        is ShuttlePickupCargoResult.Error<*> -> {
+                            countDownLatch.countDown()
+                            cancel()
+                        }
+                        else -> { /* await */ }
+                    }
+                }
+        }.invokeOnCompletion {
+            it?.let { println(it.message ?: INVOCATION_ERROR_MSG) }
+        }.addForDisposal(compositeDisposableHandle)
+
+        awaitOnLatch(countDownLatch, 3, TimeUnit.SECONDS)
+
+        Assertions.assertTrue(receivedSuccess)
+    }
 }

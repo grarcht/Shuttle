@@ -24,6 +24,14 @@ import com.grarcht.shuttle.demo.core.image.IMAGE_CARGO_ID
 import com.grarcht.shuttle.demo.core.io.IOResult
 import com.grarcht.shuttle.demo.core.viewmodel.FirstViewModel
 import com.grarcht.shuttle.framework.Shuttle
+import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.launch
 import java.io.Serializable
 import com.grarcht.shuttle.demo.core.compose.R.string as coreString
 
@@ -113,7 +121,17 @@ class MVVMFirstView(
      * no longer needed, such as in [android.app.Activity.onDestroy].
      */
     fun cleanUpViewResources() {
-        shuttle.cleanShuttleFromAllDeliveries()
+        val cleanupScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+        cleanupScope.launch {
+            shuttle.cleanShuttleFromAllDeliveries().consumeAsFlow().collectLatest {
+                when (it) {
+                    is ShuttleRemoveCargoResult.Removed,
+                    is ShuttleRemoveCargoResult.UnableToRemove<*>,
+                    is ShuttleRemoveCargoResult.DoesNotExist -> cleanupScope.cancel()
+                    else -> { /* await next result */ }
+                }
+            }
+        }
     }
 
     private fun navigateWithShuttle(): () -> Unit {

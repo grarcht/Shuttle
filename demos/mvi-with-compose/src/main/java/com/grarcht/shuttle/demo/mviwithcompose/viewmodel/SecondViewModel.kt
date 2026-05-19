@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grarcht.shuttle.demo.core.image.IMAGE_CARGO_ID
 import com.grarcht.shuttle.demo.core.image.ImageModel
+import com.grarcht.shuttle.demo.core.shuttle.CARGO_PICKUP_TIMEOUT_MS
 import com.grarcht.shuttle.demo.mviwithcompose.intent.CargoPickupIntent
 import com.grarcht.shuttle.demo.mviwithcompose.state.CargoPickupUiState
 import com.grarcht.shuttle.framework.Shuttle
@@ -68,7 +69,7 @@ class SecondViewModel @Inject constructor(
     private fun loadCargo(intent: CargoPickupIntent.LoadCargo) {
         viewModelScope.launch {
             shuttle
-                .pickupCargo<ImageModel>(cargoId = intent.cargoId)
+                .pickupCargo<ImageModel>(cargoId = intent.cargoId, timeoutMs = CARGO_PICKUP_TIMEOUT_MS)
                 .consumeAsFlow()
                 .collect { result ->
                     when (result) {

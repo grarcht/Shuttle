@@ -125,12 +125,22 @@ interface Shuttle {
     ): ShuttleIntent
 
     /**
-     * Obtains the [Parcelable] cargo from the Warehouse.  When it is picked up, the cargo is completely
-     * removed from the Warehouse.  For databases, this means deleting it from the db.
+     * Obtains the [Parcelable] cargo from the Warehouse. When it is picked up, the cargo is
+     * completely removed from the Warehouse. For databases, this means deleting it from the db.
+     *
+     * When [timeoutMs] is greater than zero, the operation is bounded: if the warehouse has not
+     * delivered a terminal result within [timeoutMs] milliseconds, a
+     * [ShuttlePickupCargoResult.Error] is emitted and the returned [Channel] is closed. Pass
+     * zero (the default) to disable the timeout.
+     *
      * @param cargoId used to look up the cargo in the repository
+     * @param timeoutMs maximum milliseconds to wait for a terminal result, or zero for no limit
      * @return the channel with a reference to the result, a [ShuttlePickupCargoResult]
      */
-    suspend fun <D : ShuttleCargoData> pickupCargo(cargoId: String): Channel<ShuttlePickupCargoResult>
+    suspend fun <D : ShuttleCargoData> pickupCargo(
+        cargoId: String,
+        timeoutMs: Long = 0L
+    ): Channel<ShuttlePickupCargoResult>
 
     /**
      * Cleans the Shuttle on returning to the [currentScreen] from the [nextScreenClass] via the [cargoId].
@@ -145,13 +155,23 @@ interface Shuttle {
     ): Shuttle
 
     /**
-     * Removes cargo from the warehouse where the cargo matches the id.
+     * Removes cargo from the warehouse where the cargo matches the [cargoId] and returns a
+     * [Channel] that emits the removal progress and terminal result. Consumers may collect the
+     * channel to observe each [ShuttleRemoveCargoResult] state, or ignore the return value for
+     * fire-and-forget behaviour. The channel is closed automatically when a terminal result
+     * ([ShuttleRemoveCargoResult.Removed], [ShuttleRemoveCargoResult.UnableToRemove], or
+     * [ShuttleRemoveCargoResult.DoesNotExist]) is emitted, so consumers do not need to cancel.
      * @param cargoId the id for the cargo shipped with Shuttle
+     * @return a [Channel] emitting [ShuttleRemoveCargoResult] states for this removal operation
      */
-    fun cleanShuttleFromDeliveryFor(cargoId: String, receiver: Channel<ShuttleRemoveCargoResult>? = null): Shuttle
+    fun cleanShuttleFromDeliveryFor(cargoId: String): Channel<ShuttleRemoveCargoResult>
 
     /**
-     * Performs completion events for shuttle, such as clearing the database.
+     * Removes all cargo from the warehouse and returns a [Channel] that emits the removal
+     * progress and terminal result. Consumers may collect the channel to observe each
+     * [ShuttleRemoveCargoResult] state, or ignore the return value for fire-and-forget behaviour.
+     * The channel is closed automatically when a terminal result is emitted.
+     * @return a [Channel] emitting [ShuttleRemoveCargoResult] states for this removal operation
      */
-    fun cleanShuttleFromAllDeliveries(receiver: Channel<ShuttleRemoveCargoResult>? = null): Shuttle
+    fun cleanShuttleFromAllDeliveries(): Channel<ShuttleRemoveCargoResult>
 }

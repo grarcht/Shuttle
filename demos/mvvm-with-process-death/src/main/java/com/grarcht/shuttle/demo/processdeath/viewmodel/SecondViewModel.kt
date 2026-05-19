@@ -3,6 +3,7 @@ package com.grarcht.shuttle.demo.processdeath.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grarcht.shuttle.demo.core.image.ImageModel
+import com.grarcht.shuttle.demo.core.shuttle.CARGO_PICKUP_TIMEOUT_MS
 import com.grarcht.shuttle.demo.processdeath.model.ImageCache
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
@@ -42,7 +43,7 @@ class SecondViewModel : ViewModel() {
             return
         }
         viewModelScope.launch {
-            shuttle.pickupCargo<ImageModel>(cargoId = cargoId)
+            shuttle.pickupCargo<ImageModel>(cargoId = cargoId, timeoutMs = CARGO_PICKUP_TIMEOUT_MS)
                 .consumeAsFlow()
                 .collectLatest { result ->
                     when (result) {

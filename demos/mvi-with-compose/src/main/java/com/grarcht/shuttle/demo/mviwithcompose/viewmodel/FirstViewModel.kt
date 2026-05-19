@@ -10,12 +10,16 @@ import com.grarcht.shuttle.demo.mviwithcompose.intent.CargoTransportIntent
 import com.grarcht.shuttle.demo.mviwithcompose.navigation.NavigationEvent
 import com.grarcht.shuttle.demo.mviwithcompose.state.CargoTransportUiState
 import com.grarcht.shuttle.framework.Shuttle
+import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -94,6 +98,15 @@ class FirstViewModel @Inject constructor(
      * no longer needed.
      */
     fun cleanUp() {
-        shuttle.cleanShuttleFromAllDeliveries()
+        viewModelScope.launch {
+            shuttle.cleanShuttleFromAllDeliveries().consumeAsFlow().collectLatest {
+                when (it) {
+                    is ShuttleRemoveCargoResult.Removed,
+                    is ShuttleRemoveCargoResult.UnableToRemove<*>,
+                    is ShuttleRemoveCargoResult.DoesNotExist -> cancel()
+                    else -> { /* await next result */ }
+                }
+            }
+        }
     }
 }

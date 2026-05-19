@@ -10,7 +10,6 @@ import com.grarcht.shuttle.framework.content.ShuttleIntent
 import com.grarcht.shuttle.framework.content.bundle.BundleFactory
 import com.grarcht.shuttle.framework.content.bundle.DefaultBundleFactory
 import com.grarcht.shuttle.framework.content.bundle.ShuttleBundle
-import com.grarcht.shuttle.framework.coroutines.channel.relayFlowIfAvailable
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
 import com.grarcht.shuttle.framework.screen.ShuttleFacade
@@ -18,8 +17,16 @@ import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
+
+private const val CLEAN_CARGO_CHANNEL_CAPACITY = 2
+private const val NO_PICKUP_TIMEOUT = 0L
+private const val PICKUP_WITH_TIMEOUT_CHANNEL_CAPACITY = 2
 
 /**
  *  This implementation of the [Shuttle] interface that is used to provide a factory that creates
@@ -141,12 +148,39 @@ open class CargoShuttle(
     }
 
     /**
-     * Obtains the [Parcelable] cargo from the database.
+     * Obtains the [Parcelable] cargo from the database. When [timeoutMs] is greater than zero,
+     * the pickup operation is bounded: if no terminal result is received within [timeoutMs]
+     * milliseconds, a [ShuttlePickupCargoResult.Error] is emitted and the returned [Channel] is
+     * closed automatically.
      * @param cargoId used to look up the cargo in the repository
+     * @param timeoutMs maximum milliseconds to wait, or zero for no limit
      * @return the channel with a reference to the result, a [ShuttlePickupCargoResult]
      */
-    override suspend fun <D : ShuttleCargoData> pickupCargo(cargoId: String): Channel<ShuttlePickupCargoResult> {
-        return shuttleWarehouse.pickup<D>(cargoId)
+    override suspend fun <D : ShuttleCargoData> pickupCargo(
+        cargoId: String,
+        timeoutMs: Long
+    ): Channel<ShuttlePickupCargoResult> {
+        if (timeoutMs <= NO_PICKUP_TIMEOUT) {
+            return shuttleWarehouse.pickup<D>(cargoId)
+        }
+        val channel = Channel<ShuttlePickupCargoResult>(PICKUP_WITH_TIMEOUT_CHANNEL_CAPACITY)
+        try {
+            withTimeout(timeoutMs) {
+                shuttleWarehouse.pickup<D>(cargoId).consumeAsFlow()
+                    .takeWhile { result ->
+                        channel.send(result)
+                        result !is ShuttlePickupCargoResult.Success<*> &&
+                            result !is ShuttlePickupCargoResult.Error<*>
+                    }
+                    .collect {}
+            }
+        } catch (e: TimeoutCancellationException) {
+            val errorMessage = "Pickup of cargo for cargoId: $cargoId timed out after ${timeoutMs}ms."
+            channel.send(ShuttlePickupCargoResult.Error(cargoId, errorMessage, throwable = e))
+        } finally {
+            channel.close()
+        }
+        return channel
     }
 
     /**
@@ -168,24 +202,57 @@ open class CargoShuttle(
     }
 
     /**
-     * Removes cargo from the warehouse where the cargo matches the id.
+     * Removes cargo from the warehouse where the cargo matches the [cargoId] and returns a
+     * [Channel] that emits the removal progress and terminal result. The channel is closed
+     * automatically when a terminal result is emitted so consumers' flows terminate naturally.
      * @param cargoId the id for the cargo shipped with Shuttle
+     * @return a [Channel] emitting [ShuttleRemoveCargoResult] states for this removal operation
      */
-    override fun cleanShuttleFromDeliveryFor(cargoId: String, receiver: Channel<ShuttleRemoveCargoResult>?): Shuttle {
+    override fun cleanShuttleFromDeliveryFor(cargoId: String): Channel<ShuttleRemoveCargoResult> {
+        val channel = Channel<ShuttleRemoveCargoResult>(CLEAN_CARGO_CHANNEL_CAPACITY)
         backgroundThreadScope.launch {
-            shuttleWarehouse.removeCargoBy(cargoId).relayFlowIfAvailable(receiver)
+            try {
+                val warehouseChannel = shuttleWarehouse.removeCargoBy(cargoId)
+                for (result in warehouseChannel) {
+                    channel.send(result)
+                    when (result) {
+                        is ShuttleRemoveCargoResult.Removed,
+                        is ShuttleRemoveCargoResult.UnableToRemove<*>,
+                        is ShuttleRemoveCargoResult.DoesNotExist -> break
+                        else -> { /* await next result */ }
+                    }
+                }
+            } finally {
+                channel.close()
+            }
         }
-        return this
+        return channel
     }
 
     /**
-     * Performs completion events for shuttle, such as clearing the
-     * database.
+     * Removes all cargo from the warehouse and returns a [Channel] that emits the removal
+     * progress and terminal result. The channel is closed automatically when a terminal result
+     * is emitted so consumers' flows terminate naturally.
+     * @return a [Channel] emitting [ShuttleRemoveCargoResult] states for this removal operation
      */
-    override fun cleanShuttleFromAllDeliveries(receiver: Channel<ShuttleRemoveCargoResult>?): Shuttle {
+    override fun cleanShuttleFromAllDeliveries(): Channel<ShuttleRemoveCargoResult> {
+        val channel = Channel<ShuttleRemoveCargoResult>(CLEAN_CARGO_CHANNEL_CAPACITY)
         backgroundThreadScope.launch {
-            shuttleWarehouse.removeAllCargo().relayFlowIfAvailable(receiver)
+            try {
+                val warehouseChannel = shuttleWarehouse.removeAllCargo()
+                for (result in warehouseChannel) {
+                    channel.send(result)
+                    when (result) {
+                        is ShuttleRemoveCargoResult.Removed,
+                        is ShuttleRemoveCargoResult.UnableToRemove<*>,
+                        is ShuttleRemoveCargoResult.DoesNotExist -> break
+                        else -> { /* await next result */ }
+                    }
+                }
+            } finally {
+                channel.close()
+            }
         }
-        return this
+        return channel
     }
 }

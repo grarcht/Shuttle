@@ -55,7 +55,7 @@ class SecondViewModelTest {
         val imageModel = ImageModel(TEST_CARGO_ID, TEST_IMAGE_DATA)
         val channel = Channel<ShuttlePickupCargoResult>()
         val shuttle = mock<Shuttle>()
-        whenever(shuttle.pickupCargo<ImageModel>(any())).thenReturn(channel)
+        whenever(shuttle.pickupCargo<ImageModel>(any(), any())).thenReturn(channel)
 
         viewModel.loadImage(shuttle, TEST_CARGO_ID)
         channel.send(ShuttlePickupCargoResult.Success(imageModel))
@@ -71,7 +71,7 @@ class SecondViewModelTest {
         val throwable = Throwable("pickup failed")
         val channel = Channel<ShuttlePickupCargoResult>()
         val shuttle = mock<Shuttle>()
-        whenever(shuttle.pickupCargo<ImageModel>(any())).thenReturn(channel)
+        whenever(shuttle.pickupCargo<ImageModel>(any(), any())).thenReturn(channel)
 
         viewModel.loadImage(shuttle, TEST_CARGO_ID)
         channel.send(ShuttlePickupCargoResult.Error(TEST_CARGO_ID, throwable = throwable))

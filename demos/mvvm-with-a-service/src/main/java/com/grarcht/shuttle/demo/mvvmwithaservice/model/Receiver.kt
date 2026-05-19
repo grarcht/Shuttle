@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.util.Log
 import com.grarcht.shuttle.demo.core.image.ImageModel
 import com.grarcht.shuttle.demo.core.io.IOResult
+import com.grarcht.shuttle.demo.core.shuttle.CARGO_PICKUP_TIMEOUT_MS
 import com.grarcht.shuttle.framework.CARGO_ID_KEY
 import com.grarcht.shuttle.framework.NO_CARGO_ID
 import com.grarcht.shuttle.framework.Shuttle
@@ -84,7 +85,7 @@ class Receiver(
                     responseReceived = true
 
                     scope.launch {
-                        shuttle.pickupCargo<ImageModel>(cargoId).consumeAsFlow().collectLatest {
+                        shuttle.pickupCargo<ImageModel>(cargoId, timeoutMs = CARGO_PICKUP_TIMEOUT_MS).consumeAsFlow().collectLatest {
                             when (it) {
                                 is ShuttlePickupCargoResult.Error<*> -> {
                                     channel.send(IOResult.Error(throwable = Throwable(it.message)))

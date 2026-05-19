@@ -3,6 +3,7 @@ package com.grarcht.shuttle.demo.mvvm.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grarcht.shuttle.demo.core.image.ImageModel
+import com.grarcht.shuttle.demo.core.shuttle.CARGO_PICKUP_TIMEOUT_MS
 import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult
 import com.grarcht.shuttle.framework.result.ShuttlePickupCargoResult.NotPickingUpCargoYet
@@ -32,7 +33,7 @@ class SecondViewModel : ViewModel() {
      */
     fun loadImage(shuttle: Shuttle, cargoId: String): StateFlow<ShuttlePickupCargoResult> {
         viewModelScope.launch {
-            shuttle.pickupCargo<ImageModel>(cargoId = cargoId)
+            shuttle.pickupCargo<ImageModel>(cargoId = cargoId, timeoutMs = CARGO_PICKUP_TIMEOUT_MS)
                 .consumeAsFlow()
                 .collectLatest { shuttleResult ->
                     pickupCargoMutableStateFlow.value = shuttleResult
