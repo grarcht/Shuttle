@@ -20,7 +20,7 @@ dependencyResolutionManagement {
     }
 }
 
-include(":bom")
+include(":framework-bom")
 include(":framework-annotations")
 project(":framework-annotations").projectDir = File(settingsDir, "framework-annotations/annotations")
 include(":framework-annotations-processor")
