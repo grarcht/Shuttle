@@ -1,3 +1,5 @@
+import org.owasp.dependencycheck.gradle.tasks.Aggregate
+
 buildscript {
     apply(from = "gradle/ext.gradle")
 
@@ -40,6 +42,7 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.jetbrains.dokka)
     alias(libs.plugins.kover)
+    alias(libs.plugins.owasp.dependency.check)
     alias(libs.plugins.google.ksp) apply false
     alias(libs.plugins.compose.compiler) apply false
 }
@@ -152,6 +155,79 @@ dependencies {
     dokka(project(":demo-mvvm-with-compose"))
     dokka(project(":demo-mvvm-with-compose-and-navigation"))
     dokka(project(":demo-mvvm-with-process-death"))
+}
+
+tasks.withType<Aggregate>().configureEach {
+    // The OWASP plugin accesses Task.project at execution time, which is
+    // incompatible with Gradle configuration cache.
+    notCompatibleWithConfigurationCache("OWASP Dependency Check plugin is not configuration-cache compatible")
+
+    // Surface OWASP's internal SLF4J output at Gradle LIFECYCLE level so NVD
+    // download progress is visible without requiring --info on every run.
+    logging.captureStandardOutput(LogLevel.LIFECYCLE)
+    logging.captureStandardError(LogLevel.WARN)
+
+    doLast {
+        val report = file("${layout.buildDirectory.get()}/reports/dependency-check-report.json")
+        if (!report.exists()) return@doLast
+        val json = groovy.json.JsonSlurper().parse(report) as Map<*, *>
+        @Suppress("UNCHECKED_CAST")
+        val deps = json["dependencies"] as? List<Map<*, *>> ?: return@doLast
+        val vulns = deps.flatMap { dep ->
+            @Suppress("UNCHECKED_CAST")
+            val vs = dep["vulnerabilities"] as? List<Map<*, *>> ?: emptyList()
+            vs.map { dep["fileName"] to it }
+        }
+        println("\nOWASP Dependency Check — vulnerabilities found: ${vulns.size}")
+        if (vulns.isNotEmpty()) {
+            vulns.forEach { (fileName, vuln) ->
+                val cvss = (vuln["cvssv3"] as? Map<*, *>)?.get("baseScore")
+                    ?: (vuln["cvssv2"] as? Map<*, *>)?.get("score")
+                    ?: "N/A"
+                val desc = (vuln["description"] as? String)?.let {
+                    if (it.length > 120) it.take(120) + "…" else it
+                } ?: ""
+                println("  $fileName")
+                println("    CVE : ${vuln["name"]}")
+                println("    CVSS: $cvss")
+                println("    $desc")
+            }
+        }
+    }
+}
+
+val nvdApiKey = System.getenv("NVD_API_KEY")
+    ?: (project.findProperty("NVD_API_KEY") as? String)
+    ?: ""
+
+dependencyCheck {
+    // Zero trust: fail on any vulnerability not explicitly suppressed.
+    failBuildOnCVSS = 0.0f
+    suppressionFile = "$rootDir/config/owasp/dependency-check-suppression.xml"
+    formats = listOf("HTML", "SARIF", "JSON")
+    nvd {
+        // Free API key: https://nvd.nist.gov/developers/request-an-api-key
+        // Set NVD_API_KEY in the environment or as a GitHub Actions secret.
+        // Without a key: NVD rate-limits to 5 req/30 s  → ~15 min first-run download.
+        // With a key:    NVD rate-limits to 50 req/30 s → ~90 s  first-run download.
+        apiKey = nvdApiKey
+        delay = if (nvdApiKey.isNotEmpty()) 1000 else 6000
+        // Only re-download NVD data if the local cache is older than 24 hours.
+        // Default is 4 hours, which causes redundant downloads in CI.
+        validForHours = 24
+    }
+    analyzers {
+        // OSS Index rate-limits unauthenticated requests so aggressively that every
+        // jar fails with an HTTP error, which corrupts the H2 regions and causes
+        // "Analysis failed". NVD is the authoritative CVE source — OSS Index is
+        // redundant here.
+        ossIndex {
+            enabled = false
+        }
+        // No Node.js in this project.
+        nodeAuditEnabled = false
+        nodeEnabled = false
+    }
 }
 
 kover {

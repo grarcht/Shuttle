@@ -1,0 +1,29 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  changed-files:
+    runs-on: ubuntu-latest
+    outputs:
+      dependencies: ${{ steps.filter.outputs.dependencies }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            dependencies:
+              - '**/libs.versions.toml'
+              - '**/build.gradle.kts'
+              - '**/build.gradle'
+
+  dependency-check:
+    needs: changed-files
+    if: needs.changed-files.outputs.dependencies == 'true'
+    uses: ./.github/workflows/dependency-check.yml
+    secrets: inherit

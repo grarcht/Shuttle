@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+    <!--
+        Zero-trust suppression registry for OWASP Dependency Check.
+
+        The build is configured with failBuildOnCVSS = 0.0, meaning ANY reported
+        vulnerability fails the CI run. To pass, a vulnerability must be either:
+
+          (a) Fixed - update the affected dependency to a patched version, or
+          (b) Suppressed here - with a documented rationale and review date.
+
+        Suppressing a CVE is a recorded acceptance of risk, not a silent ignore.
+        Every entry is visible in code review and tracked in version control.
+
+        HOW TO ADD A SUPPRESSION
+        ========================
+        Run the scan locally:
+            ./gradlew dependencyCheckAggregate -Dorg.gradle.configuration-cache=false
+
+        Open build/reports/dependency-check-report.html and find the CVE.
+        Copy the packageUrl shown in the report, then add an entry below:
+
+        <suppress>
+            <notes><![CDATA[
+                Suppressed by: <author>
+                Date: YYYY-MM-DD
+                Review by: YYYY-MM-DD  (set a calendar reminder)
+                Reason: <why this is a false positive or why the risk is accepted>
+
+                CVEs:
+                  CVE-XXXX-XXXXX: <what the CVE is and why suppression is safe>
+            ]]></notes>
+            <packageUrl regex="true">^pkg:maven/com\.example\/artifact-name@.*$</packageUrl>
+            <cve>CVE-XXXX-XXXXX</cve>
+        </suppress>
+
+        SUPPRESSION TIPS
+        ================
+        - Prefer suppressing by CVE + packageUrl together (most precise).
+        - Use regex="true" on packageUrl to match any version of a package.
+        - Set a concrete review date; suppressed CVEs should be revisited
+          when the dependency is updated or the review date passes.
+        - If a CVE affects a test-only dependency, note that explicitly.
+    -->
+
+    <!-- ================================================================
+         FALSE POSITIVES - WRONG PRODUCT IDENTIFIED BY CPE MATCHING
+         ================================================================ -->
+
+    <!--
+        androidx.sqlite artifacts are the Android Room SQLite Kotlin wrapper
+        library at version 2.5.1, NOT the native SQLite C library at version
+        2.5.1. OWASP matches on the "2.5.1" version string to CPE
+        cpe:2.3:a:sqlite:sqlite:2.5.1 - a completely different product.
+        The actual SQLite bundled in the Android OS is maintained by Google
+        and updated independently of the Room wrapper version number.
+    -->
+    <suppress>
+        <notes><![CDATA[
+            Suppressed by: Gregory Rasmussen
+            Date: 2026-05-19
+            Review by: 2027-05-19
+            Reason: False positive. androidx.sqlite 2.5.1 is the Android Room Kotlin
+                    wrapper library. OWASP incorrectly matches its version number "2.5.1"
+                    against the native SQLite C library CPE. All CVEs below affect the
+                    native C library, not the wrapper.
+
+            CVEs:
+              CVE-2015-3414: NULL pointer dereference in sqlite3VdbeExec() in the native
+                             SQLite C library before 3.8.9 via a crafted SQL query.
+              CVE-2015-3415: Invalid type validation in WHERE clause processing in the
+                             native SQLite C library before 3.8.9, allowing a crash.
+              CVE-2015-3416: Stack-based buffer overflow in sqlite3_value_text() in the
+                             native SQLite C library before 3.8.9.
+              CVE-2015-3717: Multiple buffer overflows in the native SQLite C library
+                             before 3.8.9 (originally disclosed via Apple iOS advisories).
+              CVE-2015-5895: Multiple unspecified vulnerabilities in the native SQLite C
+                             library before 3.8.10.2 (Apple iOS advisory).
+              CVE-2015-6607: NULL pointer dereference in the native SQLite C library
+                             before 3.8.9 via a crafted SELECT query.
+              CVE-2016-6153: Insecure temporary file creation in the native SQLite C
+                             library through 3.11.0; files created in the current working
+                             directory instead of a secure temp location.
+              CVE-2017-10989: Heap-based buffer over-read in getNodeSize() in
+                              ext/rtree/rtree.c in the native SQLite C library 3.20.0
+                              and earlier.
+              CVE-2018-20346: Integer overflow in the FTS3 extension in the native SQLite
+                              C library before 3.25.3, exploitable via a large FTS query.
+              CVE-2018-20505: Type confusion in the native SQLite C library 3.25.2,
+                              causing a crash via a crafted SELECT FROM clause.
+              CVE-2018-20506: Multiple integer overflows in the FTS3 extension in the
+                              native SQLite C library before 3.25.3.
+              CVE-2018-8740:  NULL pointer dereference in the native SQLite C library
+                              through 3.22.0 via a crafted schema with mismatched
+                              parentheses in CREATE TABLE.
+              CVE-2019-19645: Infinite recursion in alter.c in the native SQLite C library
+                              through 3.30.1, triggered by self-referential views in
+                              ALTER TABLE RENAME.
+              CVE-2019-19646: Incorrect handling of NOT NULL in pragma.c in the native
+                              SQLite C library through 3.30.1 during integrity_check PRAGMA.
+              CVE-2020-11655: Segmentation fault in the native SQLite C library through
+                              3.31.1 due to incorrect AggInfo initialization in
+                              window-function queries.
+              CVE-2020-11656: Use-after-free in the ALTER TABLE implementation in the
+                              native SQLite C library through 3.31.1.
+              CVE-2020-13434: Integer overflow in sqlite3_str_vappendf() in printf.c in
+                              the native SQLite C library through 3.32.0.
+              CVE-2020-13435: Segmentation fault in the native SQLite C library through
+                              3.32.0 via a crafted query misusing window functions.
+              CVE-2020-13630: Use-after-free in fts3EvalNextRow() in ext/fts3/fts3.c in
+                              the native SQLite C library before 3.32.0.
+              CVE-2020-13631: ALTER TABLE can rename a virtual table to match a shadow
+                              table name in the native SQLite C library before 3.32.0.
+              CVE-2020-13632: NULL pointer dereference in ext/fts3/fts3_snippet.c in the
+                              native SQLite C library before 3.32.0 via crafted matchinfo().
+              CVE-2020-15358: Heap overflow in select.c query-flattener optimization in
+                              the native SQLite C library through 3.32.3.
+              CVE-2022-35737: Array-bounds overflow in the printf functions in the native
+                              SQLite C library 1.0.12 through 3.39.x before 3.39.2.
+              CVE-2023-7104:  Heap-based buffer overflow in sessionReadRecord() in
+                              ext/session/sqlite3session.c in the native SQLite C library
+                              through 3.43.0.
+              CVE-2025-6965:  Vulnerability in the native SQLite C library (2025 disclosure;
+                              refer to NVD for details).
+              CVE-2025-70873: Vulnerability in the native SQLite C library (2025 disclosure;
+                              refer to NVD for details).
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/androidx\.sqlite/.*$</packageUrl>
+        <cve>CVE-2015-3414</cve>
+        <cve>CVE-2015-3415</cve>
+        <cve>CVE-2015-3416</cve>
+        <cve>CVE-2015-3717</cve>
+        <cve>CVE-2015-5895</cve>
+        <cve>CVE-2015-6607</cve>
+        <cve>CVE-2016-6153</cve>
+        <cve>CVE-2017-10989</cve>
+        <cve>CVE-2018-20346</cve>
+        <cve>CVE-2018-20505</cve>
+        <cve>CVE-2018-20506</cve>
+        <cve>CVE-2018-8740</cve>
+        <cve>CVE-2019-19645</cve>
+        <cve>CVE-2019-19646</cve>
+        <cve>CVE-2020-11655</cve>
+        <cve>CVE-2020-11656</cve>
+        <cve>CVE-2020-13434</cve>
+        <cve>CVE-2020-13435</cve>
+        <cve>CVE-2020-13630</cve>
+        <cve>CVE-2020-13631</cve>
+        <cve>CVE-2020-13632</cve>
+        <cve>CVE-2020-15358</cve>
+        <cve>CVE-2022-35737</cve>
+        <cve>CVE-2023-7104</cve>
+        <cve>CVE-2025-6965</cve>
+        <cve>CVE-2025-70873</cve>
+    </suppress>
+
+    <!--
+        room-compiler-processing is the Room annotation processor library, NOT the
+        "Processing" creative-arts coding language/framework (CVE-2018-1000840). The
+        word "processing" in the artifact name triggers a false CPE match.
+    -->
+    <suppress>
+        <notes><![CDATA[
+            Suppressed by: Gregory Rasmussen
+            Date: 2026-05-19
+            Review by: 2027-05-19
+            Reason: False positive. room-compiler-processing is the Android Room annotation
+                    processor library. The word "processing" in the artifact name triggers
+                    an incorrect CPE match to the Processing creative-arts framework.
+
+            CVEs:
+              CVE-2018-1000840: XML External Entity (XXE) injection in the loadXML()
+                                function of the Processing creative-arts coding framework,
+                                allowing remote code execution or information disclosure via
+                                a crafted XML sketch file. Entirely unrelated to Room.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/androidx\.room/room-compiler-processing@.*$</packageUrl>
+        <cve>CVE-2018-1000840</cve>
+    </suppress>
+
+    <!--
+        symbol-processing-api is Google's Kotlin Symbol Processing (KSP) API, NOT the
+        "Processing" creative-arts coding language/framework (CVE-2018-1000840). The
+        word "processing" in the artifact name triggers a false CPE match.
+    -->
+    <suppress>
+        <notes><![CDATA[
+            Suppressed by: Gregory Rasmussen
+            Date: 2026-05-19
+            Review by: 2027-05-19
+            Reason: False positive. symbol-processing-api is Google's Kotlin Symbol
+                    Processing (KSP) API. The word "processing" in the artifact name
+                    triggers an incorrect CPE match to the Processing creative-arts
+                    framework.
+
+            CVEs:
+              CVE-2018-1000840: XML External Entity (XXE) injection in the loadXML()
+                                function of the Processing creative-arts coding framework,
+                                allowing remote code execution or information disclosure via
+                                a crafted XML sketch file. Entirely unrelated to KSP.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.google\.devtools\.ksp/symbol-processing-api@.*$</packageUrl>
+        <cve>CVE-2018-1000840</cve>
+    </suppress>
+
+    <!--
+        lifecycle-viewmodel version 2.9.x is incorrectly matched to Apache SkyWalking
+        plugin CPEs (apm-*@9.6.0) and Apache Impala CPEs. The version "2.9.x" shares
+        a suffix with Apache SkyWalking "9.x" and Apache Impala version patterns in
+        certain CPE lookups. lifecycle-viewmodel is the Android Jetpack ViewModel
+        library and has no relation to these Apache projects.
+    -->
+    <suppress>
+        <notes><![CDATA[
+            Suppressed by: Gregory Rasmussen
+            Date: 2026-05-19
+            Review by: 2027-05-19
+            Reason: False positive. lifecycle-viewmodel is the Android Jetpack ViewModel
+                    library; it has no relation to Apache Impala or SkyWalking. The version
+                    "2.9.x" incorrectly matches Apache SkyWalking/Impala CPE patterns.
+
+            CVEs:
+              CVE-2017-9792:  Apache Impala before 2.10.0 improper authorization, allowing
+                              unprivileged users to execute Impala queries on restricted data.
+              CVE-2018-11785: Apache Impala before 3.0.0 SASL handshake spoofing, allowing
+                              unauthenticated users to authenticate as any registered user.
+              CVE-2018-11792: Apache Impala before 3.0.0 SASL authentication bypass,
+                              allowing impersonation of a registered user without credentials.
+              CVE-2019-10084: Apache Impala before 3.3.0 information disclosure, allowing
+                              authenticated users to infer restricted database objects via
+                              metadata queries.
+              CVE-2021-28131: Apache Impala before 4.0.0 LDAP injection in the
+                              impersonation configuration, allowing query execution as
+                              another user by an attacker with LDAP write access.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/androidx\.lifecycle/lifecycle-viewmodel@.*$</packageUrl>
+        <cve>CVE-2017-9792</cve>
+        <cve>CVE-2018-11785</cve>
+        <cve>CVE-2018-11792</cve>
+        <cve>CVE-2019-10084</cve>
+        <cve>CVE-2021-28131</cve>
+    </suppress>
+
+    <!-- ================================================================
+         PATCHED IN USED VERSION
+         ================================================================ -->
+
+    <!--
+        CVE-2020-29582 affects JetBrains Kotlin BEFORE version 1.4.21 and was fixed
+        in 1.4.21. Every Kotlin artifact flagged here is version 1.6.0 or later and
+        is therefore fully patched. Additionally, kotlin-compiler-embeddable,
+        kotlin-daemon-embeddable, and kotlin-script-runtime are build-time-only tools
+        that are never bundled in an Android APK. Older stdlib versions (< 2.2.10)
+        present in the Gradle cache are transitive dependencies of the Android Gradle
+        Plugin toolchain, not the app's own Kotlin runtime (2.2.10).
+    -->
+    <suppress>
+        <notes><![CDATA[
+            Suppressed by: Gregory Rasmussen
+            Date: 2026-05-19
+            Review by: 2027-05-19
+            Reason: CVE-2020-29582 was fixed in Kotlin 1.4.21. The project uses Kotlin
+                    2.2.10, which is fully patched. Older stdlib versions in the Gradle
+                    cache are transitive dependencies of the Android Gradle Plugin
+                    toolchain, not the app's runtime. Compiler and daemon artifacts are
+                    build-only tools never bundled in the APK.
+
+            CVEs:
+              CVE-2020-29582: JetBrains Kotlin before 1.4.21 creates temporary files in
+                              the system temp directory with world-readable permissions,
+                              allowing a local attacker to read sensitive compile-time
+                              artifacts such as source files or intermediate build products.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/.*$</packageUrl>
+        <cve>CVE-2020-29582</cve>
+    </suppress>
+
+    <!-- ================================================================
+         BUILD-TOOL ONLY DEPENDENCIES
+         These JARs live in the Gradle build cache and are pulled in by the
+         Android Gradle Plugin (AGP) or the Gradle Unified Test Platform (UTP).
+         They are NEVER compiled into the Android APK or AAR artifacts and are
+         therefore not exposed to end users.
+         ================================================================ -->
+
+    <!--
+        gRPC JARs (grpc-api, grpc-core, grpc-netty, grpc-protobuf, grpc-stub, etc.)
+        are pulled in by AGP's android-test-plugin-* and the Unified Test Platform
+        (UTP) at versions 1.57.2 and 1.69.1. They are not on the app runtime classpath.
+    -->
+    <suppress>
+        <notes><![CDATA[
+            Suppressed by: Gregory Rasmussen
+            Date: 2026-05-19
+            Review by: 2027-05-19
+            Reason: The gRPC JARs in this project are build-tool dependencies pulled in
+                    by the Android Gradle Plugin's Unified Test Platform (UTP). They are
+                    not included in the compiled APK or AAR and are never executed at
+                    runtime on a user's device.
+
+            CVEs:
+              CVE-2023-44487: HTTP/2 Rapid Reset Attack (CVSS 7.5). An attacker sends a
+                              continuous stream of RST_STREAM frames to exhaust server
+                              resources without completing connections, causing DoS.
+                              Affects gRPC before 1.57.3 / 1.58.1.
+              CVE-2024-7246:  gRPC certificate verification bypass (CVSS 5.3). A crafted
+                              certificate chain can bypass server-side TLS verification in
+                              certain configurations, enabling a potential MITM attack.
+              CVE-2026-33186: gRPC authorization bypass (CVSS 9.1, critical). Allows
+                              unauthenticated access to gRPC service methods protected by
+                              authorization interceptors under certain server configurations
+                              (disclosed 2026-03-17).
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/io\.grpc/.*$</packageUrl>
+        <cve>CVE-2023-44487</cve>
+        <cve>CVE-2024-7246</cve>
+        <cve>CVE-2026-33186</cve>
+    </suppress>
+
+    <!--
+        Netty JARs are transitive dependencies of gRPC (see above) and are therefore
+        also build-tool-only. Not in the app APK.
+    -->
+    <suppress>
+        <notes><![CDATA[
+            Suppressed by: Gregory Rasmussen
+            Date: 2026-05-19
+            Review by: 2027-05-19
+            Reason: Netty JARs are transitive dependencies of gRPC, which is a build-tool
+                    dependency of the Android Gradle Plugin's Unified Test Platform (UTP).
+                    They are not included in the compiled APK and are never executed at
+                    runtime on a user's device.
+
+            CVEs:
+              CVE-2023-34462: SniHandler heap allocation DoS (CVSS 6.5). Before 4.1.94.Final,
+                              SniHandler allocates up to 16MB per connection during TLS SNI
+                              negotiation before handshake completion, enabling OOM-based DoS.
+              CVE-2023-44487: HTTP/2 Rapid Reset Attack (CVSS 7.5). Continuous RST_STREAM
+                              frames exhaust server resources without completing connections.
+                              Affects Netty before 4.1.100.Final.
+              CVE-2024-29025: HTTP/2 CONTINUATION frame flood (CVSS 5.3). An unbounded
+                              sequence of CONTINUATION frames causes unbounded memory
+                              consumption in the HTTP/2 decoder.
+              CVE-2024-47535: SslHandler input buffer leak (CVSS 5.5). SslHandler does not
+                              release input buffers on decryption exception, leading to native
+                              memory exhaustion and OOM-based DoS.
+              CVE-2025-24970: SslHandler native memory corruption (CVSS 7.5). Improper
+                              cleanup of native SSL state during channel close can corrupt
+                              native memory, potentially crashing the process.
+              CVE-2025-25193: HTTP/1.1 chunked transfer DoS (CVSS 5.3). A crafted chunk
+                              size header causes unbounded memory allocation in the HTTP
+                              decoder.
+              CVE-2025-55163: Vulnerability in Netty (2025 disclosure; refer to NVD for
+                              details).
+              CVE-2025-58056: Vulnerability in Netty (2025 disclosure; refer to NVD for
+                              details).
+              CVE-2025-58057: Vulnerability in Netty (2025 disclosure; refer to NVD for
+                              details).
+              CVE-2025-67735: Vulnerability in Netty (2025 disclosure; refer to NVD for
+                              details).
+              CVE-2026-33870: Vulnerability in Netty (2026 disclosure; refer to NVD for
+                              details).
+              CVE-2026-33871: Vulnerability in Netty (2026 disclosure; refer to NVD for
+                              details).
+              CVE-2026-41417: Vulnerability in Netty (2026 disclosure; refer to NVD for
+                              details).
+              CVE-2026-42578 through CVE-2026-42587: A batch of related Netty vulnerabilities
+                              from the same 2026 advisory (10 sequential CVE IDs); refer to
+                              NVD for individual details.
+              CVE-2026-44248: Vulnerability in Netty (2026 disclosure; refer to NVD for
+                              details).
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/io\.netty/.*$</packageUrl>
+        <cve>CVE-2023-34462</cve>
+        <cve>CVE-2023-44487</cve>
+        <cve>CVE-2024-29025</cve>
+        <cve>CVE-2024-47535</cve>
+        <cve>CVE-2025-24970</cve>
+        <cve>CVE-2025-25193</cve>
+        <cve>CVE-2025-55163</cve>
+        <cve>CVE-2025-58056</cve>
+        <cve>CVE-2025-58057</cve>
+        <cve>CVE-2025-67735</cve>
+        <cve>CVE-2026-33870</cve>
+        <cve>CVE-2026-33871</cve>
+        <cve>CVE-2026-41417</cve>
+        <cve>CVE-2026-42578</cve>
+        <cve>CVE-2026-42579</cve>
+        <cve>CVE-2026-42580</cve>
+        <cve>CVE-2026-42581</cve>
+        <cve>CVE-2026-42582</cve>
+        <cve>CVE-2026-42583</cve>
+        <cve>CVE-2026-42584</cve>
+        <cve>CVE-2026-42585</cve>
+        <cve>CVE-2026-42586</cve>
+        <cve>CVE-2026-42587</cve>
+        <cve>CVE-2026-44248</cve>
+    </suppress>
+
+    <!--
+        Apache HttpClient 4.5.6 is a transitive dependency of the Android Gradle Plugin
+        build toolchain. It is not included in the compiled Android APK.
+    -->
+    <suppress>
+        <notes><![CDATA[
+            Suppressed by: Gregory Rasmussen
+            Date: 2026-05-19
+            Review by: 2027-05-19
+            Reason: httpclient-4.5.6 is a transitive dependency of the Android Gradle
+                    Plugin build toolchain. It is not included in the APK.
+
+            CVEs:
+              CVE-2020-13956: URI handling flaw in Apache HttpClient 4.x before 4.5.13
+                              and 5.x before 5.0.3 (CVSS 5.3). Malformed URIs can be
+                              resolved differently by the client vs. a proxy, enabling
+                              proxy bypass or SSRF in applications that pass untrusted
+                              URIs to the client.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents/httpclient@.*$</packageUrl>
+        <cve>CVE-2020-13956</cve>
+    </suppress>
+
+    <!--
+        jackson-databind-2.15.3 is a transitive dependency of the Dokka documentation
+        generator and AGP build toolchain. It is not in the app APK.
+    -->
+    <suppress>
+        <notes><![CDATA[
+            Suppressed by: Gregory Rasmussen
+            Date: 2026-05-19
+            Review by: 2027-05-19
+            Reason: jackson-databind is a transitive dependency of the Dokka documentation
+                    generator and Android Gradle Plugin build toolchain. It is not included
+                    in the APK.
+
+            CVEs:
+              CVE-2023-35116: Denial of service via infinite recursion when serializing an
+                              object graph with a cyclic dependency (CVSS 4.7). Requires an
+                              attacker-controlled object graph; disputed by the vendor as an
+                              unrealistic attack vector for most applications.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson-databind@.*$</packageUrl>
+        <cve>CVE-2023-35116</cve>
+    </suppress>
+
+    <!--
+        commons-lang3-3.16.0 is a transitive dependency of the Android Gradle Plugin
+        build toolchain. It is not included in the compiled Android APK.
+    -->
+    <suppress>
+        <notes><![CDATA[
+            Suppressed by: Gregory Rasmussen
+            Date: 2026-05-19
+            Review by: 2027-05-19
+            Reason: commons-lang3 is a transitive dependency of the Android Gradle Plugin
+                    build toolchain. It is not included in the APK.
+
+            CVEs:
+              CVE-2025-48924: Uncontrolled recursion in ClassUtils.getClass() in Apache
+                              Commons Lang3 before 3.18.0 (CVSS 5.3). A crafted class name
+                              string triggers a stack overflow, causing DoS in applications
+                              that pass untrusted input to ClassUtils.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.apache\.commons/commons-lang3@.*$</packageUrl>
+        <cve>CVE-2025-48924</cve>
+    </suppress>
+
+    <!--
+        protobuf-java, protobuf-kotlin, and protobuf-java-util are transitive
+        dependencies of the AGP Unified Test Platform (UTP) and related gRPC tooling.
+        They are not included in the Android APK.
+    -->
+    <suppress>
+        <notes><![CDATA[
+            Suppressed by: Gregory Rasmussen
+            Date: 2026-05-19
+            Review by: 2027-05-19
+            Reason: protobuf JARs are transitive dependencies of gRPC and the Android
+                    Gradle Plugin's Unified Test Platform (UTP). They are not included
+                    in the APK.
+
+            CVEs:
+              CVE-2024-7254: Stack overflow in protobuf-java when parsing deeply nested
+                             proto3 messages with unset required fields (CVSS 5.9).
+                             Unbounded recursion in the parser exhausts the JVM stack.
+              CVE-2026-0994: Vulnerability in Google Protocol Buffers (2026 disclosure;
+                             refer to NVD for details).
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.google\.protobuf/.*$</packageUrl>
+        <cve>CVE-2024-7254</cve>
+        <cve>CVE-2026-0994</cve>
+    </suppress>
+
+    <!--
+        org.xerial/sqlite-jdbc is used by the Room annotation processor at compile time
+        to validate database schemas (schema diffing). It is a build-only dependency
+        and is never included in the Android APK. The app uses Android's bundled SQLite
+        at runtime, not a JDBC driver.
+    -->
+    <suppress>
+        <notes><![CDATA[
+            Suppressed by: Gregory Rasmussen
+            Date: 2026-05-19
+            Review by: 2027-05-19
+            Reason: org.xerial/sqlite-jdbc is the Room annotation processor's compile-time
+                    schema validator. It is a build-only dependency and is not included in
+                    the Android APK. The app uses Android's bundled SQLite at runtime,
+                    not the JDBC driver.
+
+            CVEs:
+              CVE-2023-7104:  Heap-based buffer overflow in sessionReadRecord() in
+                              ext/session/sqlite3session.c in the native SQLite C library
+                              through 3.43.0, bundled inside sqlite-jdbc.
+              CVE-2025-6965:  Vulnerability in the native SQLite C library bundled with
+                              sqlite-jdbc (2025 disclosure; refer to NVD for details).
+              CVE-2025-70873: Vulnerability in the native SQLite C library bundled with
+                              sqlite-jdbc (2025 disclosure; refer to NVD for details).
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.xerial/sqlite-jdbc@.*$</packageUrl>
+        <cve>CVE-2023-7104</cve>
+        <cve>CVE-2025-6965</cve>
+        <cve>CVE-2025-70873</cve>
+    </suppress>
+
+</suppressions>
