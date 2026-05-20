@@ -56,7 +56,11 @@
           div.textContent = el.textContent;
           el.parentNode.replaceWith(div);
         });
-        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: 'default',
+          flowchart: { useMaxWidth: false, htmlLabels: true }
+        });
       });
     </script>
   </body>
