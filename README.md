@@ -10,7 +10,7 @@
 <a href="https://search.maven.org/artifact/com.grarcht.shuttle/framework"><img src="https://img.shields.io/maven-central/v/com.grarcht.shuttle/framework?color=teal&style=plastic" alt="Maven Central"/></a>
 <a href="https://grarcht.github.io/Shuttle/documentation/"><img src="https://img.shields.io/badge/API%20Docs-Dokka-blueviolet?style=plastic" alt="API Docs"/></a>
 <a href="https://developer.android.com/studio/releases/platforms"><img src="https://img.shields.io/badge/Min%20SDK-26-brightgreen?style=plastic" alt="Min SDK"/></a>
-<a href="https://kotlinlang.org/"><img src="https://img.shields.io/badge/Kotlin-2.0%2B-purple?style=plastic" alt="Kotlin"/></a>
+<a href="https://kotlinlang.org/"><img src="https://img.shields.io/badge/Kotlin-2.2.10-purple?style=plastic" alt="Kotlin"/></a>
 
   <br/>
 
@@ -129,7 +129,7 @@ Shuttle applies this same logic to Android's binder transaction limit:
 | Requirement | Minimum |
 |---|---|
 | Android min SDK | 26 |
-| Kotlin | 2.0+ |
+| Kotlin | 2.2.10 |
 | AGP (Android Gradle Plugin) | 8.0+ |
 | KSP | Required only when using `@ShuttleCargo` |
 | Java | 21 |
