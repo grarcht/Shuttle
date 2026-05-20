@@ -34,3 +34,11 @@ jobs:
           folder: documentation/kotlin
           target-folder: documentation
           clean: false
+
+      - name: Deploy media assets to gh-pages/media
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: media
+          target-folder: media
+          clean: true
