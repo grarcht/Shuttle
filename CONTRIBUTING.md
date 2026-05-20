@@ -11,6 +11,8 @@ Shuttle is an open source project and contributions are welcome. This guide cove
 - [Requesting Features](#requesting-features)
 - [Getting Started](#getting-started)
 - [Branching Strategy](#branching-strategy)
+- [Running Checks Locally](#running-checks-locally)
+- [Adding an OWASP Suppression](#adding-an-owasp-suppression)
 - [Making Changes](#making-changes)
 - [Pull Request Checklist](#pull-request-checklist)
 - [Code Standards](#code-standards)
@@ -93,19 +95,86 @@ git checkout -b feature/my-feature
 
 ---
 
+## Running Checks Locally
+
+All of the following must pass before a PR will be merged. Run them locally to catch issues early.
+
+**Build**
+```bash
+./gradlew assembleDebug --no-daemon
+```
+
+**Detekt (static analysis)**
+```bash
+./gradlew detekt --no-daemon
+```
+Reports are written to `build/reports/detekt/`.
+
+**Unit Tests**
+```bash
+./gradlew test --no-daemon
+```
+Reports are written to each module's `build/reports/tests/` directory.
+
+**OWASP Dependency Check**
+
+Only required when you change a dependency (`libs.versions.toml`, `build.gradle.kts`, or `build.gradle`):
+```bash
+./gradlew dependencyCheckAggregate -Dorg.gradle.configuration-cache=false
+```
+The first run downloads the NVD database and takes several minutes. Subsequent runs on the same day reuse the local cache and complete in roughly 2–5 minutes. The report is written to `build/reports/dependency-check-report.html`.
+
+---
+
+## Adding an OWASP Suppression
+
+If the dependency check flags a false positive or a vulnerability in a build-tool-only dependency (one that never ships in the APK), add a suppression entry to `config/owasp/dependency-check-suppression.xml`.
+
+**Step 1** — Run the scan and open the HTML report:
+```bash
+./gradlew dependencyCheckAggregate -Dorg.gradle.configuration-cache=false
+open build/reports/dependency-check-report.html
+```
+
+**Step 2** — Find the CVE in the report and copy its `packageUrl`.
+
+**Step 3** — Add a `<suppress>` block to the suppression file:
+```xml
+<suppress>
+    <notes><![CDATA[
+        Suppressed by: Your Name
+        Date: YYYY-MM-DD
+        Review by: YYYY-MM-DD
+        Reason: <why this is a false positive or why the risk is accepted>
+
+        CVEs:
+          CVE-XXXX-XXXXX: <what the CVE is and why suppression is safe>
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/com\.example/artifact-name@.*$</packageUrl>
+    <cve>CVE-XXXX-XXXXX</cve>
+</suppress>
+```
+
+Rules:
+- Notes content must be inside `<![CDATA[...]]>` — do not use `--` anywhere inside the CDATA block (XML restriction)
+- Use `regex="true"` on `packageUrl` to match any version of the package, reducing future churn
+- Every suppression needs a concrete review date — set a calendar reminder
+- Clearly distinguish between false positives and accepted risk — they are different
+- Build-tool-only suppressions must confirm the JAR is not included in the APK
+
+**Step 4** — Re-run the scan to confirm it passes:
+```bash
+./gradlew dependencyCheckAggregate -Dorg.gradle.configuration-cache=false
+```
+
+---
+
 ## Making Changes
 
 - Keep changes focused. One PR should do one thing.
 - If you are fixing a bug, include a test that would have caught it.
 - If you are adding a feature, include tests covering the new behavior.
-- Run the full test suite before submitting:
-  ```bash
-  ./gradlew test
-  ```
-- Run static analysis and confirm there are no new violations:
-  ```bash
-  ./gradlew detekt
-  ```
+- Run the full checks locally before submitting (see [Running Checks Locally](#running-checks-locally))
 
 ---
 

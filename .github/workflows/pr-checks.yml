@@ -3,7 +3,6 @@ name: PR Checks
 on:
   pull_request:
     branches:
-      - main
       - develop
 
 jobs:
@@ -12,8 +11,8 @@ jobs:
     outputs:
       dependencies: ${{ steps.filter.outputs.dependencies }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v3
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: dorny/paths-filter@d1c1ffe0248fe513906c8e24db8ea791d46f8590 # v3
         id: filter
         with:
           filters: |
@@ -21,6 +20,16 @@ jobs:
               - '**/libs.versions.toml'
               - '**/build.gradle.kts'
               - '**/build.gradle'
+
+  build:
+    uses: ./.github/workflows/build.yml
+
+  detekt:
+    uses: ./.github/workflows/detekt.yml
+
+  unit-tests:
+    needs: build
+    uses: ./.github/workflows/unit-tests.yml
 
   dependency-check:
     needs: changed-files
