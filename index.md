@@ -386,12 +386,12 @@ Shuttle is a layered **Solution Building Block (SBB)** framework. Each layer has
 
 ```mermaid
 graph TD
-    A[Your Application]
-    A --> B[framework / core]
-    A --> C[framework-addons-navigation-component]
-    A --> D[your custom integration]
-    B --> E[framework-integrations-persistence / abstraction layer]
-    E --> F[framework-integrations-extensions-room / default implementation]
+    A["Your Application"]
+    A --> B["framework / core"]
+    A --> C["framework-addons-<br/>navigation-component"]
+    A --> D["your custom<br/>integration"]
+    B --> E["framework-integrations-persistence<br/>/ abstraction layer"]
+    E --> F["framework-integrations-extensions-room<br/>/ default implementation"]
 ```
 
 **Why this layering matters:** The persistence abstraction means you can swap Room for any other storage implementation without touching the framework or your application code. Bring your own persistence layer by implementing the integration interfaces.
