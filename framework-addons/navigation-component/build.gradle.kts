@@ -144,11 +144,18 @@ tasks.register<RenameArtifactsTask>("renameArtifacts") {
 }
 
 fun updatePomWithDependencies(pom: MavenPom) {
-    val deps = configurations.getByName("implementation").allDependencies
-        .map { Triple(it.group, it.name, it.version) }
+    val projectGroup = project.group.toString()
+    val projectVersion = project.version.toString()
+    val depData = configurations.getByName("implementation").allDependencies.map { dep ->
+        Triple(
+            if (dep is ProjectDependency) projectGroup else dep.group,
+            dep.name,
+            if (dep is ProjectDependency) projectVersion else dep.version
+        )
+    }
     pom.withXml {
         val dependenciesNode = asNode().appendNode("dependencies")
-        deps.forEach { (group, name, version) ->
+        depData.forEach { (group, name, version) ->
             val dependency = dependenciesNode.appendNode("dependency")
             dependency.appendNode("groupId", group)
             dependency.appendNode("artifactId", name)

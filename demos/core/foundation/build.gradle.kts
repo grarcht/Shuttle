@@ -55,6 +55,7 @@ dependencies {
     implementation(project(":framework"))
     implementation(project(":framework-integrations-persistence"))
     implementation(project(":framework-integrations-extensions-room"))
+    implementation(project(":framework-annotations"))
     ksp(project(":framework-annotations-processor"))
 
     // Wire the Shuttle compiler plugin from source. External consumers apply the published
