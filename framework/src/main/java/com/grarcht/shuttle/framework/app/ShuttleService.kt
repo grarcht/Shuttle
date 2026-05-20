@@ -4,11 +4,13 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.os.Message
-import com.grarcht.shuttle.framework.Shuttle
 import com.grarcht.shuttle.framework.ShuttleCargoData
 import com.grarcht.shuttle.framework.os.ShuttleBinder
 import com.grarcht.shuttle.framework.os.messenger.ShuttleMessageReceiver
 import com.grarcht.shuttle.framework.os.messenger.ShuttleMessengerDecorator
+import com.grarcht.shuttle.framework.result.ShuttleStoreCargoResult
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.takeWhile
 
 /**
  * The base service class for services to leverage Shuttle to transport cargo data.
@@ -133,16 +135,21 @@ open class ShuttleService : Service(), ShuttleMessageReceiver {
     }
 
     /**
-     * Transports the cargo using Shuttle and broadcasts.
+     * Stores [cargo] in the warehouse, awaits completion, then broadcasts the cargo intent.
+     * Awaiting the store prevents a race condition where the receiver picks up cargo before
+     * it has been committed to the warehouse.
      * @param cargoId of the cargo to transport
      * @param cargo to transport
      */
-    open fun <D : ShuttleCargoData> transportCargoWithShuttle(
+    open suspend fun <D : ShuttleCargoData> transportCargoWithShuttle(
         cargoId: String,
         cargo: D?
     ) {
-        val cargoIntent = getCargoIntentForTransport(cargoId, cargo)
-        sendBroadcast(cargoIntent)
+        config.shuttle.shuttleWarehouse.store(cargoId, cargo)
+            .consumeAsFlow()
+            .takeWhile { it !is ShuttleStoreCargoResult.Success && it !is ShuttleStoreCargoResult.Error<*> }
+            .collect {}
+        sendBroadcast(getCargoIntentForTransport(cargoId, cargo))
     }
 
     /**

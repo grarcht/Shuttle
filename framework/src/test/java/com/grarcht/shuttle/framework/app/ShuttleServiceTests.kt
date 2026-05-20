@@ -8,9 +8,12 @@ import com.grarcht.shuttle.framework.content.ShuttleIntent
 import com.grarcht.shuttle.framework.os.messenger.ShuttleMessengerDecorator
 import com.grarcht.shuttle.framework.os.messenger.factory.ShuttleMessengerFactory
 import com.grarcht.shuttle.framework.result.ShuttleRemoveCargoResult
+import com.grarcht.shuttle.framework.result.ShuttleStoreCargoResult
 import com.grarcht.shuttle.framework.validator.ShuttleServiceMessageValidator
 import com.grarcht.shuttle.framework.visibility.observation.ShuttleVisibilityObservable
+import com.grarcht.shuttle.framework.warehouse.ShuttleWarehouse
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertNull
@@ -191,8 +194,13 @@ class ShuttleServiceTests {
     }
 
     @Test
-    fun verifyTransportCargoWithShuttleCallsGetCargoIntentForTransport() {
+    fun verifyTransportCargoWithShuttleCallsGetCargoIntentForTransport() = runTest {
         val service = Mockito.spy(createService(ShuttleServiceType.BOUND_LOCAL))
+        val mockWarehouse = mock<ShuttleWarehouse>()
+        val storeChannel = Channel<ShuttleStoreCargoResult>(2)
+        storeChannel.send(ShuttleStoreCargoResult.Success(CARGO_ID))
+        whenever(service.config.shuttle.shuttleWarehouse).thenReturn(mockWarehouse)
+        whenever(mockWarehouse.store<TestShuttleCargoData>(any(), anyOrNull())).thenReturn(storeChannel)
         val mockIntent = mock<Intent>()
         Mockito.doReturn(mockIntent).`when`(service).getCargoIntentForTransport(any<String>(), anyOrNull<TestShuttleCargoData>())
 
