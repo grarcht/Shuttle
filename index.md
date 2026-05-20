@@ -92,7 +92,7 @@ When envisioning, designing, and creating the architecture, quality attributes a
 
 ## ⚙️ How It Works
 
-[![Saving Android Apps From Crashes | The Shuttle Framework and Solution](https://markdown-videos-api.jorgenkh.no/url?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D4Nl9zlcbwU4)](https://www.youtube.com/watch?v=4Nl9zlcbwU4)
+<a href="https://www.youtube.com/watch?v=4Nl9zlcbwU4"><img src="https://markdown-videos-api.jorgenkh.no/url?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D4Nl9zlcbwU4" alt="Saving Android Apps From Crashes — The Shuttle Framework and Solution"/></a>
 
 The Shuttle framework takes its name from cargo transportation in the freight industry. Moving and storage companies experience scenarios where large moving trucks cannot transport cargo the entire way to the destination (warehouses, houses, et cetera). These scenarios might occur from road restrictions, trucks being overweight from large cargo, and more. As a result, companies use small Shuttle vans to transport smaller cargo groups on multiple trips to deliver the entire shipment.
 
