@@ -1,21 +1,21 @@
 <div align="center">
   <img src="https://github.com/grarcht/Shuttle/raw/main/shuttle_header.png" alt="Shuttle" width="100%"/>
 
-<h3>Prevent <code>TransactionTooLargeException</code> crashes. For good.</h3>
+  <h3>Prevent <code>TransactionTooLargeException</code> crashes. For good.</h3>
   <p>A modern Android framework for safely transporting large <code>Serializable</code> objects between components, without the crashes.</p>
 
   <br/>
 
-<a href="https://github.com/grarcht/Shuttle/blob/main/LICENSE.md"><img src="https://img.shields.io/github/license/grarcht/shuttle?color=white&style=plastic" alt="License: MIT"/></a>
-<a href="https://search.maven.org/artifact/com.grarcht.shuttle/framework"><img src="https://img.shields.io/maven-central/v/com.grarcht.shuttle/framework?color=teal&style=plastic" alt="Maven Central"/></a>
-<a href="https://grarcht.github.io/Shuttle/documentation/"><img src="https://img.shields.io/badge/API%20Docs-Dokka-blueviolet?style=plastic" alt="API Docs"/></a>
-<a href="https://developer.android.com/studio/releases/platforms"><img src="https://img.shields.io/badge/Min%20SDK-26-brightgreen?style=plastic" alt="Min SDK"/></a>
-<a href="https://kotlinlang.org/"><img src="https://img.shields.io/badge/Kotlin-2.0%2B-purple?style=plastic" alt="Kotlin"/></a>
+  <a href="https://github.com/grarcht/Shuttle/blob/main/LICENSE.md"><img src="https://img.shields.io/github/license/grarcht/shuttle?color=white&style=plastic" alt="License: MIT"/></a>
+  <a href="https://search.maven.org/artifact/com.grarcht.shuttle/framework"><img src="https://img.shields.io/maven-central/v/com.grarcht.shuttle/framework?color=teal&style=plastic" alt="Maven Central"/></a>
+  <a href="https://grarcht.github.io/Shuttle/documentation/"><img src="https://img.shields.io/badge/API%20Docs-Dokka-blueviolet?style=plastic" alt="API Docs"/></a>
+  <a href="https://developer.android.com/studio/releases/platforms"><img src="https://img.shields.io/badge/Min%20API-21-brightgreen?style=plastic" alt="Min API"/></a>
+  <a href="https://kotlinlang.org/"><img src="https://img.shields.io/badge/Kotlin-2.0%2B-purple?style=plastic" alt="Kotlin"/></a>
 
   <br/>
 
-<a href="https://androidweekly.net/issues/issue-594"><img src="https://img.shields.io/badge/Android%20Weekly-Issue%20%23594-orange?style=flat" alt="Android Weekly #594"/></a>
-<a href="https://androidweekly.net/issues/issue-455"><img src="https://img.shields.io/badge/Android%20Weekly-Issue%20%23455-orange?style=flat" alt="Android Weekly #455"/></a>
+  <a href="https://androidweekly.net/issues/issue-594"><img src="https://img.shields.io/badge/Android%20Weekly-Issue%20%23594-orange?style=flat" alt="Android Weekly #594"/></a>
+  <a href="https://androidweekly.net/issues/issue-455"><img src="https://img.shields.io/badge/Android%20Weekly-Issue%20%23455-orange?style=flat" alt="Android Weekly #455"/></a>
 
 </div>
 
@@ -86,7 +86,7 @@ When envisioning, designing, and creating the architecture, quality attributes a
 | Time and money spent on crash investigation, fixes, QA, and hotfixes | Crash class is structurally impossible                          |
 | Requires constant code review governance                             | Ship with confidence                                            |
 | Engineers manually manage object lifecycles                          | Automatic or on-demand cargo cleanup built in                   |
-| <img src="/media/videos/without_shuttle.gif" width="75%"/>           | <img src="/media/videos/with_shuttle.gif" width="75%"/>         |
+| <img src="/media/videos/app_crash.gif" width="75%"/>                 | <img src="/media/videos/loaded_image_cargo.gif" width="75%"/>   |
 
 ---
 
@@ -411,16 +411,16 @@ Two architecture patterns are covered:
 ### Flow 1: Navigate with Shuttle ✅
 Tap **"Navigate using Shuttle"** -> image loads successfully via warehouse pickup.
 
-| Main Menu | Cargo Unloaded |
-|---|-----------------------------------------------------------------------------|
-| <img src="/media/screenshots/main_menu.png" width="200" height="400"/> | <img src="/media/screenshots/cargo_unloaded.png" width="200" height="400"/> |
+| Main Menu | Loaded |
+|---|---|
+| <img src="/media/screenshots/main_menu.png" width="200" height="400"/> | <img src="/media/screenshots/loaded_image_cargo.png" width="200" height="400"/> |
 
 ### Flow 2: Navigate Normally ❌
 Tap **"Navigate Normally"** -> app crashes with `TransactionTooLargeException`.
 
-| Main Menu | After Crash                                                                    |
-|---|--------------------------------------------------------------------------------|
-| <img src="/media/screenshots/main_menu.png" width="200" height="400"/> | <img src="/media/screenshots/cargo_undelivered.png" width="200" height="400"/> |
+| Main Menu | After Crash |
+|---|---|
+| <img src="/media/screenshots/main_menu.png" width="200" height="400"/> | <img src="/media/screenshots/loading_image_cargo_failed.png" width="200" height="400"/> |
 
 > ℹ️ For image loading in production, use [Glide](https://github.com/bumptech/glide) or [Coil](https://github.com/coil-kt/coil). The demo uses raw image data intentionally to trigger the crash condition.
 
@@ -438,13 +438,13 @@ These are documented tradeoffs, not bugs. Architecture is always about weighing 
 
 ## 🤝 Contributing
 
-Pull requests are welcome. Check the [Contributing Guide](CONTRIBUTING.md) and [Code of Conduct](CODE_OF_CONDUCT.md) before opening one.
+Pull requests are welcome. Check the [Contributing Guide](https://github.com/grarcht/Shuttle/blob/main/CONTRIBUTING.md) and [Code of Conduct](https://github.com/grarcht/Shuttle/blob/main/CODE_OF_CONDUCT.md) before opening one.
 
 1. Fork the repo
 2. Create a feature branch: `git checkout -b feature/my-feature`
 3. Commit your changes: `git commit -m 'Add: my feature'`
 4. Push the branch: `git push origin feature/my-feature`
-5. Open a Pull Request
+5. Open a Pull Request targeting `develop`
 
 For bugs and feature requests, [open an issue](https://github.com/grarcht/Shuttle/issues).
 
@@ -452,7 +452,7 @@ For bugs and feature requests, [open an issue](https://github.com/grarcht/Shuttl
 
 ## 📄 License
 
-MIT. See [LICENSE.md](LICENSE.md) for full terms.
+MIT. See [LICENSE.md](https://github.com/grarcht/Shuttle/blob/main/LICENSE.md) for full terms.
 
 Copyright © 2023 Craft & Graft LLC · GRARCHT ™ 2021
 
