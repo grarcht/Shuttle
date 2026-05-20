@@ -55,6 +55,11 @@
     </style>
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
     <script>
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'default',
+        flowchart: { useMaxWidth: false, htmlLabels: true, wrap: true }
+      });
       document.addEventListener("DOMContentLoaded", function() {
         document.querySelectorAll('code.language-mermaid').forEach(function(el) {
           var div = document.createElement('div');
@@ -62,11 +67,7 @@
           div.textContent = el.textContent;
           el.parentNode.replaceWith(div);
         });
-        mermaid.initialize({
-          startOnLoad: true,
-          theme: 'default',
-          flowchart: { useMaxWidth: false, htmlLabels: true, wrap: true }
-        });
+        mermaid.run();
       });
     </script>
   </body>
