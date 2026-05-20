@@ -1077,7 +1077,8 @@ class ShuttleWarehouseTests {
                         channel.cancel()
                     }
 
-                    else -> { /* ignore */
+                    else -> {
+                        /* ignore */
                     }
                 }
             }
@@ -1106,7 +1107,8 @@ class ShuttleWarehouseTests {
             channel.consumeAsFlow().collectLatest { result ->
                 when (result) {
                     is ShuttleStoreCargoResult.Error<*> -> channel.cancel()
-                    else -> { /* ignore */
+                    else -> {
+                        /* ignore */
                     }
                 }
             }
@@ -1141,7 +1143,8 @@ class ShuttleWarehouseTests {
                         channel.cancel()
                     }
 
-                    else -> { /* ignore */
+                    else -> {
+                        /* ignore */
                     }
                 }
             }
@@ -1167,7 +1170,8 @@ class ShuttleWarehouseTests {
             channel.consumeAsFlow().collectLatest { result ->
                 when (result) {
                     is ShuttleRemoveCargoResult.UnableToRemove<*> -> channel.cancel()
-                    else -> { /* ignore */
+                    else -> {
+                        /* ignore */
                     }
                 }
             }
@@ -1192,7 +1196,8 @@ class ShuttleWarehouseTests {
             channel.consumeAsFlow().collectLatest { result ->
                 when (result) {
                     is ShuttleRemoveCargoResult.UnableToRemove<*> -> channel.cancel()
-                    else -> { /* ignore */
+                    else -> {
+                        /* ignore */
                     }
                 }
             }
@@ -1215,7 +1220,8 @@ class ShuttleWarehouseTests {
             channel.consumeAsFlow().collectLatest { result ->
                 when (result) {
                     is ShuttleRemoveCargoResult.UnableToRemove<*> -> channel.cancel()
-                    else -> { /* ignore */
+                    else -> {
+                        /* ignore */
                     }
                 }
             }
@@ -1238,7 +1244,8 @@ class ShuttleWarehouseTests {
             channel.consumeAsFlow().collectLatest { result ->
                 when (result) {
                     is ShuttleRemoveCargoResult.UnableToRemove<*> -> channel.cancel()
-                    else -> { /* ignore */
+                    else -> {
+                        /* ignore */
                     }
                 }
             }
@@ -1286,7 +1293,8 @@ class ShuttleWarehouseTests {
                             channel.cancel()
                         }
 
-                        else -> { /* ignore */
+                        else -> {
+                            /* ignore */
                         }
                     }
                 }
@@ -1335,7 +1343,8 @@ class ShuttleWarehouseTests {
                             channel.cancel()
                         }
 
-                        else -> { /* ignore */
+                        else -> {
+                            /* ignore */
                         }
                     }
                 }
@@ -1371,7 +1380,8 @@ class ShuttleWarehouseTests {
                             channel.cancel()
                         }
 
-                        else -> { /* ignore */
+                        else -> {
+                            /* ignore */
                         }
                     }
                 }
@@ -1399,7 +1409,8 @@ class ShuttleWarehouseTests {
             channel.consumeAsFlow().collectLatest { result ->
                 when (result) {
                     is ShuttleRemoveCargoResult.UnableToRemove<*> -> channel.cancel()
-                    else -> { /* ignore */
+                    else -> {
+                        /* ignore */
                     }
                 }
             }
@@ -1424,7 +1435,8 @@ class ShuttleWarehouseTests {
             channel.consumeAsFlow().collectLatest { result ->
                 when (result) {
                     is ShuttleRemoveCargoResult.UnableToRemove<*> -> channel.cancel()
-                    else -> { /* ignore */
+                    else -> {
+                        /* ignore */
                     }
                 }
             }
@@ -1456,7 +1468,8 @@ class ShuttleWarehouseTests {
                     is ShuttlePickupCargoResult.Success<*>,
                     is ShuttlePickupCargoResult.Error<*> -> channel.cancel()
 
-                    else -> { /* ignore */
+                    else -> {
+                        /* ignore */
                     }
                 }
             }
@@ -1497,7 +1510,8 @@ class ShuttleWarehouseTests {
                     is ShuttleStoreCargoResult.Success,
                     is ShuttleStoreCargoResult.Error<*> -> channel.cancel()
 
-                    else -> { /* ignore */
+                    else -> {
+                        /* ignore */
                     }
                 }
             }
@@ -1514,7 +1528,8 @@ class ShuttleWarehouseTests {
                     is ShuttleStoreCargoResult.Success,
                     is ShuttleStoreCargoResult.Error<*> -> channel.cancel()
 
-                    else -> { /* ignore */
+                    else -> {
+                        /* ignore */
                     }
                 }
             }
@@ -1555,7 +1570,8 @@ class ShuttleWarehouseTests {
                     is ShuttleStoreCargoResult.Success,
                     is ShuttleStoreCargoResult.Error<*> -> channel.cancel()
 
-                    else -> { /* ignore */
+                    else -> {
+                        /* ignore */
                     }
                 }
             }
@@ -1573,7 +1589,8 @@ class ShuttleWarehouseTests {
                     is ShuttleStoreCargoResult.Success,
                     is ShuttleStoreCargoResult.Error<*> -> channel.cancel()
 
-                    else -> { /* ignore */
+                    else -> {
+                        /* ignore */
                     }
                 }
             }
