@@ -86,7 +86,7 @@ When envisioning, designing, and creating the architecture, quality attributes a
 | Time and money spent on crash investigation, fixes, QA, and hotfixes | Crash class is structurally impossible                          |
 | Requires constant code review governance                             | Ship with confidence                                            |
 | Engineers manually manage object lifecycles                          | Automatic or on-demand cargo cleanup built in                   |
-| <img src="/media/videos/without_shuttle.gif" width="75%"/>           | <img src="/media/videos/with_shuttle.gif" width="75%"/>         |
+| <img src="media/videos/without_shuttle.gif" width="75%"/>           | <img src="media/videos/with_shuttle.gif" width="75%"/>         |
 
 ---
 
@@ -413,14 +413,14 @@ Tap **"Navigate using Shuttle"** -> image loads successfully via warehouse picku
 
 | Main Menu | Cargo Unloaded |
 |---|-----------------------------------------------------------------------------|
-| <img src="/media/screenshots/main_menu.png" width="200" height="400"/> | <img src="/media/screenshots/cargo_unloaded.png" width="200" height="400"/> |
+| <img src="media/screenshots/main_menu.png" width="200" height="400"/> | <img src="media/screenshots/cargo_unloaded.png" width="200" height="400"/> |
 
 ### Flow 2: Navigate Normally ❌
 Tap **"Navigate Normally"** -> app crashes with `TransactionTooLargeException`.
 
 | Main Menu | After Crash                                                                    |
 |---|--------------------------------------------------------------------------------|
-| <img src="/media/screenshots/main_menu.png" width="200" height="400"/> | <img src="/media/screenshots/cargo_undelivered.png" width="200" height="400"/> |
+| <img src="media/screenshots/main_menu.png" width="200" height="400"/> | <img src="media/screenshots/cargo_undelivered.png" width="200" height="400"/> |
 
 > ℹ️ For image loading in production, use [Glide](https://github.com/bumptech/glide) or [Coil](https://github.com/coil-kt/coil). The demo uses raw image data intentionally to trigger the crash condition.
 
