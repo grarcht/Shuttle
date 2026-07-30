@@ -1,0 +1,36 @@
+project: Shuttle
+version: 4.0.0
+description: >
+  Prevent TransactionTooLargeException crashes. For good. Shuttle eliminates the crash class by
+  design so teams stop spending time and money on crash triage, hotfixes, and code review governance
+  that never fully works. It stores large Serializable objects in a local warehouse and passes only
+  a small cargo ID through the binder layer, keeping every transaction within safe limits everywhere:
+  dev, QA, and production. No custom DB setup. No table management. Ship with confidence.
+repository: https://github.com/grarcht/Shuttle
+language: Kotlin
+platform: Android
+agents:
+  - Claude Code
+  - Gemini Code Assist (Android Studio)
+  - Cursor
+  - Windsurf
+  - GitHub Copilot
+specs:
+  - domain: core
+    path: specs/core/spec.md
+    description: Core interfaces, CargoShuttle, warehouse abstraction, LCE pattern
+  - domain: setup
+    path: specs/setup/spec.md
+    description: Dependency setup, DI initialization, BOM usage
+  - domain: transport
+    path: specs/transport/spec.md
+    description: Transport via Intent, Bundle, and Navigation Component
+  - domain: pickup
+    path: specs/pickup/spec.md
+    description: Cargo retrieval at the destination using Channel-backed flows
+  - domain: cleanup
+    path: specs/cleanup/spec.md
+    description: Automatic and manual cargo cleanup strategies
+  - domain: annotations
+    path: specs/annotations/spec.md
+    description: "@ShuttleCargo annotation, KSP processor, and Gradle plugin"
