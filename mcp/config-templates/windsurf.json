@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "shuttle": {
+      "command": "java",
+      "args": [
+        "-jar",
+        "/ABSOLUTE_PATH_TO_REPO/mcp/build/libs/shuttle-mcp.jar"
+      ],
+      "cwd": "/ABSOLUTE_PATH_TO_REPO"
+    }
+  }
+}

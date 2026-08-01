@@ -18,6 +18,7 @@ application {
 tasks.shadowJar {
     archiveBaseName.set("shuttle-mcp")
     archiveClassifier.set("")
+    archiveVersion.set("")
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
     mergeServiceFiles()
 }
