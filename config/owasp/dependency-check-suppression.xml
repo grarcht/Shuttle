@@ -211,44 +211,6 @@
         <cve>CVE-2018-1000840</cve>
     </suppress>
 
-    <!--
-        lifecycle-viewmodel version 2.9.x is incorrectly matched to Apache SkyWalking
-        plugin CPEs (apm-*@9.6.0) and Apache Impala CPEs. The version "2.9.x" shares
-        a suffix with Apache SkyWalking "9.x" and Apache Impala version patterns in
-        certain CPE lookups. lifecycle-viewmodel is the Android Jetpack ViewModel
-        library and has no relation to these Apache projects.
-    -->
-    <suppress>
-        <notes><![CDATA[
-            Suppressed by: Gregory Rasmussen
-            Date: 2026-05-19
-            Review by: 2027-05-19
-            Reason: False positive. lifecycle-viewmodel is the Android Jetpack ViewModel
-                    library; it has no relation to Apache Impala or SkyWalking. The version
-                    "2.9.x" incorrectly matches Apache SkyWalking/Impala CPE patterns.
-
-            CVEs:
-              CVE-2017-9792:  Apache Impala before 2.10.0 improper authorization, allowing
-                              unprivileged users to execute Impala queries on restricted data.
-              CVE-2018-11785: Apache Impala before 3.0.0 SASL handshake spoofing, allowing
-                              unauthenticated users to authenticate as any registered user.
-              CVE-2018-11792: Apache Impala before 3.0.0 SASL authentication bypass,
-                              allowing impersonation of a registered user without credentials.
-              CVE-2019-10084: Apache Impala before 3.3.0 information disclosure, allowing
-                              authenticated users to infer restricted database objects via
-                              metadata queries.
-              CVE-2021-28131: Apache Impala before 4.0.0 LDAP injection in the
-                              impersonation configuration, allowing query execution as
-                              another user by an attacker with LDAP write access.
-        ]]></notes>
-        <packageUrl regex="true">^pkg:maven/androidx\.lifecycle/lifecycle-viewmodel@.*$</packageUrl>
-        <cve>CVE-2017-9792</cve>
-        <cve>CVE-2018-11785</cve>
-        <cve>CVE-2018-11792</cve>
-        <cve>CVE-2019-10084</cve>
-        <cve>CVE-2021-28131</cve>
-    </suppress>
-
     <!-- ================================================================
          PATCHED IN USED VERSION
          ================================================================ -->
