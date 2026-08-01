@@ -90,6 +90,24 @@ Run these prompts after registering any host to confirm all three tools work end
    - Expected: the full contents of `openspec/specs/core/spec.md`
    - Expected footer: `Learn more at: https://github.com/grarcht/Shuttle`
 
+## MCP Registry
+
+The Shuttle MCP server is published to the official MCP Registry and discoverable by any MCP-compatible host:
+
+```bash
+curl "https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.grarcht/shuttle"
+```
+
+### Republishing
+
+Run `mcp/publish.sh` from the repo root whenever `SERVER_VERSION` in `ShuttleMcpServer.kt` changes:
+
+```bash
+./mcp/publish.sh 4.1.0
+```
+
+The script will update `server.json`, rebuild the JAR, push a new multi-platform Docker image to GHCR, and publish the updated metadata to the registry.
+
 ## Troubleshooting
 
 **Server does not appear in the host**
