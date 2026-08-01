@@ -1,5 +1,6 @@
 [versions]
 compileSdk = "36"
+mcpKotlinSdk = "0.8.4"
 minSdk = "26"
 targetSdk = "36"
 compose = "1.7.8"
@@ -80,6 +81,7 @@ testingDeps-junit-jupiterApi = { group = "org.junit.jupiter", name = "junit-jupi
 testingDeps-junit-jupiterEngine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junitJupiter" }
 testingDeps-junit-jupiterParams = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "junitJupiter" }
 testingDeps-junit-platformCommons = { group = "org.junit.platform", name = "junit-platform-commons", version.ref = "junitPlatform" }
+testingDeps-junit-platformLauncher = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "junitPlatform" }
 testingDeps-junit-androidCore = { group = "androidx.arch.core", name = "core-testing", version = "2.2.0" }
 testingDeps-junit-androidTestRunner = { group = "androidx.test", name = "runner", version = "1.7.0" }
 testingDeps-junit-junit5AndroidTestCore = { group = "de.mannodermaus.junit5", name = "android-test-core", version.ref = "junitAndroidTest" }
@@ -88,6 +90,7 @@ testingDeps-kotlin-coroutines = { group = "org.jetbrains.kotlinx", name = "kotli
 testingDeps-mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 testingDeps-mockito-inline = { group = "org.mockito", name = "mockito-inline", version = "5.2.0" }
 testingDeps-mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version = "6.0.0" }
+mcp-kotlin-sdk-server = { group = "io.modelcontextprotocol", name = "kotlin-sdk-server", version.ref = "mcpKotlinSdk" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "gradleBuildTools" }

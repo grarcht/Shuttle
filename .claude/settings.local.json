@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -v \".git\" find /Users/greg/git/grarcht/shuttle -name \"*.sh\" -o -name \"*.py\" -o -name \"Makefile\")",
+      "Bash(git -C /Users/greg/Git/grarcht/Shuttle ls-tree -r --name-only Shuttle/bill-of-materials)",
+      "Bash(grep -E \"script|prep|deploy|\\\\.sh|\\\\.py|\\\\.gradle$|workflow|action\")",
+      "WebFetch(domain:plugins.gradle.org)",
+      "Bash(python3 *)",
+      "Bash(./gradlew dependencyCheckAggregate --no-configuration-cache)",
+      "WebSearch",
+      "Bash(./gradlew tasks *)",
+      "Bash(curl -s https://api.github.com/repos/actions/checkout/git/refs/tags/v4)",
+      "Bash(curl -s https://api.github.com/repos/actions/setup-java/git/refs/tags/v4)",
+      "Bash(curl -s https://api.github.com/repos/gradle/actions/git/refs/tags/setup-gradle/v4)",
+      "Bash(curl -s https://api.github.com/repos/gradle/actions/git/refs/tags)",
+      "Bash(curl *)",
+      "Bash(gh api *)",
+      "Bash(sed -i '' 's|actions/checkout@v4|actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4|g' build.yml dependency-check.yml dependency-check-nightly-seed.yml detekt.yml pr-checks.yml unit-tests.yml)",
+      "Bash(sed -i '' 's|actions/setup-java@v4|actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4|g' build.yml dependency-check.yml dependency-check-nightly-seed.yml detekt.yml unit-tests.yml)",
+      "Bash(sed -i '' 's|gradle/actions/setup-gradle@v4|gradle/actions/setup-gradle@48b5f213c81028ace310571dc5ec0fbbca0b2947 # v4|g' build.yml dependency-check.yml dependency-check-nightly-seed.yml detekt.yml unit-tests.yml)",
+      "Bash(sed -i '' 's|actions/cache/restore@v4|actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4|g' dependency-check.yml dependency-check-nightly-seed.yml)",
+      "Bash(sed -i '' 's|actions/cache/save@v4|actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4|g' dependency-check-nightly-seed.yml)",
+      "Bash(grep -n \"{ /\\\\*\\\\|{$\" /Users/greg/Git/grarcht/Shuttle/framework/src/test/java/com/grarcht/shuttle/framework/warehouse/ShuttleWarehouseTests.kt)",
+      "Bash(./gradlew :demos-mvc:assembleModulesDebug --no-daemon -q)",
+      "Bash(git *)",
+      "WebFetch(domain:android.googlesource.com)",
+      "WebFetch(domain:stuff.mit.edu)",
+      "WebFetch(domain:source.android.com)",
+      "WebFetch(domain:github.com)"
+    ]
+  }
+}

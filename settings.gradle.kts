@@ -69,3 +69,6 @@ project(":framework-integrations-extensions-room").projectDir =
 include(":framework-addons-navigation-component")
 project(":framework-addons-navigation-component").projectDir =
         File(settingsDir, "framework-addons/navigation-component")
+
+// MCP Server
+include(":mcp")
