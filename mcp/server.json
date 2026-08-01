@@ -1,0 +1,20 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.grarcht/shuttle",
+  "title": "Shuttle",
+  "description": "Android framework and solution that prevents TransactionTooLargeException crashes by design.",
+  "repository": {
+    "url": "https://github.com/grarcht/Shuttle",
+    "source": "github"
+  },
+  "version": "4.0.0",
+  "packages": [
+    {
+      "registryType": "oci",
+      "identifier": "ghcr.io/grarcht/shuttle-mcp:4.0.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
