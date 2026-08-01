@@ -227,6 +227,9 @@ dependencyCheck {
         // No Node.js in this project.
         nodeAuditEnabled = false
         nodeEnabled = false
+        // Central Analyzer makes a synchronous Maven Central HTTP call per JAR;
+        // with this many dependencies it hangs indefinitely. NVD covers CVEs.
+        centralEnabled = false
     }
 }
 
