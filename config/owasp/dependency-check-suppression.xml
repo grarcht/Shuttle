@@ -675,4 +675,23 @@
         <cve>CVE-2026-11824</cve>
     </suppress>
 
+    <suppress>
+        <notes><![CDATA[
+            Suppressed by: Gregory Rasmussen
+            Date: 2026-08-01
+            Review by: 2027-08-01
+            Reason: False positive. analysis-kotlin-symbols is the Dokka Kotlin symbol
+                    analysis plugin (org.jetbrains.dokka), not the Kotlin runtime or compiler.
+                    Its version (2.2.0) matches the Kotlin 2.2.0 release, causing OWASP's
+                    CPE matcher to assign cpe:2.3:a:jetbrains:kotlin:2.2.0 incorrectly.
+
+            CVEs:
+              CVE-2026-53914: Affects the JetBrains Kotlin compiler/runtime at version 2.2.0;
+                              analysis-kotlin-symbols is a Dokka build-time analysis artifact
+                              with no runtime exposure to this vulnerability.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.jetbrains\.dokka/analysis-kotlin-symbols@.*$</packageUrl>
+        <cve>CVE-2026-53914</cve>
+    </suppress>
+
 </suppressions>
