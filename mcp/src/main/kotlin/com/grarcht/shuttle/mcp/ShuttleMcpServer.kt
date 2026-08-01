@@ -31,7 +31,7 @@ private const val USER_DIR_PROPERTY = "user.dir"
 fun main() {
     val repoRoot = File(System.getProperty(USER_DIR_PROPERTY))
     runBlocking {
-        buildServer(repoRoot).connect(StdioServerTransport(System.`in`.asSource().buffered(), System.out.asSink().buffered()))
+        buildServer(repoRoot).createSession(StdioServerTransport(System.`in`.asSource().buffered(), System.out.asSink().buffered()))
     }
 }
 
@@ -39,7 +39,7 @@ fun main() {
  * Constructs and configures the MCP [Server] with all three Shuttle tools registered.
  * @param repoRoot the root directory of the Shuttle repository, passed to [GetSpecTool] so it can
  *        locate spec files on disk at call time
- * @return a fully configured [Server] ready to connect to a transport
+ * @return a fully configured [Server] ready to accept a transport via [Server.createSession]
  */
 internal fun buildServer(repoRoot: File): Server {
     val server = Server(

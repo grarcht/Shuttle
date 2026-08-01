@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.jetbrains.kotlin.jvm)
+    alias(libs.plugins.shadow)
     application
 }
 
@@ -12,6 +13,13 @@ kotlin {
 
 application {
     mainClass = "com.grarcht.shuttle.mcp.ShuttleMcpServerKt"
+}
+
+tasks.shadowJar {
+    archiveBaseName.set("shuttle-mcp")
+    archiveClassifier.set("")
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    mergeServiceFiles()
 }
 
 tasks.test {

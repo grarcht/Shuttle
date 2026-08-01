@@ -21,6 +21,7 @@ lifecycle = "2.9.2"
 mockito = "5.19.0"
 navigation = "2.9.3"
 room = "2.7.2"
+shadow = "9.6.0"
 shuttle = "4.0.0"
 sourceCompatibility = "21"
 targetCompatibility = "21"
@@ -107,4 +108,5 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm" }
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 maven-publish = { id = "maven-publish" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 signing = { id = "signing" }
