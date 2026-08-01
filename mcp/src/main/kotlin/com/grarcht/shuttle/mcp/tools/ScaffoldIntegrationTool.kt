@@ -87,7 +87,7 @@ internal object ScaffoldIntegrationTool {
             else -> "$UNSUPPORTED_FRAMEWORK_PREFIX$DI_FRAMEWORK_KEY: $diFramework$UNSUPPORTED_FRAMEWORK_HINT$DI_FRAMEWORK_HILT, $DI_FRAMEWORK_KOIN, or $DI_FRAMEWORK_MANUAL."
         }
 
-        return CallToolResult(content = listOf(TextContent(text = code)))
+        return CallToolResult(content = listOf(TextContent(text = "$code\n\n$DOCS_FOOTER")))
     }
 
     private fun buildGradleSection(navDep: String): String {

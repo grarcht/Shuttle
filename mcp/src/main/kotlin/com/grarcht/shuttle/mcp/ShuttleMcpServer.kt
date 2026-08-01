@@ -8,6 +8,7 @@ import io.modelcontextprotocol.kotlin.sdk.server.ServerOptions
 import io.modelcontextprotocol.kotlin.sdk.server.StdioServerTransport
 import io.modelcontextprotocol.kotlin.sdk.types.Implementation
 import io.modelcontextprotocol.kotlin.sdk.types.ServerCapabilities
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.runBlocking
 import kotlinx.io.asSink
 import kotlinx.io.asSource
@@ -31,7 +32,12 @@ private const val USER_DIR_PROPERTY = "user.dir"
 fun main() {
     val repoRoot = File(System.getProperty(USER_DIR_PROPERTY))
     runBlocking {
-        buildServer(repoRoot).createSession(StdioServerTransport(System.`in`.asSource().buffered(), System.out.asSink().buffered()))
+        val done = CompletableDeferred<Unit>()
+        val session = buildServer(repoRoot).createSession(
+            StdioServerTransport(System.`in`.asSource().buffered(), System.out.asSink().buffered())
+        )
+        session.onClose { done.complete(Unit) }
+        done.await()
     }
 }
 

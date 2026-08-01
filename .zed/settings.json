@@ -2,11 +2,7 @@
   "context_servers": {
     "shuttle": {
       "command": {
-        "path": "java",
-        "args": [
-          "-jar",
-          "mcp/build/libs/shuttle-mcp.jar"
-        ]
+        "path": "mcp/run.sh"
       },
       "settings": {}
     }

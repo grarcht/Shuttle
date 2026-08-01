@@ -26,7 +26,10 @@
       "WebFetch(domain:android.googlesource.com)",
       "WebFetch(domain:stuff.mit.edu)",
       "WebFetch(domain:source.android.com)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "mcp__shuttle__get_spec",
+      "mcp__shuttle__scaffold_integration",
+      "mcp__shuttle__detect_risk"
     ]
   }
 }

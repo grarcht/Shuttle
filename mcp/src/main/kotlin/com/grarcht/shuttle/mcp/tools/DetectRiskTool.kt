@@ -11,7 +11,6 @@ import kotlinx.serialization.json.putJsonObject
 
 private const val CODE_DESCRIPTION = "The Kotlin or Java source code to analyze."
 private const val CODE_KEY = "code"
-private const val DOCS_FOOTER = "See https://github.com/grarcht/Shuttle for full integration docs."
 private const val HOW_TO_FIX_LABEL = "How to fix with Shuttle:"
 private const val NO_RISK_MESSAGE =
     "No TransactionTooLargeException risk patterns detected in the provided snippet. " +
@@ -135,10 +134,10 @@ data class YourModel(val field: String) // no explicit Serializable needed"""
         val code = arguments?.get(CODE_KEY)?.jsonPrimitive?.content ?: ""
         val findings = riskPatterns.filter { it.pattern.containsMatchIn(code) }
 
-        val text = if (findings.isEmpty()) {
-            NO_RISK_MESSAGE
-        } else {
-            buildString {
+        val text = buildString {
+            if (findings.isEmpty()) {
+                appendLine(NO_RISK_MESSAGE)
+            } else {
                 appendLine("$RISK_COUNT_PREFIX${findings.size}$RISK_COUNT_SUFFIX")
                 findings.forEachIndexed { index, finding ->
                     appendLine("$RISK_LABEL_PREFIX${index + 1}$RISK_LABEL_SUFFIX")
@@ -151,8 +150,9 @@ data class YourModel(val field: String) // no explicit Serializable needed"""
                     appendLine(finding.fix)
                     appendLine()
                 }
-                appendLine(DOCS_FOOTER)
             }
+            appendLine()
+            appendLine(DOCS_FOOTER)
         }
 
         return CallToolResult(content = listOf(TextContent(text = text)))

@@ -1,11 +1,7 @@
 {
   "mcpServers": {
     "shuttle": {
-      "command": "java",
-      "args": [
-        "-jar",
-        "${workspaceFolder}/mcp/build/libs/shuttle-mcp.jar"
-      ],
+      "command": "${workspaceFolder}/mcp/run.sh",
       "cwd": "${workspaceFolder}"
     }
   }

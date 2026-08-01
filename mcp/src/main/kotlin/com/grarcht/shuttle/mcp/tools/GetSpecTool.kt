@@ -76,18 +76,21 @@ internal object GetSpecTool {
                 content = listOf(
                     TextContent(
                         text = "$UNKNOWN_TOPIC_PREFIX$topic$UNKNOWN_TOPIC_SUFFIX" +
-                            "${topicToSpecPath.keys.sorted().joinToString(TOPICS_SEPARATOR)}$VALID_TOPICS_SUFFIX"
+                            "${topicToSpecPath.keys.sorted().joinToString(TOPICS_SEPARATOR)}$VALID_TOPICS_SUFFIX" +
+                            "\n\n$DOCS_FOOTER"
                     )
                 )
             )
 
         val specFile = File(repoRoot, relativePath)
         return if (specFile.exists()) {
-            CallToolResult(content = listOf(TextContent(text = specFile.readText())))
+            CallToolResult(content = listOf(TextContent(text = specFile.readText() + "\n\n$DOCS_FOOTER")))
         } else {
             CallToolResult(
                 content = listOf(
-                    TextContent(text = "Spec file not found at $relativePath.$SPEC_NOT_FOUND_GUIDANCE")
+                    TextContent(
+                        text = "Spec file not found at $relativePath.$SPEC_NOT_FOUND_GUIDANCE\n\n$DOCS_FOOTER"
+                    )
                 )
             )
         }
