@@ -29,7 +29,11 @@
       "WebFetch(domain:github.com)",
       "mcp__shuttle__get_spec",
       "mcp__shuttle__scaffold_integration",
-      "mcp__shuttle__detect_risk"
+      "mcp__shuttle__detect_risk",
+      "Bash(./gradlew :mcp:shadowJar --console=plain)",
+      "Bash(unzip -p mcp/build/libs/shuttle-mcp.jar com/grarcht/shuttle/mcp/tools/ToolSchemaKeys.class)",
+      "Bash(unzip -l mcp/build/libs/shuttle-mcp.jar)",
+      "Bash(unzip -p mcp/build/libs/shuttle-mcp.jar com/grarcht/shuttle/mcp/tools/ToolSchemaKeysKt.class)"
     ]
   }
 }
