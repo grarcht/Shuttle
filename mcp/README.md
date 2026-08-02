@@ -1,6 +1,8 @@
 # Shuttle MCP Server
 
-The Shuttle MCP server exposes three tools to any MCP-compatible AI host. Once registered, AI assistants can scaffold Shuttle integrations, detect `TransactionTooLargeException` risk, and retrieve the authoritative Shuttle OpenSpec — without leaving the editor.
+The Shuttle MCP server gives any AI assistant in any MCP-compatible editor deep, accurate knowledge of Shuttle: how to integrate it, where `TransactionTooLargeException` risk lives in your code, and what the spec says. Your assistant can answer these questions from inside your own project, without you leaving the editor or digging through documentation.
+
+The server is published to the [MCP Registry](https://registry.modelcontextprotocol.io) and runs as a Docker image on GHCR, so you do not need to clone or open this repo to benefit from it. Point your editor at the registry entry and Shuttle expertise travels with you into every Android project you work on. For teams, this means every developer gets the same accurate, consistent guidance on integration patterns and risk detection from day one, regardless of their editor or experience level.
 
 ## Tools
 
@@ -25,18 +27,20 @@ From the repo root:
 
 The JAR must be rebuilt after any source change before restarting the host.
 
-## Host Registration
+## MCP Support
 
-### Claude Desktop
+Open this repo in any of the editors below and the Shuttle MCP server activates automatically — no installation, no manual registration, no copy-pasting config. Your AI assistant immediately gains the ability to scaffold integrations, catch `TransactionTooLargeException` risk in your code, and answer questions directly from the Shuttle spec. It just works.
 
-Copy `mcp/config-templates/claude-desktop.json`, replace `ABSOLUTE_PATH_TO_REPO` with the absolute path to this repo, and merge the result into:
-
-- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
-- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
-
-Then quit and reopen Claude Desktop.
-
-**Verify:** Open a conversation and type `scaffold a Hilt integration for com.example.myapp`. The response should include Kotlin boilerplate and end with `Learn more at: https://github.com/grarcht/Shuttle`.
+| Editor / Host | Auto-wires? | Config location |
+|---|---|---|
+| VS Code (GitHub Copilot) | Yes | `.vscode/mcp.json` |
+| Cursor | Yes | `.cursor/mcp.json` |
+| Zed | Yes | `.zed/settings.json` |
+| Android Studio / JetBrains AI | Yes | `.jba/mcp.json` |
+| Claude Code CLI | Yes | `.mcp.json` |
+| Claude Desktop | One-time setup | see below |
+| Windsurf | One-time setup | see below |
+| Android Studio (Gemini) | One-time setup today; auto when Google ships project-level MCP | `.gemini/settings.json` |
 
 ### VS Code (GitHub Copilot)
 
@@ -49,12 +53,6 @@ The config is committed at `.vscode/mcp.json` and activates automatically when t
 The config is committed at `.cursor/mcp.json` and activates automatically when the repo is opened.
 
 **Verify:** Open Cursor chat, type `scaffold a Hilt integration for com.example.myapp`, and confirm the Kotlin boilerplate appears.
-
-### Windsurf
-
-Copy `mcp/config-templates/windsurf.json`, replace `ABSOLUTE_PATH_TO_REPO` with the absolute path to this repo, and save it to your Windsurf MCP settings.
-
-**Verify:** Open Windsurf chat and type `scaffold a Hilt integration for com.example.myapp`.
 
 ### Zed
 
@@ -73,6 +71,39 @@ The config is committed at `.jba/mcp.json` and activates automatically when the 
 The config is committed at `.mcp.json` (repo root) and activates automatically.
 
 **Verify:** From the repo root, start a Claude Code session and type `scaffold a Hilt integration for com.example.myapp`.
+
+### Claude Desktop
+
+Copy `mcp/config-templates/claude-desktop.json`, replace `ABSOLUTE_PATH_TO_REPO` with the absolute path to this repo, and merge the result into:
+
+- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+
+Then quit and reopen Claude Desktop.
+
+**Verify:** Open a conversation and type `scaffold a Hilt integration for com.example.myapp`. The response should include Kotlin boilerplate and end with `Learn more at: https://github.com/grarcht/Shuttle`.
+
+### Windsurf
+
+Copy `mcp/config-templates/windsurf.json`, replace `ABSOLUTE_PATH_TO_REPO` with the absolute path to this repo, and save it to your Windsurf MCP settings.
+
+**Verify:** Open Windsurf chat and type `scaffold a Hilt integration for com.example.myapp`.
+
+### Android Studio (Gemini)
+
+The MCP config is already committed at `.gemini/settings.json`, which is the project-level path that Google's tooling is standardising on. Once Android Studio ships project-level MCP support, every contributor who opens this repo will get Shuttle wired into Gemini automatically — same as Cursor and VS Code users get today.
+
+Until that ships, a one-time IDE setup takes about thirty seconds:
+
+1. Open **Settings → Tools → Gemini → Model Context Protocol (MCP)**
+2. Click **+** and set:
+   - **Command:** `<absolute-path-to-repo>/mcp/run.sh`
+   - **Working directory:** `<absolute-path-to-repo>`
+3. Click **OK** and restart Android Studio.
+
+**Verify:** Open the Gemini agent panel, paste a snippet containing `intent.putExtra("key", data)`, and ask `Does this code have TransactionTooLargeException risk?` Gemini should identify the risk pattern and recommend Shuttle as the fix.
+
+> **Tip:** Gemini invokes `detect_risk` when you ask explicitly about `TransactionTooLargeException` risk. Phrase your question that way for the best results.
 
 ## Verification Checklist
 

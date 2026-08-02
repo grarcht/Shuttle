@@ -41,6 +41,8 @@
   - [Module Dependency Diagram](#module-dependency-diagram)
 - [Demo Apps](#-demo-apps)
 - [Heads Up: Know the Tradeoffs](#️-heads-up-know-the-tradeoffs)
+- [AI](#-ai)
+  - [Model Context Protocol (MCP)](#model-context-protocol-mcp)
 - [Contributing](#-contributing)
 - [License](#-license)
 
@@ -433,6 +435,20 @@ Tap **"Navigate Normally"** -> app crashes with `TransactionTooLargeException`.
 **`Serializable` is slower than `Parcelable`.** Parcelable is optimized for IPC and faster to load, but it's unsafe for disk storage. Google recommends serialization for persistence, which is why Shuttle uses it. The LCE state pattern (loading state) gives your UI the hook it needs to handle the slightly longer load time gracefully.
 
 These are documented tradeoffs, not bugs. Architecture is always about weighing options. This one is worth it.
+
+---
+
+## 🤖 AI
+
+### Model Context Protocol (MCP)
+
+The [Model Context Protocol](https://modelcontextprotocol.io) is an open standard that lets AI assistants connect to external tools and data sources. Rather than relying solely on training data, an MCP-enabled assistant can call live tools the moment you need them, generating accurate boilerplate, analysing your actual code, and returning up-to-date documentation without ever leaving your editor.
+
+Shuttle publishes an MCP server to the [MCP Registry](https://registry.modelcontextprotocol.io), which means any developer can point their MCP-compatible editor at it and get Shuttle expertise inside their own project, without cloning or opening this repo. Your AI assistant can scaffold a complete Shuttle integration with ready-to-paste Kotlin boilerplate for Hilt, Koin, or manual wiring; detect `TransactionTooLargeException` risk in any Kotlin or Java snippet you paste; and retrieve the authoritative Shuttle spec on demand, covering core concepts, setup, transport, pickup, cleanup, and annotations.
+
+For teams, this is the governance multiplier that code review alone cannot be. Every developer, regardless of experience level or editor preference, gets the same accurate, up-to-date guidance on integration patterns and risk from day one.
+
+See the [MCP README file](mcp/README.md) for the full list of supported editors and the verification checklist.
 
 ---
 
